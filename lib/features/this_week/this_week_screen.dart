@@ -14,7 +14,10 @@ import '../garden/garden_repository.dart';
 import '../repository_scope.dart';
 
 class ThisWeekScreen extends StatelessWidget {
-  const ThisWeekScreen({super.key});
+  const ThisWeekScreen({super.key, this.embedded = false});
+
+  /// When embedded (e.g. My Garden → Reminders) the big page header is hidden.
+  final bool embedded;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,10 @@ class ThisWeekScreen extends StatelessWidget {
         final done = items.where((i) => i.completed).length;
         return CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child: _Header(done: done, total: items.length)),
+            if (!embedded)
+              SliverToBoxAdapter(child: _Header(done: done, total: items.length)),
+            if (items.isNotEmpty)
+              const SliverToBoxAdapter(child: _WeatherBanner()),
             if (snap.connectionState == ConnectionState.waiting)
               const SliverToBoxAdapter(
                 child: Padding(
@@ -212,6 +218,46 @@ class _TaskTile extends StatelessWidget {
             size: 26,
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Weather-aware banner (GrowIt shows one at the top of Reminders). Derived from
+/// the same prototype sample forecast the hints use — a plain-language nudge +
+/// today's temp. In production this reads the live weather layer.
+class _WeatherBanner extends StatelessWidget {
+  const _WeatherBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: AppColors.rain.withValues(alpha: 0.10),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Warm and dry ahead — containers dry out fast, so keep an eye '
+                'on watering.',
+                style: AppText.body(context, color: AppColors.ink),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Column(
+              children: [
+                const Icon(Icons.wb_sunny, color: AppColors.heat, size: 26),
+                const SizedBox(height: 2),
+                Text('24°', style: AppText.label(context)),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

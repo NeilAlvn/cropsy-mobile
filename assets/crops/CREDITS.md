@@ -1,0 +1,65 @@
+# Crop photo credits (prototype placeholders)
+
+Free-licensed images from Wikipedia/Wikimedia Commons. Replace with owned
+photography before launch. Each line: slug — source page — image URL.
+
+- asparagus — (no image: no raster image)
+- aubergine — https://en.wikipedia.org/wiki/Eggplant — https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Solanum_melongena_24_08_2012_%281%29.JPG/500px-Solanum_melongena_24_08_2012_%281%29.JPG
+- basil — https://en.wikipedia.org/wiki/Basil — https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Ocimum_basilicum_8zz.jpg/500px-Ocimum_basilicum_8zz.jpg
+- beetroot — https://en.wikipedia.org/wiki/Beetroot — https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Detroitdarkredbeets.png/500px-Detroitdarkredbeets.png
+- broad-bean — https://en.wikipedia.org/wiki/Vicia_faba — https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Illustration_Vicia_faba1.jpg/500px-Illustration_Vicia_faba1.jpg
+- broccoli — https://en.wikipedia.org/wiki/Broccoli — https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Broccoli_and_cross_section_edit.jpg/500px-Broccoli_and_cross_section_edit.jpg
+- brussels-sprouts — https://en.wikipedia.org/wiki/Brussels_sprout — https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Brussels_sprout_closeup.jpg/500px-Brussels_sprout_closeup.jpg
+- cabbage — https://en.wikipedia.org/wiki/Cabbage — https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Cabbage_and_cross_section_on_white.jpg/500px-Cabbage_and_cross_section_on_white.jpg
+- carrot — https://en.wikipedia.org/wiki/Carrot — https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Vegetable-Carrot-Bundle-wStalks.jpg/500px-Vegetable-Carrot-Bundle-wStalks.jpg
+- cauliflower — https://en.wikipedia.org/wiki/Cauliflower — https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Chou-fleur_02.jpg/500px-Chou-fleur_02.jpg
+- celeriac — https://en.wikipedia.org/wiki/Celeriac — https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/C%C3%A9leri-rave-fendu.jpg/500px-C%C3%A9leri-rave-fendu.jpg
+- celery — https://en.wikipedia.org/wiki/Celery — https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Celery_1.jpg/500px-Celery_1.jpg
+- chili — https://en.wikipedia.org/wiki/Chili_pepper — https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Madame_Jeanette_and_other_chillies.jpg/500px-Madame_Jeanette_and_other_chillies.jpg
+- chives — https://en.wikipedia.org/wiki/Chives — https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Allium_schoenoprasum_-_Bombus_lapidarius_-_Tootsi.jpg/500px-Allium_schoenoprasum_-_Bombus_lapidarius_-_Tootsi.jpg
+- coriander — https://en.wikipedia.org/wiki/Coriander — https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Coriandrum_sativum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-193.jpg/500px-Coriandrum_sativum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-193.jpg
+- courgette — https://en.wikipedia.org/wiki/Zucchini — https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/CSA-Striped-Zucchini.jpg/500px-CSA-Striped-Zucchini.jpg
+- cucumber — https://en.wikipedia.org/wiki/Cucumber — https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/ARS_cucumber.jpg/500px-ARS_cucumber.jpg
+- dill — https://en.wikipedia.org/wiki/Dill — https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Illustration_Anethum_graveolens_clean.jpg/500px-Illustration_Anethum_graveolens_clean.jpg
+- endive — https://en.wikipedia.org/wiki/Endive — https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Cichorium_endivia_-_Botanischer_Garten_Mainz_IMG_5453.JPG/500px-Cichorium_endivia_-_Botanischer_Garten_Mainz_IMG_5453.JPG
+- fennel — https://en.wikipedia.org/wiki/Fennel — https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Foeniculum_July_2011-1a.jpg/500px-Foeniculum_July_2011-1a.jpg
+- french-bean — https://en.wikipedia.org/wiki/Green_bean — https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Heaps_of_beans.jpg/500px-Heaps_of_beans.jpg
+- garlic — https://en.wikipedia.org/wiki/Garlic — https://upload.wikimedia.org/wikipedia/commons/3/39/Allium_sativum_Woodwill_1793.jpg
+- gherkin — https://en.wikipedia.org/wiki/Cucumber — https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/ARS_cucumber.jpg/500px-ARS_cucumber.jpg
+- kale — https://en.wikipedia.org/wiki/Kale — https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Boerenkool.jpg/500px-Boerenkool.jpg
+- kohlrabi — https://en.wikipedia.org/wiki/Kohlrabi — https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Brassica_oleracea_var._gongylodes_%28kohlrabi%29.jpg/500px-Brassica_oleracea_var._gongylodes_%28kohlrabi%29.jpg
+- lambs-lettuce — https://en.wikipedia.org/wiki/Valeriana_locusta — https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Ackersalat02.jpg/500px-Ackersalat02.jpg
+- leek — https://en.wikipedia.org/wiki/Leek — https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Leek_on_white_background_-_0947.jpg/500px-Leek_on_white_background_-_0947.jpg
+- lettuce — https://en.wikipedia.org/wiki/Lettuce — https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Iceberg_lettuce_in_SB.jpg/500px-Iceberg_lettuce_in_SB.jpg
+- mangetout — https://en.wikipedia.org/wiki/Snow_pea — https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Snow_Pea_on_Plant.JPG/500px-Snow_Pea_on_Plant.JPG
+- melon — https://en.wikipedia.org/wiki/Melon — https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Cantaloupe_and_canary_melon.jpg/500px-Cantaloupe_and_canary_melon.jpg
+- mint — (no image: no raster image)
+- onion — https://en.wikipedia.org/wiki/Onion — https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Mixed_onions.jpg/500px-Mixed_onions.jpg
+- oregano — https://en.wikipedia.org/wiki/Oregano — https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Origanum_vulgare_-_harilik_pune.jpg/500px-Origanum_vulgare_-_harilik_pune.jpg
+- pak-choi — https://en.wikipedia.org/wiki/Bok_choy — https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Bok_Choy_%2849553125456%29.jpg/500px-Bok_Choy_%2849553125456%29.jpg
+- parsley — https://en.wikipedia.org/wiki/Parsley — https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Petroselinum.jpg/500px-Petroselinum.jpg
+- parsnip — https://en.wikipedia.org/wiki/Parsnip — https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Pastinaca_sativa_MHNT.BOT.2004.0.jpg/500px-Pastinaca_sativa_MHNT.BOT.2004.0.jpg
+- pea — https://en.wikipedia.org/wiki/Pea — https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Peas_in_pods_-_Studio.jpg/500px-Peas_in_pods_-_Studio.jpg
+- pepper — https://en.wikipedia.org/wiki/Bell_pepper — https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Green-Yellow-Red-Pepper-2009.jpg/500px-Green-Yellow-Red-Pepper-2009.jpg
+- pointed-cabbage — https://en.wikipedia.org/wiki/Cabbage — https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Cabbage_and_cross_section_on_white.jpg/500px-Cabbage_and_cross_section_on_white.jpg
+- potato — https://en.wikipedia.org/wiki/Potato — https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Patates.jpg/500px-Patates.jpg
+- pumpkin — https://en.wikipedia.org/wiki/Pumpkin — https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/FrenchMarketPumpkinsB.jpg/500px-FrenchMarketPumpkinsB.jpg
+- radish — https://en.wikipedia.org/wiki/Radish — https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Radish_3371103037_4ab07db0bf_o.jpg/500px-Radish_3371103037_4ab07db0bf_o.jpg
+- red-cabbage — https://en.wikipedia.org/wiki/Red_cabbage — https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Brassica_oleracea_var_capitata_Rubyball.jpg/500px-Brassica_oleracea_var_capitata_Rubyball.jpg
+- rhubarb — https://en.wikipedia.org/wiki/Rhubarb — https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Rheum_rhabarbarum.2006-04-27.uellue.jpg/500px-Rheum_rhabarbarum.2006-04-27.uellue.jpg
+- rocket — https://en.wikipedia.org/wiki/Eruca_sativa — https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Eruca_sativa_sl11.jpg/500px-Eruca_sativa_sl11.jpg
+- rosemary — https://en.wikipedia.org/wiki/Rosemary — https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Rosemary_in_bloom.JPG/500px-Rosemary_in_bloom.JPG
+- runner-bean — https://en.wikipedia.org/wiki/Phaseolus_coccineus — https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Illustration_Phaseolus_coccineus0.jpg/500px-Illustration_Phaseolus_coccineus0.jpg
+- sage — (no image: no raster image)
+- shallot — https://en.wikipedia.org/wiki/Shallot — https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Shallots_-_sliced_and_whole.jpg/500px-Shallots_-_sliced_and_whole.jpg
+- sorrel — https://en.wikipedia.org/wiki/Sorrel — https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/%28MHNT%29_Rumex_acetosa_-_Habit.jpg/500px-%28MHNT%29_Rumex_acetosa_-_Habit.jpg
+- spinach — https://en.wikipedia.org/wiki/Spinach — https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Spinacia_oleracea_Spinazie_bloeiend.jpg/500px-Spinacia_oleracea_Spinazie_bloeiend.jpg
+- spring-onion — https://en.wikipedia.org/wiki/Scallion — https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/CSA-Red-Spring-Onions.jpg/500px-CSA-Red-Spring-Onions.jpg
+- strawberry — https://en.wikipedia.org/wiki/Strawberry — https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Garden_strawberry_%28Fragaria_%C3%97_ananassa%29_single2.jpg/500px-Garden_strawberry_%28Fragaria_%C3%97_ananassa%29_single2.jpg
+- swede — https://en.wikipedia.org/wiki/Rutabaga — https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Rutabaga%2C_variety_nadmorska.JPG/500px-Rutabaga%2C_variety_nadmorska.JPG
+- sweetcorn — https://en.wikipedia.org/wiki/Sweet_corn — https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/VegCorn.jpg/500px-VegCorn.jpg
+- swiss-chard — https://en.wikipedia.org/wiki/Chard — https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Chard_%28Beta_vulgaris_var_cicla%29.jpg/500px-Chard_%28Beta_vulgaris_var_cicla%29.jpg
+- thyme — https://en.wikipedia.org/wiki/Thyme — https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Thyme-Bundle.jpg/500px-Thyme-Bundle.jpg
+- tomato — https://en.wikipedia.org/wiki/Tomato — https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tomato_je.jpg/500px-Tomato_je.jpg
+- turnip — https://en.wikipedia.org/wiki/Turnip — https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Turnip_2622027.jpg/500px-Turnip_2622027.jpg
+- winter-squash — https://en.wikipedia.org/wiki/Winter_squash — https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Squashes.jpg/500px-Squashes.jpg

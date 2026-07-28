@@ -14,6 +14,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:drift/drift.dart';
 
+import '../../data/collections.dart';
+import '../../data/crop_derived.dart';
 import '../../data/frost_presets.dart';
 import '../../data/sample_week.dart';
 import '../../data/seed.dart';
@@ -55,6 +57,7 @@ class GardenRepository extends ChangeNotifier {
   final AppDatabase db;
   final CropSnapshot _snapshot;
   FrostProfile frost;
+  String regionName = defaultRegion.name;
 
   final _rng = Random();
   String get today => demoToday;
@@ -88,6 +91,34 @@ class GardenRepository extends ChangeNotifier {
   String cropName(String slug) => cropBySlug(slug)?.names.en ?? slug;
   String cropCategory(String slug) => cropBySlug(slug)?.category ?? 'herb';
 
+  List<Collection>? _collections;
+  List<Collection> get collections => _collections ??= buildCollections(crops);
+
+  /// Crops with an activity window in [month] (1–12), optionally narrowed by a
+  /// filter: 'indoors' (start indoors), 'outside' (sow/plant out), 'easy'.
+  List<Crop> whatToGrowIn(int month, {String filter = 'all'}) {
+    bool methodAllowed(MethodType m) => switch (filter) {
+          'indoors' => m == MethodType.sowIndoor,
+          'outside' => m == MethodType.sowDirect ||
+              m == MethodType.transplant ||
+              m == MethodType.plant,
+          _ => true,
+        };
+    final out = <Crop>[];
+    for (final crop in crops) {
+      if (filter == 'easy' && difficultyOf(crop) != Difficulty.easy) continue;
+      final hit = scheduleCrop(crop, frost).any((w) {
+        if (!methodAllowed(w.method)) return false;
+        final s = parseIso(w.start).month;
+        final e = parseIso(w.end).month;
+        return month >= s && month <= e;
+      });
+      if (hit) out.add(crop);
+    }
+    out.sort((a, b) => a.names.en.compareTo(b.names.en));
+    return out;
+  }
+
   // ── Gardens & plants (F3) ──────────────────────────────────────────────
   Future<List<GardenRow>> gardens() =>
       (db.select(db.gardens)..where((t) => t.deletedAt.isNull())).get();
@@ -104,6 +135,39 @@ class GardenRepository extends ChangeNotifier {
       (db.select(db.gardenPlants)..where((t) => t.id.equals(id)))
           .getSingleOrNull();
 
+  /// Lifecycle split (GrowIt's Planning vs Growing): a plant with no
+  /// `plantedOn` is still being *planned*; once it's set, it's *growing*.
+  Future<List<GardenPlantRow>> planningPlants() =>
+      (db.select(db.gardenPlants)
+            ..where((t) => t.deletedAt.isNull() & t.plantedOn.isNull()))
+          .get();
+
+  Future<List<GardenPlantRow>> growingPlants() =>
+      (db.select(db.gardenPlants)
+            ..where((t) => t.deletedAt.isNull() & t.plantedOn.isNotNull()))
+          .get();
+
+  /// Rough days-until-harvest for a growing plant (GrowIt's "Harvest in N days"
+  /// countdown): planted date + the crop's min harvest days − today.
+  int? daysUntilHarvest(GardenPlantRow plant) {
+    if (plant.plantedOn == null) return null;
+    final crop = cropBySlug(plant.cropSlug);
+    if (crop == null) return null;
+    final harvest = addDays(parseIso(plant.plantedOn!), crop.harvestDaysMin.toInt());
+    return harvest.difference(parseIso(today)).inDays;
+  }
+
+  /// Move a planned plant into "growing" by stamping today's date.
+  Future<void> startGrowing(String plantId) async {
+    await (db.update(db.gardenPlants)..where((t) => t.id.equals(plantId))).write(
+      GardenPlantsCompanion(
+        plantedOn: Value(today),
+        dirty: const Value(true),
+      ),
+    );
+    notifyListeners();
+  }
+
   String _newId() =>
       '${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}'
       '${_rng.nextInt(1 << 20).toRadixString(36)}';
@@ -115,6 +179,7 @@ class GardenRepository extends ChangeNotifier {
     String name = 'My garden',
   }) async {
     frost = region.profile;
+    regionName = region.name;
     final id = _newId();
     await db.into(db.gardens).insert(GardensCompanion.insert(
           id: id,
@@ -154,12 +219,15 @@ class GardenRepository extends ChangeNotifier {
       sunHours: 6,
       name: 'Balcony',
     );
+    // A couple stay in "planning" (no plantedOn) so both My Garden sub-tabs
+    // have content; the rest are actively growing (drive tasks/reminders).
+    const planningOnly = {'carrot', 'courgette'};
     for (final entry in starterCrops.entries) {
       await addPlant(
         gardenId: gardenId,
         cropSlug: entry.key,
         potLitres: entry.value,
-        plantedOn: today,
+        plantedOn: planningOnly.contains(entry.key) ? null : today,
       );
     }
   }
@@ -176,7 +244,7 @@ class GardenRepository extends ChangeNotifier {
   /// + client-side watering, upserting into the real `tasks` table. Stable ids +
   /// insert-or-ignore preserve any completion the user already made.
   Future<void> _regenerateTasks() async {
-    final active = await plants();
+    final active = await growingPlants();
     for (final plant in active) {
       final crop = cropBySlug(plant.cropSlug);
       if (crop == null) continue;

@@ -44,4 +44,32 @@ void main() {
     expect(repo.cropVersion, isNotEmpty);
     repo.dispose();
   });
+
+  test('GrowIt-parity: month recommendations, collections, lifecycle', () async {
+    final repo = await GardenRepository.create();
+
+    // "What to grow in May" returns crops with a May window.
+    expect(repo.whatToGrowIn(5), isNotEmpty);
+    // Filtering narrows it.
+    expect(repo.whatToGrowIn(5, filter: 'indoors').length,
+        lessThanOrEqualTo(repo.whatToGrowIn(5).length));
+
+    // Themed collections are non-empty and derived from real crop data.
+    expect(repo.collections, isNotEmpty);
+    expect(repo.collections.every((c) => c.crops.isNotEmpty), isTrue);
+
+    // Demo seed splits lifecycle: some planning, some growing.
+    await repo.seedDemoGarden();
+    final planning = await repo.planningPlants();
+    final growing = await repo.growingPlants();
+    expect(planning, isNotEmpty);
+    expect(growing, isNotEmpty);
+
+    // Starting a planned plant moves it into growing.
+    await repo.startGrowing(planning.first.id);
+    expect((await repo.planningPlants()).length, planning.length - 1);
+    expect((await repo.growingPlants()).length, growing.length + 1);
+
+    repo.dispose();
+  });
 }

@@ -29,6 +29,17 @@ abstract final class AppColors {
   static const heat = Color(0xFFE8A13A);
   static const frost = Color(0xFF8FB0C7);
 
+  // Planting-calendar band colours (per activity lane)
+  static const bandSowIndoor = Color(0xFFA9CE8B); // pale sprout
+  static const bandSowOutdoor = Color(0xFF6DA544); // green
+  static const bandPlantOut = Color(0xFF44692A); // deep green
+  static const bandHarvest = Color(0xFFC56A45); // clay
+
+  // Difficulty
+  static const easy = Color(0xFF5C8A3A);
+  static const medium = Color(0xFFE8A13A);
+  static const hard = Color(0xFFC0392B);
+
   // Status
   static const done = Color(0xFF5C8A3A);
   static const warn = Color(0xFFC0392B);
