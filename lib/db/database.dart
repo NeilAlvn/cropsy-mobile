@@ -149,6 +149,25 @@ class JournalEntries extends Table with SyncableColumns {
   TextColumn get photoPath => text().nullable()();
 }
 
+/// Harvest log (F7). Local-only for the prototype — the harvest-value tracker
+/// reads from it ("you've grown €142 this season"). Not yet in the Supabase
+/// schema; when it graduates to a synced table it gets the SyncableColumns mixin.
+@DataClassName('HarvestRow')
+class Harvests extends Table with SyncableColumns {
+  TextColumn get gardenPlantId =>
+      text().nullable().references(GardenPlants, #id, onDelete: KeyAction.cascade)();
+  TextColumn get cropSlug => text()();
+
+  /// Free-text amount, e.g. "6 courgettes" or "400 g".
+  TextColumn get amount => text()();
+
+  /// Estimated shop value in euros.
+  RealColumn get valueEuros => real().withDefault(const Constant(0))();
+
+  /// ISO `yyyy-mm-dd`, back-datable.
+  TextColumn get harvestedOn => text()();
+}
+
 /// LOCAL-ONLY: the delta-pull cursor per table — the max `updated_at` seen, sent
 /// as `changed_since` on the next pull.
 @DataClassName('SyncCursorRow')
@@ -175,7 +194,15 @@ class AppMeta extends Table {
 }
 
 @DriftDatabase(
-  tables: [Gardens, GardenPlants, Tasks, JournalEntries, SyncCursors, AppMeta],
+  tables: [
+    Gardens,
+    GardenPlants,
+    Tasks,
+    JournalEntries,
+    Harvests,
+    SyncCursors,
+    AppMeta,
+  ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);

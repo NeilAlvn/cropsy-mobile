@@ -2525,6 +2525,683 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
   }
 }
 
+class $HarvestsTable extends Harvests
+    with TableInfo<$HarvestsTable, HarvestRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $HarvestsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ownerMeta = const VerificationMeta('owner');
+  @override
+  late final GeneratedColumn<String> owner = GeneratedColumn<String>(
+    'owner',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dirtyMeta = const VerificationMeta('dirty');
+  @override
+  late final GeneratedColumn<bool> dirty = GeneratedColumn<bool>(
+    'dirty',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("dirty" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _gardenPlantIdMeta = const VerificationMeta(
+    'gardenPlantId',
+  );
+  @override
+  late final GeneratedColumn<String> gardenPlantId = GeneratedColumn<String>(
+    'garden_plant_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES garden_plants (id) ON DELETE CASCADE',
+    ),
+  );
+  static const VerificationMeta _cropSlugMeta = const VerificationMeta(
+    'cropSlug',
+  );
+  @override
+  late final GeneratedColumn<String> cropSlug = GeneratedColumn<String>(
+    'crop_slug',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
+  @override
+  late final GeneratedColumn<String> amount = GeneratedColumn<String>(
+    'amount',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _valueEurosMeta = const VerificationMeta(
+    'valueEuros',
+  );
+  @override
+  late final GeneratedColumn<double> valueEuros = GeneratedColumn<double>(
+    'value_euros',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _harvestedOnMeta = const VerificationMeta(
+    'harvestedOn',
+  );
+  @override
+  late final GeneratedColumn<String> harvestedOn = GeneratedColumn<String>(
+    'harvested_on',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    owner,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    dirty,
+    gardenPlantId,
+    cropSlug,
+    amount,
+    valueEuros,
+    harvestedOn,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'harvests';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<HarvestRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('owner')) {
+      context.handle(
+        _ownerMeta,
+        owner.isAcceptableOrUnknown(data['owner']!, _ownerMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_ownerMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('dirty')) {
+      context.handle(
+        _dirtyMeta,
+        dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
+      );
+    }
+    if (data.containsKey('garden_plant_id')) {
+      context.handle(
+        _gardenPlantIdMeta,
+        gardenPlantId.isAcceptableOrUnknown(
+          data['garden_plant_id']!,
+          _gardenPlantIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('crop_slug')) {
+      context.handle(
+        _cropSlugMeta,
+        cropSlug.isAcceptableOrUnknown(data['crop_slug']!, _cropSlugMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_cropSlugMeta);
+    }
+    if (data.containsKey('amount')) {
+      context.handle(
+        _amountMeta,
+        amount.isAcceptableOrUnknown(data['amount']!, _amountMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    if (data.containsKey('value_euros')) {
+      context.handle(
+        _valueEurosMeta,
+        valueEuros.isAcceptableOrUnknown(data['value_euros']!, _valueEurosMeta),
+      );
+    }
+    if (data.containsKey('harvested_on')) {
+      context.handle(
+        _harvestedOnMeta,
+        harvestedOn.isAcceptableOrUnknown(
+          data['harvested_on']!,
+          _harvestedOnMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_harvestedOnMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  HarvestRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return HarvestRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      owner: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}owner'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      dirty: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}dirty'],
+      )!,
+      gardenPlantId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}garden_plant_id'],
+      ),
+      cropSlug: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}crop_slug'],
+      )!,
+      amount: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}amount'],
+      )!,
+      valueEuros: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}value_euros'],
+      )!,
+      harvestedOn: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}harvested_on'],
+      )!,
+    );
+  }
+
+  @override
+  $HarvestsTable createAlias(String alias) {
+    return $HarvestsTable(attachedDatabase, alias);
+  }
+}
+
+class HarvestRow extends DataClass implements Insertable<HarvestRow> {
+  /// Client-generatable uuid, so optimistic offline inserts work.
+  final String id;
+
+  /// Owner uuid. Present locally for parity + push; a single user in practice.
+  final String owner;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  /// Soft delete — never hard-delete a synced row (the tombstone must sync).
+  final DateTime? deletedAt;
+
+  /// LOCAL-ONLY: has unpushed local changes. Not a Supabase column.
+  final bool dirty;
+  final String? gardenPlantId;
+  final String cropSlug;
+
+  /// Free-text amount, e.g. "6 courgettes" or "400 g".
+  final String amount;
+
+  /// Estimated shop value in euros.
+  final double valueEuros;
+
+  /// ISO `yyyy-mm-dd`, back-datable.
+  final String harvestedOn;
+  const HarvestRow({
+    required this.id,
+    required this.owner,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.dirty,
+    this.gardenPlantId,
+    required this.cropSlug,
+    required this.amount,
+    required this.valueEuros,
+    required this.harvestedOn,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['owner'] = Variable<String>(owner);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['dirty'] = Variable<bool>(dirty);
+    if (!nullToAbsent || gardenPlantId != null) {
+      map['garden_plant_id'] = Variable<String>(gardenPlantId);
+    }
+    map['crop_slug'] = Variable<String>(cropSlug);
+    map['amount'] = Variable<String>(amount);
+    map['value_euros'] = Variable<double>(valueEuros);
+    map['harvested_on'] = Variable<String>(harvestedOn);
+    return map;
+  }
+
+  HarvestsCompanion toCompanion(bool nullToAbsent) {
+    return HarvestsCompanion(
+      id: Value(id),
+      owner: Value(owner),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      dirty: Value(dirty),
+      gardenPlantId: gardenPlantId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(gardenPlantId),
+      cropSlug: Value(cropSlug),
+      amount: Value(amount),
+      valueEuros: Value(valueEuros),
+      harvestedOn: Value(harvestedOn),
+    );
+  }
+
+  factory HarvestRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return HarvestRow(
+      id: serializer.fromJson<String>(json['id']),
+      owner: serializer.fromJson<String>(json['owner']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      dirty: serializer.fromJson<bool>(json['dirty']),
+      gardenPlantId: serializer.fromJson<String?>(json['gardenPlantId']),
+      cropSlug: serializer.fromJson<String>(json['cropSlug']),
+      amount: serializer.fromJson<String>(json['amount']),
+      valueEuros: serializer.fromJson<double>(json['valueEuros']),
+      harvestedOn: serializer.fromJson<String>(json['harvestedOn']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'owner': serializer.toJson<String>(owner),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'dirty': serializer.toJson<bool>(dirty),
+      'gardenPlantId': serializer.toJson<String?>(gardenPlantId),
+      'cropSlug': serializer.toJson<String>(cropSlug),
+      'amount': serializer.toJson<String>(amount),
+      'valueEuros': serializer.toJson<double>(valueEuros),
+      'harvestedOn': serializer.toJson<String>(harvestedOn),
+    };
+  }
+
+  HarvestRow copyWith({
+    String? id,
+    String? owner,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    bool? dirty,
+    Value<String?> gardenPlantId = const Value.absent(),
+    String? cropSlug,
+    String? amount,
+    double? valueEuros,
+    String? harvestedOn,
+  }) => HarvestRow(
+    id: id ?? this.id,
+    owner: owner ?? this.owner,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    dirty: dirty ?? this.dirty,
+    gardenPlantId: gardenPlantId.present
+        ? gardenPlantId.value
+        : this.gardenPlantId,
+    cropSlug: cropSlug ?? this.cropSlug,
+    amount: amount ?? this.amount,
+    valueEuros: valueEuros ?? this.valueEuros,
+    harvestedOn: harvestedOn ?? this.harvestedOn,
+  );
+  HarvestRow copyWithCompanion(HarvestsCompanion data) {
+    return HarvestRow(
+      id: data.id.present ? data.id.value : this.id,
+      owner: data.owner.present ? data.owner.value : this.owner,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      dirty: data.dirty.present ? data.dirty.value : this.dirty,
+      gardenPlantId: data.gardenPlantId.present
+          ? data.gardenPlantId.value
+          : this.gardenPlantId,
+      cropSlug: data.cropSlug.present ? data.cropSlug.value : this.cropSlug,
+      amount: data.amount.present ? data.amount.value : this.amount,
+      valueEuros: data.valueEuros.present
+          ? data.valueEuros.value
+          : this.valueEuros,
+      harvestedOn: data.harvestedOn.present
+          ? data.harvestedOn.value
+          : this.harvestedOn,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HarvestRow(')
+          ..write('id: $id, ')
+          ..write('owner: $owner, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('dirty: $dirty, ')
+          ..write('gardenPlantId: $gardenPlantId, ')
+          ..write('cropSlug: $cropSlug, ')
+          ..write('amount: $amount, ')
+          ..write('valueEuros: $valueEuros, ')
+          ..write('harvestedOn: $harvestedOn')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    owner,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    dirty,
+    gardenPlantId,
+    cropSlug,
+    amount,
+    valueEuros,
+    harvestedOn,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is HarvestRow &&
+          other.id == this.id &&
+          other.owner == this.owner &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.dirty == this.dirty &&
+          other.gardenPlantId == this.gardenPlantId &&
+          other.cropSlug == this.cropSlug &&
+          other.amount == this.amount &&
+          other.valueEuros == this.valueEuros &&
+          other.harvestedOn == this.harvestedOn);
+}
+
+class HarvestsCompanion extends UpdateCompanion<HarvestRow> {
+  final Value<String> id;
+  final Value<String> owner;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<bool> dirty;
+  final Value<String?> gardenPlantId;
+  final Value<String> cropSlug;
+  final Value<String> amount;
+  final Value<double> valueEuros;
+  final Value<String> harvestedOn;
+  final Value<int> rowid;
+  const HarvestsCompanion({
+    this.id = const Value.absent(),
+    this.owner = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
+    this.gardenPlantId = const Value.absent(),
+    this.cropSlug = const Value.absent(),
+    this.amount = const Value.absent(),
+    this.valueEuros = const Value.absent(),
+    this.harvestedOn = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  HarvestsCompanion.insert({
+    required String id,
+    required String owner,
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
+    this.gardenPlantId = const Value.absent(),
+    required String cropSlug,
+    required String amount,
+    this.valueEuros = const Value.absent(),
+    required String harvestedOn,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       owner = Value(owner),
+       cropSlug = Value(cropSlug),
+       amount = Value(amount),
+       harvestedOn = Value(harvestedOn);
+  static Insertable<HarvestRow> custom({
+    Expression<String>? id,
+    Expression<String>? owner,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<bool>? dirty,
+    Expression<String>? gardenPlantId,
+    Expression<String>? cropSlug,
+    Expression<String>? amount,
+    Expression<double>? valueEuros,
+    Expression<String>? harvestedOn,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (owner != null) 'owner': owner,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (dirty != null) 'dirty': dirty,
+      if (gardenPlantId != null) 'garden_plant_id': gardenPlantId,
+      if (cropSlug != null) 'crop_slug': cropSlug,
+      if (amount != null) 'amount': amount,
+      if (valueEuros != null) 'value_euros': valueEuros,
+      if (harvestedOn != null) 'harvested_on': harvestedOn,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  HarvestsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? owner,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<bool>? dirty,
+    Value<String?>? gardenPlantId,
+    Value<String>? cropSlug,
+    Value<String>? amount,
+    Value<double>? valueEuros,
+    Value<String>? harvestedOn,
+    Value<int>? rowid,
+  }) {
+    return HarvestsCompanion(
+      id: id ?? this.id,
+      owner: owner ?? this.owner,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      dirty: dirty ?? this.dirty,
+      gardenPlantId: gardenPlantId ?? this.gardenPlantId,
+      cropSlug: cropSlug ?? this.cropSlug,
+      amount: amount ?? this.amount,
+      valueEuros: valueEuros ?? this.valueEuros,
+      harvestedOn: harvestedOn ?? this.harvestedOn,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (owner.present) {
+      map['owner'] = Variable<String>(owner.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (dirty.present) {
+      map['dirty'] = Variable<bool>(dirty.value);
+    }
+    if (gardenPlantId.present) {
+      map['garden_plant_id'] = Variable<String>(gardenPlantId.value);
+    }
+    if (cropSlug.present) {
+      map['crop_slug'] = Variable<String>(cropSlug.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<String>(amount.value);
+    }
+    if (valueEuros.present) {
+      map['value_euros'] = Variable<double>(valueEuros.value);
+    }
+    if (harvestedOn.present) {
+      map['harvested_on'] = Variable<String>(harvestedOn.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HarvestsCompanion(')
+          ..write('id: $id, ')
+          ..write('owner: $owner, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('dirty: $dirty, ')
+          ..write('gardenPlantId: $gardenPlantId, ')
+          ..write('cropSlug: $cropSlug, ')
+          ..write('amount: $amount, ')
+          ..write('valueEuros: $valueEuros, ')
+          ..write('harvestedOn: $harvestedOn, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $SyncCursorsTable extends SyncCursors
     with TableInfo<$SyncCursorsTable, SyncCursorRow> {
   @override
@@ -2960,6 +3637,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $GardenPlantsTable gardenPlants = $GardenPlantsTable(this);
   late final $TasksTable tasks = $TasksTable(this);
   late final $JournalEntriesTable journalEntries = $JournalEntriesTable(this);
+  late final $HarvestsTable harvests = $HarvestsTable(this);
   late final $SyncCursorsTable syncCursors = $SyncCursorsTable(this);
   late final $AppMetaTable appMeta = $AppMetaTable(this);
   @override
@@ -2971,6 +3649,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     gardenPlants,
     tasks,
     journalEntries,
+    harvests,
     syncCursors,
     appMeta,
   ];
@@ -2996,6 +3675,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         limitUpdateKind: UpdateKind.delete,
       ),
       result: [TableUpdate('journal_entries', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'garden_plants',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('harvests', kind: UpdateKind.delete)],
     ),
   ]);
 }
@@ -3501,6 +4187,24 @@ final class $$GardenPlantsTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$HarvestsTable, List<HarvestRow>>
+  _harvestsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.harvests,
+    aliasName: 'garden_plants__id__harvests__garden_plant_id',
+  );
+
+  $$HarvestsTableProcessedTableManager get harvestsRefs {
+    final manager = $$HarvestsTableTableManager(
+      $_db,
+      $_db.harvests,
+    ).filter((f) => f.gardenPlantId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_harvestsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$GardenPlantsTableFilterComposer
@@ -3621,6 +4325,31 @@ class $$GardenPlantsTableFilterComposer
           }) => $$JournalEntriesTableFilterComposer(
             $db: $db,
             $table: $db.journalEntries,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> harvestsRefs(
+    Expression<bool> Function($$HarvestsTableFilterComposer f) f,
+  ) {
+    final $$HarvestsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.harvests,
+      getReferencedColumn: (t) => t.gardenPlantId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HarvestsTableFilterComposer(
+            $db: $db,
+            $table: $db.harvests,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -3817,6 +4546,31 @@ class $$GardenPlantsTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> harvestsRefs<T extends Object>(
+    Expression<T> Function($$HarvestsTableAnnotationComposer a) f,
+  ) {
+    final $$HarvestsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.harvests,
+      getReferencedColumn: (t) => t.gardenPlantId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$HarvestsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.harvests,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$GardenPlantsTableTableManager
@@ -3836,6 +4590,7 @@ class $$GardenPlantsTableTableManager
             bool gardenId,
             bool tasksRefs,
             bool journalEntriesRefs,
+            bool harvestsRefs,
           })
         > {
   $$GardenPlantsTableTableManager(_$AppDatabase db, $GardenPlantsTable table)
@@ -3914,12 +4669,14 @@ class $$GardenPlantsTableTableManager
                 gardenId = false,
                 tasksRefs = false,
                 journalEntriesRefs = false,
+                harvestsRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (tasksRefs) db.tasks,
                     if (journalEntriesRefs) db.journalEntries,
+                    if (harvestsRefs) db.harvests,
                   ],
                   addJoins:
                       <
@@ -3999,6 +4756,27 @@ class $$GardenPlantsTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (harvestsRefs)
+                        await $_getPrefetchedData<
+                          GardenPlantRow,
+                          $GardenPlantsTable,
+                          HarvestRow
+                        >(
+                          currentTable: table,
+                          referencedTable: $$GardenPlantsTableReferences
+                              ._harvestsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$GardenPlantsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).harvestsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.gardenPlantId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -4023,6 +4801,7 @@ typedef $$GardenPlantsTableProcessedTableManager =
         bool gardenId,
         bool tasksRefs,
         bool journalEntriesRefs,
+        bool harvestsRefs,
       })
     >;
 typedef $$TasksTableCreateCompanionBuilder =
@@ -4858,6 +5637,442 @@ typedef $$JournalEntriesTableProcessedTableManager =
       JournalEntryRow,
       PrefetchHooks Function({bool gardenPlantId})
     >;
+typedef $$HarvestsTableCreateCompanionBuilder =
+    HarvestsCompanion Function({
+      required String id,
+      required String owner,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<bool> dirty,
+      Value<String?> gardenPlantId,
+      required String cropSlug,
+      required String amount,
+      Value<double> valueEuros,
+      required String harvestedOn,
+      Value<int> rowid,
+    });
+typedef $$HarvestsTableUpdateCompanionBuilder =
+    HarvestsCompanion Function({
+      Value<String> id,
+      Value<String> owner,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<bool> dirty,
+      Value<String?> gardenPlantId,
+      Value<String> cropSlug,
+      Value<String> amount,
+      Value<double> valueEuros,
+      Value<String> harvestedOn,
+      Value<int> rowid,
+    });
+
+final class $$HarvestsTableReferences
+    extends BaseReferences<_$AppDatabase, $HarvestsTable, HarvestRow> {
+  $$HarvestsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $GardenPlantsTable _gardenPlantIdTable(_$AppDatabase db) => db
+      .gardenPlants
+      .createAlias('harvests__garden_plant_id__garden_plants__id');
+
+  $$GardenPlantsTableProcessedTableManager? get gardenPlantId {
+    final $_column = $_itemColumn<String>('garden_plant_id');
+    if ($_column == null) return null;
+    final manager = $$GardenPlantsTableTableManager(
+      $_db,
+      $_db.gardenPlants,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_gardenPlantIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$HarvestsTableFilterComposer
+    extends Composer<_$AppDatabase, $HarvestsTable> {
+  $$HarvestsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get owner => $composableBuilder(
+    column: $table.owner,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get cropSlug => $composableBuilder(
+    column: $table.cropSlug,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get amount => $composableBuilder(
+    column: $table.amount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get valueEuros => $composableBuilder(
+    column: $table.valueEuros,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get harvestedOn => $composableBuilder(
+    column: $table.harvestedOn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$GardenPlantsTableFilterComposer get gardenPlantId {
+    final $$GardenPlantsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.gardenPlantId,
+      referencedTable: $db.gardenPlants,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GardenPlantsTableFilterComposer(
+            $db: $db,
+            $table: $db.gardenPlants,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$HarvestsTableOrderingComposer
+    extends Composer<_$AppDatabase, $HarvestsTable> {
+  $$HarvestsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get owner => $composableBuilder(
+    column: $table.owner,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get cropSlug => $composableBuilder(
+    column: $table.cropSlug,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get amount => $composableBuilder(
+    column: $table.amount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get valueEuros => $composableBuilder(
+    column: $table.valueEuros,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get harvestedOn => $composableBuilder(
+    column: $table.harvestedOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$GardenPlantsTableOrderingComposer get gardenPlantId {
+    final $$GardenPlantsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.gardenPlantId,
+      referencedTable: $db.gardenPlants,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GardenPlantsTableOrderingComposer(
+            $db: $db,
+            $table: $db.gardenPlants,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$HarvestsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $HarvestsTable> {
+  $$HarvestsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get owner =>
+      $composableBuilder(column: $table.owner, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get dirty =>
+      $composableBuilder(column: $table.dirty, builder: (column) => column);
+
+  GeneratedColumn<String> get cropSlug =>
+      $composableBuilder(column: $table.cropSlug, builder: (column) => column);
+
+  GeneratedColumn<String> get amount =>
+      $composableBuilder(column: $table.amount, builder: (column) => column);
+
+  GeneratedColumn<double> get valueEuros => $composableBuilder(
+    column: $table.valueEuros,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get harvestedOn => $composableBuilder(
+    column: $table.harvestedOn,
+    builder: (column) => column,
+  );
+
+  $$GardenPlantsTableAnnotationComposer get gardenPlantId {
+    final $$GardenPlantsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.gardenPlantId,
+      referencedTable: $db.gardenPlants,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GardenPlantsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.gardenPlants,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$HarvestsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $HarvestsTable,
+          HarvestRow,
+          $$HarvestsTableFilterComposer,
+          $$HarvestsTableOrderingComposer,
+          $$HarvestsTableAnnotationComposer,
+          $$HarvestsTableCreateCompanionBuilder,
+          $$HarvestsTableUpdateCompanionBuilder,
+          (HarvestRow, $$HarvestsTableReferences),
+          HarvestRow,
+          PrefetchHooks Function({bool gardenPlantId})
+        > {
+  $$HarvestsTableTableManager(_$AppDatabase db, $HarvestsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$HarvestsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$HarvestsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$HarvestsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> owner = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
+                Value<String?> gardenPlantId = const Value.absent(),
+                Value<String> cropSlug = const Value.absent(),
+                Value<String> amount = const Value.absent(),
+                Value<double> valueEuros = const Value.absent(),
+                Value<String> harvestedOn = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => HarvestsCompanion(
+                id: id,
+                owner: owner,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                dirty: dirty,
+                gardenPlantId: gardenPlantId,
+                cropSlug: cropSlug,
+                amount: amount,
+                valueEuros: valueEuros,
+                harvestedOn: harvestedOn,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String owner,
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
+                Value<String?> gardenPlantId = const Value.absent(),
+                required String cropSlug,
+                required String amount,
+                Value<double> valueEuros = const Value.absent(),
+                required String harvestedOn,
+                Value<int> rowid = const Value.absent(),
+              }) => HarvestsCompanion.insert(
+                id: id,
+                owner: owner,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                dirty: dirty,
+                gardenPlantId: gardenPlantId,
+                cropSlug: cropSlug,
+                amount: amount,
+                valueEuros: valueEuros,
+                harvestedOn: harvestedOn,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$HarvestsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({gardenPlantId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (gardenPlantId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.gardenPlantId,
+                                referencedTable: $$HarvestsTableReferences
+                                    ._gardenPlantIdTable(db),
+                                referencedColumn: $$HarvestsTableReferences
+                                    ._gardenPlantIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$HarvestsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $HarvestsTable,
+      HarvestRow,
+      $$HarvestsTableFilterComposer,
+      $$HarvestsTableOrderingComposer,
+      $$HarvestsTableAnnotationComposer,
+      $$HarvestsTableCreateCompanionBuilder,
+      $$HarvestsTableUpdateCompanionBuilder,
+      (HarvestRow, $$HarvestsTableReferences),
+      HarvestRow,
+      PrefetchHooks Function({bool gardenPlantId})
+    >;
 typedef $$SyncCursorsTableCreateCompanionBuilder =
     SyncCursorsCompanion Function({
       required String entity,
@@ -5146,6 +6361,8 @@ class $AppDatabaseManager {
       $$TasksTableTableManager(_db, _db.tasks);
   $$JournalEntriesTableTableManager get journalEntries =>
       $$JournalEntriesTableTableManager(_db, _db.journalEntries);
+  $$HarvestsTableTableManager get harvests =>
+      $$HarvestsTableTableManager(_db, _db.harvests);
   $$SyncCursorsTableTableManager get syncCursors =>
       $$SyncCursorsTableTableManager(_db, _db.syncCursors);
   $$AppMetaTableTableManager get appMeta =>
