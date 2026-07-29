@@ -253,8 +253,9 @@ class _Location extends StatelessWidget {
           child: Row(children: [
             Icon(icon, size: 20, color: AppColors.sprout),
             const SizedBox(width: 12),
-            Expanded(child: Text(label, style: AppText.bodyMuted(context))),
-            Flexible(
+            Text(label, style: AppText.bodyMuted(context)),
+            const SizedBox(width: 12),
+            Expanded(
                 child: Text(value,
                     style: AppText.label(context), textAlign: TextAlign.right)),
           ]),
@@ -301,8 +302,9 @@ class _HowTos extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                              width: 92,
+                              width: 108,
                               child: Text(label, style: AppText.bodyMuted(context))),
+                          const SizedBox(width: 8),
                           Expanded(child: Text(value, style: AppText.label(context))),
                         ],
                       ),

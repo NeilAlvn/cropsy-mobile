@@ -168,9 +168,87 @@ class GardenRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Move a growing plant back to "planning" (undo an accidental Start).
+  Future<void> stopGrowing(String plantId) async {
+    await (db.update(db.gardenPlants)..where((t) => t.id.equals(plantId))).write(
+      const GardenPlantsCompanion(
+        plantedOn: Value(null),
+        dirty: Value(true),
+      ),
+    );
+    notifyListeners();
+  }
+
+  /// Remove a plant the user added by mistake. Soft delete (sets deletedAt) —
+  /// the tombstone syncs, and every plant query already filters it out, so its
+  /// tasks/journal drop with it. Logged harvests stay in the season history.
+  Future<void> removePlant(String plantId) async {
+    await (db.update(db.gardenPlants)..where((t) => t.id.equals(plantId))).write(
+      GardenPlantsCompanion(
+        deletedAt: Value(DateTime.now()),
+        dirty: const Value(true),
+      ),
+    );
+    notifyListeners();
+  }
+
+  /// Edit a plant's pot size or planted date (fix a mistake after adding).
+  Future<void> updatePlant(
+    String plantId, {
+    int? potLitres,
+    String? plantedOn,
+  }) async {
+    await (db.update(db.gardenPlants)..where((t) => t.id.equals(plantId))).write(
+      GardenPlantsCompanion(
+        potLitres: Value(potLitres),
+        plantedOn: Value(plantedOn),
+        dirty: const Value(true),
+      ),
+    );
+    notifyListeners();
+  }
+
+  /// Personalize the garden itself: rename it, change the growing situation, or
+  /// adjust sun hours after onboarding.
+  Future<void> updateGarden(
+    String gardenId, {
+    String? name,
+    GardenKind? kind,
+    int? sunHours,
+  }) async {
+    await (db.update(db.gardens)..where((t) => t.id.equals(gardenId))).write(
+      GardensCompanion(
+        name: name == null ? const Value.absent() : Value(name),
+        kind: kind == null ? const Value.absent() : Value(kind),
+        sunHours: sunHours == null ? const Value.absent() : Value(sunHours),
+        dirty: const Value(true),
+      ),
+    );
+    notifyListeners();
+  }
+
   String _newId() =>
       '${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}'
       '${_rng.nextInt(1 << 20).toRadixString(36)}';
+
+  /// Change the growing location after setup (from the Home header / settings).
+  /// Re-points the frost profile — which every planting date, "what to grow this
+  /// month", and reminder is computed from — and persists the coordinate on the
+  /// current garden so it round-trips like the real (frost-API-backed) value.
+  Future<void> setRegion(FrostRegion region) async {
+    frost = region.profile;
+    regionName = region.name;
+    final existing = await gardens();
+    if (existing.isNotEmpty) {
+      await (db.update(db.gardens)..where((t) => t.id.equals(existing.first.id)))
+          .write(GardensCompanion(
+        lat: Value(region.lat),
+        lon: Value(region.lon),
+        dirty: const Value(true),
+      ));
+    }
+    notifyListeners();
+  }
 
   Future<String> createGarden({
     required FrostRegion region,
@@ -187,6 +265,8 @@ class GardenRepository extends ChangeNotifier {
           name: name,
           kind: kind,
           sunHours: Value(sunHours),
+          lat: Value(region.lat),
+          lon: Value(region.lon),
           dirty: const Value(true),
         ));
     notifyListeners();

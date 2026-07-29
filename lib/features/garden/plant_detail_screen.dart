@@ -41,6 +41,38 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                 ? null
                 : Text(repo.cropName(plant.cropSlug),
                     style: AppText.heading(context)),
+            actions: plant == null
+                ? null
+                : [
+                    PopupMenuButton<String>(
+                      icon: const Icon(Icons.more_horiz, color: AppColors.ink),
+                      color: AppColors.surface,
+                      onSelected: (v) => switch (v) {
+                        'edit' => _editPlant(repo, plant),
+                        'stop' => _stopGrowing(repo, plant),
+                        'remove' => _removePlant(repo, plant),
+                        _ => null,
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          value: 'edit',
+                          child: _menuRow(Icons.tune, 'Edit plant'),
+                        ),
+                        if (plant.plantedOn != null)
+                          PopupMenuItem(
+                            value: 'stop',
+                            child: _menuRow(
+                                Icons.undo, 'Move back to planning'),
+                          ),
+                        PopupMenuItem(
+                          value: 'remove',
+                          child: _menuRow(Icons.delete_outline,
+                              'Remove from garden',
+                              color: AppColors.warn),
+                        ),
+                      ],
+                    ),
+                  ],
           ),
           body: plant == null
               ? const SizedBox.shrink()
@@ -125,6 +157,70 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
       }
     }
   }
+
+  Future<void> _editPlant(GardenRepository repo, GardenPlantRow plant) async {
+    final changed = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.paper,
+      builder: (_) => _EditPlantSheet(plant: plant, today: repo.today),
+    );
+    // The sheet writes through the repo itself; just refresh on return.
+    if (changed == true && mounted) setState(() {});
+  }
+
+  Future<void> _stopGrowing(GardenRepository repo, GardenPlantRow plant) async {
+    await repo.stopGrowing(plant.id);
+    if (mounted) {
+      setState(() {});
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${repo.cropName(plant.cropSlug)} moved to planning')),
+      );
+    }
+  }
+
+  Future<void> _removePlant(GardenRepository repo, GardenPlantRow plant) async {
+    final name = repo.cropName(plant.cropSlug);
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.surface,
+        title: Text('Remove $name?', style: AppText.title(context)),
+        content: Text(
+          'This takes $name out of your garden. Any harvests you already '
+          'logged stay in your season history.',
+          style: AppText.bodyMuted(context),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(foregroundColor: AppColors.warn),
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
+    );
+    if (confirm == true) {
+      await repo.removePlant(plant.id);
+      if (mounted) {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('$name removed from your garden')),
+        );
+      }
+    }
+  }
+
+  Widget _menuRow(IconData icon, String label, {Color color = AppColors.ink}) =>
+      Row(children: [
+        Icon(icon, size: 20, color: color),
+        const SizedBox(width: 12),
+        Text(label, style: AppText.body(context, color: color)),
+      ]);
 }
 
 Future<String?> _promptText(
@@ -246,9 +342,11 @@ class _HarvestSheetState extends State<_HarvestSheet> {
           const SizedBox(height: 16),
           TextField(
             controller: _amount,
+            autofocus: true,
             style: AppText.body(context),
             decoration: const InputDecoration(
-                labelText: 'Amount', hintText: 'e.g. 6 courgettes'),
+                labelText: 'What did you pick?',
+                hintText: 'e.g. 6 courgettes, a big bowl'),
           ),
           const SizedBox(height: 12),
           TextField(
@@ -256,7 +354,8 @@ class _HarvestSheetState extends State<_HarvestSheet> {
             keyboardType: TextInputType.number,
             style: AppText.body(context),
             decoration: const InputDecoration(
-                labelText: 'Shop value (€)', hintText: 'e.g. 4.50'),
+                labelText: 'Value grown (optional)',
+                hintText: 'e.g. €4.50 — leave blank to just count it'),
           ),
           const SizedBox(height: 20),
           PrimaryButton(
@@ -268,6 +367,102 @@ class _HarvestSheetState extends State<_HarvestSheet> {
                 context,
                 (_amount.text.isEmpty ? 'a harvest' : _amount.text, v),
               );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Edit a plant's pot size and planted date — the "fix a mistake after adding"
+/// path. Writes straight through the repository and pops `true` on save.
+class _EditPlantSheet extends StatefulWidget {
+  const _EditPlantSheet({required this.plant, required this.today});
+  final GardenPlantRow plant;
+  final String today;
+
+  @override
+  State<_EditPlantSheet> createState() => _EditPlantSheetState();
+}
+
+class _EditPlantSheetState extends State<_EditPlantSheet> {
+  late final TextEditingController _pot =
+      TextEditingController(text: widget.plant.potLitres?.toString() ?? '');
+  late String? _plantedOn = widget.plant.plantedOn;
+
+  Future<void> _pickDate() async {
+    final base = parseIso(_plantedOn ?? widget.today);
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: base,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+    );
+    if (picked != null) {
+      setState(() => _plantedOn =
+          '${picked.year.toString().padLeft(4, '0')}-'
+          '${picked.month.toString().padLeft(2, '0')}-'
+          '${picked.day.toString().padLeft(2, '0')}');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 20,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Edit plant', style: AppText.title(context)),
+          Text(repo.cropName(widget.plant.cropSlug),
+              style: AppText.bodyMuted(context)),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _pot,
+            keyboardType: TextInputType.number,
+            style: AppText.body(context),
+            decoration: const InputDecoration(
+                labelText: 'Pot size (litres)',
+                hintText: 'leave blank for in-ground'),
+          ),
+          if (_plantedOn != null) ...[
+            const SizedBox(height: 12),
+            InkWell(
+              onTap: _pickDate,
+              borderRadius: BorderRadius.circular(12),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Row(
+                  children: [
+                    const Icon(Icons.event, size: 20, color: AppColors.sprout),
+                    const SizedBox(width: 12),
+                    Text('Planted', style: AppText.bodyMuted(context)),
+                    const Spacer(),
+                    Text(DateFormat('d MMM yyyy').format(parseIso(_plantedOn!)),
+                        style: AppText.label(context)),
+                    const SizedBox(width: 6),
+                    const Icon(Icons.chevron_right, color: AppColors.muted),
+                  ],
+                ),
+              ),
+            ),
+          ],
+          const SizedBox(height: 20),
+          PrimaryButton(
+            label: 'Save changes',
+            onPressed: () async {
+              final pot = int.tryParse(_pot.text.trim());
+              await repo.updatePlant(widget.plant.id,
+                  potLitres: pot, plantedOn: _plantedOn);
+              if (context.mounted) Navigator.pop(context, true);
             },
           ),
         ],

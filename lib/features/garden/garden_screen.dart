@@ -40,16 +40,35 @@ class _GardenScreenState extends State<GardenScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('My garden', style: AppText.kicker(context)),
-                const SizedBox(height: 2),
-                Text.rich(TextSpan(
-                  style: AppText.display(context),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextSpan(text: '${repo.regionName.split(' ').first} '),
-                    const TextSpan(
-                        text: 'plot', style: TextStyle(color: AppColors.sprout)),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('My garden', style: AppText.kicker(context)),
+                          const SizedBox(height: 2),
+                          Text.rich(TextSpan(
+                            style: AppText.display(context),
+                            children: [
+                              TextSpan(
+                                  text: '${repo.regionName.split(' ').first} '),
+                              const TextSpan(
+                                  text: 'plot',
+                                  style: TextStyle(color: AppColors.sprout)),
+                            ],
+                          )),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.tune, color: AppColors.muted),
+                      tooltip: 'Edit garden',
+                      onPressed: () => _editGarden(context, repo),
+                    ),
                   ],
-                )),
+                ),
                 const SizedBox(height: 14),
                 SegmentedTabs(
                   labels: const ['Planning', 'Growing', 'Reminders', 'Harvest'],
@@ -74,6 +93,18 @@ class _GardenScreenState extends State<GardenScreen> {
       ),
     );
   }
+
+  Future<void> _editGarden(BuildContext context, GardenRepository repo) async {
+    final gardens = await repo.gardens();
+    if (gardens.isEmpty || !context.mounted) return;
+    await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.paper,
+      builder: (_) => _EditGardenSheet(garden: gardens.first),
+    );
+    if (mounted) setState(() {});
+  }
 }
 
 class _PlantList extends StatelessWidget {
@@ -96,7 +127,14 @@ class _PlantList extends StatelessWidget {
             for (final p in plants)
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
-                child: AppCard(
+                child: Dismissible(
+                  key: ValueKey(p.id),
+                  direction: DismissDirection.endToStart,
+                  background: _swipeToRemoveBackground(context),
+                  confirmDismiss: (_) => _confirmRemove(
+                      context, repo.cropName(p.cropSlug)),
+                  onDismissed: (_) => repo.removePlant(p.id),
+                  child: AppCard(
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => PlantDetailScreen(plantId: p.id))),
                   padding: const EdgeInsets.all(10),
@@ -156,10 +194,134 @@ class _PlantList extends StatelessWidget {
                     ],
                   ),
                 ),
+                ),
               ),
           ],
         );
       },
+    );
+  }
+}
+
+Widget _swipeToRemoveBackground(BuildContext context) => Container(
+      alignment: Alignment.centerRight,
+      padding: const EdgeInsets.only(right: 24),
+      decoration: BoxDecoration(
+        color: AppColors.warn.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.delete_outline, color: AppColors.warn),
+          const SizedBox(width: 6),
+          Text('Remove', style: AppText.label(context, color: AppColors.warn)),
+        ],
+      ),
+    );
+
+Future<bool?> _confirmRemove(BuildContext context, String name) => showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.surface,
+        title: Text('Remove $name?', style: AppText.title(context)),
+        content: Text(
+          'This takes $name out of your garden. Logged harvests stay in your '
+          'season history.',
+          style: AppText.bodyMuted(context),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(foregroundColor: AppColors.warn),
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
+    );
+
+/// Personalize the garden — rename it, change the growing situation, adjust sun.
+class _EditGardenSheet extends StatefulWidget {
+  const _EditGardenSheet({required this.garden});
+  final GardenRow garden;
+
+  @override
+  State<_EditGardenSheet> createState() => _EditGardenSheetState();
+}
+
+class _EditGardenSheetState extends State<_EditGardenSheet> {
+  late final TextEditingController _name =
+      TextEditingController(text: widget.garden.name);
+  late GardenKind _kind = widget.garden.kind;
+  late double _sun = (widget.garden.sunHours ?? 6).toDouble();
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 20,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Edit garden', style: AppText.title(context)),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _name,
+            style: AppText.body(context),
+            decoration: const InputDecoration(labelText: 'Garden name'),
+          ),
+          const SizedBox(height: 16),
+          Text('Growing situation', style: AppText.label(context)),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            children: [
+              for (final k in GardenKind.values)
+                ChoiceChip(
+                  label: Text('${gardenKindEmoji(k)}  ${gardenKindLabel(k)}'),
+                  selected: _kind == k,
+                  selectedColor: AppColors.sprout.withValues(alpha: 0.18),
+                  onSelected: (_) => setState(() => _kind = k),
+                ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text('Hours of sun a day: ${_sun.round()}h',
+              style: AppText.label(context)),
+          Slider(
+            value: _sun,
+            min: 0,
+            max: 12,
+            divisions: 12,
+            activeColor: AppColors.sprout,
+            label: '${_sun.round()}h',
+            onChanged: (s) => setState(() => _sun = s),
+          ),
+          const SizedBox(height: 12),
+          PrimaryButton(
+            label: 'Save changes',
+            onPressed: () async {
+              await repo.updateGarden(
+                widget.garden.id,
+                name: _name.text.trim().isEmpty ? null : _name.text.trim(),
+                kind: _kind,
+                sunHours: _sun.round(),
+              );
+              if (context.mounted) Navigator.pop(context, true);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

@@ -73,16 +73,20 @@ class _HeroCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('YOU\'VE GROWN',
+          Text('YOU\'VE HARVESTED',
               style: AppText.kicker(context, color: Colors.white70)),
           const SizedBox(height: 8),
           Text(
-            euro.format(total),
+            '$count ${count == 1 ? 'time' : 'times'}',
             style: AppText.display(context, color: Colors.white).copyWith(fontSize: 44),
           ),
           const SizedBox(height: 4),
-          Text('this season · $count ${count == 1 ? 'harvest' : 'harvests'}',
-              style: AppText.body(context, color: Colors.white)),
+          Text(
+            total > 0
+                ? 'this season · ~${euro.format(total)} of veg grown'
+                : 'this season',
+            style: AppText.body(context, color: Colors.white),
+          ),
           const SizedBox(height: 18),
           Row(
             children: [
@@ -123,8 +127,9 @@ class _HarvestTile extends StatelessWidget {
               ],
             ),
           ),
-          Text(euro.format(row.valueEuros),
-              style: AppText.label(context, color: AppColors.clay)),
+          if (row.valueEuros > 0)
+            Text(euro.format(row.valueEuros),
+                style: AppText.label(context, color: AppColors.clay)),
         ],
       ),
     );

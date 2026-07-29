@@ -12,6 +12,7 @@ import '../../design/widgets.dart';
 import '../../timing/dates.dart';
 import '../../timing/types.dart';
 import '../grow/crop_detail_screen.dart';
+import '../location/location_sheet.dart';
 import '../paywall/paywall_screen.dart';
 import '../repository_scope.dart';
 
@@ -107,23 +108,49 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _pickMonth() async {
     final picked = await showModalBottomSheet<int>(
       context: context,
+      isScrollControlled: true,
       backgroundColor: AppColors.surface,
-      builder: (context) => SafeArea(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.7,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(height: 10),
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppColors.hairline,
+                borderRadius: BorderRadius.circular(999),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(16),
               child: Text('What to grow in…', style: AppText.title(context)),
             ),
-            for (var m = 1; m <= 12; m++)
-              ListTile(
-                title: Text(_months[m - 1], style: AppText.body(context)),
-                trailing: m == _month
-                    ? const Icon(Icons.check, color: AppColors.sprout)
-                    : null,
-                onTap: () => Navigator.pop(context, m),
+            Flexible(
+              child: ListView.builder(
+                shrinkWrap: true,
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).padding.bottom + 8),
+                itemCount: 12,
+                itemBuilder: (context, i) {
+                  final m = i + 1;
+                  return ListTile(
+                    title: Text(_months[i], style: AppText.body(context)),
+                    trailing: m == _month
+                        ? const Icon(Icons.check, color: AppColors.sprout)
+                        : null,
+                    onTap: () => Navigator.pop(context, m),
+                  );
+                },
               ),
+            ),
           ],
         ),
       ),
@@ -142,12 +169,28 @@ class _Header extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 4),
       child: Row(
         children: [
-          const Icon(Icons.location_on, size: 18, color: AppColors.sprout),
-          const SizedBox(width: 4),
           Expanded(
-            child: Text(region,
-                style: AppText.label(context), overflow: TextOverflow.ellipsis),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: () => showLocationPicker(context),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  children: [
+                    const Icon(Icons.location_on, size: 18, color: AppColors.sprout),
+                    const SizedBox(width: 4),
+                    Flexible(
+                      child: Text(region,
+                          style: AppText.label(context),
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                    const Icon(Icons.expand_more, size: 18, color: AppColors.muted),
+                  ],
+                ),
+              ),
+            ),
           ),
+          const SizedBox(width: 8),
           const Icon(Icons.workspace_premium, color: AppColors.medium),
           const SizedBox(width: 14),
           const Icon(Icons.settings_outlined, color: AppColors.muted),
