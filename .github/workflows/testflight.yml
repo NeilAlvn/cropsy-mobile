@@ -1,0 +1,65 @@
+name: Build Archive (Flutter · Xcode 26)
+
+# Compiles Cropsy (Flutter) with Xcode 26 on a cloud Mac and hands back an
+# UNSIGNED .xcarchive as a downloadable artifact. No signing key ever touches
+# CI — the archive is signed and uploaded to TestFlight locally, where Luuk's
+# App Store Connect .p8 stays. Apple requires the iOS 26 SDK (Xcode 26) for
+# uploads, and the local Mac can't run Xcode 26 — hence this keyless build.
+on:
+  workflow_dispatch:
+
+jobs:
+  archive:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode 26
+        run: |
+          XC=$(ls -d /Applications/Xcode_26*.app 2>/dev/null | sort -V | tail -1)
+          if [ -z "$XC" ]; then
+            echo "No Xcode 26 found on runner. Available Xcodes:"; ls -d /Applications/Xcode*.app
+            exit 1
+          fi
+          sudo xcode-select -s "$XC/Contents/Developer"
+          xcodebuild -version
+
+      - name: Set up Flutter 3.44.8
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.44.8
+          channel: stable
+          cache: true
+
+      - name: Flutter pub get
+        run: flutter pub get
+
+      - name: Flutter build iOS (unsigned)
+        # Compiles the Dart/Flutter layer, runs pod install, and writes the
+        # Generated.xcconfig the Xcode archive step needs. No signing here.
+        run: flutter build ios --release --no-codesign
+
+      - name: Archive (unsigned)
+        run: |
+          xcodebuild archive \
+            -workspace ios/Runner.xcworkspace \
+            -scheme Runner \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/Cropsy.xcarchive" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            DEVELOPMENT_TEAM=""
+
+      - name: Zip archive
+        run: |
+          cd "$RUNNER_TEMP" && zip -qry Cropsy.xcarchive.zip Cropsy.xcarchive
+          ls -la Cropsy.xcarchive.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Cropsy-xcarchive
+          path: ${{ runner.temp }}/Cropsy.xcarchive.zip
+          retention-days: 5
