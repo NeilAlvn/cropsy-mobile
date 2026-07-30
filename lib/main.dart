@@ -40,6 +40,19 @@ class CropsyApp extends StatelessWidget {
           ),
           useMaterial3: true,
           textTheme: Typography.blackMountainView.apply(bodyColor: AppColors.ink),
+          // Every text field picks up the bordered neo look.
+          inputDecorationTheme: InputDecorationTheme(
+            filled: true,
+            fillColor: AppColors.surface,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6),
+              borderSide: const BorderSide(color: AppColors.border, width: 2.5),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(6),
+              borderSide: const BorderSide(color: AppColors.sprout, width: 2.5),
+            ),
+          ),
         ),
         home: const _Root(),
       ),

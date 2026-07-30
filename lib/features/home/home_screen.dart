@@ -6,6 +6,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/typography.dart';
 import '../../design/widgets.dart';
@@ -222,12 +223,14 @@ class _SearchRow extends StatelessWidget {
                 filled: true,
                 fillColor: AppColors.surface,
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(999),
-                  borderSide: const BorderSide(color: AppColors.hairline),
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: const BorderSide(
+                      color: AppColors.border, width: Neo.borderWidth),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(999),
-                  borderSide: const BorderSide(color: AppColors.sprout),
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: const BorderSide(
+                      color: AppColors.sprout, width: Neo.borderWidth),
                 ),
               ),
             ),
@@ -246,25 +249,21 @@ class _PremiumBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 6, 20, 6),
-      child: Material(
-        color: AppColors.ink,
-        borderRadius: BorderRadius.circular(16),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(14),
-            child: Row(
-              children: [
-                const Icon(Icons.workspace_premium, color: AppColors.medium, size: 22),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text('Try Cropsy Premium free for 7 days',
-                      style: AppText.label(context, color: Colors.white)),
-                ),
-                const Icon(Icons.chevron_right, color: Colors.white54),
-              ],
-            ),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          decoration: Neo.box(color: AppColors.lemon),
+          padding: const EdgeInsets.all(14),
+          child: Row(
+            children: [
+              const Icon(Icons.workspace_premium, color: AppColors.ink, size: 22),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text('Try Cropsy Premium free for 7 days',
+                    style: AppText.label(context, color: AppColors.ink)),
+              ),
+              const Icon(Icons.chevron_right, color: AppColors.ink),
+            ],
           ),
         ),
       ),

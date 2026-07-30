@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../db/database.dart' show GardenKind;
 import '../timing/weather_adjust.dart';
+import 'brutal.dart';
 import 'colors.dart';
 import 'typography.dart';
 
@@ -58,24 +59,24 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: onPressed == null ? color.withValues(alpha: 0.4) : color,
-      borderRadius: BorderRadius.circular(18),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        onTap: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (icon != null) ...[
-                Icon(icon, color: Colors.white, size: 20),
-                const SizedBox(width: 8),
-              ],
-              Text(label, style: AppText.button(context)),
+    final disabled = onPressed == null;
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        decoration: Neo.box(
+          color: disabled ? color.withValues(alpha: 0.4) : color,
+          shadowed: !disabled,
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (icon != null) ...[
+              Icon(icon, color: Colors.white, size: 20),
+              const SizedBox(width: 8),
             ],
-          ),
+            Text(label, style: AppText.button(context)),
+          ],
         ),
       ),
     );
@@ -90,17 +91,16 @@ class SecondaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.sand,
-      borderRadius: BorderRadius.circular(18),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        onTap: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-          child: Center(
-            child: Text(label, style: AppText.button(context, color: AppColors.ink)),
-          ),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        decoration: Neo.box(color: AppColors.surface),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(label, style: AppText.button(context, color: AppColors.ink)),
+          ],
         ),
       ),
     );
@@ -116,38 +116,32 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.surface,
-      borderRadius: BorderRadius.circular(20),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.hairline),
-          ),
-          padding: padding ?? const EdgeInsets.all(16),
-          child: child,
-        ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: Neo.box(),
+        padding: padding ?? const EdgeInsets.all(14),
+        child: child,
       ),
     );
   }
 }
 
 class CategoryDot extends StatelessWidget {
-  const CategoryDot(this.category, {super.key, this.size = 10});
+  const CategoryDot(this.category, {super.key, this.size = 12});
 
   final String category;
   final double size;
 
+  /// A bordered square swatch — reads as intentional, not a stray bullet.
   @override
   Widget build(BuildContext context) => Container(
         width: size,
         height: size,
         decoration: BoxDecoration(
           color: AppColors.categoryColor(category),
-          shape: BoxShape.circle,
+          borderRadius: BorderRadius.circular(2),
+          border: Border.all(color: AppColors.border, width: 1.5),
         ),
       );
 }
@@ -167,7 +161,8 @@ class Pill extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: bg ?? AppColors.sand,
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: AppColors.border, width: 1.6),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

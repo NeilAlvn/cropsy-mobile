@@ -68,12 +68,13 @@ class _CollectionRow extends StatelessWidget {
           child: Text(collection.subtitle, style: AppText.caption(context)),
         ),
         SizedBox(
-          height: 176,
+          height: 192,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            clipBehavior: Clip.none,
+            padding: const EdgeInsets.only(left: 20, right: 24, bottom: 8),
             itemCount: collection.crops.length,
-            separatorBuilder: (_, _) => const SizedBox(width: 12),
+            separatorBuilder: (_, _) => const SizedBox(width: 14),
             itemBuilder: (context, i) {
               final Crop crop = collection.crops[i];
               return PhotoCard(

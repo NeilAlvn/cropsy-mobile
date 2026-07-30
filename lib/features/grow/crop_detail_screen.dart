@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../../data/companions.dart';
 import '../../data/crop_content.dart';
 import '../../data/crop_derived.dart';
+import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/crop_image.dart';
@@ -160,7 +161,8 @@ class _NavChips extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14),
             decoration: BoxDecoration(
               color: AppColors.sand,
-              borderRadius: BorderRadius.circular(999),
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: AppColors.border, width: 1.6),
             ),
             child: Text(sections[i], style: AppText.label(context)),
           ),
@@ -504,16 +506,17 @@ class _Faqs extends StatelessWidget {
 
 class _CircleBack extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Material(
-        color: Colors.white,
-        shape: const CircleBorder(),
-        child: InkWell(
-          customBorder: const CircleBorder(),
-          onTap: () => Navigator.of(context).pop(),
-          child: const Padding(
-            padding: EdgeInsets.all(8),
-            child: Icon(Icons.arrow_back, color: AppColors.ink, size: 20),
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppColors.border, width: Neo.borderWidth),
+            boxShadow: Neo.shadowSm,
           ),
+          padding: const EdgeInsets.all(7),
+          child: const Icon(Icons.arrow_back, color: AppColors.ink, size: 20),
         ),
       );
 }

@@ -8,10 +8,13 @@ import 'package:flutter/material.dart';
 import '../../data/frost_presets.dart';
 import '../../data/seed.dart';
 import '../../db/database.dart';
+import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
+import '../../design/crop_image.dart';
 import '../../design/typography.dart';
 import '../repository_scope.dart';
+import 'hero_page.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key, required this.onDone});
@@ -30,10 +33,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   double _sun = 6;
   late final Set<String> _picked = {...starterCrops.keys};
 
+  static const _pageCount = 4;
+
+  static const _pageDuration = Duration(milliseconds: 380);
+  static const _pageCurve = Curves.easeInOutCubic;
+
+  void _prev() {
+    if (_page > 0) {
+      _controller.previousPage(duration: _pageDuration, curve: _pageCurve);
+    }
+  }
+
   void _next() {
-    if (_page < 3) {
-      _controller.nextPage(
-          duration: const Duration(milliseconds: 260), curve: Curves.easeOut);
+    if (_page < _pageCount - 1) {
+      _controller.nextPage(duration: _pageDuration, curve: _pageCurve);
     } else {
       _finish();
     }
@@ -68,91 +81,193 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.paper,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: PageView(
-                controller: _controller,
-                physics: const NeverScrollableScrollPhysics(),
-                onPageChanged: (p) => setState(() => _page = p),
-                children: [
-                  _Welcome(onSkip: _skip),
-                  _RegionStep(
-                    selected: _region,
-                    onSelect: (r) => setState(() => _region = r),
-                  ),
-                  _KindStep(
-                    kind: _kind,
-                    sun: _sun,
-                    onKind: (k) => setState(() => _kind = k),
-                    onSun: (s) => setState(() => _sun = s),
-                  ),
-                  _PlantsStep(
-                    picked: _picked,
-                    onToggle: (slug) => setState(() {
-                      _picked.contains(slug)
-                          ? _picked.remove(slug)
-                          : _picked.add(slug);
-                    }),
-                  ),
+      body: Stack(
+        children: [
+          PageView(
+            controller: _controller,
+            physics: const NeverScrollableScrollPhysics(),
+            onPageChanged: (p) => setState(() => _page = p),
+            children: [
+              // 1 · Welcome — still hero (video deferred; swap back to
+              // HeroMedia.video once we have a Flow-generated clip).
+              HeroPage(
+                media: const HeroMedia.image('assets/onboarding/welcome.jpg'),
+                kicker: 'CROPSY',
+                title: const [
+                  TextSpan(text: 'Know what to do\n'),
+                  TextSpan(
+                      text: 'this week',
+                      style: TextStyle(color: AppColors.sprout)),
+                  TextSpan(text: ' in your garden.'),
                 ],
+                subtitle: 'Planting dates and reminders tuned to Dutch & EU '
+                    'weather — built for balconies and containers.',
+                buttonLabel: 'Get started',
+                onNext: _next,
+              ),
+              // 2 · Where do you grow (location / frost region).
+              _SetupPage(
+                buttonLabel: 'Continue',
+                onNext: _next,
+                child: _RegionStep(
+                  selected: _region,
+                  onSelect: (r) => setState(() => _region = r),
+                ),
+              ),
+              // 3 · Growing space + sun.
+              _SetupPage(
+                buttonLabel: 'Continue',
+                onNext: _next,
+                child: _KindStep(
+                  kind: _kind,
+                  sun: _sun,
+                  onKind: (k) => setState(() => _kind = k),
+                  onSun: (s) => setState(() => _sun = s),
+                ),
+              ),
+              // 4 · Pick your crops.
+              _SetupPage(
+                buttonLabel: 'Start growing',
+                enabled: _picked.isNotEmpty,
+                onNext: _next,
+                child: _PlantsStep(
+                  picked: _picked,
+                  onToggle: (slug) => setState(() {
+                    _picked.contains(slug)
+                        ? _picked.remove(slug)
+                        : _picked.add(slug);
+                  }),
+                ),
+              ),
+            ],
+          ),
+          // Persistent floating header — stays put while pages transition.
+          // Left control: Skip on the first frame, Back on the rest.
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+                child: _FloatingHeader(
+                  page: _page,
+                  pageCount: _pageCount,
+                  onBack: _prev,
+                  onSkip: _skip,
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: PrimaryButton(
-                label: _page == 3 ? 'Start growing' : 'Continue',
-                onPressed: _page == 3 && _picked.isEmpty ? null : _next,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
-class _Welcome extends StatelessWidget {
-  const _Welcome({required this.onSkip});
+/// The one persistent onboarding header: a bordered floating bar with a Skip
+/// (first frame) / Back (later frames) control and the progress track.
+class _FloatingHeader extends StatelessWidget {
+  const _FloatingHeader({
+    required this.page,
+    required this.pageCount,
+    required this.onBack,
+    required this.onSkip,
+  });
+
+  final int page;
+  final int pageCount;
+  final VoidCallback onBack;
   final VoidCallback onSkip;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(28),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    final first = page == 0;
+    return Container(
+      decoration:
+          Neo.box(color: AppColors.surface, shadowOverride: Neo.shadowSm),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+      child: Row(
         children: [
-          const Spacer(),
-          const Text('🌱', style: TextStyle(fontSize: 64)),
-          const SizedBox(height: 20),
-          Text.rich(TextSpan(
-            style: AppText.display(context).copyWith(fontSize: 38),
-            children: const [
-              TextSpan(text: 'Know what to do\n'),
-              TextSpan(
-                  text: 'this week',
-                  style: TextStyle(color: AppColors.sprout)),
-              TextSpan(text: ' in your garden.'),
-            ],
-          )),
-          const SizedBox(height: 12),
-          Text(
-            'Planting dates and reminders tuned to Dutch & EU weather — '
-            'built for balconies and containers.',
-            style: AppText.bodyMuted(context),
+          GestureDetector(
+            onTap: first ? onSkip : onBack,
+            child: first
+                ? Text('Skip', style: AppText.label(context))
+                : const Icon(Icons.arrow_back_ios_new,
+                    size: 18, color: AppColors.ink),
           ),
-          const Spacer(),
-          Center(
-            child: TextButton(
-              onPressed: onSkip,
-              child: Text('Skip — explore a demo garden',
-                  style: AppText.label(context, color: AppColors.muted)),
+          const SizedBox(width: 14),
+          _ProgressRow(page: page, count: pageCount),
+        ],
+      ),
+    );
+  }
+}
+
+/// A setup step — clean paper with the form + a bottom action. The header
+/// (back/skip + progress) floats above this from the parent, so we leave room
+/// for it at the top and never redraw it here.
+class _SetupPage extends StatelessWidget {
+  const _SetupPage({
+    required this.child,
+    required this.buttonLabel,
+    required this.onNext,
+    this.enabled = true,
+  });
+
+  final Widget child;
+  final String buttonLabel;
+  final VoidCallback onNext;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        children: [
+          // Clearance for the floating header.
+          const SizedBox(height: 62),
+          Expanded(child: child),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: PrimaryButton(
+              label: buttonLabel,
+              icon: Icons.arrow_forward,
+              onPressed: enabled ? onNext : null,
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Bordered progress dots (shared by hero + setup pages). Fixed-width slots so
+/// nothing shifts as you advance — only the fill colour animates.
+class _ProgressRow extends StatelessWidget {
+  const _ProgressRow({required this.page, required this.count});
+  final int page;
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        for (var i = 0; i < count; i++)
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 260),
+            curve: Curves.easeOut,
+            width: 16,
+            height: 10,
+            margin: const EdgeInsets.only(right: 6),
+            decoration: BoxDecoration(
+              color: i <= page ? AppColors.lemon : AppColors.paper,
+              borderRadius: BorderRadius.circular(3),
+              border: Border.all(color: AppColors.border, width: 1.6),
+            ),
+          ),
+      ],
     );
   }
 }
@@ -165,31 +280,21 @@ class _RegionStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(20),
       children: [
-        Text('Where do you grow?', style: AppText.display(context)),
+        Text('Where do you grow?', style: AppText.title(context)),
         const SizedBox(height: 6),
         Text('This sets your frost dates — the backbone of every planting date.',
             style: AppText.bodyMuted(context)),
-        const SizedBox(height: 20),
+        const SizedBox(height: 14),
         for (final r in frostRegions)
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
-            child: AppCard(
+            child: _SelectTile(
+              icon: Icons.place_outlined,
+              label: r.name,
+              selected: r.name == selected.name,
               onTap: () => onSelect(r),
-              child: Row(
-                children: [
-                  Expanded(child: Text(r.name, style: AppText.heading(context))),
-                  Icon(
-                    r.name == selected.name
-                        ? Icons.radio_button_checked
-                        : Icons.radio_button_unchecked,
-                    color: r.name == selected.name
-                        ? AppColors.sprout
-                        : AppColors.hairline,
-                  ),
-                ],
-              ),
             ),
           ),
       ],
@@ -209,35 +314,38 @@ class _KindStep extends StatelessWidget {
   final ValueChanged<GardenKind> onKind;
   final ValueChanged<double> onSun;
 
+  static const _icons = {
+    GardenKind.balcony: Icons.balcony,
+    GardenKind.garden: Icons.yard,
+    GardenKind.allotment: Icons.agriculture,
+  };
+
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(20),
       children: [
-        Text('Your growing space', style: AppText.display(context)),
-        const SizedBox(height: 20),
-        for (final k in GardenKind.values)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: AppCard(
-              onTap: () => onKind(k),
-              child: Row(
-                children: [
-                  Text(gardenKindEmoji(k), style: const TextStyle(fontSize: 24)),
-                  const SizedBox(width: 12),
-                  Expanded(
-                      child: Text(gardenKindLabel(k),
-                          style: AppText.heading(context))),
-                  Icon(
-                    kind == k
-                        ? Icons.radio_button_checked
-                        : Icons.radio_button_unchecked,
-                    color: kind == k ? AppColors.sprout : AppColors.hairline,
-                  ),
-                ],
+        Text('Your growing space', style: AppText.title(context)),
+        const SizedBox(height: 6),
+        Text('Where are you growing?', style: AppText.bodyMuted(context)),
+        const SizedBox(height: 14),
+        GridView.count(
+          crossAxisCount: 2,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: 2.6,
+          children: [
+            for (final k in GardenKind.values)
+              _SelectTile(
+                icon: _icons[k],
+                label: gardenKindLabel(k),
+                selected: kind == k,
+                onTap: () => onKind(k),
               ),
-            ),
-          ),
+          ],
+        ),
         const SizedBox(height: 20),
         Text('Hours of sun a day: ${sun.round()}h',
             style: AppText.heading(context)),
@@ -251,6 +359,65 @@ class _KindStep extends StatelessWidget {
           onChanged: onSun,
         ),
       ],
+    );
+  }
+}
+
+/// A bordered selection tile: fills green + white text/icon when selected. Pass
+/// either an [icon] (recoloured white on select, always visible) or a
+/// [leadingWidget] (e.g. a crop photo, left as-is).
+class _SelectTile extends StatelessWidget {
+  const _SelectTile({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+    this.icon,
+    this.leadingWidget,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  final IconData? icon;
+  final Widget? leadingWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    final fg = selected ? Colors.white : AppColors.ink;
+    final Widget? leading = icon != null
+        ? Icon(icon, size: 22, color: selected ? Colors.white : AppColors.sprout)
+        : leadingWidget;
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 160),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.sprout : AppColors.surface,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: AppColors.border, width: 2),
+          boxShadow: selected ? Neo.shadowSm : null,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        child: Row(
+          children: [
+            if (leading != null) ...[
+              leading,
+              const SizedBox(width: 8),
+            ],
+            Expanded(
+              child: Text(label,
+                  style: AppText.label(context, color: fg),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis),
+            ),
+            Icon(
+              selected ? Icons.check_circle : Icons.circle_outlined,
+              size: 20,
+              color: selected ? Colors.white : AppColors.hairline,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -274,42 +441,35 @@ class _PlantsStep extends StatelessWidget {
     }.toList();
 
     return ListView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(20),
       children: [
-        Text('What will you grow?', style: AppText.display(context)),
+        Text('What will you grow?', style: AppText.title(context)),
         const SizedBox(height: 6),
-        Text('Pick a few to start — you can add more anytime.',
+        Text('Pick a few to start — add more anytime.',
             style: AppText.bodyMuted(context)),
-        const SizedBox(height: 20),
-        Wrap(
-          spacing: 10,
-          runSpacing: 10,
+        const SizedBox(height: 14),
+        GridView.count(
+          crossAxisCount: 2,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: 2.9,
           children: [
             for (final slug in options)
-              GestureDetector(
-                onTap: () => onToggle(slug),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: picked.contains(slug)
-                        ? AppColors.sprout
-                        : AppColors.surface,
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(
-                      color: picked.contains(slug)
-                          ? AppColors.sprout
-                          : AppColors.hairline,
-                    ),
-                  ),
-                  child: Text(
-                    repo.cropName(slug),
-                    style: AppText.label(
-                      context,
-                      color: picked.contains(slug) ? Colors.white : AppColors.ink,
-                    ),
+              _SelectTile(
+                leadingWidget: ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: SizedBox(
+                    width: 30,
+                    height: 30,
+                    child: CropImage(
+                        slug: slug, category: repo.cropCategory(slug)),
                   ),
                 ),
+                label: repo.cropName(slug),
+                selected: picked.contains(slug),
+                onTap: () => onToggle(slug),
               ),
           ],
         ),

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../db/database.dart';
+import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/typography.dart';
@@ -62,14 +63,7 @@ class _HeroCard extends StatelessWidget {
     final euro = NumberFormat.currency(locale: 'nl_NL', symbol: '€', decimalDigits: 2);
     return Container(
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.clay, AppColors.clayDeep],
-        ),
-      ),
+      decoration: Neo.box(color: AppColors.clay),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -4,6 +4,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../design/brutal.dart';
 import '../design/colors.dart';
 import '../design/typography.dart';
 import 'diagnose/diagnose_screen.dart';
@@ -42,7 +43,8 @@ class _AppShellState extends State<AppShell> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: AppColors.surface,
-          border: Border(top: BorderSide(color: AppColors.hairline)),
+          border: Border(
+              top: BorderSide(color: AppColors.border, width: Neo.borderWidth)),
         ),
         child: SafeArea(
           top: false,
@@ -112,20 +114,15 @@ class _ScanButton extends StatelessWidget {
         child: GestureDetector(
           onTap: onTap,
           child: Container(
-            width: 52,
-            height: 52,
+            width: 54,
+            height: 54,
             decoration: BoxDecoration(
-              color: AppColors.sprout,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.sprout.withValues(alpha: 0.35),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+              color: AppColors.lemon,
+              borderRadius: BorderRadius.circular(10),
+              border: Neo.border,
+              boxShadow: Neo.shadow,
             ),
-            child: const Icon(Icons.center_focus_strong, color: Colors.white, size: 26),
+            child: const Icon(Icons.center_focus_strong, color: AppColors.ink, size: 26),
           ),
         ),
       ),

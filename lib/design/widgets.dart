@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../data/crop_derived.dart';
 import '../timing/types.dart';
+import 'brutal.dart';
 import 'colors.dart';
 import 'components.dart';
 import 'crop_image.dart';
@@ -30,12 +31,11 @@ class PhotoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: Material(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(18),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          clipBehavior: Clip.antiAlias,
+          decoration: Neo.box(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -44,18 +44,28 @@ class PhotoCard extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    CropImage(slug: crop.slug, category: crop.category),
+                    DecoratedBox(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              color: AppColors.border, width: Neo.borderWidth),
+                        ),
+                      ),
+                      child: CropImage(slug: crop.slug, category: crop.category),
+                    ),
                     Positioned(
                       right: 8,
                       bottom: 8,
                       child: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: const BoxDecoration(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
                           color: Colors.white,
-                          shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                              color: AppColors.border, width: 1.6),
                         ),
                         child: const Icon(Icons.favorite_border,
-                            size: 15, color: AppColors.sprout),
+                            size: 15, color: AppColors.ink),
                       ),
                     ),
                   ],
@@ -121,11 +131,12 @@ class FilterChipsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 38,
+      height: 44,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.only(bottom: 4, right: 4),
         itemCount: options.length,
-        separatorBuilder: (_, _) => const SizedBox(width: 8),
+        separatorBuilder: (_, _) => const SizedBox(width: 10),
         itemBuilder: (context, i) {
           final (value, label) = options[i];
           final on = value == selected;
@@ -134,10 +145,10 @@ class FilterChipsRow extends StatelessWidget {
             child: Container(
               alignment: Alignment.center,
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
+              decoration: Neo.box(
                 color: on ? AppColors.sprout : AppColors.surface,
-                borderRadius: BorderRadius.circular(999),
-                border: Border.all(color: on ? AppColors.sprout : AppColors.hairline),
+                shadowed: on,
+                shadowOverride: Neo.shadowSm,
               ),
               child: Text(
                 label,
@@ -169,10 +180,7 @@ class SegmentedTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: AppColors.sand,
-        borderRadius: BorderRadius.circular(999),
-      ),
+      decoration: Neo.box(color: AppColors.sand),
       child: Row(
         children: [
           for (var i = 0; i < labels.length; i++)
@@ -180,12 +188,17 @@ class SegmentedTabs extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => onChanged(i),
                 child: Container(
-                  height: 36,
+                  height: 38,
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: i == index ? AppColors.sprout : Colors.transparent,
-                    borderRadius: BorderRadius.circular(999),
-                  ),
+                  margin: EdgeInsets.only(right: i == labels.length - 1 ? 0 : 4),
+                  decoration: i == index
+                      ? BoxDecoration(
+                          color: AppColors.sprout,
+                          borderRadius: BorderRadius.circular(3),
+                          border: Border.all(
+                              color: AppColors.border, width: 1.6),
+                        )
+                      : null,
                   child: Text(
                     labels[i],
                     style: AppText.label(context,

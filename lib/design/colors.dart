@@ -24,6 +24,12 @@ abstract final class AppColors {
   static const muted = Color(0xFF6E6A61); // secondary / captions
   static const hairline = Color(0xFFE4DFD3); // dividers / borders
 
+  // Neo-brutalist tokens — outlines, offset shadows, a bright pop. The border is
+  // a warm dark espresso (softer than pure black) so it reads bold but natural.
+  static const border = Color(0xFF2B241A); // outline on every box
+  static const lemon = Color(0xFFF3C43A); // bright accent — banners, highlights
+  static const sky = Color(0xFF74A9C7); // secondary pop
+
   // Weather accents (F4 hint badges)
   static const rain = Color(0xFF4A7BA6);
   static const heat = Color(0xFFE8A13A);
