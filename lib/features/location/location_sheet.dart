@@ -13,6 +13,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../../data/frost_presets.dart';
+import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/typography.dart';
 import '../repository_scope.dart';
@@ -112,12 +113,14 @@ class _LocationSheetState extends State<_LocationSheet> {
                   filled: true,
                   fillColor: AppColors.paper,
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: AppColors.hairline),
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(
+                        color: AppColors.border, width: Neo.borderWidth),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: AppColors.sprout),
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(
+                        color: AppColors.sprout, width: Neo.borderWidth),
                   ),
                 ),
               ),

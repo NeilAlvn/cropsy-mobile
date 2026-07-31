@@ -192,7 +192,7 @@ class _Header extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          const Icon(Icons.workspace_premium, color: AppColors.medium),
+          const Icon(Icons.workspace_premium, color: AppColors.sprout),
           const SizedBox(width: 14),
           const Icon(Icons.settings_outlined, color: AppColors.muted),
         ],
@@ -223,12 +223,12 @@ class _SearchRow extends StatelessWidget {
                 filled: true,
                 fillColor: AppColors.surface,
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
                       color: AppColors.border, width: Neo.borderWidth),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
                       color: AppColors.sprout, width: Neo.borderWidth),
                 ),
@@ -252,17 +252,17 @@ class _PremiumBanner extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          decoration: Neo.box(color: AppColors.lemon),
+          decoration: Neo.box(color: AppColors.ink),
           padding: const EdgeInsets.all(14),
           child: Row(
             children: [
-              const Icon(Icons.workspace_premium, color: AppColors.ink, size: 22),
+              const Icon(Icons.workspace_premium, color: Colors.white, size: 22),
               const SizedBox(width: 12),
               Expanded(
                 child: Text('Try Cropsy Premium free for 7 days',
-                    style: AppText.label(context, color: AppColors.ink)),
+                    style: AppText.label(context, color: Colors.white)),
               ),
-              const Icon(Icons.chevron_right, color: AppColors.ink),
+              const Icon(Icons.chevron_right, color: Colors.white70),
             ],
           ),
         ),

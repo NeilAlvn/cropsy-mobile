@@ -60,9 +60,9 @@ class PhotoCard extends StatelessWidget {
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                              color: AppColors.border, width: 1.6),
+                              color: AppColors.border, width: 1),
                         ),
                         child: const Icon(Icons.favorite_border,
                             size: 15, color: AppColors.ink),
@@ -194,9 +194,7 @@ class SegmentedTabs extends StatelessWidget {
                   decoration: i == index
                       ? BoxDecoration(
                           color: AppColors.sprout,
-                          borderRadius: BorderRadius.circular(3),
-                          border: Border.all(
-                              color: AppColors.border, width: 1.6),
+                          borderRadius: BorderRadius.circular(12),
                         )
                       : null,
                   child: Text(

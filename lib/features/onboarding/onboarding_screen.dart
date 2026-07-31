@@ -258,13 +258,12 @@ class _ProgressRow extends StatelessWidget {
           AnimatedContainer(
             duration: const Duration(milliseconds: 260),
             curve: Curves.easeOut,
-            width: 16,
-            height: 10,
+            width: 18,
+            height: 8,
             margin: const EdgeInsets.only(right: 6),
             decoration: BoxDecoration(
-              color: i <= page ? AppColors.lemon : AppColors.paper,
-              borderRadius: BorderRadius.circular(3),
-              border: Border.all(color: AppColors.border, width: 1.6),
+              color: i <= page ? AppColors.sprout : AppColors.hairline,
+              borderRadius: BorderRadius.circular(999),
             ),
           ),
       ],
@@ -393,8 +392,8 @@ class _SelectTile extends StatelessWidget {
         duration: const Duration(milliseconds: 160),
         decoration: BoxDecoration(
           color: selected ? AppColors.sprout : AppColors.surface,
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: AppColors.border, width: 2),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.border, width: 1),
           boxShadow: selected ? Neo.shadowSm : null,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),

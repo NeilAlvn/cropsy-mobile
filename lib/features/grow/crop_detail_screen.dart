@@ -161,8 +161,8 @@ class _NavChips extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14),
             decoration: BoxDecoration(
               color: AppColors.sand,
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: AppColors.border, width: 1.6),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.border, width: 1),
             ),
             child: Text(sections[i], style: AppText.label(context)),
           ),

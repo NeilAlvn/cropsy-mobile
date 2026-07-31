@@ -13,27 +13,27 @@ import 'colors.dart';
 abstract final class AppText {
   static TextStyle display(BuildContext context, {Color? color}) =>
       GoogleFonts.bricolageGrotesque(
-        fontSize: 32,
-        height: 1.04,
-        fontWeight: FontWeight.w800,
-        letterSpacing: -0.8,
+        fontSize: 30,
+        height: 1.12,
+        fontWeight: FontWeight.w700,
+        letterSpacing: -0.4,
         color: color ?? AppColors.ink,
       );
 
   static TextStyle title(BuildContext context, {Color? color}) =>
       GoogleFonts.bricolageGrotesque(
-        fontSize: 22,
-        height: 1.12,
-        fontWeight: FontWeight.w800,
-        letterSpacing: -0.4,
+        fontSize: 21,
+        height: 1.2,
+        fontWeight: FontWeight.w700,
+        letterSpacing: -0.2,
         color: color ?? AppColors.ink,
       );
 
   static TextStyle heading(BuildContext context, {Color? color}) =>
       GoogleFonts.bricolageGrotesque(
         fontSize: 17,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -0.2,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.1,
         color: color ?? AppColors.ink,
       );
 
@@ -59,7 +59,7 @@ abstract final class AppText {
   static TextStyle label(BuildContext context, {Color? color}) =>
       GoogleFonts.dmSans(
         fontSize: 13,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         color: color ?? AppColors.ink,
       );
 
@@ -73,8 +73,8 @@ abstract final class AppText {
   static TextStyle button(BuildContext context, {Color? color}) =>
       GoogleFonts.dmSans(
         fontSize: 16,
-        fontWeight: FontWeight.w800,
-        letterSpacing: 0.2,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 0.1,
         color: color ?? Colors.white,
       );
 }
