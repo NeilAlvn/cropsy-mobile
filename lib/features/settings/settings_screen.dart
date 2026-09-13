@@ -7,7 +7,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../config.dart';
+
+import '../../db/database.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/typography.dart';
@@ -82,6 +86,50 @@ class _SettingsScreenState extends State<SettingsScreen> {
               }, done: 'Copied to clipboard.'),
             ),
           ),
+          const SizedBox(height: 24),
+          SectionHeader('Language'),
+          FutureBuilder<ProfileRow?>(
+            future: repo.profile(),
+            builder: (context, snap) {
+              final lang = snap.data?.lang ?? 'nl';
+              return SegmentedButton<String>(
+                segments: const [ButtonSegment(value: 'nl', label: Text('Nederlands')), ButtonSegment(value: 'en', label: Text('English'))],
+                selected: {lang},
+                onSelectionChanged: (v) async {
+                  await repo.saveProfile(lang: v.first);
+                  if (context.mounted) setState(() {});
+                },
+              );
+            },
+          ),
+          const SizedBox(height: 4),
+          Text('Crop content ships in both languages; the interface follows in the content update.', style: AppText.caption(context)),
+          const SizedBox(height: 24),
+          SectionHeader('Help'),
+          for (final (q, a) in _faq)
+            Theme(
+              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                tilePadding: EdgeInsets.zero,
+                title: Text(q, style: AppText.label(context)),
+                iconColor: AppColors.sprout,
+                collapsedIconColor: AppColors.muted,
+                children: [Align(alignment: Alignment.centerLeft, child: Padding(padding: const EdgeInsets.only(bottom: 10), child: Text(a, style: AppText.bodyMuted(context))))],
+              ),
+            ),
+          const SizedBox(height: 12),
+          for (final (label, icon, path) in const [
+            ('Contact us', Icons.mail_outline, '/support'),
+            ('Privacy', Icons.lock_outline, '/privacy'),
+            ('Terms', Icons.description_outlined, '/terms'),
+          ])
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Icon(icon, color: AppColors.sprout),
+              title: Text(label, style: AppText.label(context)),
+              trailing: const Icon(Icons.open_in_new, size: 16, color: AppColors.muted),
+              onTap: () => launchUrl(Uri.parse('$websiteUrl$path'), mode: LaunchMode.externalApplication),
+            ),
           const SizedBox(height: 24),
           SectionHeader('About'),
           Text('Cropsy · crop data ${repo.cropVersion}', style: AppText.caption(context)),
@@ -217,3 +265,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 }
+
+const _faq = <(String, String)>[
+  ('Where do the planting dates come from?', 'From the frost dates for your location (KNMI / Open-Meteo climate normals, rounded to ~10 km) combined with crop rules cross-checked against at least two Dutch seed calendars.'),
+  ('I fell behind. Is my plan ruined?', 'No. Log what you actually did and when; every later step moves with it. Nothing is ever "overdue" — it is "moved".'),
+  ('Why did a watering disappear?', 'It rained enough around that day, or rain is forecast. The weather line on Home says what changed.'),
+  ('Does it work offline?', 'Yes. Crops, dates, reminders and the timeline all run on the phone. Weather hints and sync need a connection.'),
+  ('What does the free tier include?', 'One garden, six growing plants, the full timeline, reminders and every crop — forever. Lifetime unlocks more room.'),
+  ('How do I delete my account?', 'Settings → Account → Delete account. It removes your account and every synced row; local data stays on this phone until you delete the app.'),
+];

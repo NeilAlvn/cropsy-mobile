@@ -4,6 +4,7 @@
 library;
 
 const apiBaseUrl = 'https://growit-replica-ten.vercel.app';
+const websiteUrl = 'https://cropsy.app';
 const supabaseUrl = 'https://trjqvikbtqpmxytzmhsb.supabase.co';
 const supabaseAnonKey =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRyanF2aWtidHFwbXh5dHptaHNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUxNjY0MjcsImV4cCI6MjEwMDc0MjQyN30.GtnXxtTKCTUBfBcfd8R_D3owFZhLadqpziHyoqZ3tjU';

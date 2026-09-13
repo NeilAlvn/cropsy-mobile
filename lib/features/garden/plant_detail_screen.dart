@@ -16,6 +16,7 @@ import '../../timing/dates.dart';
 import '../repository_scope.dart';
 import 'garden_repository.dart';
 import 'growth_log_sheet.dart';
+import 'insights.dart';
 import 'timeline_view.dart';
 
 class PlantDetailScreen extends StatefulWidget {
@@ -125,6 +126,16 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                     if (plant.plantedOn != null) ...[
                       _StageRow(plant: plant, repo: repo, onChanged: () => setState(() {})),
                       const SizedBox(height: 16),
+                      if (repo.cropBySlug(plant.cropSlug) case final crop?)
+                        InsightsList(
+                          insights: insightsFor(
+                            crop: crop,
+                            frost: repo.frost,
+                            today: repo.today,
+                            obs: repo.lastObservations,
+                            potLitres: plant.potLitres,
+                          ),
+                        ),
                       SectionHeader('Your path'),
                       TimelineView(plantId: plant.id),
                       const SizedBox(height: 24),
