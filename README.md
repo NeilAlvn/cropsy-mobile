@@ -5,7 +5,8 @@ garden this week,"** with planting dates + reminders driven by real Dutch/EU
 weather (KNMI/Open-Meteo), not US zones. iOS + Android, single Flutter codebase.
 
 Companion to the backend repo `NeilAlvn/cropsy` (Next.js on Vercel + Supabase).
-The seam between them is `docs/API-CONTRACT.md` in that repo.
+The seam between them is `docs/API-CONTRACT.md` in that repo; the product spec
+and phased build plan is `docs/PRD.md` there (locked v1.0, 2026-09-13).
 
 > **Status: pre-UX shell.** Product screens are intentionally **not** built yet —
 > the design direction is still being decided, so this repo currently holds only
