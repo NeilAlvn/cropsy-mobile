@@ -5,6 +5,7 @@ library;
 
 import 'package:flutter/widgets.dart';
 
+import '../purchases/purchase_service.dart';
 import '../sync/auth_service.dart';
 import 'garden/garden_repository.dart';
 
@@ -29,4 +30,11 @@ class AuthScope extends InheritedNotifier<AuthService> {
 
   static AuthService? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<AuthScope>()?.notifier;
+}
+
+class PurchaseScope extends InheritedNotifier<PurchaseService> {
+  const PurchaseScope({super.key, required PurchaseService? purchases, required super.child}) : super(notifier: purchases);
+
+  static PurchaseService? maybeOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<PurchaseScope>()?.notifier;
 }

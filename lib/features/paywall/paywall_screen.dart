@@ -10,6 +10,8 @@ import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/typography.dart';
+import '../../purchases/purchase_service.dart';
+import '../repository_scope.dart';
 
 class PaywallScreen extends StatefulWidget {
   const PaywallScreen({super.key});
@@ -27,8 +29,11 @@ class _PaywallScreenState extends State<PaywallScreen> {
     ('Yearly', '€19.99 / year', 'Everything in Lifetime, as a subscription. Cancel in the App Store any time.'),
   ];
 
+  bool _busy = false;
+
   @override
   Widget build(BuildContext context) {
+    final purchases = PurchaseScope.maybeOf(context);
     return Scaffold(
       backgroundColor: AppColors.paper,
       body: SafeArea(
@@ -61,7 +66,10 @@ class _PaywallScreenState extends State<PaywallScreen> {
                               Row(children: [
                                 Text(_plans[i].$1, style: AppText.heading(context, color: _plan == i ? Colors.white : AppColors.ink)),
                                 const SizedBox(width: 8),
-                                Text(_plans[i].$2, style: AppText.label(context, color: _plan == i ? Colors.white70 : AppColors.muted)),
+                                Text(
+                                  i == 0 ? _plans[0].$2 : (purchases?.price(i == 1 ? Plan.lifetime : Plan.yearly) ?? _plans[i].$2),
+                                  style: AppText.label(context, color: _plan == i ? Colors.white70 : AppColors.muted),
+                                ),
                               ]),
                               const SizedBox(height: 4),
                               Text(_plans[i].$3, style: AppText.caption(context, color: _plan == i ? Colors.white : AppColors.muted)),
@@ -75,19 +83,38 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 ),
               const Spacer(),
               PrimaryButton(
-                label: _plan == 0 ? 'Keep it free' : 'Continue with ${_plans[_plan].$1}',
-                onPressed: () {
-                  if (_plan == 0) {
-                    Navigator.of(context).pop();
-                    return;
-                  }
-                  // ponytail: RevenueCat wiring lands with the App Store products (Phase 2, Luuk).
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Purchases open with the beta — nothing is charged yet.')),
-                  );
-                },
+                label: _busy ? 'One moment…' : _plan == 0 ? 'Keep it free' : 'Continue with ${_plans[_plan].$1}',
+                onPressed: _busy
+                    ? null
+                    : () async {
+                        if (_plan == 0) {
+                          Navigator.of(context).pop();
+                          return;
+                        }
+                        if (purchases == null || !purchases.configured) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Purchases open with the beta — nothing is charged yet.')),
+                          );
+                          return;
+                        }
+                        setState(() => _busy = true);
+                        final ok = await purchases.buy(_plan == 1 ? Plan.lifetime : Plan.yearly);
+                        if (!context.mounted) return;
+                        setState(() => _busy = false);
+                        if (ok) {
+                          Navigator.of(context).pop(true);
+                        } else if (purchases.lastError != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(purchases.lastError!)));
+                        }
+                      },
               ),
               const SizedBox(height: 8),
+              Center(
+                child: TextButton(
+                  onPressed: purchases?.configured == true ? () => purchases!.restore() : null,
+                  child: Text('Restore purchases', style: AppText.caption(context)),
+                ),
+              ),
               Center(child: Text('Lifetime: nothing to cancel, ever.', style: AppText.caption(context))),
             ],
           ),

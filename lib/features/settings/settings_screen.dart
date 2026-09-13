@@ -15,7 +15,9 @@ import '../../db/database.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/typography.dart';
+import '../../purchases/purchase_service.dart';
 import '../../sync/auth_service.dart';
+import '../paywall/paywall_screen.dart';
 import '../garden/garden_repository.dart';
 import '../repository_scope.dart';
 
@@ -73,6 +75,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(height: 10),
             Text(_status!, style: AppText.caption(context, color: AppColors.sprout)),
           ],
+          const SizedBox(height: 24),
+          SectionHeader('Membership'),
+          Builder(builder: (context) {
+            final p = PurchaseScope.maybeOf(context);
+            final plan = p?.plan ?? Plan.free;
+            return AppCard(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(switch (plan) { Plan.free => 'Free', Plan.lifetime => 'Lifetime', Plan.yearly => 'Yearly' }, style: AppText.label(context)),
+                Text(
+                  switch (plan) {
+                    Plan.free => '1 garden · 6 growing plants · full timeline, reminders and every crop.',
+                    Plan.lifetime => 'Lifetime — nothing to cancel.',
+                    Plan.yearly => 'Renews yearly. Manage or cancel in the App Store / Play Store.',
+                  },
+                  style: AppText.caption(context),
+                ),
+                const SizedBox(height: 10),
+                Row(children: [
+                  if (plan == Plan.free)
+                    Expanded(
+                      child: SecondaryButton(
+                        label: 'See plans',
+                        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PaywallScreen(), fullscreenDialog: true)),
+                      ),
+                    ),
+                  if (plan == Plan.yearly)
+                    Expanded(
+                      child: SecondaryButton(
+                        label: 'Manage subscription',
+                        onPressed: () => launchUrl(Uri.parse('https://apps.apple.com/account/subscriptions'), mode: LaunchMode.externalApplication),
+                      ),
+                    ),
+                  if (p?.configured == true) ...[
+                    const SizedBox(width: 8),
+                    Expanded(child: SecondaryButton(label: 'Restore purchases', onPressed: () => _run(() async => p!.restore(), done: 'Checked with the store.'))),
+                  ],
+                ]),
+              ]),
+            );
+          }),
           const SizedBox(height: 24),
           SectionHeader('Your data'),
           AppCard(

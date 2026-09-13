@@ -15,6 +15,7 @@ import 'features/garden/garden_repository.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'features/repository_scope.dart';
 import 'notifications/reminders.dart';
+import 'purchases/purchase_service.dart';
 import 'sync/auth_service.dart';
 
 Future<void> main() async {
@@ -23,6 +24,17 @@ Future<void> main() async {
   await AuthService.init();
   await Reminders.init();
   final auth = AuthService(repo);
+  final purchases = PurchaseService();
+  await purchases.init();
+  // Purchases follow the account: log the RevenueCat user in/out with Supabase.
+  auth.addListener(() {
+    final uid = auth.user?.id;
+    if (uid != null) {
+      purchases.logIn(uid);
+    } else {
+      purchases.logOut();
+    }
+  });
   // Reminders follow the data: any change re-plans the week's notifications.
   Timer? debounce;
   repo.addListener(() {
@@ -31,13 +43,14 @@ Future<void> main() async {
       await Reminders.schedule(await repo.thisWeek(), today: repo.today);
     });
   });
-  runApp(CropsyApp(repository: repo, auth: auth));
+  runApp(CropsyApp(repository: repo, auth: auth, purchases: purchases));
 }
 
 class CropsyApp extends StatelessWidget {
-  const CropsyApp({super.key, required this.repository, this.auth});
+  const CropsyApp({super.key, required this.repository, this.auth, this.purchases});
   final GardenRepository repository;
   final AuthService? auth;
+  final PurchaseService? purchases;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +58,8 @@ class CropsyApp extends StatelessWidget {
       repository: repository,
       child: AuthScope(
       auth: auth,
+      child: PurchaseScope(
+      purchases: purchases,
       child: MaterialApp(
         title: 'Cropsy',
         debugShowCheckedModeBanner: false,
@@ -72,6 +87,7 @@ class CropsyApp extends StatelessWidget {
           ),
         ),
         home: const _Root(),
+      ),
       ),
       ),
     );

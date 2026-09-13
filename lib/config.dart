@@ -11,3 +11,12 @@ const supabaseAnonKey =
 
 /// Deep-link scheme registered in supabase/config.toml for magic links.
 const authRedirect = 'app.visiontech.cropsy://login-callback';
+
+/// RevenueCat public SDK keys (safe in the app). Empty = purchases off: the
+/// paywall explains, everything stays free-tier. Filled once the App Store
+/// Connect products exist (PRD §9, Luuk).
+const revenueCatIosKey = '';
+const revenueCatAndroidKey = '';
+
+/// Entitlement identifier configured in RevenueCat.
+const premiumEntitlement = 'premium';

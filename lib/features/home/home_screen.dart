@@ -524,8 +524,9 @@ class _StreakCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
+    final premium = PurchaseScope.maybeOf(context)?.premium ?? false;
     return FutureBuilder<StreakResult>(
-      future: repo.streak(),
+      future: repo.streak(premium: premium),
       builder: (context, snap) {
         final s = snap.data;
         if (s == null) return const SizedBox.shrink();
@@ -548,7 +549,9 @@ class _StreakCard extends StatelessWidget {
                     Text(
                       s.count == 0
                           ? 'Tick one task, or skip one with a reason — rain counts.'
-                          : '$freezesLeft freeze day${freezesLeft == 1 ? '' : 's'} left this month.',
+                          : premium
+                              ? 'Unlimited freeze days.'
+                              : '$freezesLeft freeze day${freezesLeft == 1 ? '' : 's'} left this month.',
                       style: AppText.caption(context),
                     ),
                   ],

@@ -12,6 +12,7 @@ import '../../design/typography.dart';
 import '../../timing/dates.dart';
 import '../../timing/season.dart';
 import '../repository_scope.dart';
+import '../paywall/paywall_screen.dart';
 import 'planner_grid_screen.dart';
 
 const _monthAbbr = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
@@ -47,6 +48,20 @@ class _SeasonPathViewState extends State<SeasonPathView> {
               onTap: () async {
                 final gardens = await repo.gardens();
                 if (gardens.isEmpty || !context.mounted) return;
+                // §9: premium feature with a silent 7-day preview for free users.
+                final premium = PurchaseScope.maybeOf(context)?.premium ?? false;
+                if (!premium) {
+                  const key = 'planner_preview_started_on';
+                  final started = await repo.meta(key) ?? repo.today;
+                  if (await repo.meta(key) == null) await repo.setMeta(key, started);
+                  final days = parseIso(repo.today).difference(parseIso(started)).inDays;
+                  if (days > 7) {
+                    if (!context.mounted) return;
+                    final bought = await Navigator.of(context).push<bool>(MaterialPageRoute(builder: (_) => const PaywallScreen(), fullscreenDialog: true));
+                    if (bought != true) return;
+                  }
+                }
+                if (!context.mounted) return;
                 await Navigator.of(context).push(MaterialPageRoute(builder: (_) => PlannerGridScreen(garden: gardens.first)));
               },
               child: Row(children: [

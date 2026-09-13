@@ -47,6 +47,7 @@ dependencies:
   geolocator: ^14.0.3
   image_picker: ^1.2.3
   url_launcher: ^6.3.2
+  purchases_flutter: ^10.12.0
 
 dev_dependencies:
   flutter_test:
