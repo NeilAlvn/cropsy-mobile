@@ -35,6 +35,15 @@ const _overrides = <String, Difficulty>{
 };
 
 Difficulty difficultyOf(Crop crop) {
+  // Real field first (PRD §8.1); the heuristic only covers a null.
+  switch (crop.difficulty) {
+    case 1:
+      return Difficulty.easy;
+    case 2:
+      return Difficulty.medium;
+    case 3:
+      return Difficulty.hard;
+  }
   final o = _overrides[crop.slug];
   if (o != null) return o;
   var score = 0;

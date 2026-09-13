@@ -15,6 +15,7 @@ import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/crop_image.dart';
+import '../../design/mascot.dart';
 import '../../design/typography.dart';
 import '../../design/widgets.dart';
 import '../../timing/dates.dart';
@@ -106,11 +107,11 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
               _section('Difficulty', 'Difficulty',
                   Center(child: DifficultyGauge(difficulty: difficultyOf(crop)))),
               _section('Location', 'Suitable location', _Location(crop: crop)),
-              _section('Soil', 'Soil prep', _Soil(crop: crop)),
+              _section('Soil', 'Soil prep', const _ContentComing('Soil preparation')),
               _section('How-tos', 'How-tos', _HowTos(crop: crop)),
               _section('Neighbours', 'Neighbours', _Neighbours(slug: crop.slug)),
-              _section('Benefits', 'Why grow it', _Benefits(crop: crop)),
-              _section('FAQ', 'FAQ', _Faqs(crop: crop)),
+              _section('Benefits', 'Why grow it', const _ContentComing('Nutrition and benefits (NEVO)')),
+              _section('FAQ', 'FAQ', const _ContentComing('Grower-reviewed FAQ')),
               if (crop.sources.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
@@ -190,6 +191,16 @@ class _Calendar extends StatelessWidget {
         Text('These dates are frost-relative (anchored to $anchor for '
             '${repo.regionName}) — so they shift with your region, not a fixed calendar.',
             style: AppText.bodyMuted(context)),
+        const SizedBox(height: 8),
+        // 3.3 "Calendar based on" row: frost cell + where the dates came from.
+        Wrap(spacing: 8, runSpacing: 6, children: [
+          Pill(label: 'Based on: ${repo.regionName}', icon: Icons.place_outlined),
+          Pill(
+            label: repo.frostSource == 'open-meteo' ? 'KNMI/Open-Meteo climate normals' : 'NL regional preset',
+            icon: Icons.thermostat,
+          ),
+          Pill(label: 'Verified against ${crop.sources.length} NL sources', icon: Icons.verified_outlined),
+        ]),
       ],
     );
   }
@@ -251,6 +262,7 @@ class _Location extends StatelessWidget {
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
     final fmt = DateFormat('d MMM');
+    final minSoil = crop.methods.map((m) => m.minSoilC).whereType<num>().fold<num?>(null, (a, b) => a == null ? b : (b < a ? b : a));
     Widget row(IconData icon, String label, String value) => Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: Row(children: [
@@ -269,10 +281,13 @@ class _Location extends StatelessWidget {
       row(Icons.local_fire_department_outlined, 'First frost',
           fmt.format(parseIso(repo.frost.firstFrost))),
       row(Icons.wb_sunny_outlined, 'Preferred sun', crop.sun),
+      row(Icons.ac_unit, 'Frost tender', crop.frostTender ? 'Yes — wait for last frost' : 'No'),
+      if (minSoil != null) row(Icons.device_thermostat, 'Min soil temp', '$minSoil °C'),
       if (crop.minPotLitres != null)
         row(Icons.crop_square, 'Min pot size', '${crop.minPotLitres} L'),
       row(Icons.check_circle_outline, 'Container-friendly',
           crop.containerOk ? 'Yes' : 'No'),
+      row(Icons.public, 'NL balcony suitability', crop.containerOk && !crop.frostTender ? 'Great' : crop.containerOk ? 'Good after IJsheiligen' : 'Needs a bed'),
     ]);
   }
 }
@@ -283,9 +298,28 @@ class _HowTos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final water = crop.waterCadenceDays;
+    final stages = <(String, String, List<(String, String)>)>[
+      ('🌱', 'Starting', [
+        if (crop.depthMm != null) ('Sow depth', '${crop.depthMm} mm'),
+        if (crop.germinationDays != null) ('Germination', '~${crop.germinationDays} days'),
+        if (crop.daysToTransplant != null) ('Plant out after', '~${crop.daysToTransplant} days indoors'),
+        ('Spacing', '${crop.spacingCm} cm'),
+        if (crop.vakPerM2 != null) ('Per 30 cm square', '${crop.vakPerM2}'),
+      ]),
+      ('💧', 'Care', [
+        ('Water (small pot)', 'every ${water?.small ?? 1} day${(water?.small ?? 1) == 1 ? '' : 's'}'),
+        ('Water (in ground)', 'every ${water?.ground ?? 4} days'),
+        if (crop.feedCadenceDays != null) ('Feed', 'every ${crop.feedCadenceDays} days once established'),
+        if (crop.perennial) ('Perennial', 'comes back next year'),
+      ]),
+      ('🧺', 'Harvest', [
+        ('First harvest', '${crop.harvestDaysMin}–${crop.harvestDaysMax} days after planting out'),
+      ]),
+    ];
     return Column(
       children: [
-        for (final stage in howTos(crop))
+        for (final (emoji, title, rows) in stages)
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: AppCard(
@@ -293,20 +327,18 @@ class _HowTos extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(children: [
-                    Text(stage.emoji, style: const TextStyle(fontSize: 20)),
+                    Text(emoji, style: const TextStyle(fontSize: 20)),
                     const SizedBox(width: 8),
-                    Text(stage.title, style: AppText.heading(context)),
+                    Text(title, style: AppText.heading(context)),
                   ]),
                   const SizedBox(height: 8),
-                  for (final (label, value) in stage.rows)
+                  for (final (label, value) in rows)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 6),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                              width: 108,
-                              child: Text(label, style: AppText.bodyMuted(context))),
+                          SizedBox(width: 128, child: Text(label, style: AppText.bodyMuted(context))),
                           const SizedBox(width: 8),
                           Expanded(child: Text(value, style: AppText.label(context))),
                         ],
@@ -316,9 +348,26 @@ class _HowTos extends StatelessWidget {
               ),
             ),
           ),
+        const _ContentComing('Step-by-step how-tos per stage'),
       ],
     );
   }
+}
+
+/// Phase 1 placeholder for editorial sections (PRD 3.2): says so instead of
+/// showing generated filler as fact.
+class _ContentComing extends StatelessWidget {
+  const _ContentComing(this.what);
+  final String what;
+
+  @override
+  Widget build(BuildContext context) => AppCard(
+        child: MascotSays(
+          pose: MascotPose.thinking,
+          size: 40,
+          text: '$what: being written and checked for Dutch gardens. Coming in the content update.',
+        ),
+      );
 }
 
 class _Neighbours extends StatelessWidget {
@@ -332,6 +381,26 @@ class _Neighbours extends StatelessWidget {
     if (good.isEmpty && bad.isEmpty) {
       return Text('No companion data yet.', style: AppText.bodyMuted(context));
     }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(bottom: 8),
+          child: Pill(label: 'Draft — verified matrix lands in the content update', icon: Icons.edit_note, color: AppColors.clay),
+        ),
+        _NeighboursBody(good: good, bad: bad),
+      ],
+    );
+  }
+}
+
+class _NeighboursBody extends StatelessWidget {
+  const _NeighboursBody({required this.good, required this.bad});
+  final List<String> good;
+  final List<String> bad;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -398,108 +467,6 @@ class _NeighbourRow extends StatelessWidget {
             ),
           ),
         ),
-      ],
-    );
-  }
-}
-
-class _Soil extends StatelessWidget {
-  const _Soil({required this.crop});
-  final Crop crop;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget factRow(IconData icon, String label, String value) => Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Icon(icon, size: 20, color: AppColors.sprout),
-            const SizedBox(width: 12),
-            SizedBox(width: 72, child: Text(label, style: AppText.bodyMuted(context))),
-            Expanded(child: Text(value, style: AppText.label(context))),
-          ]),
-        );
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        factRow(Icons.science_outlined, 'Soil pH', soilPh(crop)),
-        factRow(Icons.grass, 'Soil type', soilType(crop)),
-        const SizedBox(height: 6),
-        Text(soilPrep(crop), style: AppText.body(context)),
-      ],
-    );
-  }
-}
-
-class _Benefits extends StatelessWidget {
-  const _Benefits({required this.crop});
-  final Crop crop;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(benefits(crop), style: AppText.body(context)),
-        const SizedBox(height: 14),
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.hairline),
-          ),
-          child: Column(
-            children: [
-              for (final n in nutrition(crop))
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  child: Row(children: [
-                    Expanded(child: Text(n.label, style: AppText.body(context))),
-                    Text(n.value, style: AppText.label(context)),
-                    if (n.percent != null) ...[
-                      const SizedBox(width: 10),
-                      SizedBox(
-                        width: 44,
-                        child: Text(n.percent!,
-                            textAlign: TextAlign.right,
-                            style: AppText.caption(context, color: AppColors.sprout)),
-                      ),
-                    ] else
-                      const SizedBox(width: 54),
-                  ]),
-                ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _Faqs extends StatelessWidget {
-  const _Faqs({required this.crop});
-  final Crop crop;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        for (final f in faqs(crop))
-          Theme(
-            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-            child: ExpansionTile(
-              tilePadding: EdgeInsets.zero,
-              childrenPadding: const EdgeInsets.only(bottom: 10),
-              title: Text(f.q, style: AppText.label(context)),
-              iconColor: AppColors.sprout,
-              collapsedIconColor: AppColors.muted,
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(f.a, style: AppText.bodyMuted(context)),
-                ),
-              ],
-            ),
-          ),
       ],
     );
   }

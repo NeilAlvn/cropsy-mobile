@@ -233,6 +233,21 @@ class GardenRepository extends ChangeNotifier {
     return null;
   }
 
+  /// Planning 5.2: months (1–12) with an outdoor sow/plant window for a crop.
+  List<int> plantMonths(Crop crop) {
+    final months = <int>{};
+    for (final w in scheduleCrop(crop, frost)) {
+      if (w.method == MethodType.sowIndoor) continue;
+      var d = parseIso(w.start);
+      final end = parseIso(w.end);
+      while (!d.isAfter(end)) {
+        months.add(d.month);
+        d = DateTime.utc(d.year, d.month + 1, 1);
+      }
+    }
+    return months.toList()..sort();
+  }
+
   /// Home 2.4: growing plants with their harvest window, soonest first.
   Future<List<({GardenPlantRow plant, PathNode harvest})>> upcomingHarvests() async {
     final out = <({GardenPlantRow plant, PathNode harvest})>[];

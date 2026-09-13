@@ -164,6 +164,7 @@ class _PlantList extends StatelessWidget {
                               style: AppText.caption(context),
                             ),
                             if (!planning) _HarvestCountdown(plant: p),
+                            if (planning) _PlantIn(cropSlug: p.cropSlug),
                           ],
                         ),
                       ),
@@ -367,6 +368,28 @@ class _HarvestCountdown extends StatelessWidget {
           ]),
         );
       },
+    );
+  }
+}
+
+const _monthAbbr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/// GrowIt 5.2 "Plant in: Mar, Apr, May" — from the engine, for this region.
+class _PlantIn extends StatelessWidget {
+  const _PlantIn({required this.cropSlug});
+  final String cropSlug;
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    final crop = repo.cropBySlug(cropSlug);
+    if (crop == null) return const SizedBox.shrink();
+    final months = repo.plantMonths(crop);
+    if (months.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Text('Plant in: ${months.map((m) => _monthAbbr[m - 1]).join(', ')}',
+          style: AppText.caption(context, color: AppColors.sprout)),
     );
   }
 }

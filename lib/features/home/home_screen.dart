@@ -281,7 +281,7 @@ class _PremiumBanner extends StatelessWidget {
               const Icon(Icons.workspace_premium, color: Colors.white, size: 22),
               const SizedBox(width: 12),
               Expanded(
-                child: Text('Try Cropsy Premium free for 7 days',
+                child: Text('Unlock lifetime — one price, forever',
                     style: AppText.label(context, color: Colors.white)),
               ),
               const Icon(Icons.chevron_right, color: Colors.white70),
