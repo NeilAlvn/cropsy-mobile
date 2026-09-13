@@ -54,7 +54,7 @@ Run: `flutter test` and `flutter analyze` (both green).
 
 ## Bundle ID is provisional
 
-`applicationId` / bundle id is `app.visiontech.cropsy` (VisionTech B.V. is the
+`applicationId` / bundle id is `com.cropsyapp.app` (VisionTech B.V. is the
 stable legal entity). The `cropsy` segment is **not yet final**:
 
 - an **EUIPO trademark check** on "Cropsy" is outstanding — *Cropsy Technologies
