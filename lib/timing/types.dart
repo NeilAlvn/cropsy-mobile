@@ -92,6 +92,35 @@ class CropMethod {
       );
 }
 
+/// Days between waterings per container bucket (see `watering.dart`).
+class WaterCadence {
+  const WaterCadence({
+    required this.small,
+    required this.medium,
+    required this.large,
+    required this.ground,
+  });
+
+  /// ≤ 5 L
+  final int small;
+
+  /// 6–12 L
+  final int medium;
+
+  /// > 12 L
+  final int large;
+
+  /// in-ground / bed (pot litres null)
+  final int ground;
+
+  factory WaterCadence.fromJson(Map<String, dynamic> j) => WaterCadence(
+        small: (j['small'] as num).toInt(),
+        medium: (j['medium'] as num).toInt(),
+        large: (j['large'] as num).toInt(),
+        ground: (j['ground'] as num).toInt(),
+      );
+}
+
 /// A crop and every way to grow it. Frost-relative data the client evaluates.
 class Crop {
   const Crop({
@@ -109,6 +138,14 @@ class Crop {
     required this.harvestDaysMax,
     required this.sources,
     required this.verified,
+    this.difficulty,
+    this.waterCadenceDays,
+    this.feedCadenceDays,
+    this.depthMm,
+    this.germinationDays,
+    this.daysToTransplant,
+    this.perennial = false,
+    this.image,
   });
 
   final String slug;
@@ -125,6 +162,19 @@ class Crop {
   final num harvestDaysMax;
   final List<String> sources;
   final bool verified;
+
+  // PRD §8.1 fields. null = unknown; the path builder omits the node.
+  /// 1 = easy, 2 = medium, 3 = hard.
+  final int? difficulty;
+  final WaterCadence? waterCadenceDays;
+  final int? feedCadenceDays;
+  final int? depthMm;
+  final int? germinationDays;
+  final int? daysToTransplant;
+  final bool perennial;
+
+  /// File name in `assets/crops/`, or null.
+  final String? image;
 
   factory Crop.fromJson(Map<String, dynamic> j) {
     final harvest = j['harvest'] as Map<String, dynamic>;
@@ -146,6 +196,16 @@ class Crop {
       sources:
           (j['sources'] as List).map((s) => s as String).toList(growable: false),
       verified: j['verified'] as bool,
+      difficulty: (j['difficulty'] as num?)?.toInt(),
+      waterCadenceDays: j['water_cadence_days'] == null
+          ? null
+          : WaterCadence.fromJson(j['water_cadence_days'] as Map<String, dynamic>),
+      feedCadenceDays: (j['feed_cadence_days'] as num?)?.toInt(),
+      depthMm: (j['depth_mm'] as num?)?.toInt(),
+      germinationDays: (j['germination_days'] as num?)?.toInt(),
+      daysToTransplant: (j['days_to_transplant'] as num?)?.toInt(),
+      perennial: j['perennial'] as bool? ?? false,
+      image: j['image'] as String?,
     );
   }
 }
