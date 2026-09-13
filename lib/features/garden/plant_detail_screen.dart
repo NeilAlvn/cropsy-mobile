@@ -16,6 +16,7 @@ import '../../timing/dates.dart';
 import '../../timing/replan.dart';
 import '../repository_scope.dart';
 import 'garden_repository.dart';
+import '../../sync/photo_uploader.dart';
 import 'growth_log_sheet.dart';
 import 'insights.dart';
 import 'timeline_view.dart';
@@ -170,6 +171,8 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
       photoPaths: log.photoPaths,
     );
     if (mounted) setState(() {});
+    // Signed in → push the photos now; offline just waits for the next sync.
+    if (log.photoPaths.isNotEmpty && mounted) AuthScope.maybeOf(context)?.syncNow();
   }
 
   Future<void> _logHarvest(GardenRepository repo, GardenPlantRow plant) async {
@@ -293,11 +296,16 @@ class _Journal extends StatelessWidget {
                         ),
                         clipBehavior: Clip.antiAlias,
                         alignment: Alignment.center,
-                        child: e.photoPath != null && File(e.photoPath!).existsSync()
-                            ? Image.file(File(e.photoPath!), fit: BoxFit.cover)
-                            : Text(
+                        child: e.photoPath == null
+                            ? Text(
                                 e.mood == null ? '📝' : moods[e.mood!.clamp(1, 4) - 1].$2,
                                 style: const TextStyle(fontSize: 22),
+                              )
+                            : FutureBuilder<File?>(
+                                future: PhotoUploader.localFile(e.photoPath!),
+                                builder: (context, snap) => snap.data == null
+                                    ? const Icon(Icons.photo_outlined, color: AppColors.muted)
+                                    : Image.file(snap.data!, fit: BoxFit.cover),
                               ),
                       ),
                       const SizedBox(width: 12),

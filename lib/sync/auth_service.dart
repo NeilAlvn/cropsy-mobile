@@ -11,6 +11,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../config.dart';
 import '../features/garden/garden_repository.dart';
+import 'photo_uploader.dart';
 import 'supabase_transport.dart';
 import 'sync_engine.dart';
 
@@ -62,6 +63,8 @@ class AuthService extends ChangeNotifier {
     syncing = true;
     notifyListeners();
     try {
+      // Photos first: the row then pushes storage keys instead of local paths.
+      await PhotoUploader(repo.db, _client).uploadPending(repo.owner);
       final report = await SyncEngine(repo.db, SupabaseTransport(_client)).sync(repo.owner);
       lastReport = report;
       lastSyncAt = DateTime.now();
