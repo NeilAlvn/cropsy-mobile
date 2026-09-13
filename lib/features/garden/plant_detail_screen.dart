@@ -13,6 +13,7 @@ import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/typography.dart';
 import '../../timing/dates.dart';
+import '../../timing/replan.dart';
 import '../repository_scope.dart';
 import 'garden_repository.dart';
 import 'growth_log_sheet.dart';
@@ -127,14 +128,21 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                       _StageRow(plant: plant, repo: repo, onChanged: () => setState(() {})),
                       const SizedBox(height: 16),
                       if (repo.cropBySlug(plant.cropSlug) case final crop?)
-                        InsightsList(
-                          insights: insightsFor(
-                            crop: crop,
-                            frost: repo.frost,
-                            today: repo.today,
-                            obs: repo.lastObservations,
-                            potLitres: plant.potLitres,
-                          ),
+                        FutureBuilder<List<PathNode>>(
+                          future: repo.pathFor(plant.id),
+                          builder: (context, snap) {
+                            final harvest = snap.data?.where((n) => n.kind == NodeKind.harvest).firstOrNull;
+                            return InsightsList(
+                              insights: insightsFor(
+                                crop: crop,
+                                frost: repo.frost,
+                                today: repo.today,
+                                obs: repo.lastObservations,
+                                potLitres: plant.potLitres,
+                                harvestEnd: harvest?.until ?? harvest?.due,
+                              ),
+                            );
+                          },
                         ),
                       SectionHeader('Your path'),
                       TimelineView(plantId: plant.id),

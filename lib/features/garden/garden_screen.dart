@@ -16,6 +16,7 @@ import '../harvest/harvest_screen.dart';
 import '../this_week/this_week_screen.dart';
 import 'garden_repository.dart';
 import 'plant_detail_screen.dart';
+import 'season_path_view.dart';
 import '../repository_scope.dart';
 
 class GardenScreen extends StatefulWidget {
@@ -124,6 +125,7 @@ class _PlantList extends StatelessWidget {
         return ListView(
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
           children: [
+            if (planning) ...[const SeasonPathView(), const SizedBox(height: 18), SectionHeader('Planned')],
             for (final p in plants)
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),

@@ -24,6 +24,7 @@ List<Insight> insightsFor({
   required String today,
   required List<DayObservation>? obs,
   required int? potLitres,
+  String? harvestEnd,
 }) {
   final out = <Insight>[];
   final t = parseIso(today);
@@ -32,6 +33,9 @@ List<Insight> insightsFor({
   final toFirst = firstFrost.difference(t).inDays;
   final toLast = lastFrost.difference(t).inDays;
 
+  if (crop.frostTender && harvestEnd != null && harvestEnd.compareTo(frost.firstFrost) > 0) {
+    out.add(Insight(MascotPose.shrug, 'The harvest window runs past the first frost (${frost.firstFrost}). Grow it anyway for what ripens first, move the pot inside, or swap for a faster variety next time.'));
+  }
   if (crop.frostTender && toFirst >= 0 && toFirst <= 21) {
     out.add(Insight(MascotPose.frost, 'First frost is expected in about $toFirst days (${frost.firstFrost}). ${crop.names.en} does not survive it — pick what is ripe and cover or move it in.'));
   }

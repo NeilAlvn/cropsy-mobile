@@ -27,6 +27,7 @@ import '../../timing/crop_snapshot.dart';
 import '../../timing/dates.dart';
 import '../../timing/engine.dart';
 import '../../timing/replan.dart';
+import '../../timing/season.dart';
 import '../../timing/types.dart';
 import '../../timing/watering.dart';
 import '../../timing/streak.dart';
@@ -257,6 +258,25 @@ class GardenRepository extends ChangeNotifier {
       }
     }
     return null;
+  }
+
+  /// Season path (PRD 7.4) for every plant in the garden, planning included.
+  Future<List<SeasonNode>> seasonNodes() async {
+    final all = await plants();
+    final sp = <SeasonPlant>[];
+    for (final p in all) {
+      PathNode? harvest;
+      if (p.plantedOn != null) {
+        for (final n in await pathFor(p.id)) {
+          if (n.kind == NodeKind.harvest && n.loggedOn == null) {
+            harvest = n;
+            break;
+          }
+        }
+      }
+      sp.add(SeasonPlant(plantId: p.id, cropSlug: p.cropSlug, harvestStart: harvest?.due, harvestEnd: harvest?.until ?? harvest?.due));
+    }
+    return seasonPath(sp, crops, frost);
   }
 
   /// Planning 5.2: months (1–12) with an outdoor sow/plant window for a crop.
