@@ -68,6 +68,9 @@ class _SeasonPathViewState extends State<SeasonPathView> {
             else
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
+                controller: ScrollController(
+                  initialScrollOffset: ((parseIso(repo.today).month - 3).clamp(0, 6)) * _monthW,
+                ),
                 child: SizedBox(
                   width: 12 * _monthW,
                   child: Column(

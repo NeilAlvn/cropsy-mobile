@@ -224,6 +224,15 @@ class FrostProfile {
         lastFrost: j['last_frost'] as String,
         firstFrost: j['first_frost'] as String,
       );
+
+  /// Same month/day, a different year. Presets and cached profiles carry the
+  /// year they were computed for; the engine wants this season's.
+  // ponytail: one year for both anchors; a garden in autumn planning next
+  // spring gets next year's last frost only when the caller passes year + 1.
+  FrostProfile withYear(int year) => FrostProfile(
+        lastFrost: '$year${lastFrost.substring(4)}',
+        firstFrost: '$year${firstFrost.substring(4)}',
+      );
 }
 
 /// A concrete, dated window the app can show and remind on.
