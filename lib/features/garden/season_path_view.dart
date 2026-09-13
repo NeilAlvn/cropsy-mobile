@@ -12,6 +12,7 @@ import '../../design/typography.dart';
 import '../../timing/dates.dart';
 import '../../timing/season.dart';
 import '../repository_scope.dart';
+import 'planner_grid_screen.dart';
 
 const _monthAbbr = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 const _monthW = 44.0;
@@ -42,6 +43,25 @@ class _SeasonPathViewState extends State<SeasonPathView> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            AppCard(
+              onTap: () async {
+                final gardens = await repo.gardens();
+                if (gardens.isEmpty || !context.mounted) return;
+                await Navigator.of(context).push(MaterialPageRoute(builder: (_) => PlannerGridScreen(garden: gardens.first)));
+              },
+              child: Row(children: [
+                const Icon(Icons.grid_on, color: AppColors.sprout),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text('Garden planner', style: AppText.label(context)),
+                    Text('Lay out your bed in 30 cm squares.', style: AppText.caption(context)),
+                  ]),
+                ),
+                const Icon(Icons.chevron_right, color: AppColors.muted),
+              ]),
+            ),
+            const SizedBox(height: 18),
             SectionHeader('Your season'),
             if (lanes.isEmpty)
               const MascotSays(pose: MascotPose.idle, text: 'Add a plant and the season lays itself out here.')

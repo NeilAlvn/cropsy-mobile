@@ -260,6 +260,14 @@ class GardenRepository extends ChangeNotifier {
     return null;
   }
 
+  /// Planner grid layout (PRD 5.1), JSON `{cols, rows, cells}` on the garden.
+  Future<void> saveLayout(String gardenId, Map<String, dynamic> layout) async {
+    await (db.update(db.gardens)..where((t) => t.id.equals(gardenId))).write(
+      GardensCompanion(layout: Value(jsonEncode(layout)), dirty: const Value(true)),
+    );
+    notifyListeners();
+  }
+
   /// Season path (PRD 7.4) for every plant in the garden, planning included.
   Future<List<SeasonNode>> seasonNodes() async {
     final all = await plants();

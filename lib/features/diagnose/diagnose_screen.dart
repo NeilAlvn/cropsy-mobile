@@ -1,27 +1,41 @@
-/// Diagnose — a Phase-2 feature shown as a polished stub so Luuk can react to the
-/// full vision. AI plant-health diagnosis (camera) + a disease library by plant
-/// part. No real AI in the prototype.
+/// Diagnose (PRD 5.7 / 7.1): the offline common-problems browser by plant
+/// part, from the verified content snapshot. Auto-diagnose (third-party API)
+/// is Phase 4 and stays greyed until then — never the headline.
 library;
 
 import 'package:flutter/material.dart';
 
 import '../../design/colors.dart';
 import '../../design/components.dart';
+import '../../design/mascot.dart';
 import '../../design/typography.dart';
-import '../scan/scan_screen.dart';
+import '../../timing/content_snapshot.dart';
+import '../repository_scope.dart';
 
-class DiagnoseScreen extends StatelessWidget {
+const _parts = <(String, String, String)>[
+  ('whole', '🌿', 'Whole plant'),
+  ('leaves', '🍃', 'Leaves'),
+  ('stems', '🌱', 'Stems'),
+  ('flowers', '🌸', 'Flowers'),
+  ('fruits', '🍅', 'Fruits'),
+  ('roots', '🥕', 'Roots'),
+];
+
+class DiagnoseScreen extends StatefulWidget {
   const DiagnoseScreen({super.key});
 
-  static const _parts = [
-    ('🌿', 'Whole plant'),
-    ('🍃', 'Leaves'),
-    ('🌱', 'Stems'),
-    ('🍅', 'Fruit'),
-  ];
+  @override
+  State<DiagnoseScreen> createState() => _DiagnoseScreenState();
+}
+
+class _DiagnoseScreenState extends State<DiagnoseScreen> {
+  String? _part;
 
   @override
   Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    final all = repo.content.problems;
+    final problems = _part == null ? all : all.where((p) => p.parts.contains(_part)).toList();
     return SafeArea(
       bottom: false,
       child: ListView(
@@ -29,59 +43,104 @@ class DiagnoseScreen extends StatelessWidget {
         children: [
           Text('Diagnose', style: AppText.kicker(context)),
           const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.all(22),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.hairline),
-            ),
-            child: Column(
-              children: [
-                const Text('🩺', style: TextStyle(fontSize: 44)),
-                const SizedBox(height: 10),
-                Text('Diagnose a sick plant', style: AppText.title(context)),
-                const SizedBox(height: 4),
-                Text('Snap a photo and get its health back',
-                    style: AppText.bodyMuted(context), textAlign: TextAlign.center),
-                const SizedBox(height: 16),
-                PrimaryButton(
-                  label: 'Auto diagnose',
-                  icon: Icons.center_focus_strong,
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const ScanScreen(mode: ScanMode.diagnose))),
+          AppCard(
+            child: Row(children: [
+              const Icon(Icons.center_focus_strong, color: AppColors.muted),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Auto diagnose from a photo', style: AppText.label(context, color: AppColors.muted)),
+                    Text('Coming after the beta. Always a guess, never a verdict.', style: AppText.caption(context)),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ]),
           ),
           const SizedBox(height: 24),
           SectionHeader('Common problems'),
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            childAspectRatio: 2.4,
+          Text('By plant part', style: AppText.caption(context)),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
             children: [
-              for (final (emoji, label) in _parts)
-                AppCard(
-                  onTap: () {},
-                  child: Row(
-                    children: [
-                      Text(emoji, style: const TextStyle(fontSize: 24)),
-                      const SizedBox(width: 10),
-                      Text(label, style: AppText.heading(context)),
-                    ],
-                  ),
-                ),
+              ChoiceChip(label: const Text('All'), selected: _part == null, onSelected: (_) => setState(() => _part = null)),
+              for (final (key, emoji, label) in _parts)
+                ChoiceChip(label: Text('$emoji $label'), selected: _part == key, onSelected: (_) => setState(() => _part = key)),
             ],
           ),
           const SizedBox(height: 16),
-          Center(
-            child: Text('Coming soon — Phase 2',
-                style: AppText.caption(context)),
-          ),
+          if (all.isEmpty)
+            const MascotSays(
+              pose: MascotPose.thinking,
+              text: 'The 25 problems common on Dutch balconies — slakken, luizen, meeldauw, neusrot… — are being written and checked. They land with the content update.',
+            )
+          else if (problems.isEmpty)
+            Text('Nothing listed for that part yet.', style: AppText.bodyMuted(context))
+          else
+            for (final p in problems)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: AppCard(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ProblemScreen(problem: p))),
+                  child: Row(children: [
+                    Pill(label: p.kind, color: p.kind == 'pest' ? AppColors.clay : AppColors.sky),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(p.names.en, style: AppText.heading(context)),
+                          Text(p.symptoms.en, style: AppText.caption(context), maxLines: 2, overflow: TextOverflow.ellipsis),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.chevron_right, color: AppColors.muted),
+                  ]),
+                ),
+              ),
+        ],
+      ),
+    );
+  }
+}
+
+class ProblemScreen extends StatelessWidget {
+  const ProblemScreen({super.key, required this.problem});
+  final Problem problem;
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    Widget section(String title, String body) => Padding(
+          padding: const EdgeInsets.only(bottom: 18),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            SectionHeader(title),
+            Text(body, style: AppText.body(context)),
+          ]),
+        );
+    return Scaffold(
+      backgroundColor: AppColors.paper,
+      appBar: AppBar(
+        backgroundColor: AppColors.paper,
+        surfaceTintColor: AppColors.paper,
+        iconTheme: const IconThemeData(color: AppColors.ink),
+        title: Text(problem.names.en, style: AppText.heading(context)),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
+        children: [
+          Text(problem.names.nl, style: AppText.bodyMuted(context)),
+          const SizedBox(height: 12),
+          section('Symptoms', problem.symptoms.en),
+          section('Treatment (organic first)', problem.treatment.en),
+          section('Prevention', problem.prevention.en),
+          if (problem.affects.isNotEmpty) ...[
+            SectionHeader('Often on'),
+            Wrap(spacing: 8, runSpacing: 8, children: [for (final s in problem.affects) Pill(label: repo.cropName(s))]),
+          ],
         ],
       ),
     );
