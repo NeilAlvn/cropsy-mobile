@@ -29,7 +29,7 @@ class ExploreScreen extends StatelessWidget {
                 id: c.slug,
                 title: c.title.en,
                 subtitle: c.intro.en,
-                crops: [for (final s in c.cropSlugs) if (repo.cropBySlug(s) case final crop?) crop],
+                crops: [for (final s in c.cropSlugs) ?repo.cropBySlug(s)],
               ),
           ];
     return SafeArea(
