@@ -10,7 +10,9 @@ import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/typography.dart';
 import '../../timing/dates.dart';
+import '../../timing/weather_adjust.dart' show TaskKind;
 import '../garden/garden_repository.dart';
+import '../garden/plant_detail_screen.dart';
 import '../repository_scope.dart';
 
 class ThisWeekScreen extends StatelessWidget {
@@ -169,11 +171,23 @@ class _TaskTile extends StatelessWidget {
   final ThisWeekItem item;
   final GardenRepository repo;
 
+  /// Waterings toggle. Path nodes (sow, plant out, feed, harvest…) open the
+  /// plant's path so the user can back-date or skip with a reason (§7.1).
+  Future<void> _tap(BuildContext context) async {
+    if (item.kind == TaskKind.water || item.completed) {
+      await repo.setTaskCompleted(item.taskId, !item.completed);
+      return;
+    }
+    final plantId = item.plantId;
+    if (plantId == null) return;
+    await Navigator.of(context).push(MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: plantId)));
+  }
+
   @override
   Widget build(BuildContext context) {
     final hint = item.hint;
     return AppCard(
-      onTap: () => repo.setTaskCompleted(item.taskId, !item.completed),
+      onTap: () => _tap(context),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

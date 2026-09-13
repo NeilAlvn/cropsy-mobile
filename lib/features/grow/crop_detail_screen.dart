@@ -64,6 +64,7 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final crop = widget.crop;
+    final repo = RepositoryScope.of(context);
     return Scaffold(
       backgroundColor: AppColors.paper,
       body: Stack(
@@ -102,6 +103,40 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                   ],
                 ),
               ),
+              if (repo.content.varietiesOf(crop.slug).isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SectionHeader('Types'),
+                      SizedBox(
+                        height: 84,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            for (final v in repo.content.varietiesOf(crop.slug))
+                              Container(
+                                width: 160,
+                                margin: const EdgeInsets.only(right: 10),
+                                padding: const EdgeInsets.all(10),
+                                decoration: Neo.box(color: AppColors.surface),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(v.names.en, style: AppText.label(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                    Text(v.traits.take(3).join(' · '), style: AppText.caption(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                    const Spacer(),
+                                    Text(v.suppliers.isEmpty ? '' : 'at ${v.suppliers.first}', style: AppText.caption(context, color: AppColors.sprout)),
+                                  ],
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               _NavChips(sections: _sections, onTap: _jump),
               _section('Calendar', 'Planting calendar', _Calendar(crop: crop)),
               _section('Timeline', 'Growth timeline', _Timeline(crop: crop)),

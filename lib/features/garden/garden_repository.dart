@@ -39,6 +39,7 @@ import 'weather_service.dart';
 class ThisWeekItem {
   const ThisWeekItem({
     required this.taskId,
+    this.plantId,
     required this.cropSlug,
     required this.cropName,
     required this.category,
@@ -49,6 +50,7 @@ class ThisWeekItem {
   });
 
   final String taskId;
+  final String? plantId;
   final String cropSlug;
   final String cropName;
   final String category;
@@ -772,6 +774,7 @@ class GardenRepository extends ChangeNotifier {
         if (plantById[r.gardenPlantId] != null)
           ThisWeekItem(
             taskId: r.id,
+            plantId: r.gardenPlantId,
             cropSlug: plantById[r.gardenPlantId]!.cropSlug,
             cropName: cropName(plantById[r.gardenPlantId]!.cropSlug),
             category: cropCategory(plantById[r.gardenPlantId]!.cropSlug),
