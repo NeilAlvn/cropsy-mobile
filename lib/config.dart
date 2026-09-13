@@ -3,7 +3,7 @@
 /// Luuk points it at the Vercel project (PRD Phase 0).
 library;
 
-const apiBaseUrl = 'https://cropsy-l88s-medias-projects.vercel.app';
+const apiBaseUrl = 'https://api.cropsyapp.com';
 const websiteUrl = 'https://cropsy.app';
 const supabaseUrl = 'https://trjqvikbtqpmxytzmhsb.supabase.co';
 const supabaseAnonKey =
