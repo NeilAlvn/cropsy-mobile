@@ -64,7 +64,57 @@ class GardenRepository extends ChangeNotifier {
   String regionName = defaultRegion.name;
 
   /// Owner uuid on every row: anonymous until sign-in (PRD Phase 1 auth).
-  final String owner;
+  String owner;
+
+  /// Sign-in: re-label every local row with the auth uid so it syncs under
+  /// RLS, and remember the uid as the owner from now on.
+  Future<void> adoptOwner(String uid) async {
+    final old = owner;
+    await db.transaction(() async {
+      for (final t in ['gardens', 'garden_plants', 'tasks', 'journal_entries', 'harvests']) {
+        await db.customUpdate(
+          'UPDATE $t SET owner = ?, dirty = 1 WHERE owner = ?',
+          variables: [Variable.withString(uid), Variable.withString(old)],
+          updateKind: UpdateKind.update,
+        );
+      }
+      // profiles.id must equal the uid on the server: re-key the anonymous row.
+      await db.customUpdate(
+        'UPDATE profiles SET id = ?, owner = ?, dirty = 1 WHERE owner = ?',
+        variables: [Variable.withString(uid), Variable.withString(uid), Variable.withString(old)],
+        updateKind: UpdateKind.update,
+      );
+      await db.into(db.appMeta).insert(
+            AppMetaCompanion.insert(key: AppDatabase.ownerKey, value: uid),
+            mode: InsertMode.insertOrReplace,
+          );
+    });
+    owner = uid;
+    notifyListeners();
+  }
+
+  // ── Profile (PRD 1.6 answers, streaks) ──────────────────────────────────
+  Future<ProfileRow?> profile() =>
+      (db.select(db.profiles)..where((t) => t.id.equals(owner))).getSingleOrNull();
+
+  Future<void> saveProfile({Map<String, dynamic>? preferences, String? lang, String? displayName}) async {
+    final existing = await profile();
+    final merged = {...?(existing == null ? null : jsonDecode(existing.preferences) as Map<String, dynamic>), ...?preferences};
+    await db.into(db.profiles).insert(
+          ProfilesCompanion(
+            id: Value(owner),
+            owner: Value(owner),
+            displayName: Value(displayName ?? existing?.displayName),
+            lang: Value(lang ?? existing?.lang ?? 'nl'),
+            preferences: Value(jsonEncode(merged)),
+            streakCount: Value(existing?.streakCount ?? 0),
+            streakFrozenUntil: Value(existing?.streakFrozenUntil),
+            dirty: const Value(true),
+          ),
+          mode: InsertMode.insertOrReplace,
+        );
+    notifyListeners();
+  }
 
   final String? _fixedToday;
   String get today => _fixedToday ?? _localToday();

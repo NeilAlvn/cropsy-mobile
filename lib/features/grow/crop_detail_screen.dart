@@ -20,6 +20,7 @@ import '../../design/widgets.dart';
 import '../../timing/dates.dart';
 import '../../timing/types.dart';
 import '../repository_scope.dart';
+import 'add_plant_sheet.dart';
 import 'planting_calendar_bar.dart';
 
 class CropDetailScreen extends StatefulWidget {
@@ -531,11 +532,20 @@ class _Cta extends StatelessWidget {
     Future<void> add({required bool growing}) async {
       final gardens = await repo.gardens();
       if (gardens.isEmpty) return;
+      PlantDetails? details;
+      if (growing) {
+        if (!context.mounted) return;
+        details = await showAddPlantSheet(context, crop: crop, today: repo.today);
+        if (details == null) return;
+      }
       await repo.addPlant(
         gardenId: gardens.first.id,
         cropSlug: crop.slug,
-        potLitres: crop.minPotLitres?.toInt(),
-        plantedOn: growing ? repo.today : null,
+        potLitres: growing ? details!.potLitres : crop.minPotLitres?.toInt(),
+        plantedOn: details?.plantedOn,
+        method: details?.method,
+        place: details?.place,
+        varietySlug: details?.variety,
       );
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
