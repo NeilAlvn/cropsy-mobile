@@ -15,7 +15,7 @@ const authRedirect = 'com.cropsyapp.app://login-callback';
 /// RevenueCat public SDK keys (safe in the app). Empty = purchases off: the
 /// paywall explains, everything stays free-tier. Filled once the App Store
 /// Connect products exist (PRD §9, Luuk).
-const revenueCatIosKey = '';
+const revenueCatIosKey = 'appl_TyAhhbWkvGilYzwOHWpVEuoQtWX';
 const revenueCatAndroidKey = '';
 
 /// Entitlement identifier configured in RevenueCat.
