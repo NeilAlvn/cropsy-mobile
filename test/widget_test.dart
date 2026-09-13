@@ -3,6 +3,7 @@
 // hangs under `flutter test`). Engine + DB parity are covered by their own tests;
 // this proves the GardenRepository wires them together correctly.
 
+import 'package:cropsy/data/sample_week.dart';
 import 'package:cropsy/data/seed.dart';
 import 'package:cropsy/db/database.dart';
 import 'package:cropsy/features/garden/garden_repository.dart';
@@ -14,7 +15,7 @@ void main() {
 
   test('demo garden → This Week has tasks + a weather hint; complete + harvest',
       () async {
-    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday);
+    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday, observations: (_, _) async => sampleObservations(demoToday));
     await repo.seedDemoGarden();
 
     final items = await repo.thisWeek();
@@ -41,14 +42,14 @@ void main() {
 
   test('crop catalogue loads all 60 verified crops from the bundled snapshot',
       () async {
-    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday);
+    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday, observations: (_, _) async => sampleObservations(demoToday));
     expect(repo.crops, hasLength(60));
     expect(repo.cropVersion, isNotEmpty);
     repo.dispose();
   });
 
   test('GrowIt-parity: month recommendations, collections, lifecycle', () async {
-    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday);
+    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday, observations: (_, _) async => sampleObservations(demoToday));
 
     // "What to grow in May" returns crops with a May window.
     expect(repo.whatToGrowIn(5), isNotEmpty);

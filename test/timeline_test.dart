@@ -2,6 +2,7 @@
 // the tasks table; logging a late node moves the future and nothing else.
 
 import 'package:cropsy/data/frost_presets.dart';
+import 'package:cropsy/data/sample_week.dart';
 import 'package:cropsy/data/seed.dart';
 import 'package:cropsy/db/database.dart';
 import 'package:cropsy/features/garden/garden_repository.dart';
@@ -13,7 +14,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   test('start → path; late transplant log moves harvest, keeps the past', () async {
-    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday);
+    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday, observations: (_, _) async => sampleObservations(demoToday));
     final gardenId = await repo.createGarden(region: defaultRegion, kind: GardenKind.balcony);
     final plantId = await repo.addPlant(
       gardenId: gardenId,

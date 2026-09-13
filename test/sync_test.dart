@@ -2,6 +2,7 @@
 // remote rows and tombstones, dirty local rows survive a pull, cursor advances.
 
 import 'package:cropsy/data/frost_presets.dart';
+import 'package:cropsy/data/sample_week.dart';
 import 'package:cropsy/data/seed.dart';
 import 'package:cropsy/db/database.dart';
 import 'package:cropsy/features/garden/garden_repository.dart';
@@ -37,7 +38,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   test('push, pull, tombstone, dirty-wins, cursor', () async {
-    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday);
+    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday, observations: (_, _) async => sampleObservations(demoToday));
     final transport = FakeTransport();
     final engine = SyncEngine(repo.db, transport);
 
@@ -85,7 +86,7 @@ void main() {
   });
 
   test('a missing server table does not block the others', () async {
-    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday);
+    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday, observations: (_, _) async => sampleObservations(demoToday));
     final transport = _Failing(on: 'profiles');
     await repo.createGarden(region: defaultRegion, kind: GardenKind.garden);
     await repo.saveProfile(lang: 'en');

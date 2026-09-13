@@ -18,6 +18,7 @@ import '../../design/typography.dart';
 import '../../design/widgets.dart';
 import '../../timing/dates.dart';
 import '../../timing/replan.dart';
+import '../../timing/streak.dart';
 import '../../timing/types.dart';
 import '../../timing/weather_adjust.dart';
 import '../garden/garden_repository.dart';
@@ -73,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverToBoxAdapter(child: _SearchRow(onChanged: (q) => setState(() => _query = q))),
           SliverToBoxAdapter(child: _PremiumBanner(onTap: () => _openPaywall(context))),
           if (_query.isEmpty) ...[
+            const SliverToBoxAdapter(child: _StreakCard()),
             const SliverToBoxAdapter(child: _TodaysCare()),
             const SliverToBoxAdapter(child: _UpcomingHarvest()),
           ],
@@ -472,6 +474,53 @@ class _UpcomingHarvest extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// 7.3 — streak card: days in a row with something done or skipped with a
+/// reason. Two freeze days a month cover the gaps. No XP, no leagues.
+class _StreakCard extends StatelessWidget {
+  const _StreakCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    return FutureBuilder<StreakResult>(
+      future: repo.streak(),
+      builder: (context, snap) {
+        final s = snap.data;
+        if (s == null) return const SizedBox.shrink();
+        final month = repo.today.substring(0, 7);
+        final freezesLeft = (2 - (s.freezesUsed[month] ?? 0)).clamp(0, 2);
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+          child: AppCard(
+            child: Row(children: [
+              Mascot(s.count == 0 ? MascotPose.idle : s.todayOpen ? MascotPose.pointing : MascotPose.celebrating, size: 44),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      s.count == 0 ? 'Start a streak today' : '${s.count}-day streak${s.todayOpen ? ' · keep it going' : ''}',
+                      style: AppText.label(context),
+                    ),
+                    Text(
+                      s.count == 0
+                          ? 'Tick one task, or skip one with a reason — rain counts.'
+                          : '$freezesLeft freeze day${freezesLeft == 1 ? '' : 's'} left this month.',
+                      style: AppText.caption(context),
+                    ),
+                  ],
+                ),
+              ),
+              Text('🔥', style: TextStyle(fontSize: 22, color: s.count == 0 ? AppColors.hairline : null)),
+            ]),
           ),
         );
       },

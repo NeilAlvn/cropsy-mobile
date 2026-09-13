@@ -19,7 +19,6 @@ import '../../timing/replan.dart' as engine show logNode;
 import '../../data/collections.dart';
 import '../../data/crop_derived.dart';
 import '../../data/frost_presets.dart';
-import '../../data/sample_week.dart';
 import '../../data/seed.dart';
 import '../../db/database.dart';
 import '../../db/uuid.dart';
@@ -29,7 +28,9 @@ import '../../timing/engine.dart';
 import '../../timing/replan.dart';
 import '../../timing/types.dart';
 import '../../timing/watering.dart';
+import '../../timing/streak.dart';
 import '../../timing/weather_adjust.dart';
+import 'weather_service.dart';
 
 /// A single row in the "This Week" list — a concrete, dated thing to do, with an
 /// optional weather hint applied on top of the base schedule.
@@ -56,7 +57,14 @@ class ThisWeekItem {
 }
 
 class GardenRepository extends ChangeNotifier {
-  GardenRepository._(this.db, this._snapshot, this.frost, this.owner, this._fixedToday);
+  GardenRepository._(this.db, this._snapshot, this.frost, this.owner, this._fixedToday, this._observations);
+
+  /// Where the weather overlay gets its observations. Production: live
+  /// Open-Meteo via [WeatherService]; tests inject a scripted series.
+  final Future<List<DayObservation>?> Function(double lat, double lon) _observations;
+
+  /// Last observations used by [thisWeek], for the weather banner.
+  List<DayObservation>? lastObservations;
 
   final AppDatabase db;
   final CropSnapshot _snapshot;
@@ -128,7 +136,11 @@ class GardenRepository extends ChangeNotifier {
 
   /// Load the bundled crop snapshot, record its version, resolve the owner id.
   /// [today] pins the clock (tests); null = real calendar.
-  static Future<GardenRepository> create({required AppDatabase db, String? today}) async {
+  static Future<GardenRepository> create({
+    required AppDatabase db,
+    String? today,
+    Future<List<DayObservation>?> Function(double lat, double lon)? observations,
+  }) async {
     final raw = await rootBundle.loadString('assets/data/crops-snapshot.json');
     final snapshot = CropSnapshot.parse(raw);
     await db.into(db.appMeta).insert(
@@ -147,7 +159,10 @@ class GardenRepository extends ChangeNotifier {
       await db.into(db.appMeta).insert(
           AppMetaCompanion.insert(key: AppDatabase.ownerKey, value: owner));
     }
-    return GardenRepository._(db, snapshot, defaultRegion.profile, owner, today);
+    return GardenRepository._(
+      db, snapshot, defaultRegion.profile, owner, today,
+      observations ?? WeatherService(db).observations,
+    );
   }
 
   // ── Crop catalogue (F1) ────────────────────────────────────────────────
@@ -683,7 +698,13 @@ class GardenRepository extends ChangeNotifier {
                   (t.nodeKind.isNotNull() & t.completedAt.isNull()))))
         .get();
 
-    // Weather hints (F4): run the real adjuster over a prototype sample forecast.
+    // Weather hints (F4): the overlay runs on-device over live observations
+    // for the garden's coordinate. No observations → no hints, never invented.
+    final gardenRows = await gardens();
+    final lat = gardenRows.isEmpty ? null : gardenRows.first.lat;
+    final lon = gardenRows.isEmpty ? null : gardenRows.first.lon;
+    final obs = lat == null || lon == null ? null : await _observations(lat, lon);
+    lastObservations = obs;
     final plantById = {for (final p in await plants()) p.id: p};
     final timingTasks = <Task>[
       for (final r in rows)
@@ -699,8 +720,9 @@ class GardenRepository extends ChangeNotifier {
         ),
     ];
     final hints = {
-      for (final a in adjustTasks(timingTasks, sampleObservations(today)))
-        a.taskId: a,
+      if (obs != null)
+        for (final a in adjustTasks(timingTasks, obs, params: defaultAdjust.withToday(today)))
+          a.taskId: a,
     };
 
     final items = <ThisWeekItem>[
@@ -737,6 +759,34 @@ class GardenRepository extends ChangeNotifier {
       ),
     );
     notifyListeners();
+  }
+
+  // ── Streak (PRD 7.3) ───────────────────────────────────────────────────
+  /// Days with ≥1 task completed or explicitly skipped, as ISO dates.
+  Future<Set<String>> activeDays() async {
+    final rows = await (db.select(db.tasks)
+          ..where((t) => t.deletedAt.isNull() & (t.completedAt.isNotNull() | t.skipped.equals(true))))
+        .get();
+    return {
+      for (final r in rows)
+        if (r.completedAt != null) toIso(r.completedAt!.toUtc()) else r.due,
+    };
+  }
+
+  /// Streak ending today; persists the count on the profile for sync.
+  Future<StreakResult> streak({bool premium = false}) async {
+    final result = computeStreak(
+      await activeDays(),
+      today,
+      params: StreakParams(freezesPerMonth: premium ? null : 2),
+    );
+    final p = await profile();
+    if (p != null && p.streakCount != result.count) {
+      await (db.update(db.profiles)..where((t) => t.id.equals(owner))).write(
+        ProfilesCompanion(streakCount: Value(result.count), dirty: const Value(true)),
+      );
+    }
+    return result;
   }
 
   // ── Journal (F5) ───────────────────────────────────────────────────────

@@ -184,6 +184,20 @@ class AdjustParams {
 /// 30 degrees C is where containers start drying out within a day — the whole
 /// premise of this app. A raised bed buffers heat far better than a 10-litre
 /// balcony pot, so the threshold is deliberately not a field-grower's number.
+extension AdjustParamsCopy on AdjustParams {
+  /// Same rules, a different clock — the repository stamps `today`.
+  AdjustParams withToday(String? today) => AdjustParams(
+        rainLookbackDays: rainLookbackDays,
+        rainForecastDays: rainForecastDays,
+        wetThresholdMm: wetThresholdMm,
+        maxDeferDays: maxDeferDays,
+        heatThresholdC: heatThresholdC,
+        heatLookbackDays: heatLookbackDays,
+        heatDryMaxMm: heatDryMaxMm,
+        today: today,
+      );
+}
+
 const AdjustParams defaultAdjust = AdjustParams(
   rainLookbackDays: 2,
   rainForecastDays: 1,

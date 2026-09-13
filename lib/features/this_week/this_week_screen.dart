@@ -231,29 +231,42 @@ class _WeatherBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    final obs = repo.lastObservations;
+    if (obs == null) return const SizedBox.shrink();
+    final byDate = {for (final o in obs) o.date: o};
+    final today = byDate[repo.today];
+    if (today == null) return const SizedBox.shrink();
+    // What the overlay actually saw: rain over the last 3 days, heat ahead.
+    var recentRain = 0.0;
+    for (var d = 0; d < 3; d++) {
+      recentRain += (byDate[toIso(addDays(parseIso(repo.today), -d))]?.precipMm ?? 0).toDouble();
+    }
+    final hotAhead = obs.where((o) => o.date.compareTo(repo.today) >= 0).any((o) => o.tempMaxC >= 30);
+    final text = recentRain >= 10
+        ? 'Rained ${recentRain.round()} mm in the last three days — waterings around today are skipped.'
+        : hotAhead
+            ? 'Heat ahead (30°C+) — containers dry out in a day, so waterings move earlier.'
+            : 'Nothing dramatic in the forecast. The plan stands.';
+    final wet = recentRain >= 10;
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: AppColors.rain.withValues(alpha: 0.10),
+          color: (wet ? AppColors.rain : hotAhead ? AppColors.heat : AppColors.sprout).withValues(alpha: 0.10),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
           children: [
-            Expanded(
-              child: Text(
-                'Warm and dry ahead — containers dry out fast, so keep an eye '
-                'on watering.',
-                style: AppText.body(context, color: AppColors.ink),
-              ),
-            ),
+            Expanded(child: Text(text, style: AppText.body(context, color: AppColors.ink))),
             const SizedBox(width: 12),
             Column(
               children: [
-                const Icon(Icons.wb_sunny, color: AppColors.heat, size: 26),
+                Icon(wet ? Icons.umbrella : hotAhead ? Icons.wb_sunny : Icons.cloud_outlined,
+                    color: wet ? AppColors.rain : hotAhead ? AppColors.heat : AppColors.muted, size: 26),
                 const SizedBox(height: 2),
-                Text('24°', style: AppText.label(context)),
+                Text('${today.tempMaxC.round()}°', style: AppText.label(context)),
               ],
             ),
           ],
