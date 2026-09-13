@@ -210,6 +210,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         '${auth.lastReport?.ok == false ? ' · some tables failed' : ''}',
             style: AppText.caption(context),
           ),
+          if (auth.lastReport?.ok == false)
+            for (final e in auth.lastReport!.errors.entries)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text('${e.key}: ${e.value}', style: AppText.caption(context, color: AppColors.warn), maxLines: 3, overflow: TextOverflow.ellipsis),
+              ),
           const SizedBox(height: 12),
           Row(children: [
             Expanded(child: PrimaryButton(label: 'Sync now', onPressed: auth.syncing ? null : () => _run(() async => auth.syncNow()))),
