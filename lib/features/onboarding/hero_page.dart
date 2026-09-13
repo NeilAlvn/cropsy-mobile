@@ -150,7 +150,7 @@ class _HeroPageState extends State<HeroPage> {
                     Center(
                       child: TextButton(
                         onPressed: widget.onSkip,
-                        child: Text('Skip — explore a demo garden',
+                        child: Text('Already have an account? Sign in',
                             style: AppText.label(context,
                                 color: AppColors.muted)),
                       ),

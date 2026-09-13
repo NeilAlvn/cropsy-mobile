@@ -91,9 +91,11 @@ class _RootState extends State<_Root> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_hasGarden == null) {
+    // Runs on every repository change too: after a sign-in sync pulls a
+    // garden, onboarding gives way to the app without a restart.
+    if (_hasGarden != true) {
       RepositoryScope.of(context).hasGarden().then((v) {
-        if (mounted) setState(() => _hasGarden = v);
+        if (mounted && v != _hasGarden) setState(() => _hasGarden = v);
       });
     }
   }

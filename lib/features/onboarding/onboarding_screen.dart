@@ -21,6 +21,7 @@ import '../../notifications/reminders.dart';
 import '../../timing/types.dart';
 import '../location/frost_lookup.dart';
 import '../repository_scope.dart';
+import '../settings/settings_screen.dart';
 import 'hero_page.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -142,6 +143,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         subtitle: 'Planting dates and reminders tuned to Dutch & EU weather — built for balconies and containers.',
         buttonLabel: 'Get started',
         onNext: _next,
+        // Reinstall path: sign in, sync pulls the garden, the root re-gates.
+        onSkip: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
       ),
       _Step(
         onNext: _next,
