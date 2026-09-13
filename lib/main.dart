@@ -1,13 +1,12 @@
 // Cropsy prototype entry point.
 //
-// Boots the in-memory garden repository (seeded on demand), then gates on
-// onboarding: first run shows the F3 setup flow; once a garden exists, the
-// tabbed app (This Week · Garden · Grow · Harvest) takes over. Everything is
-// local + seeded — no auth/sync/live-weather/notifications — so it's a clean,
-// reproducible design prototype to react to.
+// Boots the on-device garden repository (SQLite in the documents dir), then
+// gates on onboarding: first run shows the setup flow; once a garden exists the
+// tabbed app takes over. Offline is the default state (PRD §4).
 
 import 'package:flutter/material.dart';
 
+import 'db/connection.dart';
 import 'design/colors.dart';
 import 'features/app_shell.dart';
 import 'features/garden/garden_repository.dart';
@@ -16,7 +15,7 @@ import 'features/repository_scope.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final repo = await GardenRepository.create();
+  final repo = await GardenRepository.create(db: openAppDatabase());
   runApp(CropsyApp(repository: repo));
 }
 

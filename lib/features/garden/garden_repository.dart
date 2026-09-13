@@ -1,18 +1,20 @@
 /// GardenRepository — the single seam between the UI, the local Drift DB, and
-/// the offline timing engine. The prototype runs on an in-memory DB seeded on
-/// launch, so every demo run is clean and reproducible.
+/// the offline timing engines (base schedule, watering, timeline replan).
 ///
-/// It exposes exactly what the screens need: the crop catalogue (F1), the user's
-/// gardens/plants (F3), the "This Week" task list with weather hints (F2 + F4),
-/// the per-plant journal (F5), and the harvest tracker (F7). Mutations bump a
+/// It exposes exactly what the screens need: the crop catalogue, the user's
+/// gardens/plants, the per-plant timeline path (PRD §7), the "This Week" list
+/// with weather hints, the journal, and the harvest tracker. Mutations bump a
 /// [ChangeNotifier] so screens rebuild.
+///
+/// `today` is injectable (tests pin a spring date); production reads the clock.
 library;
 
-import 'dart:math';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:drift/drift.dart';
+import '../../timing/replan.dart' as engine show logNode;
 
 import '../../data/collections.dart';
 import '../../data/crop_derived.dart';
@@ -20,9 +22,11 @@ import '../../data/frost_presets.dart';
 import '../../data/sample_week.dart';
 import '../../data/seed.dart';
 import '../../db/database.dart';
+import '../../db/uuid.dart';
 import '../../timing/crop_snapshot.dart';
 import '../../timing/dates.dart';
 import '../../timing/engine.dart';
+import '../../timing/replan.dart';
 import '../../timing/types.dart';
 import '../../timing/watering.dart';
 import '../../timing/weather_adjust.dart';
@@ -52,19 +56,29 @@ class ThisWeekItem {
 }
 
 class GardenRepository extends ChangeNotifier {
-  GardenRepository._(this.db, this._snapshot, this.frost);
+  GardenRepository._(this.db, this._snapshot, this.frost, this.owner, this._fixedToday);
 
   final AppDatabase db;
   final CropSnapshot _snapshot;
   FrostProfile frost;
   String regionName = defaultRegion.name;
 
-  final _rng = Random();
-  String get today => demoToday;
+  /// Owner uuid on every row: anonymous until sign-in (PRD Phase 1 auth).
+  final String owner;
 
-  /// Open an in-memory DB, load the bundled crop snapshot, record its version.
-  static Future<GardenRepository> create() async {
-    final db = AppDatabase.memory();
+  final String? _fixedToday;
+  String get today => _fixedToday ?? _localToday();
+
+  static String _localToday() {
+    final n = DateTime.now();
+    return '${n.year.toString().padLeft(4, '0')}-'
+        '${n.month.toString().padLeft(2, '0')}-'
+        '${n.day.toString().padLeft(2, '0')}';
+  }
+
+  /// Load the bundled crop snapshot, record its version, resolve the owner id.
+  /// [today] pins the clock (tests); null = real calendar.
+  static Future<GardenRepository> create({required AppDatabase db, String? today}) async {
     final raw = await rootBundle.loadString('assets/data/crops-snapshot.json');
     final snapshot = CropSnapshot.parse(raw);
     await db.into(db.appMeta).insert(
@@ -74,7 +88,16 @@ class GardenRepository extends ChangeNotifier {
           ),
           mode: InsertMode.insertOrReplace,
         );
-    return GardenRepository._(db, snapshot, defaultRegion.profile);
+    final ownerRow = await (db.select(db.appMeta)
+          ..where((t) => t.key.equals(AppDatabase.ownerKey)))
+        .getSingleOrNull();
+    var owner = ownerRow?.value;
+    if (owner == null) {
+      owner = newUuid();
+      await db.into(db.appMeta).insert(
+          AppMetaCompanion.insert(key: AppDatabase.ownerKey, value: owner));
+    }
+    return GardenRepository._(db, snapshot, defaultRegion.profile, owner, today);
   }
 
   // ── Crop catalogue (F1) ────────────────────────────────────────────────
@@ -147,24 +170,47 @@ class GardenRepository extends ChangeNotifier {
             ..where((t) => t.deletedAt.isNull() & t.plantedOn.isNotNull()))
           .get();
 
-  /// Rough days-until-harvest for a growing plant (GrowIt's "Harvest in N days"
-  /// countdown): planted date + the crop's min harvest days − today.
-  int? daysUntilHarvest(GardenPlantRow plant) {
+  /// Days until the timeline's harvest node (GrowIt's "Harvest in N days").
+  /// null while planning or when no path exists yet.
+  Future<int?> daysUntilHarvest(GardenPlantRow plant) async {
     if (plant.plantedOn == null) return null;
-    final crop = cropBySlug(plant.cropSlug);
-    if (crop == null) return null;
-    final harvest = addDays(parseIso(plant.plantedOn!), crop.harvestDaysMin.toInt());
-    return harvest.difference(parseIso(today)).inDays;
+    final path = await pathFor(plant.id);
+    for (final n in path) {
+      if (n.kind == NodeKind.harvest) {
+        return parseIso(n.due).difference(parseIso(today)).inDays;
+      }
+    }
+    return null;
   }
 
-  /// Move a planned plant into "growing" by stamping today's date.
-  Future<void> startGrowing(String plantId) async {
+  /// The method a plant's path starts from when the user just says "planted":
+  /// outdoor starts first (a bought tomato seedling is a transplant), indoor
+  /// sowing only when that is the crop's sole method.
+  MethodType defaultStartMethod(Crop crop) {
+    const order = [MethodType.transplant, MethodType.sowDirect, MethodType.plant, MethodType.sowIndoor];
+    for (final t in order) {
+      if (crop.methods.any((m) => m.type == t)) return t;
+    }
+    return MethodType.sowDirect;
+  }
+
+  /// Move a planned plant into "growing": stamp the date, build its path.
+  Future<void> startGrowing(String plantId, {MethodType? method, String? on}) async {
+    final plant = await plantById(plantId);
+    if (plant == null) return;
+    final crop = cropBySlug(plant.cropSlug);
+    final m = method ?? (crop == null ? MethodType.sowDirect : defaultStartMethod(crop));
+    final date = on ?? today;
     await (db.update(db.gardenPlants)..where((t) => t.id.equals(plantId))).write(
       GardenPlantsCompanion(
-        plantedOn: Value(today),
+        plantedOn: Value(date),
+        stage: const Value('starting'),
+        stageChangedOn: Value(date),
+        startMethod: Value(methodToWire(m)),
         dirty: const Value(true),
       ),
     );
+    if (crop != null) await _rebuildPath(plantId, crop, m, date);
     notifyListeners();
   }
 
@@ -173,9 +219,12 @@ class GardenRepository extends ChangeNotifier {
     await (db.update(db.gardenPlants)..where((t) => t.id.equals(plantId))).write(
       const GardenPlantsCompanion(
         plantedOn: Value(null),
+        stage: Value(null),
+        stageChangedOn: Value(null),
         dirty: Value(true),
       ),
     );
+    await _clearPath(plantId);
     notifyListeners();
   }
 
@@ -193,11 +242,13 @@ class GardenRepository extends ChangeNotifier {
   }
 
   /// Edit a plant's pot size or planted date (fix a mistake after adding).
+  /// A changed planting date rebuilds the path from the same start method.
   Future<void> updatePlant(
     String plantId, {
     int? potLitres,
     String? plantedOn,
   }) async {
+    final before = await plantById(plantId);
     await (db.update(db.gardenPlants)..where((t) => t.id.equals(plantId))).write(
       GardenPlantsCompanion(
         potLitres: Value(potLitres),
@@ -205,6 +256,16 @@ class GardenRepository extends ChangeNotifier {
         dirty: const Value(true),
       ),
     );
+    if (before != null && plantedOn != null && plantedOn != before.plantedOn) {
+      final crop = cropBySlug(before.cropSlug);
+      if (crop != null) {
+        final m = before.startMethod != null
+            ? methodFromWire(before.startMethod!)
+            : defaultStartMethod(crop);
+        // ponytail: rebuild drops logged nodes; keep them if users edit dates after logging.
+        await _rebuildPath(plantId, crop, m, plantedOn);
+      }
+    }
     notifyListeners();
   }
 
@@ -226,10 +287,6 @@ class GardenRepository extends ChangeNotifier {
     );
     notifyListeners();
   }
-
-  String _newId() =>
-      '${DateTime.now().microsecondsSinceEpoch.toRadixString(36)}'
-      '${_rng.nextInt(1 << 20).toRadixString(36)}';
 
   /// Change the growing location after setup (from the Home header / settings).
   /// Re-points the frost profile — which every planting date, "what to grow this
@@ -258,10 +315,10 @@ class GardenRepository extends ChangeNotifier {
   }) async {
     frost = region.profile;
     regionName = region.name;
-    final id = _newId();
+    final id = newUuid();
     await db.into(db.gardens).insert(GardensCompanion.insert(
           id: id,
-          owner: demoOwner,
+          owner: owner,
           name: name,
           kind: kind,
           sunHours: Value(sunHours),
@@ -273,21 +330,157 @@ class GardenRepository extends ChangeNotifier {
     return id;
   }
 
-  Future<void> addPlant({
+  Future<String> addPlant({
     required String gardenId,
     required String cropSlug,
     int? potLitres,
     String? plantedOn,
+    MethodType? method,
+    String? varietySlug,
+    String? place,
   }) async {
+    final id = newUuid();
     await db.into(db.gardenPlants).insert(GardenPlantsCompanion.insert(
-          id: _newId(),
-          owner: demoOwner,
+          id: id,
+          owner: owner,
           gardenId: gardenId,
           cropSlug: cropSlug,
           potLitres: Value(potLitres),
-          plantedOn: Value(plantedOn),
+          varietySlug: Value(varietySlug),
+          place: Value(place),
           dirty: const Value(true),
         ));
+    if (plantedOn != null) await startGrowing(id, method: method, on: plantedOn);
+    notifyListeners();
+    return id;
+  }
+
+  // ── Timeline path (PRD §7) ─────────────────────────────────────────────
+  static TaskKind _taskKindFor(NodeKind k) => switch (k) {
+        NodeKind.sow => TaskKind.sow,
+        NodeKind.potOn => TaskKind.potOn,
+        NodeKind.transplant => TaskKind.transplant,
+        NodeKind.thin => TaskKind.thin,
+        NodeKind.feed => TaskKind.feed,
+        NodeKind.water => TaskKind.water,
+        NodeKind.harvest => TaskKind.harvest,
+        NodeKind.harvested => TaskKind.harvest,
+      };
+
+  Future<void> _clearPath(String plantId) async {
+    await (db.update(db.tasks)
+          ..where((t) => t.gardenPlantId.equals(plantId) & t.nodeKind.isNotNull()))
+        .write(TasksCompanion(deletedAt: Value(DateTime.now()), dirty: const Value(true)));
+  }
+
+  Future<void> _rebuildPath(String plantId, Crop crop, MethodType method, String on) async {
+    await _clearPath(plantId);
+    final nodes = buildPath(crop, PathStart(method: method, on: on), plantId);
+    await db.batch((b) {
+      for (final n in nodes) {
+        b.insert(
+          db.tasks,
+          TasksCompanion.insert(
+            // Node ids are deterministic per plant; a rebuild reuses them.
+            id: n.id,
+            owner: owner,
+            gardenPlantId: Value(plantId),
+            kind: _taskKindFor(n.kind),
+            due: n.due,
+            nodeKind: Value(nodeKindToWire(n.kind)),
+            plannedDue: Value(n.plannedDue),
+            completedAt: const Value(null),
+            movedReason: const Value(null),
+            skipped: const Value(false),
+            deletedAt: const Value(null),
+            dirty: const Value(true),
+          ),
+          mode: InsertMode.insertOrReplace,
+        );
+      }
+    });
+  }
+
+  PathNode _nodeFromRow(TaskRow r, Crop? crop) {
+    final kind = nodeKindFromWire(r.nodeKind!);
+    // `until` is not a server column: the harvest window length is a crop fact.
+    String? until;
+    if (kind == NodeKind.harvest && crop != null) {
+      until = toIso(addDays(parseIso(r.due), crop.harvestDaysMax - crop.harvestDaysMin));
+    }
+    return PathNode(
+      id: r.id,
+      kind: kind,
+      plannedDue: r.plannedDue ?? r.due,
+      due: r.due,
+      until: until,
+      loggedOn: r.completedAt == null ? null : toIso(r.completedAt!.toUtc()),
+      skipped: r.skipped,
+      movedReason: r.movedReason == null
+          ? null
+          : LocalizedText.fromJson(jsonDecode(r.movedReason!) as Map<String, dynamic>),
+    );
+  }
+
+  /// The plant's path, past to future. Empty while planning.
+  Future<List<PathNode>> pathFor(String plantId) async {
+    final plant = await plantById(plantId);
+    final crop = plant == null ? null : cropBySlug(plant.cropSlug);
+    final rows = await (db.select(db.tasks)
+          ..where((t) => t.gardenPlantId.equals(plantId) & t.nodeKind.isNotNull() & t.deletedAt.isNull())
+          ..orderBy([(t) => OrderingTerm.asc(t.due), (t) => OrderingTerm.asc(t.plannedDue)]))
+        .get();
+    return [for (final r in rows) _nodeFromRow(r, crop)];
+  }
+
+  /// Log a node as done on [loggedOn] and re-derive downstream nodes
+  /// (§7.2). Returns the engine result so the UI can show "moved, not behind".
+  Future<ReplanResult> logNode(String plantId, String nodeId, String loggedOn) async {
+    final path = await pathFor(plantId);
+    final result = engine.logNode(path, nodeId, loggedOn, params: ReplanParams(firstFrost: frost.firstFrost));
+    final before = {for (final n in path) n.id: n};
+    await db.batch((b) {
+      for (final n in result.nodes) {
+        final was = before[n.id]!;
+        final changed = n.id == nodeId || n.due != was.due || n.movedReason != was.movedReason;
+        if (!changed) continue;
+        b.update(
+          db.tasks,
+          TasksCompanion(
+            due: Value(n.due),
+            completedAt: n.id == nodeId ? Value(parseIso(loggedOn)) : const Value.absent(),
+            movedReason: Value(n.movedReason == null ? null : jsonEncode(n.movedReason!.toJson())),
+            dirty: const Value(true),
+          ),
+          where: (t) => t.id.equals(n.id),
+        );
+      }
+    });
+    if (nodeId.endsWith('-harvest')) await _setStage(plantId, 'harvesting', loggedOn);
+    if (nodeId.endsWith('-transplant')) await _setStage(plantId, 'vegetative', loggedOn);
+    notifyListeners();
+    return result;
+  }
+
+  /// Skip a node with a reason (rain counts as a completed day for streaks).
+  Future<void> skipNode(String nodeId, LocalizedText reason) async {
+    await (db.update(db.tasks)..where((t) => t.id.equals(nodeId))).write(
+      TasksCompanion(
+        skipped: const Value(true),
+        movedReason: Value(jsonEncode(reason.toJson())),
+        dirty: const Value(true),
+      ),
+    );
+    notifyListeners();
+  }
+
+  Future<void> _setStage(String plantId, String stage, String on) =>
+      (db.update(db.gardenPlants)..where((t) => t.id.equals(plantId))).write(
+        GardenPlantsCompanion(stage: Value(stage), stageChangedOn: Value(on), dirty: const Value(true)),
+      );
+
+  Future<void> setStage(String plantId, String stage) async {
+    await _setStage(plantId, stage, today);
     notifyListeners();
   }
 
@@ -320,43 +513,24 @@ class GardenRepository extends ChangeNotifier {
         MethodType.plant => TaskKind.transplant,
       };
 
-  /// Regenerate the concrete tasks for `[today, today+7)` from the base schedule
-  /// + client-side watering, upserting into the real `tasks` table. Stable ids +
-  /// insert-or-ignore preserve any completion the user already made.
+  /// Regenerate the client-owned watering tasks for `[today, today+7)`.
+  /// Sow / transplant / feed / harvest come from the plant's path, so they are
+  /// not generated here. Stable ids + insert-or-ignore preserve completions.
   Future<void> _regenerateTasks() async {
     final active = await growingPlants();
     for (final plant in active) {
       final crop = cropBySlug(plant.cropSlug);
-      if (crop == null) continue;
-
-      // Base schedule windows overlapping this week → sow / plant-out tasks.
-      final windows = windowsActiveInRange(scheduleCrop(crop, frost), today);
-      for (final w in windows) {
-        final due = w.start.compareTo(today) < 0 ? today : w.start;
-        await db.into(db.tasks).insert(
-              TasksCompanion.insert(
-                id: 'base-${plant.id}-${w.method.name}-${w.start}',
-                owner: demoOwner,
-                gardenPlantId: Value(plant.id),
-                kind: _kindForMethod(w.method),
-                due: due,
-                dirty: const Value(true),
-              ),
-              mode: InsertMode.insertOrIgnore,
-            );
-      }
-
-      // Client-owned watering cadence.
       for (final wt in wateringTasksFor(
         plantId: plant.id,
         cropSlug: plant.cropSlug,
         potLitres: plant.potLitres,
         today: today,
+        cadence: crop?.waterCadenceDays,
       )) {
         await db.into(db.tasks).insert(
               TasksCompanion.insert(
                 id: wt.id,
-                owner: demoOwner,
+                owner: owner,
                 gardenPlantId: Value(plant.id),
                 kind: TaskKind.water,
                 due: wt.due,
@@ -384,11 +558,15 @@ class GardenRepository extends ChangeNotifier {
   Future<List<ThisWeekItem>> thisWeek() async {
     await _regenerateTasks();
     final end = toIso(addDays(parseIso(today), 7));
+    // Waterings in the window; path nodes in the window plus any still-open
+    // node from before today (it is "current", never "overdue").
     final rows = await (db.select(db.tasks)
           ..where((t) =>
               t.deletedAt.isNull() &
-              t.due.isBiggerOrEqualValue(today) &
-              t.due.isSmallerThanValue(end)))
+              t.skipped.equals(false) &
+              t.due.isSmallerThanValue(end) &
+              (t.due.isBiggerOrEqualValue(today) |
+                  (t.nodeKind.isNotNull() & t.completedAt.isNull()))))
         .get();
 
     // Weather hints (F4): run the real adjuster over a prototype sample forecast.
@@ -433,6 +611,11 @@ class GardenRepository extends ChangeNotifier {
   }
 
   Future<void> setTaskCompleted(String taskId, bool completed) async {
+    final row = await (db.select(db.tasks)..where((t) => t.id.equals(taskId))).getSingleOrNull();
+    if (completed && row?.nodeKind != null && row?.gardenPlantId != null) {
+      await logNode(row!.gardenPlantId!, taskId, today);
+      return;
+    }
     await (db.update(db.tasks)..where((t) => t.id.equals(taskId))).write(
       TasksCompanion(
         completedAt: Value(completed ? DateTime.now() : null),
@@ -456,8 +639,8 @@ class GardenRepository extends ChangeNotifier {
     String? entryOn,
   }) async {
     await db.into(db.journalEntries).insert(JournalEntriesCompanion.insert(
-          id: _newId(),
-          owner: demoOwner,
+          id: newUuid(),
+          owner: owner,
           gardenPlantId: Value(plantId),
           entryOn: entryOn ?? today,
           note: Value(note),
@@ -486,8 +669,8 @@ class GardenRepository extends ChangeNotifier {
     String? harvestedOn,
   }) async {
     await db.into(db.harvests).insert(HarvestsCompanion.insert(
-          id: _newId(),
-          owner: demoOwner,
+          id: newUuid(),
+          owner: owner,
           gardenPlantId: Value(plantId),
           cropSlug: cropSlug,
           amount: amount,

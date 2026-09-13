@@ -3,6 +3,684 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
+class $ProfilesTable extends Profiles
+    with TableInfo<$ProfilesTable, ProfileRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ProfilesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ownerMeta = const VerificationMeta('owner');
+  @override
+  late final GeneratedColumn<String> owner = GeneratedColumn<String>(
+    'owner',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dirtyMeta = const VerificationMeta('dirty');
+  @override
+  late final GeneratedColumn<bool> dirty = GeneratedColumn<bool>(
+    'dirty',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("dirty" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _displayNameMeta = const VerificationMeta(
+    'displayName',
+  );
+  @override
+  late final GeneratedColumn<String> displayName = GeneratedColumn<String>(
+    'display_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _langMeta = const VerificationMeta('lang');
+  @override
+  late final GeneratedColumn<String> lang = GeneratedColumn<String>(
+    'lang',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('nl'),
+  );
+  static const VerificationMeta _preferencesMeta = const VerificationMeta(
+    'preferences',
+  );
+  @override
+  late final GeneratedColumn<String> preferences = GeneratedColumn<String>(
+    'preferences',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('{}'),
+  );
+  static const VerificationMeta _streakCountMeta = const VerificationMeta(
+    'streakCount',
+  );
+  @override
+  late final GeneratedColumn<int> streakCount = GeneratedColumn<int>(
+    'streak_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _streakFrozenUntilMeta = const VerificationMeta(
+    'streakFrozenUntil',
+  );
+  @override
+  late final GeneratedColumn<String> streakFrozenUntil =
+      GeneratedColumn<String>(
+        'streak_frozen_until',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    owner,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    dirty,
+    displayName,
+    lang,
+    preferences,
+    streakCount,
+    streakFrozenUntil,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'profiles';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ProfileRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('owner')) {
+      context.handle(
+        _ownerMeta,
+        owner.isAcceptableOrUnknown(data['owner']!, _ownerMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_ownerMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('dirty')) {
+      context.handle(
+        _dirtyMeta,
+        dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
+      );
+    }
+    if (data.containsKey('display_name')) {
+      context.handle(
+        _displayNameMeta,
+        displayName.isAcceptableOrUnknown(
+          data['display_name']!,
+          _displayNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('lang')) {
+      context.handle(
+        _langMeta,
+        lang.isAcceptableOrUnknown(data['lang']!, _langMeta),
+      );
+    }
+    if (data.containsKey('preferences')) {
+      context.handle(
+        _preferencesMeta,
+        preferences.isAcceptableOrUnknown(
+          data['preferences']!,
+          _preferencesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('streak_count')) {
+      context.handle(
+        _streakCountMeta,
+        streakCount.isAcceptableOrUnknown(
+          data['streak_count']!,
+          _streakCountMeta,
+        ),
+      );
+    }
+    if (data.containsKey('streak_frozen_until')) {
+      context.handle(
+        _streakFrozenUntilMeta,
+        streakFrozenUntil.isAcceptableOrUnknown(
+          data['streak_frozen_until']!,
+          _streakFrozenUntilMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ProfileRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProfileRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      owner: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}owner'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      dirty: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}dirty'],
+      )!,
+      displayName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}display_name'],
+      ),
+      lang: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lang'],
+      )!,
+      preferences: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}preferences'],
+      )!,
+      streakCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}streak_count'],
+      )!,
+      streakFrozenUntil: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}streak_frozen_until'],
+      ),
+    );
+  }
+
+  @override
+  $ProfilesTable createAlias(String alias) {
+    return $ProfilesTable(attachedDatabase, alias);
+  }
+}
+
+class ProfileRow extends DataClass implements Insertable<ProfileRow> {
+  /// Client-generatable uuid, so optimistic offline inserts work.
+  final String id;
+
+  /// Owner uuid. Present locally for parity + push; a single user in practice.
+  final String owner;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  /// Soft delete — never hard-delete a synced row (the tombstone must sync).
+  final DateTime? deletedAt;
+
+  /// LOCAL-ONLY: has unpushed local changes. Not a Supabase column.
+  final bool dirty;
+  final String? displayName;
+  final String lang;
+
+  /// JSON object (PRD 1.6 answers). Stored as text; parsed by the repository.
+  final String preferences;
+  final int streakCount;
+  final String? streakFrozenUntil;
+  const ProfileRow({
+    required this.id,
+    required this.owner,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.dirty,
+    this.displayName,
+    required this.lang,
+    required this.preferences,
+    required this.streakCount,
+    this.streakFrozenUntil,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['owner'] = Variable<String>(owner);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['dirty'] = Variable<bool>(dirty);
+    if (!nullToAbsent || displayName != null) {
+      map['display_name'] = Variable<String>(displayName);
+    }
+    map['lang'] = Variable<String>(lang);
+    map['preferences'] = Variable<String>(preferences);
+    map['streak_count'] = Variable<int>(streakCount);
+    if (!nullToAbsent || streakFrozenUntil != null) {
+      map['streak_frozen_until'] = Variable<String>(streakFrozenUntil);
+    }
+    return map;
+  }
+
+  ProfilesCompanion toCompanion(bool nullToAbsent) {
+    return ProfilesCompanion(
+      id: Value(id),
+      owner: Value(owner),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      dirty: Value(dirty),
+      displayName: displayName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(displayName),
+      lang: Value(lang),
+      preferences: Value(preferences),
+      streakCount: Value(streakCount),
+      streakFrozenUntil: streakFrozenUntil == null && nullToAbsent
+          ? const Value.absent()
+          : Value(streakFrozenUntil),
+    );
+  }
+
+  factory ProfileRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProfileRow(
+      id: serializer.fromJson<String>(json['id']),
+      owner: serializer.fromJson<String>(json['owner']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      dirty: serializer.fromJson<bool>(json['dirty']),
+      displayName: serializer.fromJson<String?>(json['displayName']),
+      lang: serializer.fromJson<String>(json['lang']),
+      preferences: serializer.fromJson<String>(json['preferences']),
+      streakCount: serializer.fromJson<int>(json['streakCount']),
+      streakFrozenUntil: serializer.fromJson<String?>(
+        json['streakFrozenUntil'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'owner': serializer.toJson<String>(owner),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'dirty': serializer.toJson<bool>(dirty),
+      'displayName': serializer.toJson<String?>(displayName),
+      'lang': serializer.toJson<String>(lang),
+      'preferences': serializer.toJson<String>(preferences),
+      'streakCount': serializer.toJson<int>(streakCount),
+      'streakFrozenUntil': serializer.toJson<String?>(streakFrozenUntil),
+    };
+  }
+
+  ProfileRow copyWith({
+    String? id,
+    String? owner,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    bool? dirty,
+    Value<String?> displayName = const Value.absent(),
+    String? lang,
+    String? preferences,
+    int? streakCount,
+    Value<String?> streakFrozenUntil = const Value.absent(),
+  }) => ProfileRow(
+    id: id ?? this.id,
+    owner: owner ?? this.owner,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    dirty: dirty ?? this.dirty,
+    displayName: displayName.present ? displayName.value : this.displayName,
+    lang: lang ?? this.lang,
+    preferences: preferences ?? this.preferences,
+    streakCount: streakCount ?? this.streakCount,
+    streakFrozenUntil: streakFrozenUntil.present
+        ? streakFrozenUntil.value
+        : this.streakFrozenUntil,
+  );
+  ProfileRow copyWithCompanion(ProfilesCompanion data) {
+    return ProfileRow(
+      id: data.id.present ? data.id.value : this.id,
+      owner: data.owner.present ? data.owner.value : this.owner,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      dirty: data.dirty.present ? data.dirty.value : this.dirty,
+      displayName: data.displayName.present
+          ? data.displayName.value
+          : this.displayName,
+      lang: data.lang.present ? data.lang.value : this.lang,
+      preferences: data.preferences.present
+          ? data.preferences.value
+          : this.preferences,
+      streakCount: data.streakCount.present
+          ? data.streakCount.value
+          : this.streakCount,
+      streakFrozenUntil: data.streakFrozenUntil.present
+          ? data.streakFrozenUntil.value
+          : this.streakFrozenUntil,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfileRow(')
+          ..write('id: $id, ')
+          ..write('owner: $owner, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('dirty: $dirty, ')
+          ..write('displayName: $displayName, ')
+          ..write('lang: $lang, ')
+          ..write('preferences: $preferences, ')
+          ..write('streakCount: $streakCount, ')
+          ..write('streakFrozenUntil: $streakFrozenUntil')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    owner,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    dirty,
+    displayName,
+    lang,
+    preferences,
+    streakCount,
+    streakFrozenUntil,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProfileRow &&
+          other.id == this.id &&
+          other.owner == this.owner &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.dirty == this.dirty &&
+          other.displayName == this.displayName &&
+          other.lang == this.lang &&
+          other.preferences == this.preferences &&
+          other.streakCount == this.streakCount &&
+          other.streakFrozenUntil == this.streakFrozenUntil);
+}
+
+class ProfilesCompanion extends UpdateCompanion<ProfileRow> {
+  final Value<String> id;
+  final Value<String> owner;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<bool> dirty;
+  final Value<String?> displayName;
+  final Value<String> lang;
+  final Value<String> preferences;
+  final Value<int> streakCount;
+  final Value<String?> streakFrozenUntil;
+  final Value<int> rowid;
+  const ProfilesCompanion({
+    this.id = const Value.absent(),
+    this.owner = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.lang = const Value.absent(),
+    this.preferences = const Value.absent(),
+    this.streakCount = const Value.absent(),
+    this.streakFrozenUntil = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ProfilesCompanion.insert({
+    required String id,
+    required String owner,
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
+    this.displayName = const Value.absent(),
+    this.lang = const Value.absent(),
+    this.preferences = const Value.absent(),
+    this.streakCount = const Value.absent(),
+    this.streakFrozenUntil = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       owner = Value(owner);
+  static Insertable<ProfileRow> custom({
+    Expression<String>? id,
+    Expression<String>? owner,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<bool>? dirty,
+    Expression<String>? displayName,
+    Expression<String>? lang,
+    Expression<String>? preferences,
+    Expression<int>? streakCount,
+    Expression<String>? streakFrozenUntil,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (owner != null) 'owner': owner,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (dirty != null) 'dirty': dirty,
+      if (displayName != null) 'display_name': displayName,
+      if (lang != null) 'lang': lang,
+      if (preferences != null) 'preferences': preferences,
+      if (streakCount != null) 'streak_count': streakCount,
+      if (streakFrozenUntil != null) 'streak_frozen_until': streakFrozenUntil,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ProfilesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? owner,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<bool>? dirty,
+    Value<String?>? displayName,
+    Value<String>? lang,
+    Value<String>? preferences,
+    Value<int>? streakCount,
+    Value<String?>? streakFrozenUntil,
+    Value<int>? rowid,
+  }) {
+    return ProfilesCompanion(
+      id: id ?? this.id,
+      owner: owner ?? this.owner,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      dirty: dirty ?? this.dirty,
+      displayName: displayName ?? this.displayName,
+      lang: lang ?? this.lang,
+      preferences: preferences ?? this.preferences,
+      streakCount: streakCount ?? this.streakCount,
+      streakFrozenUntil: streakFrozenUntil ?? this.streakFrozenUntil,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (owner.present) {
+      map['owner'] = Variable<String>(owner.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (dirty.present) {
+      map['dirty'] = Variable<bool>(dirty.value);
+    }
+    if (displayName.present) {
+      map['display_name'] = Variable<String>(displayName.value);
+    }
+    if (lang.present) {
+      map['lang'] = Variable<String>(lang.value);
+    }
+    if (preferences.present) {
+      map['preferences'] = Variable<String>(preferences.value);
+    }
+    if (streakCount.present) {
+      map['streak_count'] = Variable<int>(streakCount.value);
+    }
+    if (streakFrozenUntil.present) {
+      map['streak_frozen_until'] = Variable<String>(streakFrozenUntil.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfilesCompanion(')
+          ..write('id: $id, ')
+          ..write('owner: $owner, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('dirty: $dirty, ')
+          ..write('displayName: $displayName, ')
+          ..write('lang: $lang, ')
+          ..write('preferences: $preferences, ')
+          ..write('streakCount: $streakCount, ')
+          ..write('streakFrozenUntil: $streakFrozenUntil, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $GardensTable extends Gardens with TableInfo<$GardensTable, GardenRow> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -121,6 +799,35 @@ class $GardensTable extends Gardens with TableInfo<$GardensTable, GardenRow> {
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _sizeM2Meta = const VerificationMeta('sizeM2');
+  @override
+  late final GeneratedColumn<int> sizeM2 = GeneratedColumn<int>(
+    'size_m2',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _layoutMeta = const VerificationMeta('layout');
+  @override
+  late final GeneratedColumn<String> layout = GeneratedColumn<String>(
+    'layout',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _postcodeMeta = const VerificationMeta(
+    'postcode',
+  );
+  @override
+  late final GeneratedColumn<String> postcode = GeneratedColumn<String>(
+    'postcode',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -134,6 +841,9 @@ class $GardensTable extends Gardens with TableInfo<$GardensTable, GardenRow> {
     sunHours,
     lat,
     lon,
+    sizeM2,
+    layout,
+    postcode,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -210,6 +920,24 @@ class $GardensTable extends Gardens with TableInfo<$GardensTable, GardenRow> {
         lon.isAcceptableOrUnknown(data['lon']!, _lonMeta),
       );
     }
+    if (data.containsKey('size_m2')) {
+      context.handle(
+        _sizeM2Meta,
+        sizeM2.isAcceptableOrUnknown(data['size_m2']!, _sizeM2Meta),
+      );
+    }
+    if (data.containsKey('layout')) {
+      context.handle(
+        _layoutMeta,
+        layout.isAcceptableOrUnknown(data['layout']!, _layoutMeta),
+      );
+    }
+    if (data.containsKey('postcode')) {
+      context.handle(
+        _postcodeMeta,
+        postcode.isAcceptableOrUnknown(data['postcode']!, _postcodeMeta),
+      );
+    }
     return context;
   }
 
@@ -265,6 +993,18 @@ class $GardensTable extends Gardens with TableInfo<$GardensTable, GardenRow> {
         DriftSqlType.double,
         data['${effectivePrefix}lon'],
       ),
+      sizeM2: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}size_m2'],
+      ),
+      layout: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}layout'],
+      ),
+      postcode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}postcode'],
+      ),
     );
   }
 
@@ -296,6 +1036,9 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
   final int? sunHours;
   final double? lat;
   final double? lon;
+  final int? sizeM2;
+  final String? layout;
+  final String? postcode;
   const GardenRow({
     required this.id,
     required this.owner,
@@ -308,6 +1051,9 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
     this.sunHours,
     this.lat,
     this.lon,
+    this.sizeM2,
+    this.layout,
+    this.postcode,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -333,6 +1079,15 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
     if (!nullToAbsent || lon != null) {
       map['lon'] = Variable<double>(lon);
     }
+    if (!nullToAbsent || sizeM2 != null) {
+      map['size_m2'] = Variable<int>(sizeM2);
+    }
+    if (!nullToAbsent || layout != null) {
+      map['layout'] = Variable<String>(layout);
+    }
+    if (!nullToAbsent || postcode != null) {
+      map['postcode'] = Variable<String>(postcode);
+    }
     return map;
   }
 
@@ -353,6 +1108,15 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
           : Value(sunHours),
       lat: lat == null && nullToAbsent ? const Value.absent() : Value(lat),
       lon: lon == null && nullToAbsent ? const Value.absent() : Value(lon),
+      sizeM2: sizeM2 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sizeM2),
+      layout: layout == null && nullToAbsent
+          ? const Value.absent()
+          : Value(layout),
+      postcode: postcode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(postcode),
     );
   }
 
@@ -373,6 +1137,9 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
       sunHours: serializer.fromJson<int?>(json['sunHours']),
       lat: serializer.fromJson<double?>(json['lat']),
       lon: serializer.fromJson<double?>(json['lon']),
+      sizeM2: serializer.fromJson<int?>(json['sizeM2']),
+      layout: serializer.fromJson<String?>(json['layout']),
+      postcode: serializer.fromJson<String?>(json['postcode']),
     );
   }
   @override
@@ -390,6 +1157,9 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
       'sunHours': serializer.toJson<int?>(sunHours),
       'lat': serializer.toJson<double?>(lat),
       'lon': serializer.toJson<double?>(lon),
+      'sizeM2': serializer.toJson<int?>(sizeM2),
+      'layout': serializer.toJson<String?>(layout),
+      'postcode': serializer.toJson<String?>(postcode),
     };
   }
 
@@ -405,6 +1175,9 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
     Value<int?> sunHours = const Value.absent(),
     Value<double?> lat = const Value.absent(),
     Value<double?> lon = const Value.absent(),
+    Value<int?> sizeM2 = const Value.absent(),
+    Value<String?> layout = const Value.absent(),
+    Value<String?> postcode = const Value.absent(),
   }) => GardenRow(
     id: id ?? this.id,
     owner: owner ?? this.owner,
@@ -417,6 +1190,9 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
     sunHours: sunHours.present ? sunHours.value : this.sunHours,
     lat: lat.present ? lat.value : this.lat,
     lon: lon.present ? lon.value : this.lon,
+    sizeM2: sizeM2.present ? sizeM2.value : this.sizeM2,
+    layout: layout.present ? layout.value : this.layout,
+    postcode: postcode.present ? postcode.value : this.postcode,
   );
   GardenRow copyWithCompanion(GardensCompanion data) {
     return GardenRow(
@@ -431,6 +1207,9 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
       sunHours: data.sunHours.present ? data.sunHours.value : this.sunHours,
       lat: data.lat.present ? data.lat.value : this.lat,
       lon: data.lon.present ? data.lon.value : this.lon,
+      sizeM2: data.sizeM2.present ? data.sizeM2.value : this.sizeM2,
+      layout: data.layout.present ? data.layout.value : this.layout,
+      postcode: data.postcode.present ? data.postcode.value : this.postcode,
     );
   }
 
@@ -447,7 +1226,10 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
           ..write('kind: $kind, ')
           ..write('sunHours: $sunHours, ')
           ..write('lat: $lat, ')
-          ..write('lon: $lon')
+          ..write('lon: $lon, ')
+          ..write('sizeM2: $sizeM2, ')
+          ..write('layout: $layout, ')
+          ..write('postcode: $postcode')
           ..write(')'))
         .toString();
   }
@@ -465,6 +1247,9 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
     sunHours,
     lat,
     lon,
+    sizeM2,
+    layout,
+    postcode,
   );
   @override
   bool operator ==(Object other) =>
@@ -480,7 +1265,10 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
           other.kind == this.kind &&
           other.sunHours == this.sunHours &&
           other.lat == this.lat &&
-          other.lon == this.lon);
+          other.lon == this.lon &&
+          other.sizeM2 == this.sizeM2 &&
+          other.layout == this.layout &&
+          other.postcode == this.postcode);
 }
 
 class GardensCompanion extends UpdateCompanion<GardenRow> {
@@ -495,6 +1283,9 @@ class GardensCompanion extends UpdateCompanion<GardenRow> {
   final Value<int?> sunHours;
   final Value<double?> lat;
   final Value<double?> lon;
+  final Value<int?> sizeM2;
+  final Value<String?> layout;
+  final Value<String?> postcode;
   final Value<int> rowid;
   const GardensCompanion({
     this.id = const Value.absent(),
@@ -508,6 +1299,9 @@ class GardensCompanion extends UpdateCompanion<GardenRow> {
     this.sunHours = const Value.absent(),
     this.lat = const Value.absent(),
     this.lon = const Value.absent(),
+    this.sizeM2 = const Value.absent(),
+    this.layout = const Value.absent(),
+    this.postcode = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   GardensCompanion.insert({
@@ -522,6 +1316,9 @@ class GardensCompanion extends UpdateCompanion<GardenRow> {
     this.sunHours = const Value.absent(),
     this.lat = const Value.absent(),
     this.lon = const Value.absent(),
+    this.sizeM2 = const Value.absent(),
+    this.layout = const Value.absent(),
+    this.postcode = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        owner = Value(owner),
@@ -539,6 +1336,9 @@ class GardensCompanion extends UpdateCompanion<GardenRow> {
     Expression<int>? sunHours,
     Expression<double>? lat,
     Expression<double>? lon,
+    Expression<int>? sizeM2,
+    Expression<String>? layout,
+    Expression<String>? postcode,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -553,6 +1353,9 @@ class GardensCompanion extends UpdateCompanion<GardenRow> {
       if (sunHours != null) 'sun_hours': sunHours,
       if (lat != null) 'lat': lat,
       if (lon != null) 'lon': lon,
+      if (sizeM2 != null) 'size_m2': sizeM2,
+      if (layout != null) 'layout': layout,
+      if (postcode != null) 'postcode': postcode,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -569,6 +1372,9 @@ class GardensCompanion extends UpdateCompanion<GardenRow> {
     Value<int?>? sunHours,
     Value<double?>? lat,
     Value<double?>? lon,
+    Value<int?>? sizeM2,
+    Value<String?>? layout,
+    Value<String?>? postcode,
     Value<int>? rowid,
   }) {
     return GardensCompanion(
@@ -583,6 +1389,9 @@ class GardensCompanion extends UpdateCompanion<GardenRow> {
       sunHours: sunHours ?? this.sunHours,
       lat: lat ?? this.lat,
       lon: lon ?? this.lon,
+      sizeM2: sizeM2 ?? this.sizeM2,
+      layout: layout ?? this.layout,
+      postcode: postcode ?? this.postcode,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -625,6 +1434,15 @@ class GardensCompanion extends UpdateCompanion<GardenRow> {
     if (lon.present) {
       map['lon'] = Variable<double>(lon.value);
     }
+    if (sizeM2.present) {
+      map['size_m2'] = Variable<int>(sizeM2.value);
+    }
+    if (layout.present) {
+      map['layout'] = Variable<String>(layout.value);
+    }
+    if (postcode.present) {
+      map['postcode'] = Variable<String>(postcode.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -645,6 +1463,9 @@ class GardensCompanion extends UpdateCompanion<GardenRow> {
           ..write('sunHours: $sunHours, ')
           ..write('lat: $lat, ')
           ..write('lon: $lon, ')
+          ..write('sizeM2: $sizeM2, ')
+          ..write('layout: $layout, ')
+          ..write('postcode: $postcode, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -770,6 +1591,57 @@ class $GardenPlantsTable extends GardenPlants
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _varietySlugMeta = const VerificationMeta(
+    'varietySlug',
+  );
+  @override
+  late final GeneratedColumn<String> varietySlug = GeneratedColumn<String>(
+    'variety_slug',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _stageMeta = const VerificationMeta('stage');
+  @override
+  late final GeneratedColumn<String> stage = GeneratedColumn<String>(
+    'stage',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _stageChangedOnMeta = const VerificationMeta(
+    'stageChangedOn',
+  );
+  @override
+  late final GeneratedColumn<String> stageChangedOn = GeneratedColumn<String>(
+    'stage_changed_on',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _placeMeta = const VerificationMeta('place');
+  @override
+  late final GeneratedColumn<String> place = GeneratedColumn<String>(
+    'place',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _startMethodMeta = const VerificationMeta(
+    'startMethod',
+  );
+  @override
+  late final GeneratedColumn<String> startMethod = GeneratedColumn<String>(
+    'start_method',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -782,6 +1654,11 @@ class $GardenPlantsTable extends GardenPlants
     cropSlug,
     potLitres,
     plantedOn,
+    varietySlug,
+    stage,
+    stageChangedOn,
+    place,
+    startMethod,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -860,6 +1737,45 @@ class $GardenPlantsTable extends GardenPlants
         plantedOn.isAcceptableOrUnknown(data['planted_on']!, _plantedOnMeta),
       );
     }
+    if (data.containsKey('variety_slug')) {
+      context.handle(
+        _varietySlugMeta,
+        varietySlug.isAcceptableOrUnknown(
+          data['variety_slug']!,
+          _varietySlugMeta,
+        ),
+      );
+    }
+    if (data.containsKey('stage')) {
+      context.handle(
+        _stageMeta,
+        stage.isAcceptableOrUnknown(data['stage']!, _stageMeta),
+      );
+    }
+    if (data.containsKey('stage_changed_on')) {
+      context.handle(
+        _stageChangedOnMeta,
+        stageChangedOn.isAcceptableOrUnknown(
+          data['stage_changed_on']!,
+          _stageChangedOnMeta,
+        ),
+      );
+    }
+    if (data.containsKey('place')) {
+      context.handle(
+        _placeMeta,
+        place.isAcceptableOrUnknown(data['place']!, _placeMeta),
+      );
+    }
+    if (data.containsKey('start_method')) {
+      context.handle(
+        _startMethodMeta,
+        startMethod.isAcceptableOrUnknown(
+          data['start_method']!,
+          _startMethodMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -909,6 +1825,26 @@ class $GardenPlantsTable extends GardenPlants
         DriftSqlType.string,
         data['${effectivePrefix}planted_on'],
       ),
+      varietySlug: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}variety_slug'],
+      ),
+      stage: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}stage'],
+      ),
+      stageChangedOn: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}stage_changed_on'],
+      ),
+      place: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}place'],
+      ),
+      startMethod: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}start_method'],
+      ),
     );
   }
 
@@ -946,6 +1882,20 @@ class GardenPlantRow extends DataClass implements Insertable<GardenPlantRow> {
   /// ISO `yyyy-mm-dd`, back-datable. Stored as text to match the engine + the
   /// Postgres `date` type without timezone drift.
   final String? plantedOn;
+  final String? varietySlug;
+
+  /// starting · seedling · vegetative · flowering · harvesting · harvested
+  final String? stage;
+  final String? stageChangedOn;
+
+  /// ground · raised_bed · indoor_container · outdoor_container
+  final String? place;
+
+  /// LOCAL-ONLY: which crop method the timeline path was built from
+  /// (`sow_indoor` …), so an edited planting date can rebuild the same path.
+  /// Not a Supabase column; after a reinstall the synced path nodes are the
+  /// source of truth and this stays null until the next rebuild.
+  final String? startMethod;
   const GardenPlantRow({
     required this.id,
     required this.owner,
@@ -957,6 +1907,11 @@ class GardenPlantRow extends DataClass implements Insertable<GardenPlantRow> {
     required this.cropSlug,
     this.potLitres,
     this.plantedOn,
+    this.varietySlug,
+    this.stage,
+    this.stageChangedOn,
+    this.place,
+    this.startMethod,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -976,6 +1931,21 @@ class GardenPlantRow extends DataClass implements Insertable<GardenPlantRow> {
     }
     if (!nullToAbsent || plantedOn != null) {
       map['planted_on'] = Variable<String>(plantedOn);
+    }
+    if (!nullToAbsent || varietySlug != null) {
+      map['variety_slug'] = Variable<String>(varietySlug);
+    }
+    if (!nullToAbsent || stage != null) {
+      map['stage'] = Variable<String>(stage);
+    }
+    if (!nullToAbsent || stageChangedOn != null) {
+      map['stage_changed_on'] = Variable<String>(stageChangedOn);
+    }
+    if (!nullToAbsent || place != null) {
+      map['place'] = Variable<String>(place);
+    }
+    if (!nullToAbsent || startMethod != null) {
+      map['start_method'] = Variable<String>(startMethod);
     }
     return map;
   }
@@ -998,6 +1968,21 @@ class GardenPlantRow extends DataClass implements Insertable<GardenPlantRow> {
       plantedOn: plantedOn == null && nullToAbsent
           ? const Value.absent()
           : Value(plantedOn),
+      varietySlug: varietySlug == null && nullToAbsent
+          ? const Value.absent()
+          : Value(varietySlug),
+      stage: stage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(stage),
+      stageChangedOn: stageChangedOn == null && nullToAbsent
+          ? const Value.absent()
+          : Value(stageChangedOn),
+      place: place == null && nullToAbsent
+          ? const Value.absent()
+          : Value(place),
+      startMethod: startMethod == null && nullToAbsent
+          ? const Value.absent()
+          : Value(startMethod),
     );
   }
 
@@ -1017,6 +2002,11 @@ class GardenPlantRow extends DataClass implements Insertable<GardenPlantRow> {
       cropSlug: serializer.fromJson<String>(json['cropSlug']),
       potLitres: serializer.fromJson<int?>(json['potLitres']),
       plantedOn: serializer.fromJson<String?>(json['plantedOn']),
+      varietySlug: serializer.fromJson<String?>(json['varietySlug']),
+      stage: serializer.fromJson<String?>(json['stage']),
+      stageChangedOn: serializer.fromJson<String?>(json['stageChangedOn']),
+      place: serializer.fromJson<String?>(json['place']),
+      startMethod: serializer.fromJson<String?>(json['startMethod']),
     );
   }
   @override
@@ -1033,6 +2023,11 @@ class GardenPlantRow extends DataClass implements Insertable<GardenPlantRow> {
       'cropSlug': serializer.toJson<String>(cropSlug),
       'potLitres': serializer.toJson<int?>(potLitres),
       'plantedOn': serializer.toJson<String?>(plantedOn),
+      'varietySlug': serializer.toJson<String?>(varietySlug),
+      'stage': serializer.toJson<String?>(stage),
+      'stageChangedOn': serializer.toJson<String?>(stageChangedOn),
+      'place': serializer.toJson<String?>(place),
+      'startMethod': serializer.toJson<String?>(startMethod),
     };
   }
 
@@ -1047,6 +2042,11 @@ class GardenPlantRow extends DataClass implements Insertable<GardenPlantRow> {
     String? cropSlug,
     Value<int?> potLitres = const Value.absent(),
     Value<String?> plantedOn = const Value.absent(),
+    Value<String?> varietySlug = const Value.absent(),
+    Value<String?> stage = const Value.absent(),
+    Value<String?> stageChangedOn = const Value.absent(),
+    Value<String?> place = const Value.absent(),
+    Value<String?> startMethod = const Value.absent(),
   }) => GardenPlantRow(
     id: id ?? this.id,
     owner: owner ?? this.owner,
@@ -1058,6 +2058,13 @@ class GardenPlantRow extends DataClass implements Insertable<GardenPlantRow> {
     cropSlug: cropSlug ?? this.cropSlug,
     potLitres: potLitres.present ? potLitres.value : this.potLitres,
     plantedOn: plantedOn.present ? plantedOn.value : this.plantedOn,
+    varietySlug: varietySlug.present ? varietySlug.value : this.varietySlug,
+    stage: stage.present ? stage.value : this.stage,
+    stageChangedOn: stageChangedOn.present
+        ? stageChangedOn.value
+        : this.stageChangedOn,
+    place: place.present ? place.value : this.place,
+    startMethod: startMethod.present ? startMethod.value : this.startMethod,
   );
   GardenPlantRow copyWithCompanion(GardenPlantsCompanion data) {
     return GardenPlantRow(
@@ -1071,6 +2078,17 @@ class GardenPlantRow extends DataClass implements Insertable<GardenPlantRow> {
       cropSlug: data.cropSlug.present ? data.cropSlug.value : this.cropSlug,
       potLitres: data.potLitres.present ? data.potLitres.value : this.potLitres,
       plantedOn: data.plantedOn.present ? data.plantedOn.value : this.plantedOn,
+      varietySlug: data.varietySlug.present
+          ? data.varietySlug.value
+          : this.varietySlug,
+      stage: data.stage.present ? data.stage.value : this.stage,
+      stageChangedOn: data.stageChangedOn.present
+          ? data.stageChangedOn.value
+          : this.stageChangedOn,
+      place: data.place.present ? data.place.value : this.place,
+      startMethod: data.startMethod.present
+          ? data.startMethod.value
+          : this.startMethod,
     );
   }
 
@@ -1086,7 +2104,12 @@ class GardenPlantRow extends DataClass implements Insertable<GardenPlantRow> {
           ..write('gardenId: $gardenId, ')
           ..write('cropSlug: $cropSlug, ')
           ..write('potLitres: $potLitres, ')
-          ..write('plantedOn: $plantedOn')
+          ..write('plantedOn: $plantedOn, ')
+          ..write('varietySlug: $varietySlug, ')
+          ..write('stage: $stage, ')
+          ..write('stageChangedOn: $stageChangedOn, ')
+          ..write('place: $place, ')
+          ..write('startMethod: $startMethod')
           ..write(')'))
         .toString();
   }
@@ -1103,6 +2126,11 @@ class GardenPlantRow extends DataClass implements Insertable<GardenPlantRow> {
     cropSlug,
     potLitres,
     plantedOn,
+    varietySlug,
+    stage,
+    stageChangedOn,
+    place,
+    startMethod,
   );
   @override
   bool operator ==(Object other) =>
@@ -1117,7 +2145,12 @@ class GardenPlantRow extends DataClass implements Insertable<GardenPlantRow> {
           other.gardenId == this.gardenId &&
           other.cropSlug == this.cropSlug &&
           other.potLitres == this.potLitres &&
-          other.plantedOn == this.plantedOn);
+          other.plantedOn == this.plantedOn &&
+          other.varietySlug == this.varietySlug &&
+          other.stage == this.stage &&
+          other.stageChangedOn == this.stageChangedOn &&
+          other.place == this.place &&
+          other.startMethod == this.startMethod);
 }
 
 class GardenPlantsCompanion extends UpdateCompanion<GardenPlantRow> {
@@ -1131,6 +2164,11 @@ class GardenPlantsCompanion extends UpdateCompanion<GardenPlantRow> {
   final Value<String> cropSlug;
   final Value<int?> potLitres;
   final Value<String?> plantedOn;
+  final Value<String?> varietySlug;
+  final Value<String?> stage;
+  final Value<String?> stageChangedOn;
+  final Value<String?> place;
+  final Value<String?> startMethod;
   final Value<int> rowid;
   const GardenPlantsCompanion({
     this.id = const Value.absent(),
@@ -1143,6 +2181,11 @@ class GardenPlantsCompanion extends UpdateCompanion<GardenPlantRow> {
     this.cropSlug = const Value.absent(),
     this.potLitres = const Value.absent(),
     this.plantedOn = const Value.absent(),
+    this.varietySlug = const Value.absent(),
+    this.stage = const Value.absent(),
+    this.stageChangedOn = const Value.absent(),
+    this.place = const Value.absent(),
+    this.startMethod = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   GardenPlantsCompanion.insert({
@@ -1156,6 +2199,11 @@ class GardenPlantsCompanion extends UpdateCompanion<GardenPlantRow> {
     required String cropSlug,
     this.potLitres = const Value.absent(),
     this.plantedOn = const Value.absent(),
+    this.varietySlug = const Value.absent(),
+    this.stage = const Value.absent(),
+    this.stageChangedOn = const Value.absent(),
+    this.place = const Value.absent(),
+    this.startMethod = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        owner = Value(owner),
@@ -1172,6 +2220,11 @@ class GardenPlantsCompanion extends UpdateCompanion<GardenPlantRow> {
     Expression<String>? cropSlug,
     Expression<int>? potLitres,
     Expression<String>? plantedOn,
+    Expression<String>? varietySlug,
+    Expression<String>? stage,
+    Expression<String>? stageChangedOn,
+    Expression<String>? place,
+    Expression<String>? startMethod,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1185,6 +2238,11 @@ class GardenPlantsCompanion extends UpdateCompanion<GardenPlantRow> {
       if (cropSlug != null) 'crop_slug': cropSlug,
       if (potLitres != null) 'pot_litres': potLitres,
       if (plantedOn != null) 'planted_on': plantedOn,
+      if (varietySlug != null) 'variety_slug': varietySlug,
+      if (stage != null) 'stage': stage,
+      if (stageChangedOn != null) 'stage_changed_on': stageChangedOn,
+      if (place != null) 'place': place,
+      if (startMethod != null) 'start_method': startMethod,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1200,6 +2258,11 @@ class GardenPlantsCompanion extends UpdateCompanion<GardenPlantRow> {
     Value<String>? cropSlug,
     Value<int?>? potLitres,
     Value<String?>? plantedOn,
+    Value<String?>? varietySlug,
+    Value<String?>? stage,
+    Value<String?>? stageChangedOn,
+    Value<String?>? place,
+    Value<String?>? startMethod,
     Value<int>? rowid,
   }) {
     return GardenPlantsCompanion(
@@ -1213,6 +2276,11 @@ class GardenPlantsCompanion extends UpdateCompanion<GardenPlantRow> {
       cropSlug: cropSlug ?? this.cropSlug,
       potLitres: potLitres ?? this.potLitres,
       plantedOn: plantedOn ?? this.plantedOn,
+      varietySlug: varietySlug ?? this.varietySlug,
+      stage: stage ?? this.stage,
+      stageChangedOn: stageChangedOn ?? this.stageChangedOn,
+      place: place ?? this.place,
+      startMethod: startMethod ?? this.startMethod,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1250,6 +2318,21 @@ class GardenPlantsCompanion extends UpdateCompanion<GardenPlantRow> {
     if (plantedOn.present) {
       map['planted_on'] = Variable<String>(plantedOn.value);
     }
+    if (varietySlug.present) {
+      map['variety_slug'] = Variable<String>(varietySlug.value);
+    }
+    if (stage.present) {
+      map['stage'] = Variable<String>(stage.value);
+    }
+    if (stageChangedOn.present) {
+      map['stage_changed_on'] = Variable<String>(stageChangedOn.value);
+    }
+    if (place.present) {
+      map['place'] = Variable<String>(place.value);
+    }
+    if (startMethod.present) {
+      map['start_method'] = Variable<String>(startMethod.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1269,6 +2352,11 @@ class GardenPlantsCompanion extends UpdateCompanion<GardenPlantRow> {
           ..write('cropSlug: $cropSlug, ')
           ..write('potLitres: $potLitres, ')
           ..write('plantedOn: $plantedOn, ')
+          ..write('varietySlug: $varietySlug, ')
+          ..write('stage: $stage, ')
+          ..write('stageChangedOn: $stageChangedOn, ')
+          ..write('place: $place, ')
+          ..write('startMethod: $startMethod, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1389,6 +2477,54 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _nodeKindMeta = const VerificationMeta(
+    'nodeKind',
+  );
+  @override
+  late final GeneratedColumn<String> nodeKind = GeneratedColumn<String>(
+    'node_kind',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _plannedDueMeta = const VerificationMeta(
+    'plannedDue',
+  );
+  @override
+  late final GeneratedColumn<String> plannedDue = GeneratedColumn<String>(
+    'planned_due',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _movedReasonMeta = const VerificationMeta(
+    'movedReason',
+  );
+  @override
+  late final GeneratedColumn<String> movedReason = GeneratedColumn<String>(
+    'moved_reason',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _skippedMeta = const VerificationMeta(
+    'skipped',
+  );
+  @override
+  late final GeneratedColumn<bool> skipped = GeneratedColumn<bool>(
+    'skipped',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("skipped" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1401,6 +2537,10 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
     kind,
     due,
     completedAt,
+    nodeKind,
+    plannedDue,
+    movedReason,
+    skipped,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1477,6 +2617,33 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
         ),
       );
     }
+    if (data.containsKey('node_kind')) {
+      context.handle(
+        _nodeKindMeta,
+        nodeKind.isAcceptableOrUnknown(data['node_kind']!, _nodeKindMeta),
+      );
+    }
+    if (data.containsKey('planned_due')) {
+      context.handle(
+        _plannedDueMeta,
+        plannedDue.isAcceptableOrUnknown(data['planned_due']!, _plannedDueMeta),
+      );
+    }
+    if (data.containsKey('moved_reason')) {
+      context.handle(
+        _movedReasonMeta,
+        movedReason.isAcceptableOrUnknown(
+          data['moved_reason']!,
+          _movedReasonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('skipped')) {
+      context.handle(
+        _skippedMeta,
+        skipped.isAcceptableOrUnknown(data['skipped']!, _skippedMeta),
+      );
+    }
     return context;
   }
 
@@ -1528,6 +2695,22 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}completed_at'],
       ),
+      nodeKind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}node_kind'],
+      ),
+      plannedDue: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}planned_due'],
+      ),
+      movedReason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}moved_reason'],
+      ),
+      skipped: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}skipped'],
+      )!,
     );
   }
 
@@ -1564,6 +2747,12 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
 
   /// Back-datable completion (F4).
   final DateTime? completedAt;
+  final String? nodeKind;
+  final String? plannedDue;
+
+  /// JSON `{nl, en}` — why the node moved, or the skip reason.
+  final String? movedReason;
+  final bool skipped;
   const TaskRow({
     required this.id,
     required this.owner,
@@ -1575,6 +2764,10 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
     required this.kind,
     required this.due,
     this.completedAt,
+    this.nodeKind,
+    this.plannedDue,
+    this.movedReason,
+    required this.skipped,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1597,6 +2790,16 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
     if (!nullToAbsent || completedAt != null) {
       map['completed_at'] = Variable<DateTime>(completedAt);
     }
+    if (!nullToAbsent || nodeKind != null) {
+      map['node_kind'] = Variable<String>(nodeKind);
+    }
+    if (!nullToAbsent || plannedDue != null) {
+      map['planned_due'] = Variable<String>(plannedDue);
+    }
+    if (!nullToAbsent || movedReason != null) {
+      map['moved_reason'] = Variable<String>(movedReason);
+    }
+    map['skipped'] = Variable<bool>(skipped);
     return map;
   }
 
@@ -1618,6 +2821,16 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       completedAt: completedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(completedAt),
+      nodeKind: nodeKind == null && nullToAbsent
+          ? const Value.absent()
+          : Value(nodeKind),
+      plannedDue: plannedDue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(plannedDue),
+      movedReason: movedReason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(movedReason),
+      skipped: Value(skipped),
     );
   }
 
@@ -1637,6 +2850,10 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       kind: serializer.fromJson<TaskKind>(json['kind']),
       due: serializer.fromJson<String>(json['due']),
       completedAt: serializer.fromJson<DateTime?>(json['completedAt']),
+      nodeKind: serializer.fromJson<String?>(json['nodeKind']),
+      plannedDue: serializer.fromJson<String?>(json['plannedDue']),
+      movedReason: serializer.fromJson<String?>(json['movedReason']),
+      skipped: serializer.fromJson<bool>(json['skipped']),
     );
   }
   @override
@@ -1653,6 +2870,10 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       'kind': serializer.toJson<TaskKind>(kind),
       'due': serializer.toJson<String>(due),
       'completedAt': serializer.toJson<DateTime?>(completedAt),
+      'nodeKind': serializer.toJson<String?>(nodeKind),
+      'plannedDue': serializer.toJson<String?>(plannedDue),
+      'movedReason': serializer.toJson<String?>(movedReason),
+      'skipped': serializer.toJson<bool>(skipped),
     };
   }
 
@@ -1667,6 +2888,10 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
     TaskKind? kind,
     String? due,
     Value<DateTime?> completedAt = const Value.absent(),
+    Value<String?> nodeKind = const Value.absent(),
+    Value<String?> plannedDue = const Value.absent(),
+    Value<String?> movedReason = const Value.absent(),
+    bool? skipped,
   }) => TaskRow(
     id: id ?? this.id,
     owner: owner ?? this.owner,
@@ -1680,6 +2905,10 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
     kind: kind ?? this.kind,
     due: due ?? this.due,
     completedAt: completedAt.present ? completedAt.value : this.completedAt,
+    nodeKind: nodeKind.present ? nodeKind.value : this.nodeKind,
+    plannedDue: plannedDue.present ? plannedDue.value : this.plannedDue,
+    movedReason: movedReason.present ? movedReason.value : this.movedReason,
+    skipped: skipped ?? this.skipped,
   );
   TaskRow copyWithCompanion(TasksCompanion data) {
     return TaskRow(
@@ -1697,6 +2926,14 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       completedAt: data.completedAt.present
           ? data.completedAt.value
           : this.completedAt,
+      nodeKind: data.nodeKind.present ? data.nodeKind.value : this.nodeKind,
+      plannedDue: data.plannedDue.present
+          ? data.plannedDue.value
+          : this.plannedDue,
+      movedReason: data.movedReason.present
+          ? data.movedReason.value
+          : this.movedReason,
+      skipped: data.skipped.present ? data.skipped.value : this.skipped,
     );
   }
 
@@ -1712,7 +2949,11 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
           ..write('gardenPlantId: $gardenPlantId, ')
           ..write('kind: $kind, ')
           ..write('due: $due, ')
-          ..write('completedAt: $completedAt')
+          ..write('completedAt: $completedAt, ')
+          ..write('nodeKind: $nodeKind, ')
+          ..write('plannedDue: $plannedDue, ')
+          ..write('movedReason: $movedReason, ')
+          ..write('skipped: $skipped')
           ..write(')'))
         .toString();
   }
@@ -1729,6 +2970,10 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
     kind,
     due,
     completedAt,
+    nodeKind,
+    plannedDue,
+    movedReason,
+    skipped,
   );
   @override
   bool operator ==(Object other) =>
@@ -1743,7 +2988,11 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
           other.gardenPlantId == this.gardenPlantId &&
           other.kind == this.kind &&
           other.due == this.due &&
-          other.completedAt == this.completedAt);
+          other.completedAt == this.completedAt &&
+          other.nodeKind == this.nodeKind &&
+          other.plannedDue == this.plannedDue &&
+          other.movedReason == this.movedReason &&
+          other.skipped == this.skipped);
 }
 
 class TasksCompanion extends UpdateCompanion<TaskRow> {
@@ -1757,6 +3006,10 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
   final Value<TaskKind> kind;
   final Value<String> due;
   final Value<DateTime?> completedAt;
+  final Value<String?> nodeKind;
+  final Value<String?> plannedDue;
+  final Value<String?> movedReason;
+  final Value<bool> skipped;
   final Value<int> rowid;
   const TasksCompanion({
     this.id = const Value.absent(),
@@ -1769,6 +3022,10 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     this.kind = const Value.absent(),
     this.due = const Value.absent(),
     this.completedAt = const Value.absent(),
+    this.nodeKind = const Value.absent(),
+    this.plannedDue = const Value.absent(),
+    this.movedReason = const Value.absent(),
+    this.skipped = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   TasksCompanion.insert({
@@ -1782,6 +3039,10 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     required TaskKind kind,
     required String due,
     this.completedAt = const Value.absent(),
+    this.nodeKind = const Value.absent(),
+    this.plannedDue = const Value.absent(),
+    this.movedReason = const Value.absent(),
+    this.skipped = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        owner = Value(owner),
@@ -1798,6 +3059,10 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     Expression<String>? kind,
     Expression<String>? due,
     Expression<DateTime>? completedAt,
+    Expression<String>? nodeKind,
+    Expression<String>? plannedDue,
+    Expression<String>? movedReason,
+    Expression<bool>? skipped,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1811,6 +3076,10 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
       if (kind != null) 'kind': kind,
       if (due != null) 'due': due,
       if (completedAt != null) 'completed_at': completedAt,
+      if (nodeKind != null) 'node_kind': nodeKind,
+      if (plannedDue != null) 'planned_due': plannedDue,
+      if (movedReason != null) 'moved_reason': movedReason,
+      if (skipped != null) 'skipped': skipped,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1826,6 +3095,10 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     Value<TaskKind>? kind,
     Value<String>? due,
     Value<DateTime?>? completedAt,
+    Value<String?>? nodeKind,
+    Value<String?>? plannedDue,
+    Value<String?>? movedReason,
+    Value<bool>? skipped,
     Value<int>? rowid,
   }) {
     return TasksCompanion(
@@ -1839,6 +3112,10 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
       kind: kind ?? this.kind,
       due: due ?? this.due,
       completedAt: completedAt ?? this.completedAt,
+      nodeKind: nodeKind ?? this.nodeKind,
+      plannedDue: plannedDue ?? this.plannedDue,
+      movedReason: movedReason ?? this.movedReason,
+      skipped: skipped ?? this.skipped,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1878,6 +3155,18 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
     if (completedAt.present) {
       map['completed_at'] = Variable<DateTime>(completedAt.value);
     }
+    if (nodeKind.present) {
+      map['node_kind'] = Variable<String>(nodeKind.value);
+    }
+    if (plannedDue.present) {
+      map['planned_due'] = Variable<String>(plannedDue.value);
+    }
+    if (movedReason.present) {
+      map['moved_reason'] = Variable<String>(movedReason.value);
+    }
+    if (skipped.present) {
+      map['skipped'] = Variable<bool>(skipped.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1897,6 +3186,10 @@ class TasksCompanion extends UpdateCompanion<TaskRow> {
           ..write('kind: $kind, ')
           ..write('due: $due, ')
           ..write('completedAt: $completedAt, ')
+          ..write('nodeKind: $nodeKind, ')
+          ..write('plannedDue: $plannedDue, ')
+          ..write('movedReason: $movedReason, ')
+          ..write('skipped: $skipped, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -2020,6 +3313,36 @@ class $JournalEntriesTable extends JournalEntries
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _moodMeta = const VerificationMeta('mood');
+  @override
+  late final GeneratedColumn<int> mood = GeneratedColumn<int>(
+    'mood',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _stageMeta = const VerificationMeta('stage');
+  @override
+  late final GeneratedColumn<String> stage = GeneratedColumn<String>(
+    'stage',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _photoPathsMeta = const VerificationMeta(
+    'photoPaths',
+  );
+  @override
+  late final GeneratedColumn<String> photoPaths = GeneratedColumn<String>(
+    'photo_paths',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -2032,6 +3355,9 @@ class $JournalEntriesTable extends JournalEntries
     entryOn,
     note,
     photoPath,
+    mood,
+    stage,
+    photoPaths,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2111,6 +3437,24 @@ class $JournalEntriesTable extends JournalEntries
         photoPath.isAcceptableOrUnknown(data['photo_path']!, _photoPathMeta),
       );
     }
+    if (data.containsKey('mood')) {
+      context.handle(
+        _moodMeta,
+        mood.isAcceptableOrUnknown(data['mood']!, _moodMeta),
+      );
+    }
+    if (data.containsKey('stage')) {
+      context.handle(
+        _stageMeta,
+        stage.isAcceptableOrUnknown(data['stage']!, _stageMeta),
+      );
+    }
+    if (data.containsKey('photo_paths')) {
+      context.handle(
+        _photoPathsMeta,
+        photoPaths.isAcceptableOrUnknown(data['photo_paths']!, _photoPathsMeta),
+      );
+    }
     return context;
   }
 
@@ -2160,6 +3504,18 @@ class $JournalEntriesTable extends JournalEntries
         DriftSqlType.string,
         data['${effectivePrefix}photo_path'],
       ),
+      mood: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}mood'],
+      ),
+      stage: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}stage'],
+      ),
+      photoPaths: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}photo_paths'],
+      )!,
     );
   }
 
@@ -2191,6 +3547,9 @@ class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
 
   /// Storage key; the photo is compressed client-side before upload.
   final String? photoPath;
+  final int? mood;
+  final String? stage;
+  final String photoPaths;
   const JournalEntryRow({
     required this.id,
     required this.owner,
@@ -2202,6 +3561,9 @@ class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
     required this.entryOn,
     this.note,
     this.photoPath,
+    this.mood,
+    this.stage,
+    required this.photoPaths,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2224,6 +3586,13 @@ class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
     if (!nullToAbsent || photoPath != null) {
       map['photo_path'] = Variable<String>(photoPath);
     }
+    if (!nullToAbsent || mood != null) {
+      map['mood'] = Variable<int>(mood);
+    }
+    if (!nullToAbsent || stage != null) {
+      map['stage'] = Variable<String>(stage);
+    }
+    map['photo_paths'] = Variable<String>(photoPaths);
     return map;
   }
 
@@ -2245,6 +3614,11 @@ class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
       photoPath: photoPath == null && nullToAbsent
           ? const Value.absent()
           : Value(photoPath),
+      mood: mood == null && nullToAbsent ? const Value.absent() : Value(mood),
+      stage: stage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(stage),
+      photoPaths: Value(photoPaths),
     );
   }
 
@@ -2264,6 +3638,9 @@ class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
       entryOn: serializer.fromJson<String>(json['entryOn']),
       note: serializer.fromJson<String?>(json['note']),
       photoPath: serializer.fromJson<String?>(json['photoPath']),
+      mood: serializer.fromJson<int?>(json['mood']),
+      stage: serializer.fromJson<String?>(json['stage']),
+      photoPaths: serializer.fromJson<String>(json['photoPaths']),
     );
   }
   @override
@@ -2280,6 +3657,9 @@ class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
       'entryOn': serializer.toJson<String>(entryOn),
       'note': serializer.toJson<String?>(note),
       'photoPath': serializer.toJson<String?>(photoPath),
+      'mood': serializer.toJson<int?>(mood),
+      'stage': serializer.toJson<String?>(stage),
+      'photoPaths': serializer.toJson<String>(photoPaths),
     };
   }
 
@@ -2294,6 +3674,9 @@ class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
     String? entryOn,
     Value<String?> note = const Value.absent(),
     Value<String?> photoPath = const Value.absent(),
+    Value<int?> mood = const Value.absent(),
+    Value<String?> stage = const Value.absent(),
+    String? photoPaths,
   }) => JournalEntryRow(
     id: id ?? this.id,
     owner: owner ?? this.owner,
@@ -2307,6 +3690,9 @@ class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
     entryOn: entryOn ?? this.entryOn,
     note: note.present ? note.value : this.note,
     photoPath: photoPath.present ? photoPath.value : this.photoPath,
+    mood: mood.present ? mood.value : this.mood,
+    stage: stage.present ? stage.value : this.stage,
+    photoPaths: photoPaths ?? this.photoPaths,
   );
   JournalEntryRow copyWithCompanion(JournalEntriesCompanion data) {
     return JournalEntryRow(
@@ -2322,6 +3708,11 @@ class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
       entryOn: data.entryOn.present ? data.entryOn.value : this.entryOn,
       note: data.note.present ? data.note.value : this.note,
       photoPath: data.photoPath.present ? data.photoPath.value : this.photoPath,
+      mood: data.mood.present ? data.mood.value : this.mood,
+      stage: data.stage.present ? data.stage.value : this.stage,
+      photoPaths: data.photoPaths.present
+          ? data.photoPaths.value
+          : this.photoPaths,
     );
   }
 
@@ -2337,7 +3728,10 @@ class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
           ..write('gardenPlantId: $gardenPlantId, ')
           ..write('entryOn: $entryOn, ')
           ..write('note: $note, ')
-          ..write('photoPath: $photoPath')
+          ..write('photoPath: $photoPath, ')
+          ..write('mood: $mood, ')
+          ..write('stage: $stage, ')
+          ..write('photoPaths: $photoPaths')
           ..write(')'))
         .toString();
   }
@@ -2354,6 +3748,9 @@ class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
     entryOn,
     note,
     photoPath,
+    mood,
+    stage,
+    photoPaths,
   );
   @override
   bool operator ==(Object other) =>
@@ -2368,7 +3765,10 @@ class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
           other.gardenPlantId == this.gardenPlantId &&
           other.entryOn == this.entryOn &&
           other.note == this.note &&
-          other.photoPath == this.photoPath);
+          other.photoPath == this.photoPath &&
+          other.mood == this.mood &&
+          other.stage == this.stage &&
+          other.photoPaths == this.photoPaths);
 }
 
 class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
@@ -2382,6 +3782,9 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
   final Value<String> entryOn;
   final Value<String?> note;
   final Value<String?> photoPath;
+  final Value<int?> mood;
+  final Value<String?> stage;
+  final Value<String> photoPaths;
   final Value<int> rowid;
   const JournalEntriesCompanion({
     this.id = const Value.absent(),
@@ -2394,6 +3797,9 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
     this.entryOn = const Value.absent(),
     this.note = const Value.absent(),
     this.photoPath = const Value.absent(),
+    this.mood = const Value.absent(),
+    this.stage = const Value.absent(),
+    this.photoPaths = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   JournalEntriesCompanion.insert({
@@ -2407,6 +3813,9 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
     required String entryOn,
     this.note = const Value.absent(),
     this.photoPath = const Value.absent(),
+    this.mood = const Value.absent(),
+    this.stage = const Value.absent(),
+    this.photoPaths = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        owner = Value(owner),
@@ -2422,6 +3831,9 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
     Expression<String>? entryOn,
     Expression<String>? note,
     Expression<String>? photoPath,
+    Expression<int>? mood,
+    Expression<String>? stage,
+    Expression<String>? photoPaths,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -2435,6 +3847,9 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
       if (entryOn != null) 'entry_on': entryOn,
       if (note != null) 'note': note,
       if (photoPath != null) 'photo_path': photoPath,
+      if (mood != null) 'mood': mood,
+      if (stage != null) 'stage': stage,
+      if (photoPaths != null) 'photo_paths': photoPaths,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -2450,6 +3865,9 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
     Value<String>? entryOn,
     Value<String?>? note,
     Value<String?>? photoPath,
+    Value<int?>? mood,
+    Value<String?>? stage,
+    Value<String>? photoPaths,
     Value<int>? rowid,
   }) {
     return JournalEntriesCompanion(
@@ -2463,6 +3881,9 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
       entryOn: entryOn ?? this.entryOn,
       note: note ?? this.note,
       photoPath: photoPath ?? this.photoPath,
+      mood: mood ?? this.mood,
+      stage: stage ?? this.stage,
+      photoPaths: photoPaths ?? this.photoPaths,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -2500,6 +3921,15 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
     if (photoPath.present) {
       map['photo_path'] = Variable<String>(photoPath.value);
     }
+    if (mood.present) {
+      map['mood'] = Variable<int>(mood.value);
+    }
+    if (stage.present) {
+      map['stage'] = Variable<String>(stage.value);
+    }
+    if (photoPaths.present) {
+      map['photo_paths'] = Variable<String>(photoPaths.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -2519,6 +3949,9 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
           ..write('entryOn: $entryOn, ')
           ..write('note: $note, ')
           ..write('photoPath: $photoPath, ')
+          ..write('mood: $mood, ')
+          ..write('stage: $stage, ')
+          ..write('photoPaths: $photoPaths, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3633,6 +5066,7 @@ class AppMetaCompanion extends UpdateCompanion<AppMetaRow> {
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
+  late final $ProfilesTable profiles = $ProfilesTable(this);
   late final $GardensTable gardens = $GardensTable(this);
   late final $GardenPlantsTable gardenPlants = $GardenPlantsTable(this);
   late final $TasksTable tasks = $TasksTable(this);
@@ -3645,6 +5079,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
+    profiles,
     gardens,
     gardenPlants,
     tasks,
@@ -3686,6 +5121,325 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   ]);
 }
 
+typedef $$ProfilesTableCreateCompanionBuilder =
+    ProfilesCompanion Function({
+      required String id,
+      required String owner,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<bool> dirty,
+      Value<String?> displayName,
+      Value<String> lang,
+      Value<String> preferences,
+      Value<int> streakCount,
+      Value<String?> streakFrozenUntil,
+      Value<int> rowid,
+    });
+typedef $$ProfilesTableUpdateCompanionBuilder =
+    ProfilesCompanion Function({
+      Value<String> id,
+      Value<String> owner,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<bool> dirty,
+      Value<String?> displayName,
+      Value<String> lang,
+      Value<String> preferences,
+      Value<int> streakCount,
+      Value<String?> streakFrozenUntil,
+      Value<int> rowid,
+    });
+
+class $$ProfilesTableFilterComposer
+    extends Composer<_$AppDatabase, $ProfilesTable> {
+  $$ProfilesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get owner => $composableBuilder(
+    column: $table.owner,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lang => $composableBuilder(
+    column: $table.lang,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get preferences => $composableBuilder(
+    column: $table.preferences,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get streakCount => $composableBuilder(
+    column: $table.streakCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get streakFrozenUntil => $composableBuilder(
+    column: $table.streakFrozenUntil,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$ProfilesTableOrderingComposer
+    extends Composer<_$AppDatabase, $ProfilesTable> {
+  $$ProfilesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get owner => $composableBuilder(
+    column: $table.owner,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lang => $composableBuilder(
+    column: $table.lang,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get preferences => $composableBuilder(
+    column: $table.preferences,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get streakCount => $composableBuilder(
+    column: $table.streakCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get streakFrozenUntil => $composableBuilder(
+    column: $table.streakFrozenUntil,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ProfilesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ProfilesTable> {
+  $$ProfilesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get owner =>
+      $composableBuilder(column: $table.owner, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get dirty =>
+      $composableBuilder(column: $table.dirty, builder: (column) => column);
+
+  GeneratedColumn<String> get displayName => $composableBuilder(
+    column: $table.displayName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get lang =>
+      $composableBuilder(column: $table.lang, builder: (column) => column);
+
+  GeneratedColumn<String> get preferences => $composableBuilder(
+    column: $table.preferences,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get streakCount => $composableBuilder(
+    column: $table.streakCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get streakFrozenUntil => $composableBuilder(
+    column: $table.streakFrozenUntil,
+    builder: (column) => column,
+  );
+}
+
+class $$ProfilesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ProfilesTable,
+          ProfileRow,
+          $$ProfilesTableFilterComposer,
+          $$ProfilesTableOrderingComposer,
+          $$ProfilesTableAnnotationComposer,
+          $$ProfilesTableCreateCompanionBuilder,
+          $$ProfilesTableUpdateCompanionBuilder,
+          (
+            ProfileRow,
+            BaseReferences<_$AppDatabase, $ProfilesTable, ProfileRow>,
+          ),
+          ProfileRow,
+          PrefetchHooks Function()
+        > {
+  $$ProfilesTableTableManager(_$AppDatabase db, $ProfilesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ProfilesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ProfilesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ProfilesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> owner = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
+                Value<String?> displayName = const Value.absent(),
+                Value<String> lang = const Value.absent(),
+                Value<String> preferences = const Value.absent(),
+                Value<int> streakCount = const Value.absent(),
+                Value<String?> streakFrozenUntil = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ProfilesCompanion(
+                id: id,
+                owner: owner,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                dirty: dirty,
+                displayName: displayName,
+                lang: lang,
+                preferences: preferences,
+                streakCount: streakCount,
+                streakFrozenUntil: streakFrozenUntil,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String owner,
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
+                Value<String?> displayName = const Value.absent(),
+                Value<String> lang = const Value.absent(),
+                Value<String> preferences = const Value.absent(),
+                Value<int> streakCount = const Value.absent(),
+                Value<String?> streakFrozenUntil = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ProfilesCompanion.insert(
+                id: id,
+                owner: owner,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                dirty: dirty,
+                displayName: displayName,
+                lang: lang,
+                preferences: preferences,
+                streakCount: streakCount,
+                streakFrozenUntil: streakFrozenUntil,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$ProfilesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ProfilesTable,
+      ProfileRow,
+      $$ProfilesTableFilterComposer,
+      $$ProfilesTableOrderingComposer,
+      $$ProfilesTableAnnotationComposer,
+      $$ProfilesTableCreateCompanionBuilder,
+      $$ProfilesTableUpdateCompanionBuilder,
+      (ProfileRow, BaseReferences<_$AppDatabase, $ProfilesTable, ProfileRow>),
+      ProfileRow,
+      PrefetchHooks Function()
+    >;
 typedef $$GardensTableCreateCompanionBuilder =
     GardensCompanion Function({
       required String id,
@@ -3699,6 +5453,9 @@ typedef $$GardensTableCreateCompanionBuilder =
       Value<int?> sunHours,
       Value<double?> lat,
       Value<double?> lon,
+      Value<int?> sizeM2,
+      Value<String?> layout,
+      Value<String?> postcode,
       Value<int> rowid,
     });
 typedef $$GardensTableUpdateCompanionBuilder =
@@ -3714,6 +5471,9 @@ typedef $$GardensTableUpdateCompanionBuilder =
       Value<int?> sunHours,
       Value<double?> lat,
       Value<double?> lon,
+      Value<int?> sizeM2,
+      Value<String?> layout,
+      Value<String?> postcode,
       Value<int> rowid,
     });
 
@@ -3802,6 +5562,21 @@ class $$GardensTableFilterComposer
 
   ColumnFilters<double> get lon => $composableBuilder(
     column: $table.lon,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sizeM2 => $composableBuilder(
+    column: $table.sizeM2,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get layout => $composableBuilder(
+    column: $table.layout,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get postcode => $composableBuilder(
+    column: $table.postcode,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3894,6 +5669,21 @@ class $$GardensTableOrderingComposer
     column: $table.lon,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get sizeM2 => $composableBuilder(
+    column: $table.sizeM2,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get layout => $composableBuilder(
+    column: $table.layout,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get postcode => $composableBuilder(
+    column: $table.postcode,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$GardensTableAnnotationComposer
@@ -3937,6 +5727,15 @@ class $$GardensTableAnnotationComposer
 
   GeneratedColumn<double> get lon =>
       $composableBuilder(column: $table.lon, builder: (column) => column);
+
+  GeneratedColumn<int> get sizeM2 =>
+      $composableBuilder(column: $table.sizeM2, builder: (column) => column);
+
+  GeneratedColumn<String> get layout =>
+      $composableBuilder(column: $table.layout, builder: (column) => column);
+
+  GeneratedColumn<String> get postcode =>
+      $composableBuilder(column: $table.postcode, builder: (column) => column);
 
   Expression<T> gardenPlantsRefs<T extends Object>(
     Expression<T> Function($$GardenPlantsTableAnnotationComposer a) f,
@@ -4003,6 +5802,9 @@ class $$GardensTableTableManager
                 Value<int?> sunHours = const Value.absent(),
                 Value<double?> lat = const Value.absent(),
                 Value<double?> lon = const Value.absent(),
+                Value<int?> sizeM2 = const Value.absent(),
+                Value<String?> layout = const Value.absent(),
+                Value<String?> postcode = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => GardensCompanion(
                 id: id,
@@ -4016,6 +5818,9 @@ class $$GardensTableTableManager
                 sunHours: sunHours,
                 lat: lat,
                 lon: lon,
+                sizeM2: sizeM2,
+                layout: layout,
+                postcode: postcode,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -4031,6 +5836,9 @@ class $$GardensTableTableManager
                 Value<int?> sunHours = const Value.absent(),
                 Value<double?> lat = const Value.absent(),
                 Value<double?> lon = const Value.absent(),
+                Value<int?> sizeM2 = const Value.absent(),
+                Value<String?> layout = const Value.absent(),
+                Value<String?> postcode = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => GardensCompanion.insert(
                 id: id,
@@ -4044,6 +5852,9 @@ class $$GardensTableTableManager
                 sunHours: sunHours,
                 lat: lat,
                 lon: lon,
+                sizeM2: sizeM2,
+                layout: layout,
+                postcode: postcode,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -4113,6 +5924,11 @@ typedef $$GardenPlantsTableCreateCompanionBuilder =
       required String cropSlug,
       Value<int?> potLitres,
       Value<String?> plantedOn,
+      Value<String?> varietySlug,
+      Value<String?> stage,
+      Value<String?> stageChangedOn,
+      Value<String?> place,
+      Value<String?> startMethod,
       Value<int> rowid,
     });
 typedef $$GardenPlantsTableUpdateCompanionBuilder =
@@ -4127,6 +5943,11 @@ typedef $$GardenPlantsTableUpdateCompanionBuilder =
       Value<String> cropSlug,
       Value<int?> potLitres,
       Value<String?> plantedOn,
+      Value<String?> varietySlug,
+      Value<String?> stage,
+      Value<String?> stageChangedOn,
+      Value<String?> place,
+      Value<String?> startMethod,
       Value<int> rowid,
     });
 
@@ -4258,6 +6079,31 @@ class $$GardenPlantsTableFilterComposer
 
   ColumnFilters<String> get plantedOn => $composableBuilder(
     column: $table.plantedOn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get varietySlug => $composableBuilder(
+    column: $table.varietySlug,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get stage => $composableBuilder(
+    column: $table.stage,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get stageChangedOn => $composableBuilder(
+    column: $table.stageChangedOn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get place => $composableBuilder(
+    column: $table.place,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get startMethod => $composableBuilder(
+    column: $table.startMethod,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4414,6 +6260,31 @@ class $$GardenPlantsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get varietySlug => $composableBuilder(
+    column: $table.varietySlug,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get stage => $composableBuilder(
+    column: $table.stage,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get stageChangedOn => $composableBuilder(
+    column: $table.stageChangedOn,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get place => $composableBuilder(
+    column: $table.place,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get startMethod => $composableBuilder(
+    column: $table.startMethod,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$GardensTableOrderingComposer get gardenId {
     final $$GardensTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -4473,6 +6344,27 @@ class $$GardenPlantsTableAnnotationComposer
 
   GeneratedColumn<String> get plantedOn =>
       $composableBuilder(column: $table.plantedOn, builder: (column) => column);
+
+  GeneratedColumn<String> get varietySlug => $composableBuilder(
+    column: $table.varietySlug,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get stage =>
+      $composableBuilder(column: $table.stage, builder: (column) => column);
+
+  GeneratedColumn<String> get stageChangedOn => $composableBuilder(
+    column: $table.stageChangedOn,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get place =>
+      $composableBuilder(column: $table.place, builder: (column) => column);
+
+  GeneratedColumn<String> get startMethod => $composableBuilder(
+    column: $table.startMethod,
+    builder: (column) => column,
+  );
 
   $$GardensTableAnnotationComposer get gardenId {
     final $$GardensTableAnnotationComposer composer = $composerBuilder(
@@ -4616,6 +6508,11 @@ class $$GardenPlantsTableTableManager
                 Value<String> cropSlug = const Value.absent(),
                 Value<int?> potLitres = const Value.absent(),
                 Value<String?> plantedOn = const Value.absent(),
+                Value<String?> varietySlug = const Value.absent(),
+                Value<String?> stage = const Value.absent(),
+                Value<String?> stageChangedOn = const Value.absent(),
+                Value<String?> place = const Value.absent(),
+                Value<String?> startMethod = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => GardenPlantsCompanion(
                 id: id,
@@ -4628,6 +6525,11 @@ class $$GardenPlantsTableTableManager
                 cropSlug: cropSlug,
                 potLitres: potLitres,
                 plantedOn: plantedOn,
+                varietySlug: varietySlug,
+                stage: stage,
+                stageChangedOn: stageChangedOn,
+                place: place,
+                startMethod: startMethod,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -4642,6 +6544,11 @@ class $$GardenPlantsTableTableManager
                 required String cropSlug,
                 Value<int?> potLitres = const Value.absent(),
                 Value<String?> plantedOn = const Value.absent(),
+                Value<String?> varietySlug = const Value.absent(),
+                Value<String?> stage = const Value.absent(),
+                Value<String?> stageChangedOn = const Value.absent(),
+                Value<String?> place = const Value.absent(),
+                Value<String?> startMethod = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => GardenPlantsCompanion.insert(
                 id: id,
@@ -4654,6 +6561,11 @@ class $$GardenPlantsTableTableManager
                 cropSlug: cropSlug,
                 potLitres: potLitres,
                 plantedOn: plantedOn,
+                varietySlug: varietySlug,
+                stage: stage,
+                stageChangedOn: stageChangedOn,
+                place: place,
+                startMethod: startMethod,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -4816,6 +6728,10 @@ typedef $$TasksTableCreateCompanionBuilder =
       required TaskKind kind,
       required String due,
       Value<DateTime?> completedAt,
+      Value<String?> nodeKind,
+      Value<String?> plannedDue,
+      Value<String?> movedReason,
+      Value<bool> skipped,
       Value<int> rowid,
     });
 typedef $$TasksTableUpdateCompanionBuilder =
@@ -4830,6 +6746,10 @@ typedef $$TasksTableUpdateCompanionBuilder =
       Value<TaskKind> kind,
       Value<String> due,
       Value<DateTime?> completedAt,
+      Value<String?> nodeKind,
+      Value<String?> plannedDue,
+      Value<String?> movedReason,
+      Value<bool> skipped,
       Value<int> rowid,
     });
 
@@ -4906,6 +6826,26 @@ class $$TasksTableFilterComposer extends Composer<_$AppDatabase, $TasksTable> {
 
   ColumnFilters<DateTime> get completedAt => $composableBuilder(
     column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get nodeKind => $composableBuilder(
+    column: $table.nodeKind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get plannedDue => $composableBuilder(
+    column: $table.plannedDue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get movedReason => $composableBuilder(
+    column: $table.movedReason,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get skipped => $composableBuilder(
+    column: $table.skipped,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4987,6 +6927,26 @@ class $$TasksTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get nodeKind => $composableBuilder(
+    column: $table.nodeKind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get plannedDue => $composableBuilder(
+    column: $table.plannedDue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get movedReason => $composableBuilder(
+    column: $table.movedReason,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get skipped => $composableBuilder(
+    column: $table.skipped,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$GardenPlantsTableOrderingComposer get gardenPlantId {
     final $$GardenPlantsTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -5048,6 +7008,22 @@ class $$TasksTableAnnotationComposer
     column: $table.completedAt,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get nodeKind =>
+      $composableBuilder(column: $table.nodeKind, builder: (column) => column);
+
+  GeneratedColumn<String> get plannedDue => $composableBuilder(
+    column: $table.plannedDue,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get movedReason => $composableBuilder(
+    column: $table.movedReason,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get skipped =>
+      $composableBuilder(column: $table.skipped, builder: (column) => column);
 
   $$GardenPlantsTableAnnotationComposer get gardenPlantId {
     final $$GardenPlantsTableAnnotationComposer composer = $composerBuilder(
@@ -5111,6 +7087,10 @@ class $$TasksTableTableManager
                 Value<TaskKind> kind = const Value.absent(),
                 Value<String> due = const Value.absent(),
                 Value<DateTime?> completedAt = const Value.absent(),
+                Value<String?> nodeKind = const Value.absent(),
+                Value<String?> plannedDue = const Value.absent(),
+                Value<String?> movedReason = const Value.absent(),
+                Value<bool> skipped = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TasksCompanion(
                 id: id,
@@ -5123,6 +7103,10 @@ class $$TasksTableTableManager
                 kind: kind,
                 due: due,
                 completedAt: completedAt,
+                nodeKind: nodeKind,
+                plannedDue: plannedDue,
+                movedReason: movedReason,
+                skipped: skipped,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -5137,6 +7121,10 @@ class $$TasksTableTableManager
                 required TaskKind kind,
                 required String due,
                 Value<DateTime?> completedAt = const Value.absent(),
+                Value<String?> nodeKind = const Value.absent(),
+                Value<String?> plannedDue = const Value.absent(),
+                Value<String?> movedReason = const Value.absent(),
+                Value<bool> skipped = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TasksCompanion.insert(
                 id: id,
@@ -5149,6 +7137,10 @@ class $$TasksTableTableManager
                 kind: kind,
                 due: due,
                 completedAt: completedAt,
+                nodeKind: nodeKind,
+                plannedDue: plannedDue,
+                movedReason: movedReason,
+                skipped: skipped,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -5228,6 +7220,9 @@ typedef $$JournalEntriesTableCreateCompanionBuilder =
       required String entryOn,
       Value<String?> note,
       Value<String?> photoPath,
+      Value<int?> mood,
+      Value<String?> stage,
+      Value<String> photoPaths,
       Value<int> rowid,
     });
 typedef $$JournalEntriesTableUpdateCompanionBuilder =
@@ -5242,6 +7237,9 @@ typedef $$JournalEntriesTableUpdateCompanionBuilder =
       Value<String> entryOn,
       Value<String?> note,
       Value<String?> photoPath,
+      Value<int?> mood,
+      Value<String?> stage,
+      Value<String> photoPaths,
       Value<int> rowid,
     });
 
@@ -5327,6 +7325,21 @@ class $$JournalEntriesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<int> get mood => $composableBuilder(
+    column: $table.mood,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get stage => $composableBuilder(
+    column: $table.stage,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get photoPaths => $composableBuilder(
+    column: $table.photoPaths,
+    builder: (column) => ColumnFilters(column),
+  );
+
   $$GardenPlantsTableFilterComposer get gardenPlantId {
     final $$GardenPlantsTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -5405,6 +7418,21 @@ class $$JournalEntriesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get mood => $composableBuilder(
+    column: $table.mood,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get stage => $composableBuilder(
+    column: $table.stage,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get photoPaths => $composableBuilder(
+    column: $table.photoPaths,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$GardenPlantsTableOrderingComposer get gardenPlantId {
     final $$GardenPlantsTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -5464,6 +7492,17 @@ class $$JournalEntriesTableAnnotationComposer
 
   GeneratedColumn<String> get photoPath =>
       $composableBuilder(column: $table.photoPath, builder: (column) => column);
+
+  GeneratedColumn<int> get mood =>
+      $composableBuilder(column: $table.mood, builder: (column) => column);
+
+  GeneratedColumn<String> get stage =>
+      $composableBuilder(column: $table.stage, builder: (column) => column);
+
+  GeneratedColumn<String> get photoPaths => $composableBuilder(
+    column: $table.photoPaths,
+    builder: (column) => column,
+  );
 
   $$GardenPlantsTableAnnotationComposer get gardenPlantId {
     final $$GardenPlantsTableAnnotationComposer composer = $composerBuilder(
@@ -5529,6 +7568,9 @@ class $$JournalEntriesTableTableManager
                 Value<String> entryOn = const Value.absent(),
                 Value<String?> note = const Value.absent(),
                 Value<String?> photoPath = const Value.absent(),
+                Value<int?> mood = const Value.absent(),
+                Value<String?> stage = const Value.absent(),
+                Value<String> photoPaths = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => JournalEntriesCompanion(
                 id: id,
@@ -5541,6 +7583,9 @@ class $$JournalEntriesTableTableManager
                 entryOn: entryOn,
                 note: note,
                 photoPath: photoPath,
+                mood: mood,
+                stage: stage,
+                photoPaths: photoPaths,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -5555,6 +7600,9 @@ class $$JournalEntriesTableTableManager
                 required String entryOn,
                 Value<String?> note = const Value.absent(),
                 Value<String?> photoPath = const Value.absent(),
+                Value<int?> mood = const Value.absent(),
+                Value<String?> stage = const Value.absent(),
+                Value<String> photoPaths = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => JournalEntriesCompanion.insert(
                 id: id,
@@ -5567,6 +7615,9 @@ class $$JournalEntriesTableTableManager
                 entryOn: entryOn,
                 note: note,
                 photoPath: photoPath,
+                mood: mood,
+                stage: stage,
+                photoPaths: photoPaths,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -6353,6 +8404,8 @@ typedef $$AppMetaTableProcessedTableManager =
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
+  $$ProfilesTableTableManager get profiles =>
+      $$ProfilesTableTableManager(_db, _db.profiles);
   $$GardensTableTableManager get gardens =>
       $$GardensTableTableManager(_db, _db.gardens);
   $$GardenPlantsTableTableManager get gardenPlants =>

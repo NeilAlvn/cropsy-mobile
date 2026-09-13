@@ -7,7 +7,6 @@
 /// happens to be. Production uses the real clock — this is prototype scaffolding.
 library;
 
-const demoOwner = '00000000-0000-0000-0000-000000000001';
 const demoToday = '2026-05-13';
 
 /// Container-friendly starters, pre-checked in onboarding.

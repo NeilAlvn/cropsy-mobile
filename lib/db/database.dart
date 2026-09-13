@@ -1,8 +1,8 @@
 /// Local database (Drift / SQLite) — the offline source of truth for user data.
 ///
-/// Mirrors the Supabase schema `0001_syncable_foundation` (API contract §6) so
-/// the same rows round-trip cleanly: `gardens`, `garden_plants`, `tasks`,
-/// `journal_entries`. Every syncable row carries `id` (client-generatable uuid),
+/// Mirrors the Supabase schema `0001_syncable_foundation` + `0002` (API
+/// contract §6, PRD §8.2) so the same rows round-trip cleanly: `profiles`,
+/// `gardens`, `garden_plants`, `tasks`, `journal_entries`. Every syncable row carries `id` (client-generatable uuid),
 /// `owner`, `created_at`, `updated_at`, `deleted_at` (soft delete — we never
 /// hard-delete a synced row, matching the server which grants no DELETE).
 ///
@@ -84,6 +84,19 @@ mixin SyncableColumns on Table {
   Set<Column> get primaryKey => {id};
 }
 
+/// One row per user (server: id = auth.uid, owner = id). Onboarding answers
+/// live in `preferences` as JSON; streak state for the Phase 2 loop.
+@DataClassName('ProfileRow')
+class Profiles extends Table with SyncableColumns {
+  TextColumn get displayName => text().nullable()();
+  TextColumn get lang => text().withDefault(const Constant('nl'))();
+
+  /// JSON object (PRD 1.6 answers). Stored as text; parsed by the repository.
+  TextColumn get preferences => text().withDefault(const Constant('{}'))();
+  IntColumn get streakCount => integer().withDefault(const Constant(0))();
+  TextColumn get streakFrozenUntil => text().nullable()();
+}
+
 @DataClassName('GardenRow')
 class Gardens extends Table with SyncableColumns {
   TextColumn get name => text()();
@@ -91,6 +104,11 @@ class Gardens extends Table with SyncableColumns {
   IntColumn get sunHours => integer().nullable()();
   RealColumn get lat => real().nullable()();
   RealColumn get lon => real().nullable()();
+
+  // 0002: onboarding size, planner grid (JSON), postcode fallback.
+  IntColumn get sizeM2 => integer().nullable()();
+  TextColumn get layout => text().nullable()();
+  TextColumn get postcode => text().nullable()();
 
   @override
   List<String> get customConstraints => [
@@ -114,6 +132,22 @@ class GardenPlants extends Table with SyncableColumns {
   /// ISO `yyyy-mm-dd`, back-datable. Stored as text to match the engine + the
   /// Postgres `date` type without timezone drift.
   TextColumn get plantedOn => text().nullable()();
+
+  // 0002
+  TextColumn get varietySlug => text().nullable()();
+
+  /// starting · seedling · vegetative · flowering · harvesting · harvested
+  TextColumn get stage => text().nullable()();
+  TextColumn get stageChangedOn => text().nullable()();
+
+  /// ground · raised_bed · indoor_container · outdoor_container
+  TextColumn get place => text().nullable()();
+
+  /// LOCAL-ONLY: which crop method the timeline path was built from
+  /// (`sow_indoor` …), so an edited planting date can rebuild the same path.
+  /// Not a Supabase column; after a reinstall the synced path nodes are the
+  /// source of truth and this stays null until the next rebuild.
+  TextColumn get startMethod => text().nullable()();
 }
 
 @DataClassName('TaskRow')
@@ -129,6 +163,15 @@ class Tasks extends Table with SyncableColumns {
 
   /// Back-datable completion (F4).
   DateTimeColumn get completedAt => dateTime().nullable()();
+
+  // 0002: timeline nodes (PRD §7). A row with `nodeKind` set is a path node;
+  // `plannedDue` is the original date, `due` is where the replan moved it.
+  TextColumn get nodeKind => text().nullable()();
+  TextColumn get plannedDue => text().nullable()();
+
+  /// JSON `{nl, en}` — why the node moved, or the skip reason.
+  TextColumn get movedReason => text().nullable()();
+  BoolColumn get skipped => boolean().withDefault(const Constant(false))();
 
   @override
   List<String> get customConstraints => [
@@ -147,6 +190,11 @@ class JournalEntries extends Table with SyncableColumns {
 
   /// Storage key; the photo is compressed client-side before upload.
   TextColumn get photoPath => text().nullable()();
+
+  // 0002: growth logs. mood 1 (bad) … 4 (excellent); photoPaths JSON list.
+  IntColumn get mood => integer().nullable()();
+  TextColumn get stage => text().nullable()();
+  TextColumn get photoPaths => text().withDefault(const Constant('[]'))();
 }
 
 /// Harvest log (F7). Local-only for the prototype — the harvest-value tracker
@@ -195,6 +243,7 @@ class AppMeta extends Table {
 
 @DriftDatabase(
   tables: [
+    Profiles,
     Gardens,
     GardenPlants,
     Tasks,
@@ -211,11 +260,35 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.memory() : super(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (m) => m.createAll(),
+        onUpgrade: (m, from, to) async {
+          if (from < 2) {
+            // Mirrors supabase/migrations/0002.
+            await m.createTable(profiles);
+            for (final c in [gardens.sizeM2, gardens.layout, gardens.postcode]) {
+              await m.addColumn(gardens, c);
+            }
+            for (final c in [
+              gardenPlants.varietySlug,
+              gardenPlants.stage,
+              gardenPlants.stageChangedOn,
+              gardenPlants.place,
+              gardenPlants.startMethod,
+            ]) {
+              await m.addColumn(gardenPlants, c);
+            }
+            for (final c in [tasks.nodeKind, tasks.plannedDue, tasks.movedReason, tasks.skipped]) {
+              await m.addColumn(tasks, c);
+            }
+            for (final c in [journalEntries.mood, journalEntries.stage, journalEntries.photoPaths]) {
+              await m.addColumn(journalEntries, c);
+            }
+          }
+        },
         beforeOpen: (details) async {
           // FKs are off by default in SQLite; the composite/cascade relations
           // above only bite with this on.
@@ -224,4 +297,8 @@ class AppDatabase extends _$AppDatabase {
       );
 
   static const cropSnapshotVersionKey = 'crop_snapshot_version';
+
+  /// The local owner uuid: an anonymous id until the user signs in, after
+  /// which sign-in rewrites every row to the auth uid (PRD Phase 1).
+  static const ownerKey = 'owner';
 }

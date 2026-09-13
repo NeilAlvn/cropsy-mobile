@@ -13,6 +13,7 @@ import '../../design/typography.dart';
 import '../../timing/dates.dart';
 import '../repository_scope.dart';
 import 'garden_repository.dart';
+import 'timeline_view.dart';
 
 class PlantDetailScreen extends StatefulWidget {
   const PlantDetailScreen({super.key, required this.plantId});
@@ -118,6 +119,13 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                       ],
                     ),
                     const SizedBox(height: 24),
+                    if (plant.plantedOn != null) ...[
+                      _StageRow(plant: plant, repo: repo, onChanged: () => setState(() {})),
+                      const SizedBox(height: 16),
+                      SectionHeader('Your path'),
+                      TimelineView(plantId: plant.id),
+                      const SizedBox(height: 24),
+                    ],
                     SectionHeader('Journal'),
                     _Journal(plantId: plant.id, repo: repo),
                   ],
@@ -463,6 +471,42 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
               await repo.updatePlant(widget.plant.id,
                   potLitres: pot, plantedOn: _plantedOn);
               if (context.mounted) Navigator.pop(context, true);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+const _stages = ['starting', 'seedling', 'vegetative', 'flowering', 'harvesting', 'harvested'];
+
+/// GrowIt 5.4: growth stage row → picker.
+class _StageRow extends StatelessWidget {
+  const _StageRow({required this.plant, required this.repo, required this.onChanged});
+  final GardenPlantRow plant;
+  final GardenRepository repo;
+  final VoidCallback onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final stage = plant.stage ?? 'starting';
+    return AppCard(
+      child: Row(
+        children: [
+          Text('Growth stage', style: AppText.bodyMuted(context)),
+          const Spacer(),
+          DropdownButton<String>(
+            value: stage,
+            underline: const SizedBox.shrink(),
+            items: [
+              for (final s in _stages)
+                DropdownMenuItem(value: s, child: Text(s[0].toUpperCase() + s.substring(1), style: AppText.label(context))),
+            ],
+            onChanged: (v) async {
+              if (v == null) return;
+              await repo.setStage(plant.id, v);
+              onChanged();
             },
           ),
         ],

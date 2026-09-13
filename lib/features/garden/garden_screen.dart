@@ -163,19 +163,7 @@ class _PlantList extends StatelessWidget {
                                   : 'in ground',
                               style: AppText.caption(context),
                             ),
-                            if (!planning && repo.daysUntilHarvest(p) != null) ...[
-                              const SizedBox(height: 4),
-                              Row(children: [
-                                const Icon(Icons.eco, size: 13, color: AppColors.clay),
-                                const SizedBox(width: 4),
-                                Text(
-                                  repo.daysUntilHarvest(p)! > 0
-                                      ? 'Harvest in ${repo.daysUntilHarvest(p)} days'
-                                      : 'Ready to harvest',
-                                  style: AppText.caption(context, color: AppColors.clay),
-                                ),
-                              ]),
-                            ],
+                            if (!planning) _HarvestCountdown(plant: p),
                           ],
                         ),
                       ),
@@ -353,4 +341,32 @@ class _Empty extends StatelessWidget {
           ),
         ),
       );
+}
+
+class _HarvestCountdown extends StatelessWidget {
+  const _HarvestCountdown({required this.plant});
+  final GardenPlantRow plant;
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    return FutureBuilder<int?>(
+      future: repo.daysUntilHarvest(plant),
+      builder: (context, snap) {
+        final days = snap.data;
+        if (days == null) return const SizedBox.shrink();
+        return Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Row(children: [
+            const Icon(Icons.eco, size: 13, color: AppColors.clay),
+            const SizedBox(width: 4),
+            Text(
+              days > 0 ? 'Harvest in $days days' : 'Ready to harvest',
+              style: AppText.caption(context, color: AppColors.clay),
+            ),
+          ]),
+        );
+      },
+    );
+  }
 }
