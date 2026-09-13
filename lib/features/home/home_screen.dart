@@ -13,6 +13,7 @@ import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/crop_image.dart';
+import '../../design/feedback_row.dart';
 import '../../design/mascot.dart';
 import '../../design/typography.dart';
 import '../../design/widgets.dart';
@@ -72,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
         slivers: [
           SliverToBoxAdapter(child: _Header(region: repo.regionName)),
           SliverToBoxAdapter(child: _SearchRow(onChanged: (q) => setState(() => _query = q))),
-          SliverToBoxAdapter(child: _PremiumBanner(onTap: () => _openPaywall(context))),
+          SliverToBoxAdapter(child: _LifetimeCard(onTap: () => _openPaywall(context))),
           if (_query.isEmpty) ...[
             const SliverToBoxAdapter(child: _StreakCard()),
             const SliverToBoxAdapter(child: _TodaysCare()),
@@ -265,30 +266,58 @@ class _SearchRow extends StatelessWidget {
   }
 }
 
-class _PremiumBanner extends StatelessWidget {
-  const _PremiumBanner({required this.onTap});
+/// PRD 2.8: shown at most once a week, dismissible, never a trial pitch.
+class _LifetimeCard extends StatefulWidget {
+  const _LifetimeCard({required this.onTap});
   final VoidCallback onTap;
 
   @override
+  State<_LifetimeCard> createState() => _LifetimeCardState();
+}
+
+class _LifetimeCardState extends State<_LifetimeCard> {
+  static const _key = 'lifetime_card_dismissed_on';
+  bool? _show;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_show != null) return;
+    final repo = RepositoryScope.of(context);
+    repo.meta(_key).then((v) {
+      final hide = v != null && parseIso(repo.today).difference(parseIso(v)).inDays < 7;
+      if (mounted) setState(() => _show = !hide);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_show != true) return const SizedBox.shrink();
+    final repo = RepositoryScope.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 6, 20, 6),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          decoration: Neo.box(color: AppColors.ink),
-          padding: const EdgeInsets.all(14),
-          child: Row(
-            children: [
-              const Icon(Icons.workspace_premium, color: Colors.white, size: 22),
-              const SizedBox(width: 12),
-              Expanded(
+      child: Container(
+        decoration: Neo.box(color: AppColors.ink),
+        padding: const EdgeInsets.fromLTRB(14, 8, 6, 8),
+        child: Row(
+          children: [
+            const Icon(Icons.workspace_premium, color: Colors.white, size: 22),
+            const SizedBox(width: 12),
+            Expanded(
+              child: GestureDetector(
+                onTap: widget.onTap,
                 child: Text('Unlock lifetime — one price, forever',
                     style: AppText.label(context, color: Colors.white)),
               ),
-              const Icon(Icons.chevron_right, color: Colors.white70),
-            ],
-          ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.close, color: Colors.white70, size: 20),
+              onPressed: () async {
+                await repo.setMeta(_key, repo.today);
+                if (mounted) setState(() => _show = false);
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -329,6 +358,8 @@ class _WhatToGrowHeader extends StatelessWidget {
                     ],
                   ),
                 ),
+                const Spacer(),
+                const SectionFeedbackMenu(targetKind: 'section', targetId: 'home.what_to_grow'),
               ],
             ),
           ),
@@ -369,7 +400,11 @@ class _TodaysCare extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Today's care ($open)", style: AppText.title(context)),
+              Row(children: [
+                Text("Today's care ($open)", style: AppText.title(context)),
+                const Spacer(),
+                const SectionFeedbackMenu(targetKind: 'section', targetId: 'home.todays_care'),
+              ]),
               const SizedBox(height: 10),
               AppCard(
                 child: MascotSays(

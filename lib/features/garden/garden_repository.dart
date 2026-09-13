@@ -109,6 +109,13 @@ class GardenRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ── Small local key/value state (AppMeta) ───────────────────────────────
+  Future<String?> meta(String key) async =>
+      (await (db.select(db.appMeta)..where((t) => t.key.equals(key))).getSingleOrNull())?.value;
+
+  Future<void> setMeta(String key, String value) =>
+      db.into(db.appMeta).insert(AppMetaCompanion.insert(key: key, value: value), mode: InsertMode.insertOrReplace);
+
   // ── Profile (PRD 1.6 answers, streaks) ──────────────────────────────────
   Future<ProfileRow?> profile() =>
       (db.select(db.profiles)..where((t) => t.id.equals(owner))).getSingleOrNull();

@@ -62,3 +62,54 @@ class _FeedbackRowState extends State<FeedbackRow> {
     ]);
   }
 }
+
+/// PRD 2.7: the "…" menu on a Home section — like / error in content /
+/// suggestion. Same table, same never-a-rate-prompt rule.
+class SectionFeedbackMenu extends StatelessWidget {
+  const SectionFeedbackMenu({super.key, required this.targetKind, required this.targetId});
+  final String targetKind;
+  final String targetId;
+
+  Future<void> _text(BuildContext context, String sentiment, String title) async {
+    final c = TextEditingController();
+    final text = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.surface,
+        title: Text(title, style: AppText.title(context)),
+        content: TextField(controller: c, autofocus: true, maxLines: 3),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(context, c.text), child: const Text('Send')),
+        ],
+      ),
+    );
+    if (text == null || text.trim().isEmpty || !context.mounted) return;
+    await RepositoryScope.of(context).addFeedback(targetKind: targetKind, targetId: targetId, sentiment: sentiment, body: text.trim());
+    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Thanks — noted.')));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.more_horiz, color: AppColors.muted),
+      color: AppColors.surface,
+      onSelected: (v) async {
+        switch (v) {
+          case 'like':
+            await RepositoryScope.of(context).addFeedback(targetKind: targetKind, targetId: targetId, sentiment: 'like');
+            if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Thanks!')));
+          case 'error':
+            await _text(context, 'error', 'What is wrong here?');
+          case 'suggestion':
+            await _text(context, 'suggestion', 'What would make this better?');
+        }
+      },
+      itemBuilder: (context) => const [
+        PopupMenuItem(value: 'like', child: Text('I like this')),
+        PopupMenuItem(value: 'error', child: Text('Error in content')),
+        PopupMenuItem(value: 'suggestion', child: Text('Suggestion')),
+      ],
+    );
+  }
+}
