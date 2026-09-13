@@ -22,6 +22,7 @@ import '../../data/frost_presets.dart';
 import '../../data/seed.dart';
 import '../../db/database.dart';
 import '../../db/uuid.dart';
+import '../../timing/content_snapshot.dart';
 import '../../timing/crop_snapshot.dart';
 import '../../timing/dates.dart';
 import '../../timing/engine.dart';
@@ -59,6 +60,10 @@ class ThisWeekItem {
 class GardenRepository extends ChangeNotifier {
   GardenRepository._(this.db, this._snapshot, this.frost, this.owner, this._fixedToday, this._observations);
 
+  /// Collections, monthly checklist, prices (PRD §8.1). Near-empty until the
+  /// Phase 3 content sprint; the shape is fixed.
+  ContentSnapshot content = ContentSnapshot.empty;
+
   /// Where the weather overlay gets its observations. Production: live
   /// Open-Meteo via [WeatherService]; tests inject a scripted series.
   final Future<List<DayObservation>?> Function(double lat, double lon) _observations;
@@ -79,7 +84,7 @@ class GardenRepository extends ChangeNotifier {
   Future<void> adoptOwner(String uid) async {
     final old = owner;
     await db.transaction(() async {
-      for (final t in ['gardens', 'garden_plants', 'tasks', 'journal_entries', 'harvests']) {
+      for (final t in ['gardens', 'garden_plants', 'tasks', 'journal_entries', 'harvests', 'feedback']) {
         await db.customUpdate(
           'UPDATE $t SET owner = ?, dirty = 1 WHERE owner = ?',
           variables: [Variable.withString(uid), Variable.withString(old)],
@@ -143,6 +148,12 @@ class GardenRepository extends ChangeNotifier {
   }) async {
     final raw = await rootBundle.loadString('assets/data/crops-snapshot.json');
     final snapshot = CropSnapshot.parse(raw);
+    ContentSnapshot content;
+    try {
+      content = ContentSnapshot.parse(await rootBundle.loadString('assets/data/content-snapshot.json'));
+    } catch (_) {
+      content = ContentSnapshot.empty;
+    }
     await db.into(db.appMeta).insert(
           AppMetaCompanion.insert(
             key: AppDatabase.cropSnapshotVersionKey,
@@ -162,7 +173,7 @@ class GardenRepository extends ChangeNotifier {
     return GardenRepository._(
       db, snapshot, defaultRegion.profile, owner, today,
       observations ?? WeatherService(db).observations,
-    );
+    )..content = content;
   }
 
   // ── Crop catalogue (F1) ────────────────────────────────────────────────
@@ -796,10 +807,15 @@ class GardenRepository extends ChangeNotifier {
             ..orderBy([(t) => OrderingTerm.desc(t.entryOn)]))
           .get();
 
+  /// Growth log (PRD 5.5): mood 1 (bad) … 4 (excellent), up to 9 photos
+  /// (local paths; uploaded to Storage once the bucket is live), a note, and
+  /// the stage at the time — which also updates the plant's stage.
   Future<void> addJournalEntry({
     required String plantId,
-    required String note,
-    String? photoPath,
+    String note = '',
+    int? mood,
+    String? stage,
+    List<String> photoPaths = const [],
     String? entryOn,
   }) async {
     await db.into(db.journalEntries).insert(JournalEntriesCompanion.insert(
@@ -807,39 +823,88 @@ class GardenRepository extends ChangeNotifier {
           owner: owner,
           gardenPlantId: Value(plantId),
           entryOn: entryOn ?? today,
-          note: Value(note),
-          photoPath: Value(photoPath),
+          note: Value(note.isEmpty ? null : note),
+          photoPath: Value(photoPaths.isEmpty ? null : photoPaths.first),
+          mood: Value(mood),
+          stage: Value(stage),
+          photoPaths: Value(jsonEncode(photoPaths)),
           dirty: const Value(true),
         ));
+    if (stage != null) await _setStage(plantId, stage, entryOn ?? today);
     notifyListeners();
   }
 
-  // ── Harvest (F7) ───────────────────────────────────────────────────────
+  // ── Harvest (PRD 7.5) ──────────────────────────────────────────────────
   Future<List<HarvestRow>> harvests() => (db.select(db.harvests)
         ..where((t) => t.deletedAt.isNull())
         ..orderBy([(t) => OrderingTerm.desc(t.harvestedOn)]))
       .get();
 
-  Future<double> seasonHarvestValue() async {
-    final rows = await harvests();
-    return rows.fold<double>(0, (sum, r) => sum + r.valueEuros);
+  /// Shop value of one harvest from the price table; null when unpriced.
+  double? harvestValue(HarvestRow r) {
+    final p = content.prices[r.cropSlug];
+    if (p == null || p.unit != r.unit) return null;
+    return p.eur * r.quantity;
   }
+
+  /// Season payoff: summed value (priced rows) and the yield tally per unit.
+  Future<({double euros, double kg, double pcs, int unpriced})> seasonTally() async {
+    var euros = 0.0, kg = 0.0, pcs = 0.0, unpriced = 0;
+    for (final r in await harvests()) {
+      final v = harvestValue(r);
+      if (v == null) {
+        unpriced++;
+      } else {
+        euros += v;
+      }
+      if (r.unit == 'kg') {
+        kg += r.quantity;
+      } else {
+        pcs += r.quantity;
+      }
+    }
+    return (euros: euros, kg: kg, pcs: pcs, unpriced: unpriced);
+  }
+
+  Future<double> seasonHarvestValue() async => (await seasonTally()).euros;
 
   Future<void> logHarvest({
     required String cropSlug,
     String? plantId,
-    required String amount,
-    required double valueEuros,
+    required double quantity,
+    String unit = 'pcs',
     String? harvestedOn,
   }) async {
+    final label = '${quantity % 1 == 0 ? quantity.toInt() : quantity} ${unit == 'kg' ? 'kg' : 'pcs'}';
     await db.into(db.harvests).insert(HarvestsCompanion.insert(
           id: newUuid(),
           owner: owner,
           gardenPlantId: Value(plantId),
           cropSlug: cropSlug,
-          amount: amount,
-          valueEuros: Value(valueEuros),
+          amount: label,
+          quantity: Value(quantity),
+          unit: Value(unit),
           harvestedOn: harvestedOn ?? today,
+          dirty: const Value(true),
+        ));
+    if (plantId != null) await _setStage(plantId, 'harvesting', harvestedOn ?? today);
+    notifyListeners();
+  }
+
+  // ── Feedback (PRD 2.7 / 3.9) ───────────────────────────────────────────
+  Future<void> addFeedback({
+    required String targetKind,
+    required String targetId,
+    required String sentiment,
+    String? body,
+  }) async {
+    await db.into(db.feedback).insert(FeedbackCompanion.insert(
+          id: newUuid(),
+          owner: owner,
+          targetKind: targetKind,
+          targetId: targetId,
+          sentiment: sentiment,
+          body: Value(body),
           dirty: const Value(true),
         ));
     notifyListeners();

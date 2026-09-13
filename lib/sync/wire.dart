@@ -247,6 +247,77 @@ final journalSync = TableSync<JournalEntryRow>(
   localById: (db, id) => _probe(db, db.journalEntries, id),
 );
 
+final harvestsSync = TableSync<HarvestRow>(
+  name: 'harvests',
+  // The server requires a plant; prototype rows without one stay local.
+  selectDirty: (db, owner) => (db.select(db.harvests)
+        ..where((t) => t.dirty.equals(true) & t.owner.equals(owner) & t.gardenPlantId.isNotNull()))
+      .get(),
+  toWire: (r) => {
+    'id': r.id,
+    'owner': r.owner,
+    'garden_plant_id': r.gardenPlantId,
+    'harvested_on': r.harvestedOn,
+    'amount': r.quantity,
+    'unit': r.unit,
+    'deleted_at': _ts(r.deletedAt),
+  },
+  upsertFromWire: (db, w) async {
+    final plant = await (db.select(db.gardenPlants)..where((t) => t.id.equals(w['garden_plant_id'] as String))).getSingleOrNull();
+    final qty = (w['amount'] as num).toDouble();
+    final unit = w['unit'] as String;
+    await db.into(db.harvests).insertOnConflictUpdate(
+          HarvestsCompanion(
+            id: Value(w['id'] as String),
+            owner: Value(w['owner'] as String),
+            gardenPlantId: Value(w['garden_plant_id'] as String?),
+            cropSlug: Value(plant?.cropSlug ?? ''),
+            amount: Value('${qty % 1 == 0 ? qty.toInt() : qty} $unit'),
+            quantity: Value(qty),
+            unit: Value(unit),
+            harvestedOn: Value(w['harvested_on'] as String),
+            createdAt: Value(_dt(w['created_at']) ?? DateTime.now()),
+            updatedAt: Value(_dt(w['updated_at']) ?? DateTime.now()),
+            deletedAt: Value(_dt(w['deleted_at'])),
+            dirty: const Value(false),
+          ),
+        );
+  },
+  markClean: (db, ids) => _clean(db, db.harvests, ids),
+  localById: (db, id) => _probe(db, db.harvests, id),
+);
+
+final feedbackSync = TableSync<FeedbackRow>(
+  name: 'feedback',
+  selectDirty: (db, owner) =>
+      (db.select(db.feedback)..where((t) => t.dirty.equals(true) & t.owner.equals(owner))).get(),
+  toWire: (r) => {
+    'id': r.id,
+    'owner': r.owner,
+    'target_kind': r.targetKind,
+    'target_id': r.targetId,
+    'sentiment': r.sentiment,
+    'body': r.body,
+    'deleted_at': _ts(r.deletedAt),
+  },
+  upsertFromWire: (db, w) => db.into(db.feedback).insertOnConflictUpdate(
+        FeedbackCompanion(
+          id: Value(w['id'] as String),
+          owner: Value(w['owner'] as String),
+          targetKind: Value(w['target_kind'] as String),
+          targetId: Value(w['target_id'] as String),
+          sentiment: Value(w['sentiment'] as String),
+          body: Value(w['body'] as String?),
+          createdAt: Value(_dt(w['created_at']) ?? DateTime.now()),
+          updatedAt: Value(_dt(w['updated_at']) ?? DateTime.now()),
+          deletedAt: Value(_dt(w['deleted_at'])),
+          dirty: const Value(false),
+        ),
+      ),
+  markClean: (db, ids) => _clean(db, db.feedback, ids),
+  localById: (db, id) => _probe(db, db.feedback, id),
+);
+
 /// Parent-before-child order, so pulled FKs resolve.
 final syncTables = <TableSync<dynamic>>[
   profilesSync,
@@ -254,4 +325,6 @@ final syncTables = <TableSync<dynamic>>[
   gardenPlantsSync,
   tasksSync,
   journalSync,
+  harvestsSync,
+  feedbackSync,
 ];

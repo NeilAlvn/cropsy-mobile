@@ -45,11 +45,17 @@ void main() {
     final gardenId = await repo.createGarden(region: defaultRegion, kind: GardenKind.balcony);
     final plantId = await repo.addPlant(gardenId: gardenId, cropSlug: 'lettuce', potLitres: 7, plantedOn: demoToday);
     await repo.saveProfile(preferences: {'experience': 'some'});
+    await repo.logHarvest(cropSlug: 'lettuce', plantId: plantId, quantity: 2, unit: 'pcs');
+    await repo.logHarvest(cropSlug: 'lettuce', quantity: 1); // no plant → stays local
+    await repo.addFeedback(targetKind: 'crop', targetId: 'lettuce', sentiment: 'like');
 
     var report = await engine.sync(repo.owner);
     expect(report.ok, isTrue, reason: '$report');
     expect(report.pushed['gardens'], 1);
     expect(report.pushed['garden_plants'], 1);
+    expect(report.pushed['harvests'], 1);
+    expect(report.pushed['feedback'], 1);
+    expect(transport.store['harvests']!.values.single['amount'], 2);
     expect(report.pushed['tasks'], greaterThan(0));
     expect(transport.store['profiles']![repo.owner]!['preferences'], {'experience': 'some'});
     // Push clears dirty; the pull-back of our own rows is a no-op.

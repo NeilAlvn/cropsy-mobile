@@ -3,6 +3,8 @@
 /// camera/gallery capture comes with the feature build.
 library;
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -13,6 +15,7 @@ import '../../design/typography.dart';
 import '../../timing/dates.dart';
 import '../repository_scope.dart';
 import 'garden_repository.dart';
+import 'growth_log_sheet.dart';
 import 'timeline_view.dart';
 
 class PlantDetailScreen extends StatefulWidget {
@@ -104,7 +107,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                       children: [
                         Expanded(
                           child: SecondaryButton(
-                            label: '＋ Journal entry',
+                            label: '＋ Growth log',
                             onPressed: () => _addJournal(repo),
                           ),
                         ),
@@ -136,15 +139,22 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
   }
 
   Future<void> _addJournal(GardenRepository repo) async {
-    final note = await _promptText(context, 'Journal entry', 'How\'s it doing?');
-    if (note != null && note.isNotEmpty) {
-      await repo.addJournalEntry(plantId: widget.plantId, note: note);
-      if (mounted) setState(() {});
-    }
+    final plant = await repo.plantById(widget.plantId);
+    if (!mounted || plant == null) return;
+    final log = await showGrowthLogSheet(context, cropName: repo.cropName(plant.cropSlug), currentStage: plant.stage);
+    if (log == null) return;
+    await repo.addJournalEntry(
+      plantId: widget.plantId,
+      note: log.note,
+      mood: log.mood,
+      stage: log.stage,
+      photoPaths: log.photoPaths,
+    );
+    if (mounted) setState(() {});
   }
 
   Future<void> _logHarvest(GardenRepository repo, GardenPlantRow plant) async {
-    final result = await showModalBottomSheet<(String, double)>(
+    final result = await showModalBottomSheet<(double, String)>(
       context: context,
       isScrollControlled: true,
       backgroundColor: AppColors.paper,
@@ -154,8 +164,8 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
       await repo.logHarvest(
         cropSlug: plant.cropSlug,
         plantId: plant.id,
-        amount: result.$1,
-        valueEuros: result.$2,
+        quantity: result.$1,
+        unit: result.$2,
       );
       if (mounted) {
         setState(() {});
@@ -231,35 +241,6 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
       ]);
 }
 
-Future<String?> _promptText(
-    BuildContext context, String title, String hint) async {
-  final controller = TextEditingController();
-  return showDialog<String>(
-    context: context,
-    builder: (context) => AlertDialog(
-      backgroundColor: AppColors.surface,
-      title: Text(title, style: AppText.title(context)),
-      content: TextField(
-        controller: controller,
-        autofocus: true,
-        maxLines: 3,
-        style: AppText.body(context),
-        decoration: InputDecoration(hintText: hint),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pop(context, controller.text),
-          child: const Text('Save'),
-        ),
-      ],
-    ),
-  );
-}
-
 class _Journal extends StatelessWidget {
   const _Journal({required this.plantId, required this.repo});
   final String plantId;
@@ -291,9 +272,14 @@ class _Journal extends StatelessWidget {
                           color: AppColors.sand,
                           borderRadius: BorderRadius.circular(10),
                         ),
+                        clipBehavior: Clip.antiAlias,
                         alignment: Alignment.center,
-                        child: const Icon(Icons.photo_camera_outlined,
-                            color: AppColors.muted),
+                        child: e.photoPath != null && File(e.photoPath!).existsSync()
+                            ? Image.file(File(e.photoPath!), fit: BoxFit.cover)
+                            : Text(
+                                e.mood == null ? '📝' : moods[e.mood!.clamp(1, 4) - 1].$2,
+                                style: const TextStyle(fontSize: 22),
+                              ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -305,7 +291,9 @@ class _Journal extends StatelessWidget {
                               style: AppText.label(context, color: AppColors.sprout),
                             ),
                             const SizedBox(height: 2),
-                            Text(e.note ?? '', style: AppText.body(context)),
+                            if (e.stage != null)
+                              Text(stageLabel(e.stage!), style: AppText.caption(context)),
+                            if (e.note != null) Text(e.note!, style: AppText.body(context)),
                           ],
                         ),
                       ),
@@ -329,8 +317,8 @@ class _HarvestSheet extends StatefulWidget {
 }
 
 class _HarvestSheetState extends State<_HarvestSheet> {
-  final _amount = TextEditingController();
-  final _value = TextEditingController();
+  final _qty = TextEditingController();
+  String _unit = 'pcs';
 
   @override
   Widget build(BuildContext context) {
@@ -348,33 +336,33 @@ class _HarvestSheetState extends State<_HarvestSheet> {
           Text('Log harvest', style: AppText.title(context)),
           Text(widget.cropName, style: AppText.bodyMuted(context)),
           const SizedBox(height: 16),
-          TextField(
-            controller: _amount,
-            autofocus: true,
-            style: AppText.body(context),
-            decoration: const InputDecoration(
-                labelText: 'What did you pick?',
-                hintText: 'e.g. 6 courgettes, a big bowl'),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _value,
-            keyboardType: TextInputType.number,
-            style: AppText.body(context),
-            decoration: const InputDecoration(
-                labelText: 'Value grown (optional)',
-                hintText: 'e.g. €4.50 — leave blank to just count it'),
-          ),
+          Row(children: [
+            Expanded(
+              child: TextField(
+                controller: _qty,
+                autofocus: true,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                style: AppText.body(context),
+                decoration: const InputDecoration(labelText: 'How much?', hintText: 'e.g. 6 or 0.4'),
+              ),
+            ),
+            const SizedBox(width: 10),
+            SegmentedButton<String>(
+              segments: const [ButtonSegment(value: 'pcs', label: Text('pieces')), ButtonSegment(value: 'kg', label: Text('kg'))],
+              selected: {_unit},
+              onSelectionChanged: (v) => setState(() => _unit = v.first),
+            ),
+          ]),
+          const SizedBox(height: 8),
+          Text('The season tally turns this into "money saved" once prices are in.', style: AppText.caption(context)),
           const SizedBox(height: 20),
           PrimaryButton(
             label: 'Save harvest',
             color: AppColors.clay,
             onPressed: () {
-              final v = double.tryParse(_value.text.replaceAll(',', '.')) ?? 0;
-              Navigator.pop(
-                context,
-                (_amount.text.isEmpty ? 'a harvest' : _amount.text, v),
-              );
+              final q = double.tryParse(_qty.text.replaceAll(',', '.'));
+              if (q == null || q <= 0) return;
+              Navigator.pop(context, (q, _unit));
             },
           ),
         ],

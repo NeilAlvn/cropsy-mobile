@@ -197,23 +197,40 @@ class JournalEntries extends Table with SyncableColumns {
   TextColumn get photoPaths => text().withDefault(const Constant('[]'))();
 }
 
-/// Harvest log (F7). Local-only for the prototype — the harvest-value tracker
-/// reads from it ("you've grown €142 this season"). Not yet in the Supabase
-/// schema; when it graduates to a synced table it gets the SyncableColumns mixin.
+/// Harvest log (PRD 7.5, synced since 0002). `quantity` + `unit` are the
+/// server columns (`amount numeric`, `unit`); `amount` text and `cropSlug`
+/// are local conveniences kept from the prototype. Money is derived at
+/// display time from the content snapshot's prices, never stored.
 @DataClassName('HarvestRow')
 class Harvests extends Table with SyncableColumns {
   TextColumn get gardenPlantId =>
       text().nullable().references(GardenPlants, #id, onDelete: KeyAction.cascade)();
   TextColumn get cropSlug => text()();
 
-  /// Free-text amount, e.g. "6 courgettes" or "400 g".
+  /// Free-text label, e.g. "6 courgettes" (legacy; derived from quantity+unit).
   TextColumn get amount => text()();
 
-  /// Estimated shop value in euros.
+  /// LOCAL-ONLY legacy field; superseded by prices × quantity.
   RealColumn get valueEuros => real().withDefault(const Constant(0))();
 
   /// ISO `yyyy-mm-dd`, back-datable.
   TextColumn get harvestedOn => text()();
+
+  // 0002 server shape.
+  RealColumn get quantity => real().withDefault(const Constant(0))();
+
+  /// 'kg' | 'pcs'
+  TextColumn get unit => text().withDefault(const Constant('pcs'))();
+}
+
+/// Content feedback (PRD 2.7 / 3.9): like / dislike / error / suggestion on a
+/// crop, section, collection, problem or checklist item. Append-only.
+@DataClassName('FeedbackRow')
+class Feedback extends Table with SyncableColumns {
+  TextColumn get targetKind => text()();
+  TextColumn get targetId => text()();
+  TextColumn get sentiment => text()();
+  TextColumn get body => text().nullable()();
 }
 
 /// LOCAL-ONLY: the delta-pull cursor per table — the max `updated_at` seen, sent
@@ -249,6 +266,7 @@ class AppMeta extends Table {
     Tasks,
     JournalEntries,
     Harvests,
+    Feedback,
     SyncCursors,
     AppMeta,
   ],
@@ -260,7 +278,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.memory() : super(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -287,6 +305,11 @@ class AppDatabase extends _$AppDatabase {
             for (final c in [journalEntries.mood, journalEntries.stage, journalEntries.photoPaths]) {
               await m.addColumn(journalEntries, c);
             }
+          }
+          if (from < 3) {
+            await m.addColumn(harvests, harvests.quantity);
+            await m.addColumn(harvests, harvests.unit);
+            await m.createTable(feedback);
           }
         },
         beforeOpen: (details) async {

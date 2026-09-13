@@ -4087,6 +4087,28 @@ class $HarvestsTable extends Harvests
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _quantityMeta = const VerificationMeta(
+    'quantity',
+  );
+  @override
+  late final GeneratedColumn<double> quantity = GeneratedColumn<double>(
+    'quantity',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _unitMeta = const VerificationMeta('unit');
+  @override
+  late final GeneratedColumn<String> unit = GeneratedColumn<String>(
+    'unit',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('pcs'),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -4100,6 +4122,8 @@ class $HarvestsTable extends Harvests
     amount,
     valueEuros,
     harvestedOn,
+    quantity,
+    unit,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -4192,6 +4216,18 @@ class $HarvestsTable extends Harvests
     } else if (isInserting) {
       context.missing(_harvestedOnMeta);
     }
+    if (data.containsKey('quantity')) {
+      context.handle(
+        _quantityMeta,
+        quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta),
+      );
+    }
+    if (data.containsKey('unit')) {
+      context.handle(
+        _unitMeta,
+        unit.isAcceptableOrUnknown(data['unit']!, _unitMeta),
+      );
+    }
     return context;
   }
 
@@ -4245,6 +4281,14 @@ class $HarvestsTable extends Harvests
         DriftSqlType.string,
         data['${effectivePrefix}harvested_on'],
       )!,
+      quantity: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}quantity'],
+      )!,
+      unit: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}unit'],
+      )!,
     );
   }
 
@@ -4271,14 +4315,18 @@ class HarvestRow extends DataClass implements Insertable<HarvestRow> {
   final String? gardenPlantId;
   final String cropSlug;
 
-  /// Free-text amount, e.g. "6 courgettes" or "400 g".
+  /// Free-text label, e.g. "6 courgettes" (legacy; derived from quantity+unit).
   final String amount;
 
-  /// Estimated shop value in euros.
+  /// LOCAL-ONLY legacy field; superseded by prices × quantity.
   final double valueEuros;
 
   /// ISO `yyyy-mm-dd`, back-datable.
   final String harvestedOn;
+  final double quantity;
+
+  /// 'kg' | 'pcs'
+  final String unit;
   const HarvestRow({
     required this.id,
     required this.owner,
@@ -4291,6 +4339,8 @@ class HarvestRow extends DataClass implements Insertable<HarvestRow> {
     required this.amount,
     required this.valueEuros,
     required this.harvestedOn,
+    required this.quantity,
+    required this.unit,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -4310,6 +4360,8 @@ class HarvestRow extends DataClass implements Insertable<HarvestRow> {
     map['amount'] = Variable<String>(amount);
     map['value_euros'] = Variable<double>(valueEuros);
     map['harvested_on'] = Variable<String>(harvestedOn);
+    map['quantity'] = Variable<double>(quantity);
+    map['unit'] = Variable<String>(unit);
     return map;
   }
 
@@ -4330,6 +4382,8 @@ class HarvestRow extends DataClass implements Insertable<HarvestRow> {
       amount: Value(amount),
       valueEuros: Value(valueEuros),
       harvestedOn: Value(harvestedOn),
+      quantity: Value(quantity),
+      unit: Value(unit),
     );
   }
 
@@ -4350,6 +4404,8 @@ class HarvestRow extends DataClass implements Insertable<HarvestRow> {
       amount: serializer.fromJson<String>(json['amount']),
       valueEuros: serializer.fromJson<double>(json['valueEuros']),
       harvestedOn: serializer.fromJson<String>(json['harvestedOn']),
+      quantity: serializer.fromJson<double>(json['quantity']),
+      unit: serializer.fromJson<String>(json['unit']),
     );
   }
   @override
@@ -4367,6 +4423,8 @@ class HarvestRow extends DataClass implements Insertable<HarvestRow> {
       'amount': serializer.toJson<String>(amount),
       'valueEuros': serializer.toJson<double>(valueEuros),
       'harvestedOn': serializer.toJson<String>(harvestedOn),
+      'quantity': serializer.toJson<double>(quantity),
+      'unit': serializer.toJson<String>(unit),
     };
   }
 
@@ -4382,6 +4440,8 @@ class HarvestRow extends DataClass implements Insertable<HarvestRow> {
     String? amount,
     double? valueEuros,
     String? harvestedOn,
+    double? quantity,
+    String? unit,
   }) => HarvestRow(
     id: id ?? this.id,
     owner: owner ?? this.owner,
@@ -4396,6 +4456,8 @@ class HarvestRow extends DataClass implements Insertable<HarvestRow> {
     amount: amount ?? this.amount,
     valueEuros: valueEuros ?? this.valueEuros,
     harvestedOn: harvestedOn ?? this.harvestedOn,
+    quantity: quantity ?? this.quantity,
+    unit: unit ?? this.unit,
   );
   HarvestRow copyWithCompanion(HarvestsCompanion data) {
     return HarvestRow(
@@ -4416,6 +4478,8 @@ class HarvestRow extends DataClass implements Insertable<HarvestRow> {
       harvestedOn: data.harvestedOn.present
           ? data.harvestedOn.value
           : this.harvestedOn,
+      quantity: data.quantity.present ? data.quantity.value : this.quantity,
+      unit: data.unit.present ? data.unit.value : this.unit,
     );
   }
 
@@ -4432,7 +4496,9 @@ class HarvestRow extends DataClass implements Insertable<HarvestRow> {
           ..write('cropSlug: $cropSlug, ')
           ..write('amount: $amount, ')
           ..write('valueEuros: $valueEuros, ')
-          ..write('harvestedOn: $harvestedOn')
+          ..write('harvestedOn: $harvestedOn, ')
+          ..write('quantity: $quantity, ')
+          ..write('unit: $unit')
           ..write(')'))
         .toString();
   }
@@ -4450,6 +4516,8 @@ class HarvestRow extends DataClass implements Insertable<HarvestRow> {
     amount,
     valueEuros,
     harvestedOn,
+    quantity,
+    unit,
   );
   @override
   bool operator ==(Object other) =>
@@ -4465,7 +4533,9 @@ class HarvestRow extends DataClass implements Insertable<HarvestRow> {
           other.cropSlug == this.cropSlug &&
           other.amount == this.amount &&
           other.valueEuros == this.valueEuros &&
-          other.harvestedOn == this.harvestedOn);
+          other.harvestedOn == this.harvestedOn &&
+          other.quantity == this.quantity &&
+          other.unit == this.unit);
 }
 
 class HarvestsCompanion extends UpdateCompanion<HarvestRow> {
@@ -4480,6 +4550,8 @@ class HarvestsCompanion extends UpdateCompanion<HarvestRow> {
   final Value<String> amount;
   final Value<double> valueEuros;
   final Value<String> harvestedOn;
+  final Value<double> quantity;
+  final Value<String> unit;
   final Value<int> rowid;
   const HarvestsCompanion({
     this.id = const Value.absent(),
@@ -4493,6 +4565,8 @@ class HarvestsCompanion extends UpdateCompanion<HarvestRow> {
     this.amount = const Value.absent(),
     this.valueEuros = const Value.absent(),
     this.harvestedOn = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.unit = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   HarvestsCompanion.insert({
@@ -4507,6 +4581,8 @@ class HarvestsCompanion extends UpdateCompanion<HarvestRow> {
     required String amount,
     this.valueEuros = const Value.absent(),
     required String harvestedOn,
+    this.quantity = const Value.absent(),
+    this.unit = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        owner = Value(owner),
@@ -4525,6 +4601,8 @@ class HarvestsCompanion extends UpdateCompanion<HarvestRow> {
     Expression<String>? amount,
     Expression<double>? valueEuros,
     Expression<String>? harvestedOn,
+    Expression<double>? quantity,
+    Expression<String>? unit,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -4539,6 +4617,8 @@ class HarvestsCompanion extends UpdateCompanion<HarvestRow> {
       if (amount != null) 'amount': amount,
       if (valueEuros != null) 'value_euros': valueEuros,
       if (harvestedOn != null) 'harvested_on': harvestedOn,
+      if (quantity != null) 'quantity': quantity,
+      if (unit != null) 'unit': unit,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -4555,6 +4635,8 @@ class HarvestsCompanion extends UpdateCompanion<HarvestRow> {
     Value<String>? amount,
     Value<double>? valueEuros,
     Value<String>? harvestedOn,
+    Value<double>? quantity,
+    Value<String>? unit,
     Value<int>? rowid,
   }) {
     return HarvestsCompanion(
@@ -4569,6 +4651,8 @@ class HarvestsCompanion extends UpdateCompanion<HarvestRow> {
       amount: amount ?? this.amount,
       valueEuros: valueEuros ?? this.valueEuros,
       harvestedOn: harvestedOn ?? this.harvestedOn,
+      quantity: quantity ?? this.quantity,
+      unit: unit ?? this.unit,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -4609,6 +4693,12 @@ class HarvestsCompanion extends UpdateCompanion<HarvestRow> {
     if (harvestedOn.present) {
       map['harvested_on'] = Variable<String>(harvestedOn.value);
     }
+    if (quantity.present) {
+      map['quantity'] = Variable<double>(quantity.value);
+    }
+    if (unit.present) {
+      map['unit'] = Variable<String>(unit.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -4629,6 +4719,616 @@ class HarvestsCompanion extends UpdateCompanion<HarvestRow> {
           ..write('amount: $amount, ')
           ..write('valueEuros: $valueEuros, ')
           ..write('harvestedOn: $harvestedOn, ')
+          ..write('quantity: $quantity, ')
+          ..write('unit: $unit, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FeedbackTable extends Feedback
+    with TableInfo<$FeedbackTable, FeedbackRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FeedbackTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _ownerMeta = const VerificationMeta('owner');
+  @override
+  late final GeneratedColumn<String> owner = GeneratedColumn<String>(
+    'owner',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dirtyMeta = const VerificationMeta('dirty');
+  @override
+  late final GeneratedColumn<bool> dirty = GeneratedColumn<bool>(
+    'dirty',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("dirty" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _targetKindMeta = const VerificationMeta(
+    'targetKind',
+  );
+  @override
+  late final GeneratedColumn<String> targetKind = GeneratedColumn<String>(
+    'target_kind',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetIdMeta = const VerificationMeta(
+    'targetId',
+  );
+  @override
+  late final GeneratedColumn<String> targetId = GeneratedColumn<String>(
+    'target_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sentimentMeta = const VerificationMeta(
+    'sentiment',
+  );
+  @override
+  late final GeneratedColumn<String> sentiment = GeneratedColumn<String>(
+    'sentiment',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _bodyMeta = const VerificationMeta('body');
+  @override
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
+    'body',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    owner,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    dirty,
+    targetKind,
+    targetId,
+    sentiment,
+    body,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'feedback';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<FeedbackRow> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('owner')) {
+      context.handle(
+        _ownerMeta,
+        owner.isAcceptableOrUnknown(data['owner']!, _ownerMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_ownerMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('dirty')) {
+      context.handle(
+        _dirtyMeta,
+        dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
+      );
+    }
+    if (data.containsKey('target_kind')) {
+      context.handle(
+        _targetKindMeta,
+        targetKind.isAcceptableOrUnknown(data['target_kind']!, _targetKindMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_targetKindMeta);
+    }
+    if (data.containsKey('target_id')) {
+      context.handle(
+        _targetIdMeta,
+        targetId.isAcceptableOrUnknown(data['target_id']!, _targetIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_targetIdMeta);
+    }
+    if (data.containsKey('sentiment')) {
+      context.handle(
+        _sentimentMeta,
+        sentiment.isAcceptableOrUnknown(data['sentiment']!, _sentimentMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sentimentMeta);
+    }
+    if (data.containsKey('body')) {
+      context.handle(
+        _bodyMeta,
+        body.isAcceptableOrUnknown(data['body']!, _bodyMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FeedbackRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FeedbackRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      owner: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}owner'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      dirty: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}dirty'],
+      )!,
+      targetKind: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}target_kind'],
+      )!,
+      targetId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}target_id'],
+      )!,
+      sentiment: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sentiment'],
+      )!,
+      body: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}body'],
+      ),
+    );
+  }
+
+  @override
+  $FeedbackTable createAlias(String alias) {
+    return $FeedbackTable(attachedDatabase, alias);
+  }
+}
+
+class FeedbackRow extends DataClass implements Insertable<FeedbackRow> {
+  /// Client-generatable uuid, so optimistic offline inserts work.
+  final String id;
+
+  /// Owner uuid. Present locally for parity + push; a single user in practice.
+  final String owner;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  /// Soft delete — never hard-delete a synced row (the tombstone must sync).
+  final DateTime? deletedAt;
+
+  /// LOCAL-ONLY: has unpushed local changes. Not a Supabase column.
+  final bool dirty;
+  final String targetKind;
+  final String targetId;
+  final String sentiment;
+  final String? body;
+  const FeedbackRow({
+    required this.id,
+    required this.owner,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.dirty,
+    required this.targetKind,
+    required this.targetId,
+    required this.sentiment,
+    this.body,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['owner'] = Variable<String>(owner);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['dirty'] = Variable<bool>(dirty);
+    map['target_kind'] = Variable<String>(targetKind);
+    map['target_id'] = Variable<String>(targetId);
+    map['sentiment'] = Variable<String>(sentiment);
+    if (!nullToAbsent || body != null) {
+      map['body'] = Variable<String>(body);
+    }
+    return map;
+  }
+
+  FeedbackCompanion toCompanion(bool nullToAbsent) {
+    return FeedbackCompanion(
+      id: Value(id),
+      owner: Value(owner),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      dirty: Value(dirty),
+      targetKind: Value(targetKind),
+      targetId: Value(targetId),
+      sentiment: Value(sentiment),
+      body: body == null && nullToAbsent ? const Value.absent() : Value(body),
+    );
+  }
+
+  factory FeedbackRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FeedbackRow(
+      id: serializer.fromJson<String>(json['id']),
+      owner: serializer.fromJson<String>(json['owner']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      dirty: serializer.fromJson<bool>(json['dirty']),
+      targetKind: serializer.fromJson<String>(json['targetKind']),
+      targetId: serializer.fromJson<String>(json['targetId']),
+      sentiment: serializer.fromJson<String>(json['sentiment']),
+      body: serializer.fromJson<String?>(json['body']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'owner': serializer.toJson<String>(owner),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'dirty': serializer.toJson<bool>(dirty),
+      'targetKind': serializer.toJson<String>(targetKind),
+      'targetId': serializer.toJson<String>(targetId),
+      'sentiment': serializer.toJson<String>(sentiment),
+      'body': serializer.toJson<String?>(body),
+    };
+  }
+
+  FeedbackRow copyWith({
+    String? id,
+    String? owner,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    bool? dirty,
+    String? targetKind,
+    String? targetId,
+    String? sentiment,
+    Value<String?> body = const Value.absent(),
+  }) => FeedbackRow(
+    id: id ?? this.id,
+    owner: owner ?? this.owner,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    dirty: dirty ?? this.dirty,
+    targetKind: targetKind ?? this.targetKind,
+    targetId: targetId ?? this.targetId,
+    sentiment: sentiment ?? this.sentiment,
+    body: body.present ? body.value : this.body,
+  );
+  FeedbackRow copyWithCompanion(FeedbackCompanion data) {
+    return FeedbackRow(
+      id: data.id.present ? data.id.value : this.id,
+      owner: data.owner.present ? data.owner.value : this.owner,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      dirty: data.dirty.present ? data.dirty.value : this.dirty,
+      targetKind: data.targetKind.present
+          ? data.targetKind.value
+          : this.targetKind,
+      targetId: data.targetId.present ? data.targetId.value : this.targetId,
+      sentiment: data.sentiment.present ? data.sentiment.value : this.sentiment,
+      body: data.body.present ? data.body.value : this.body,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FeedbackRow(')
+          ..write('id: $id, ')
+          ..write('owner: $owner, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('dirty: $dirty, ')
+          ..write('targetKind: $targetKind, ')
+          ..write('targetId: $targetId, ')
+          ..write('sentiment: $sentiment, ')
+          ..write('body: $body')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    owner,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    dirty,
+    targetKind,
+    targetId,
+    sentiment,
+    body,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FeedbackRow &&
+          other.id == this.id &&
+          other.owner == this.owner &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.dirty == this.dirty &&
+          other.targetKind == this.targetKind &&
+          other.targetId == this.targetId &&
+          other.sentiment == this.sentiment &&
+          other.body == this.body);
+}
+
+class FeedbackCompanion extends UpdateCompanion<FeedbackRow> {
+  final Value<String> id;
+  final Value<String> owner;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<bool> dirty;
+  final Value<String> targetKind;
+  final Value<String> targetId;
+  final Value<String> sentiment;
+  final Value<String?> body;
+  final Value<int> rowid;
+  const FeedbackCompanion({
+    this.id = const Value.absent(),
+    this.owner = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
+    this.targetKind = const Value.absent(),
+    this.targetId = const Value.absent(),
+    this.sentiment = const Value.absent(),
+    this.body = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  FeedbackCompanion.insert({
+    required String id,
+    required String owner,
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.dirty = const Value.absent(),
+    required String targetKind,
+    required String targetId,
+    required String sentiment,
+    this.body = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       owner = Value(owner),
+       targetKind = Value(targetKind),
+       targetId = Value(targetId),
+       sentiment = Value(sentiment);
+  static Insertable<FeedbackRow> custom({
+    Expression<String>? id,
+    Expression<String>? owner,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<bool>? dirty,
+    Expression<String>? targetKind,
+    Expression<String>? targetId,
+    Expression<String>? sentiment,
+    Expression<String>? body,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (owner != null) 'owner': owner,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (dirty != null) 'dirty': dirty,
+      if (targetKind != null) 'target_kind': targetKind,
+      if (targetId != null) 'target_id': targetId,
+      if (sentiment != null) 'sentiment': sentiment,
+      if (body != null) 'body': body,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  FeedbackCompanion copyWith({
+    Value<String>? id,
+    Value<String>? owner,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<bool>? dirty,
+    Value<String>? targetKind,
+    Value<String>? targetId,
+    Value<String>? sentiment,
+    Value<String?>? body,
+    Value<int>? rowid,
+  }) {
+    return FeedbackCompanion(
+      id: id ?? this.id,
+      owner: owner ?? this.owner,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      dirty: dirty ?? this.dirty,
+      targetKind: targetKind ?? this.targetKind,
+      targetId: targetId ?? this.targetId,
+      sentiment: sentiment ?? this.sentiment,
+      body: body ?? this.body,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (owner.present) {
+      map['owner'] = Variable<String>(owner.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (dirty.present) {
+      map['dirty'] = Variable<bool>(dirty.value);
+    }
+    if (targetKind.present) {
+      map['target_kind'] = Variable<String>(targetKind.value);
+    }
+    if (targetId.present) {
+      map['target_id'] = Variable<String>(targetId.value);
+    }
+    if (sentiment.present) {
+      map['sentiment'] = Variable<String>(sentiment.value);
+    }
+    if (body.present) {
+      map['body'] = Variable<String>(body.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FeedbackCompanion(')
+          ..write('id: $id, ')
+          ..write('owner: $owner, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('dirty: $dirty, ')
+          ..write('targetKind: $targetKind, ')
+          ..write('targetId: $targetId, ')
+          ..write('sentiment: $sentiment, ')
+          ..write('body: $body, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -5072,6 +5772,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $TasksTable tasks = $TasksTable(this);
   late final $JournalEntriesTable journalEntries = $JournalEntriesTable(this);
   late final $HarvestsTable harvests = $HarvestsTable(this);
+  late final $FeedbackTable feedback = $FeedbackTable(this);
   late final $SyncCursorsTable syncCursors = $SyncCursorsTable(this);
   late final $AppMetaTable appMeta = $AppMetaTable(this);
   @override
@@ -5085,6 +5786,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     tasks,
     journalEntries,
     harvests,
+    feedback,
     syncCursors,
     appMeta,
   ];
@@ -7701,6 +8403,8 @@ typedef $$HarvestsTableCreateCompanionBuilder =
       required String amount,
       Value<double> valueEuros,
       required String harvestedOn,
+      Value<double> quantity,
+      Value<String> unit,
       Value<int> rowid,
     });
 typedef $$HarvestsTableUpdateCompanionBuilder =
@@ -7716,6 +8420,8 @@ typedef $$HarvestsTableUpdateCompanionBuilder =
       Value<String> amount,
       Value<double> valueEuros,
       Value<String> harvestedOn,
+      Value<double> quantity,
+      Value<String> unit,
       Value<int> rowid,
     });
 
@@ -7798,6 +8504,16 @@ class $$HarvestsTableFilterComposer
 
   ColumnFilters<String> get harvestedOn => $composableBuilder(
     column: $table.harvestedOn,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get quantity => $composableBuilder(
+    column: $table.quantity,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get unit => $composableBuilder(
+    column: $table.unit,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -7884,6 +8600,16 @@ class $$HarvestsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<double> get quantity => $composableBuilder(
+    column: $table.quantity,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get unit => $composableBuilder(
+    column: $table.unit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$GardenPlantsTableOrderingComposer get gardenPlantId {
     final $$GardenPlantsTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -7951,6 +8677,12 @@ class $$HarvestsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<double> get quantity =>
+      $composableBuilder(column: $table.quantity, builder: (column) => column);
+
+  GeneratedColumn<String> get unit =>
+      $composableBuilder(column: $table.unit, builder: (column) => column);
+
   $$GardenPlantsTableAnnotationComposer get gardenPlantId {
     final $$GardenPlantsTableAnnotationComposer composer = $composerBuilder(
       composer: this,
@@ -8014,6 +8746,8 @@ class $$HarvestsTableTableManager
                 Value<String> amount = const Value.absent(),
                 Value<double> valueEuros = const Value.absent(),
                 Value<String> harvestedOn = const Value.absent(),
+                Value<double> quantity = const Value.absent(),
+                Value<String> unit = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => HarvestsCompanion(
                 id: id,
@@ -8027,6 +8761,8 @@ class $$HarvestsTableTableManager
                 amount: amount,
                 valueEuros: valueEuros,
                 harvestedOn: harvestedOn,
+                quantity: quantity,
+                unit: unit,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -8042,6 +8778,8 @@ class $$HarvestsTableTableManager
                 required String amount,
                 Value<double> valueEuros = const Value.absent(),
                 required String harvestedOn,
+                Value<double> quantity = const Value.absent(),
+                Value<String> unit = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => HarvestsCompanion.insert(
                 id: id,
@@ -8055,6 +8793,8 @@ class $$HarvestsTableTableManager
                 amount: amount,
                 valueEuros: valueEuros,
                 harvestedOn: harvestedOn,
+                quantity: quantity,
+                unit: unit,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -8123,6 +8863,300 @@ typedef $$HarvestsTableProcessedTableManager =
       (HarvestRow, $$HarvestsTableReferences),
       HarvestRow,
       PrefetchHooks Function({bool gardenPlantId})
+    >;
+typedef $$FeedbackTableCreateCompanionBuilder =
+    FeedbackCompanion Function({
+      required String id,
+      required String owner,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<bool> dirty,
+      required String targetKind,
+      required String targetId,
+      required String sentiment,
+      Value<String?> body,
+      Value<int> rowid,
+    });
+typedef $$FeedbackTableUpdateCompanionBuilder =
+    FeedbackCompanion Function({
+      Value<String> id,
+      Value<String> owner,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<bool> dirty,
+      Value<String> targetKind,
+      Value<String> targetId,
+      Value<String> sentiment,
+      Value<String?> body,
+      Value<int> rowid,
+    });
+
+class $$FeedbackTableFilterComposer
+    extends Composer<_$AppDatabase, $FeedbackTable> {
+  $$FeedbackTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get owner => $composableBuilder(
+    column: $table.owner,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get targetKind => $composableBuilder(
+    column: $table.targetKind,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get targetId => $composableBuilder(
+    column: $table.targetId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sentiment => $composableBuilder(
+    column: $table.sentiment,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get body => $composableBuilder(
+    column: $table.body,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$FeedbackTableOrderingComposer
+    extends Composer<_$AppDatabase, $FeedbackTable> {
+  $$FeedbackTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get owner => $composableBuilder(
+    column: $table.owner,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get targetKind => $composableBuilder(
+    column: $table.targetKind,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get targetId => $composableBuilder(
+    column: $table.targetId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sentiment => $composableBuilder(
+    column: $table.sentiment,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get body => $composableBuilder(
+    column: $table.body,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$FeedbackTableAnnotationComposer
+    extends Composer<_$AppDatabase, $FeedbackTable> {
+  $$FeedbackTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get owner =>
+      $composableBuilder(column: $table.owner, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get dirty =>
+      $composableBuilder(column: $table.dirty, builder: (column) => column);
+
+  GeneratedColumn<String> get targetKind => $composableBuilder(
+    column: $table.targetKind,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get targetId =>
+      $composableBuilder(column: $table.targetId, builder: (column) => column);
+
+  GeneratedColumn<String> get sentiment =>
+      $composableBuilder(column: $table.sentiment, builder: (column) => column);
+
+  GeneratedColumn<String> get body =>
+      $composableBuilder(column: $table.body, builder: (column) => column);
+}
+
+class $$FeedbackTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $FeedbackTable,
+          FeedbackRow,
+          $$FeedbackTableFilterComposer,
+          $$FeedbackTableOrderingComposer,
+          $$FeedbackTableAnnotationComposer,
+          $$FeedbackTableCreateCompanionBuilder,
+          $$FeedbackTableUpdateCompanionBuilder,
+          (
+            FeedbackRow,
+            BaseReferences<_$AppDatabase, $FeedbackTable, FeedbackRow>,
+          ),
+          FeedbackRow,
+          PrefetchHooks Function()
+        > {
+  $$FeedbackTableTableManager(_$AppDatabase db, $FeedbackTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FeedbackTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FeedbackTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FeedbackTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> owner = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
+                Value<String> targetKind = const Value.absent(),
+                Value<String> targetId = const Value.absent(),
+                Value<String> sentiment = const Value.absent(),
+                Value<String?> body = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => FeedbackCompanion(
+                id: id,
+                owner: owner,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                dirty: dirty,
+                targetKind: targetKind,
+                targetId: targetId,
+                sentiment: sentiment,
+                body: body,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String owner,
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<bool> dirty = const Value.absent(),
+                required String targetKind,
+                required String targetId,
+                required String sentiment,
+                Value<String?> body = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => FeedbackCompanion.insert(
+                id: id,
+                owner: owner,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                dirty: dirty,
+                targetKind: targetKind,
+                targetId: targetId,
+                sentiment: sentiment,
+                body: body,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$FeedbackTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $FeedbackTable,
+      FeedbackRow,
+      $$FeedbackTableFilterComposer,
+      $$FeedbackTableOrderingComposer,
+      $$FeedbackTableAnnotationComposer,
+      $$FeedbackTableCreateCompanionBuilder,
+      $$FeedbackTableUpdateCompanionBuilder,
+      (FeedbackRow, BaseReferences<_$AppDatabase, $FeedbackTable, FeedbackRow>),
+      FeedbackRow,
+      PrefetchHooks Function()
     >;
 typedef $$SyncCursorsTableCreateCompanionBuilder =
     SyncCursorsCompanion Function({
@@ -8416,6 +9450,8 @@ class $AppDatabaseManager {
       $$JournalEntriesTableTableManager(_db, _db.journalEntries);
   $$HarvestsTableTableManager get harvests =>
       $$HarvestsTableTableManager(_db, _db.harvests);
+  $$FeedbackTableTableManager get feedback =>
+      $$FeedbackTableTableManager(_db, _db.feedback);
   $$SyncCursorsTableTableManager get syncCursors =>
       $$SyncCursorsTableTableManager(_db, _db.syncCursors);
   $$AppMetaTableTableManager get appMeta =>

@@ -33,9 +33,14 @@ void main() {
     );
 
     // Harvest tally (F7).
-    await repo.logHarvest(cropSlug: 'tomato', amount: '6', valueEuros: 4.5);
-    await repo.logHarvest(cropSlug: 'courgette', amount: '2', valueEuros: 1.5);
-    expect(await repo.seasonHarvestValue(), 6.0);
+    await repo.logHarvest(cropSlug: 'tomato', quantity: 6);
+    await repo.logHarvest(cropSlug: 'courgette', quantity: 1.5, unit: 'kg');
+    final tally = await repo.seasonTally();
+    expect(tally.pcs, 6);
+    expect(tally.kg, 1.5);
+    // No prices in the snapshot yet → nothing priced, nothing invented.
+    expect(tally.unpriced, 2);
+    expect(await repo.seasonHarvestValue(), 0);
 
     repo.dispose();
   });

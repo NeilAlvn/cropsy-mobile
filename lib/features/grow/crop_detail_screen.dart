@@ -15,6 +15,7 @@ import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/crop_image.dart';
+import '../../design/feedback_row.dart';
 import '../../design/mascot.dart';
 import '../../design/typography.dart';
 import '../../design/widgets.dart';
@@ -118,6 +119,10 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                   child: Text('Sources: ${crop.sources.join(' · ')}',
                       style: AppText.caption(context)),
                 ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+                child: FeedbackRow(targetKind: 'crop', targetId: crop.slug),
+              ),
               const SizedBox(height: 40),
             ],
           ),

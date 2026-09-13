@@ -41,9 +41,15 @@ StreakResult computeStreak(Iterable<String> activeDays, String today, {StreakPar
   var day = parseIso(today);
   final todayOpen = !active.contains(today);
   if (todayOpen) day = addDays(day, -1);
+  // Freezes bridge gaps between active days; never spent before the first.
+  String? earliest;
+  for (final d in active) {
+    if (earliest == null || d.compareTo(earliest) < 0) earliest = d;
+  }
 
   for (var guard = 0; guard < 3660; guard++) {
     final iso = toIso(day);
+    if (earliest == null || iso.compareTo(earliest) < 0) break;
     if (active.contains(iso)) {
       count++;
     } else if (params.pausedMonths.contains(day.month)) {
