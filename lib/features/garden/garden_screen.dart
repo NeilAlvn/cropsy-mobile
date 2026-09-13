@@ -120,7 +120,12 @@ class _PlantList extends StatelessWidget {
       builder: (context, snap) {
         final plants = snap.data ?? const [];
         if (plants.isEmpty) {
-          return _Empty(planning: planning);
+          if (!planning) return _Empty(planning: planning);
+          // The season path covers growing plants too, so it stays visible.
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
+            children: [const SeasonPathView(), const SizedBox(height: 18), _Empty(planning: true)],
+          );
         }
         return ListView(
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
