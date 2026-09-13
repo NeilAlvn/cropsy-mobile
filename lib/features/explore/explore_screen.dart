@@ -18,7 +18,20 @@ class ExploreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
-    final collections = repo.collections;
+    // Verified NL collections from the content snapshot once they exist
+    // (PRD 6.1); until then the derived container-first sets.
+    final fromContent = repo.content.collections;
+    final collections = fromContent.isEmpty
+        ? repo.collections
+        : [
+            for (final c in fromContent)
+              Collection(
+                id: c.slug,
+                title: c.title.en,
+                subtitle: c.intro.en,
+                crops: [for (final s in c.cropSlugs) if (repo.cropBySlug(s) case final crop?) crop],
+              ),
+          ];
     return SafeArea(
       bottom: false,
       child: ListView(
