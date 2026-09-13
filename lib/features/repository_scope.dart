@@ -5,6 +5,7 @@ library;
 
 import 'package:flutter/widgets.dart';
 
+import '../sync/auth_service.dart';
 import 'garden/garden_repository.dart';
 
 class RepositoryScope extends InheritedNotifier<GardenRepository> {
@@ -20,4 +21,12 @@ class RepositoryScope extends InheritedNotifier<GardenRepository> {
     assert(scope?.notifier != null, 'No RepositoryScope in the widget tree');
     return scope!.notifier!;
   }
+}
+
+/// Auth + sync, optional: tests and the pure-offline path run without it.
+class AuthScope extends InheritedNotifier<AuthService> {
+  const AuthScope({super.key, required AuthService? auth, required super.child}) : super(notifier: auth);
+
+  static AuthService? maybeOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<AuthScope>()?.notifier;
 }

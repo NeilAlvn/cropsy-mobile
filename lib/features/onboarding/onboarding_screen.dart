@@ -1,6 +1,9 @@
-/// F3 — Onboarding / setup: region (→ frost) → garden type + sun → pick starter
-/// plants → creates the real garden + plants and drops into the app. A "skip"
-/// path seeds a ready demo garden so any screen can be reached fast.
+/// Onboarding to PRD §5.1 (1.1–1.8): hero → trust → mascot hello →
+/// Part 1 "learn your garden" (location with postcode fallback, space type,
+/// growing method, size, sun) → Part 2 "learn your preference" (experience,
+/// food types, interests, companions, four statements) → pick crops →
+/// "creating your plan" beat → notifications ask, with the reason, after the
+/// first task is shown. No ATT prompt, no social-proof slide.
 library;
 
 import 'package:flutter/material.dart';
@@ -12,7 +15,11 @@ import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/crop_image.dart';
+import '../../design/mascot.dart';
 import '../../design/typography.dart';
+import '../../notifications/reminders.dart';
+import '../../timing/types.dart';
+import '../location/frost_lookup.dart';
 import '../repository_scope.dart';
 import 'hero_page.dart';
 
@@ -28,38 +35,75 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final _controller = PageController();
   int _page = 0;
 
+  // Part 1 — garden
   FrostRegion _region = defaultRegion;
-  GardenKind _kind = GardenKind.balcony;
-  double _sun = 6;
+  FrostLookup? _lookup; // GPS / postcode result, wins over the preset
+  String? _postcode;
+  final _spaces = <String>{'balcony'};
+  final _methods = <String>{'outdoor_containers'};
+  int _sizeBucket = 0;
+  String _sun = 'full';
+  // Part 2 — preference
+  String _experience = 'some';
+  final _foods = <String>{'vegetables', 'herbs'};
+  final _interests = <String>{'easy'};
+  bool _companions = true;
+  final _statements = <String, bool>{};
+  // Crops
   late final Set<String> _picked = {...starterCrops.keys};
+  // Plan beat
+  String? _firstTask;
+  int _matches = 0;
 
-  static const _pageCount = 4;
-
+  static const _pageCount = 15;
   static const _pageDuration = Duration(milliseconds: 380);
   static const _pageCurve = Curves.easeInOutCubic;
 
+  static const _sizeBuckets = [('< 2 m²', 1), ('2–5 m²', 4), ('5–20 m²', 12), ('> 20 m²', 30)];
+
   void _prev() {
-    if (_page > 0) {
-      _controller.previousPage(duration: _pageDuration, curve: _pageCurve);
-    }
+    if (_page > 0) _controller.previousPage(duration: _pageDuration, curve: _pageCurve);
   }
 
   void _next() {
     if (_page < _pageCount - 1) {
       _controller.nextPage(duration: _pageDuration, curve: _pageCurve);
     } else {
-      _finish();
+      widget.onDone();
     }
   }
 
-  Future<void> _finish() async {
+  GardenKind get _kind {
+    if (_spaces.contains('farm') || _spaces.contains('backyard') && _sizeBucket >= 2) return GardenKind.allotment;
+    if (_spaces.contains('backyard')) return GardenKind.garden;
+    return GardenKind.balcony;
+  }
+
+  /// Creates the garden + plants, saves preferences, computes the plan beat.
+  Future<void> _build() async {
     final repo = RepositoryScope.of(context);
     final gardenId = await repo.createGarden(
       region: _region,
       kind: _kind,
-      sunHours: _sun.round(),
+      sunHours: switch (_sun) { 'full' => 8, 'partial' => 5, _ => 3 },
       name: gardenKindLabel(_kind),
+      sizeM2: _sizeBuckets[_sizeBucket].$2,
+      postcode: _postcode,
+      profile: _lookup?.profile,
+      lat: _lookup?.lat,
+      lon: _lookup?.lon,
     );
+    if (_lookup != null) repo.frostSource = _lookup!.source;
+    await repo.saveProfile(preferences: {
+      'spaces': _spaces.toList(),
+      'methods': _methods.toList(),
+      'sun': _sun,
+      'experience': _experience,
+      'foods': _foods.toList(),
+      'interests': _interests.toList(),
+      'companions': _companions,
+      'statements': _statements,
+    });
     for (final slug in _picked) {
       final crop = repo.cropBySlug(slug);
       await repo.addPlant(
@@ -69,7 +113,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         plantedOn: repo.today,
       );
     }
-    widget.onDone();
+    final month = DateTime.now().month;
+    final week = await repo.thisWeek();
+    if (mounted) {
+      setState(() {
+        _matches = repo.whatToGrowIn(month).length;
+        _firstTask = week.isEmpty ? null : '${week.first.kind.name} ${week.first.cropName.toLowerCase()}';
+      });
+    }
   }
 
   Future<void> _skip() async {
@@ -79,6 +130,171 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final pages = <Widget>[
+      HeroPage(
+        media: const HeroMedia.image('assets/onboarding/welcome.jpg'),
+        kicker: 'CROPSY',
+        title: const [
+          TextSpan(text: 'Know what to do\n'),
+          TextSpan(text: 'this week', style: TextStyle(color: AppColors.sprout)),
+          TextSpan(text: ' in your garden.'),
+        ],
+        subtitle: 'Planting dates and reminders tuned to Dutch & EU weather — built for balconies and containers.',
+        buttonLabel: 'Get started',
+        onNext: _next,
+      ),
+      _Step(
+        onNext: _next,
+        child: _Copy(
+          pose: MascotPose.pointing,
+          title: 'Every date checked against Dutch seed calendars',
+          body: 'Each crop is cross-checked against at least two NL sources — IVN, Tuinadvies, zaaitijden.nl, Groei & Bloei — before it reaches you. '
+              'And when life gets in the way, the plan moves with you. Nothing is ever "overdue".',
+        ),
+      ),
+      _Step(
+        onNext: _next,
+        child: const _Copy(
+          pose: MascotPose.wave,
+          title: "Hi! Let's get to know each other",
+          body: 'A few quick questions about your space and what you like to eat. Two minutes, then your plan is ready.',
+        ),
+      ),
+      // ── Part 1 ─────────────────────────────────────────────────────
+      _Step(
+        onNext: _next,
+        child: _LocationStep(
+          region: _region,
+          lookup: _lookup,
+          onRegion: (r) => setState(() {
+            _region = r;
+            _lookup = null;
+            _postcode = null;
+          }),
+          onLookup: (l, pc) => setState(() {
+            _lookup = l;
+            _postcode = pc;
+          }),
+        ),
+      ),
+      _Step(
+        enabled: _spaces.isNotEmpty,
+        onNext: _next,
+        child: _Choices(
+          title: 'Where do you grow?',
+          subtitle: 'Pick all that apply.',
+          options: const [('backyard', 'Garden', Icons.yard), ('balcony', 'Balcony', Icons.balcony), ('indoor', 'Indoors', Icons.window), ('farm', 'Allotment', Icons.agriculture), ('other', 'Somewhere else', Icons.more_horiz)],
+          selected: _spaces,
+          onToggle: (k) => setState(() => _spaces.contains(k) ? _spaces.remove(k) : _spaces.add(k)),
+        ),
+      ),
+      _Step(
+        enabled: _methods.isNotEmpty,
+        onNext: _next,
+        child: _Choices(
+          title: 'How do you grow?',
+          subtitle: 'Pick all that apply.',
+          options: const [('ground', 'In the ground', Icons.grass), ('raised_beds', 'Raised beds', Icons.grid_view), ('indoor_containers', 'Pots inside', Icons.window), ('outdoor_containers', 'Pots outside', Icons.balcony)],
+          selected: _methods,
+          onToggle: (k) => setState(() => _methods.contains(k) ? _methods.remove(k) : _methods.add(k)),
+        ),
+      ),
+      _Step(
+        onNext: _next,
+        child: _Choices(
+          title: 'How much space?',
+          subtitle: 'Roughly — it sets how many plants fit.',
+          options: [for (var i = 0; i < _sizeBuckets.length; i++) ('$i', _sizeBuckets[i].$1, Icons.square_foot)],
+          selected: {'$_sizeBucket'},
+          onToggle: (k) => setState(() => _sizeBucket = int.parse(k)),
+        ),
+      ),
+      _Step(
+        onNext: _next,
+        child: _Choices(
+          title: 'How much sun?',
+          subtitle: 'On a clear day, how long is it in direct sun?',
+          options: const [('full', 'Full sun (6h+)', Icons.wb_sunny), ('partial', 'Partial (3–6h)', Icons.wb_cloudy), ('shade', 'Shade (< 3h)', Icons.umbrella)],
+          selected: {_sun},
+          onToggle: (k) => setState(() => _sun = k),
+        ),
+      ),
+      // ── Part 2 ─────────────────────────────────────────────────────
+      _Step(
+        onNext: _next,
+        child: _Choices(
+          title: 'Grown anything before?',
+          subtitle: 'So we pitch the advice right.',
+          options: const [('never', 'Never', Icons.eco_outlined), ('some', 'A season or two', Icons.eco), ('extensive', 'Plenty', Icons.forest)],
+          selected: {_experience},
+          onToggle: (k) => setState(() => _experience = k),
+        ),
+      ),
+      _Step(
+        enabled: _foods.isNotEmpty,
+        onNext: _next,
+        child: _Choices(
+          title: 'What do you like to eat?',
+          subtitle: 'Pick all that apply.',
+          options: const [('vegetables', 'Vegetables', Icons.restaurant), ('herbs', 'Herbs', Icons.spa), ('salad', 'Salad leaves', Icons.energy_savings_leaf), ('fruit', 'Fruit', Icons.apple), ('roots', 'Root veg', Icons.park)],
+          selected: _foods,
+          onToggle: (k) => setState(() => _foods.contains(k) ? _foods.remove(k) : _foods.add(k)),
+        ),
+      ),
+      _Step(
+        onNext: _next,
+        child: _Choices(
+          title: "What's most important?",
+          subtitle: 'Pick all that apply.',
+          options: const [('easy', 'Easy to grow', Icons.thumb_up), ('fast', 'Fast harvest', Icons.speed), ('yield', 'High yield', Icons.shopping_basket), ('kids', 'Fun with kids', Icons.child_care), ('cost', 'Saves money', Icons.savings)],
+          selected: _interests,
+          onToggle: (k) => setState(() => _interests.contains(k) ? _interests.remove(k) : _interests.add(k)),
+        ),
+      ),
+      _Step(
+        onNext: _next,
+        child: _Choices(
+          title: 'Interested in companion planting?',
+          subtitle: 'We can warn when two plants dislike each other.',
+          options: const [('yes', 'Yes, show me', Icons.favorite), ('no', 'Not now', Icons.favorite_border)],
+          selected: {_companions ? 'yes' : 'no'},
+          onToggle: (k) => setState(() => _companions = k == 'yes'),
+        ),
+      ),
+      _Step(
+        onNext: _next,
+        child: _Statements(
+          answers: _statements,
+          onAnswer: (k, v) => setState(() => _statements[k] = v),
+        ),
+      ),
+      _Step(
+        buttonLabel: 'Build my plan',
+        enabled: _picked.isNotEmpty,
+        onNext: () async {
+          _next();
+          await _build();
+        },
+        child: _PlantsStep(
+          picked: _picked,
+          onToggle: (slug) => setState(() => _picked.contains(slug) ? _picked.remove(slug) : _picked.add(slug)),
+        ),
+      ),
+      _PlanStep(
+        ready: _firstTask != null || _matches > 0,
+        region: _lookup == null ? _region.name : (_postcode ?? 'your location'),
+        frost: _lookup?.profile ?? _region.profile,
+        matches: _matches,
+        firstTask: _firstTask,
+        onDone: () async {
+          await Reminders.requestPermission();
+          widget.onDone();
+        },
+        onLater: widget.onDone,
+      ),
+    ];
+    assert(pages.length == _pageCount);
+
     return Scaffold(
       backgroundColor: AppColors.paper,
       body: Stack(
@@ -87,95 +303,29 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             controller: _controller,
             physics: const NeverScrollableScrollPhysics(),
             onPageChanged: (p) => setState(() => _page = p),
-            children: [
-              // 1 · Welcome — still hero (video deferred; swap back to
-              // HeroMedia.video once we have a Flow-generated clip).
-              HeroPage(
-                media: const HeroMedia.image('assets/onboarding/welcome.jpg'),
-                kicker: 'CROPSY',
-                title: const [
-                  TextSpan(text: 'Know what to do\n'),
-                  TextSpan(
-                      text: 'this week',
-                      style: TextStyle(color: AppColors.sprout)),
-                  TextSpan(text: ' in your garden.'),
-                ],
-                subtitle: 'Planting dates and reminders tuned to Dutch & EU '
-                    'weather — built for balconies and containers.',
-                buttonLabel: 'Get started',
-                onNext: _next,
-              ),
-              // 2 · Where do you grow (location / frost region).
-              _SetupPage(
-                buttonLabel: 'Continue',
-                onNext: _next,
-                child: _RegionStep(
-                  selected: _region,
-                  onSelect: (r) => setState(() => _region = r),
-                ),
-              ),
-              // 3 · Growing space + sun.
-              _SetupPage(
-                buttonLabel: 'Continue',
-                onNext: _next,
-                child: _KindStep(
-                  kind: _kind,
-                  sun: _sun,
-                  onKind: (k) => setState(() => _kind = k),
-                  onSun: (s) => setState(() => _sun = s),
-                ),
-              ),
-              // 4 · Pick your crops.
-              _SetupPage(
-                buttonLabel: 'Start growing',
-                enabled: _picked.isNotEmpty,
-                onNext: _next,
-                child: _PlantsStep(
-                  picked: _picked,
-                  onToggle: (slug) => setState(() {
-                    _picked.contains(slug)
-                        ? _picked.remove(slug)
-                        : _picked.add(slug);
-                  }),
-                ),
-              ),
-            ],
+            children: pages,
           ),
-          // Persistent floating header — stays put while pages transition.
-          // Left control: Skip on the first frame, Back on the rest.
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: SafeArea(
-              bottom: false,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
-                child: _FloatingHeader(
-                  page: _page,
-                  pageCount: _pageCount,
-                  onBack: _prev,
-                  onSkip: _skip,
+          if (_page < _pageCount - 1)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+                  child: _FloatingHeader(page: _page, pageCount: _pageCount - 1, onBack: _prev, onSkip: _skip),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
   }
 }
 
-/// The one persistent onboarding header: a bordered floating bar with a Skip
-/// (first frame) / Back (later frames) control and the progress track.
 class _FloatingHeader extends StatelessWidget {
-  const _FloatingHeader({
-    required this.page,
-    required this.pageCount,
-    required this.onBack,
-    required this.onSkip,
-  });
-
+  const _FloatingHeader({required this.page, required this.pageCount, required this.onBack, required this.onSkip});
   final int page;
   final int pageCount;
   final VoidCallback onBack;
@@ -185,8 +335,7 @@ class _FloatingHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final first = page == 0;
     return Container(
-      decoration:
-          Neo.box(color: AppColors.surface, shadowOverride: Neo.shadowSm),
+      decoration: Neo.box(color: AppColors.surface, shadowOverride: Neo.shadowSm),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
       child: Row(
         children: [
@@ -194,28 +343,28 @@ class _FloatingHeader extends StatelessWidget {
             onTap: first ? onSkip : onBack,
             child: first
                 ? Text('Skip', style: AppText.label(context))
-                : const Icon(Icons.arrow_back_ios_new,
-                    size: 18, color: AppColors.ink),
+                : const Icon(Icons.arrow_back_ios_new, size: 18, color: AppColors.ink),
           ),
           const SizedBox(width: 14),
-          _ProgressRow(page: page, count: pageCount),
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(999),
+              child: LinearProgressIndicator(
+                value: (page + 1) / pageCount,
+                minHeight: 8,
+                backgroundColor: AppColors.hairline,
+                valueColor: const AlwaysStoppedAnimation(AppColors.sprout),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-/// A setup step — clean paper with the form + a bottom action. The header
-/// (back/skip + progress) floats above this from the parent, so we leave room
-/// for it at the top and never redraw it here.
-class _SetupPage extends StatelessWidget {
-  const _SetupPage({
-    required this.child,
-    required this.buttonLabel,
-    required this.onNext,
-    this.enabled = true,
-  });
-
+class _Step extends StatelessWidget {
+  const _Step({required this.child, required this.onNext, this.buttonLabel = 'Continue', this.enabled = true});
   final Widget child;
   final String buttonLabel;
   final VoidCallback onNext;
@@ -226,16 +375,11 @@ class _SetupPage extends StatelessWidget {
     return SafeArea(
       child: Column(
         children: [
-          // Clearance for the floating header.
           const SizedBox(height: 62),
           Expanded(child: child),
           Padding(
             padding: const EdgeInsets.all(20),
-            child: PrimaryButton(
-              label: buttonLabel,
-              icon: Icons.arrow_forward,
-              onPressed: enabled ? onNext : null,
-            ),
+            child: PrimaryButton(label: buttonLabel, icon: Icons.arrow_forward, onPressed: enabled ? onNext : null),
           ),
         ],
       ),
@@ -243,57 +387,153 @@ class _SetupPage extends StatelessWidget {
   }
 }
 
-/// Bordered progress dots (shared by hero + setup pages). Fixed-width slots so
-/// nothing shifts as you advance — only the fill colour animates.
-class _ProgressRow extends StatelessWidget {
-  const _ProgressRow({required this.page, required this.count});
-  final int page;
-  final int count;
+class _Copy extends StatelessWidget {
+  const _Copy({required this.pose, required this.title, required this.body});
+  final MascotPose pose;
+  final String title;
+  final String body;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        for (var i = 0; i < count; i++)
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 260),
-            curve: Curves.easeOut,
-            width: 18,
-            height: 8,
-            margin: const EdgeInsets.only(right: 6),
-            decoration: BoxDecoration(
-              color: i <= page ? AppColors.sprout : AppColors.hairline,
-              borderRadius: BorderRadius.circular(999),
-            ),
-          ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(28),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Mascot(pose, size: 96),
+          const SizedBox(height: 24),
+          Text(title, style: AppText.display(context)),
+          const SizedBox(height: 12),
+          Text(body, style: AppText.body(context, color: AppColors.muted)),
+        ],
+      ),
     );
   }
 }
 
-class _RegionStep extends StatelessWidget {
-  const _RegionStep({required this.selected, required this.onSelect});
-  final FrostRegion selected;
-  final ValueChanged<FrostRegion> onSelect;
+class _Choices extends StatelessWidget {
+  const _Choices({required this.title, required this.subtitle, required this.options, required this.selected, required this.onToggle});
+  final String title;
+  final String subtitle;
+  final List<(String, String, IconData)> options;
+  final Set<String> selected;
+  final ValueChanged<String> onToggle;
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
+        Text(title, style: AppText.title(context)),
+        const SizedBox(height: 6),
+        Text(subtitle, style: AppText.bodyMuted(context)),
+        const SizedBox(height: 14),
+        for (final (key, label, icon) in options)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: _SelectTile(icon: icon, label: label, selected: selected.contains(key), onTap: () => onToggle(key)),
+          ),
+      ],
+    );
+  }
+}
+
+class _LocationStep extends StatefulWidget {
+  const _LocationStep({required this.region, required this.lookup, required this.onRegion, required this.onLookup});
+  final FrostRegion region;
+  final FrostLookup? lookup;
+  final ValueChanged<FrostRegion> onRegion;
+  final void Function(FrostLookup lookup, String? postcode) onLookup;
+
+  @override
+  State<_LocationStep> createState() => _LocationStepState();
+}
+
+class _LocationStepState extends State<_LocationStep> {
+  bool _busy = false;
+  String? _error;
+  final _pc = TextEditingController();
+
+  Future<void> _gps() async {
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    final hit = await frostForDevice();
+    if (!mounted) return;
+    setState(() {
+      _busy = false;
+      if (hit == null) _error = 'No location — enter a postcode or pick a region below.';
+    });
+    if (hit != null) widget.onLookup(hit, null);
+  }
+
+  Future<void> _postcode() async {
+    final pc = _pc.text.trim();
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    final hit = await frostForPostcode(pc);
+    if (!mounted) return;
+    setState(() {
+      _busy = false;
+      if (hit == null) _error = 'Postcode not found (1234AB) — or you are offline. Pick a region below.';
+    });
+    if (hit != null) widget.onLookup(hit, pc.toUpperCase());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = widget.lookup;
+    return ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
         Text('Where do you grow?', style: AppText.title(context)),
         const SizedBox(height: 6),
-        Text('This sets your frost dates — the backbone of every planting date.',
+        Text('Sets your frost dates — the backbone of every planting date. Rounded to ~10 km, never tracked.',
             style: AppText.bodyMuted(context)),
         const SizedBox(height: 14),
+        PrimaryButton(label: _busy ? 'Looking up…' : 'Use my location', icon: Icons.my_location, onPressed: _busy ? null : _gps),
+        const SizedBox(height: 10),
+        Row(children: [
+          Expanded(
+            child: TextField(
+              controller: _pc,
+              textCapitalization: TextCapitalization.characters,
+              style: AppText.body(context),
+              decoration: const InputDecoration(isDense: true, hintText: 'Postcode, e.g. 1012AB'),
+              onSubmitted: (_) => _postcode(),
+            ),
+          ),
+          const SizedBox(width: 8),
+          SecondaryButton(label: 'Look up', onPressed: _busy ? null : _postcode),
+        ]),
+        if (_error != null) ...[
+          const SizedBox(height: 8),
+          Text(_error!, style: AppText.caption(context, color: AppColors.warn)),
+        ],
+        if (l != null) ...[
+          const SizedBox(height: 12),
+          AppCard(
+            child: MascotSays(
+              pose: MascotPose.celebrating,
+              text: 'Found it. Last frost around ${l.profile.lastFrost.substring(5)}, first frost around ${l.profile.firstFrost.substring(5)}.',
+            ),
+          ),
+        ],
+        const SizedBox(height: 18),
+        Text('Or pick a region', style: AppText.label(context, color: AppColors.muted)),
+        const SizedBox(height: 8),
         for (final r in frostRegions)
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: _SelectTile(
               icon: Icons.place_outlined,
               label: r.name,
-              selected: r.name == selected.name,
-              onTap: () => onSelect(r),
+              selected: l == null && r.name == widget.region.name,
+              onTap: () => widget.onRegion(r),
             ),
           ),
       ],
@@ -301,79 +541,60 @@ class _RegionStep extends StatelessWidget {
   }
 }
 
-class _KindStep extends StatelessWidget {
-  const _KindStep({
-    required this.kind,
-    required this.sun,
-    required this.onKind,
-    required this.onSun,
-  });
-  final GardenKind kind;
-  final double sun;
-  final ValueChanged<GardenKind> onKind;
-  final ValueChanged<double> onSun;
+const _statementList = <(String, String)>[
+  ('behind', 'I often feel behind on garden jobs.'),
+  ('forget', 'I forget to water until something wilts.'),
+  ('dates', "I never know when it's safe to plant out."),
+  ('waste', "I buy seeds I never get round to sowing."),
+];
 
-  static const _icons = {
-    GardenKind.balcony: Icons.balcony,
-    GardenKind.garden: Icons.yard,
-    GardenKind.allotment: Icons.agriculture,
-  };
+class _Statements extends StatelessWidget {
+  const _Statements({required this.answers, required this.onAnswer});
+  final Map<String, bool> answers;
+  final void Function(String key, bool agree) onAnswer;
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
-        Text('Your growing space', style: AppText.title(context)),
+        Text('Do you relate?', style: AppText.title(context)),
         const SizedBox(height: 6),
-        Text('Where are you growing?', style: AppText.bodyMuted(context)),
+        Text('Tap what sounds like you. Skip the rest.', style: AppText.bodyMuted(context)),
         const SizedBox(height: 14),
-        GridView.count(
-          crossAxisCount: 2,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 2.6,
-          children: [
-            for (final k in GardenKind.values)
-              _SelectTile(
-                icon: _icons[k],
-                label: gardenKindLabel(k),
-                selected: kind == k,
-                onTap: () => onKind(k),
-              ),
-          ],
-        ),
-        const SizedBox(height: 20),
-        Text('Hours of sun a day: ${sun.round()}h',
-            style: AppText.heading(context)),
-        Slider(
-          value: sun,
-          min: 0,
-          max: 12,
-          divisions: 12,
-          activeColor: AppColors.sprout,
-          label: '${sun.round()}h',
-          onChanged: onSun,
-        ),
+        for (final (key, text) in _statementList)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: AppCard(
+              child: Row(children: [
+                Expanded(child: Text(text, style: AppText.body(context))),
+                const SizedBox(width: 8),
+                _YesNo(value: answers[key], onChanged: (v) => onAnswer(key, v)),
+              ]),
+            ),
+          ),
       ],
     );
   }
 }
 
-/// A bordered selection tile: fills green + white text/icon when selected. Pass
-/// either an [icon] (recoloured white on select, always visible) or a
-/// [leadingWidget] (e.g. a crop photo, left as-is).
-class _SelectTile extends StatelessWidget {
-  const _SelectTile({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-    this.icon,
-    this.leadingWidget,
-  });
+class _YesNo extends StatelessWidget {
+  const _YesNo({required this.value, required this.onChanged});
+  final bool? value;
+  final ValueChanged<bool> onChanged;
 
+  @override
+  Widget build(BuildContext context) {
+    Widget b(bool v, IconData icon) => IconButton(
+          onPressed: () => onChanged(v),
+          icon: Icon(icon, color: value == v ? AppColors.sprout : AppColors.hairline),
+        );
+    return Row(mainAxisSize: MainAxisSize.min, children: [b(true, Icons.thumb_up), b(false, Icons.thumb_down)]);
+  }
+}
+
+class _SelectTile extends StatelessWidget {
+  const _SelectTile({required this.label, required this.selected, required this.onTap, this.icon, this.leadingWidget});
   final String label;
   final bool selected;
   final VoidCallback onTap;
@@ -383,9 +604,7 @@ class _SelectTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fg = selected ? Colors.white : AppColors.ink;
-    final Widget? leading = icon != null
-        ? Icon(icon, size: 22, color: selected ? Colors.white : AppColors.sprout)
-        : leadingWidget;
+    final Widget? leading = icon != null ? Icon(icon, size: 22, color: selected ? Colors.white : AppColors.sprout) : leadingWidget;
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -399,21 +618,9 @@ class _SelectTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         child: Row(
           children: [
-            if (leading != null) ...[
-              leading,
-              const SizedBox(width: 8),
-            ],
-            Expanded(
-              child: Text(label,
-                  style: AppText.label(context, color: fg),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis),
-            ),
-            Icon(
-              selected ? Icons.check_circle : Icons.circle_outlined,
-              size: 20,
-              color: selected ? Colors.white : AppColors.hairline,
-            ),
+            if (leading != null) ...[leading, const SizedBox(width: 8)],
+            Expanded(child: Text(label, style: AppText.label(context, color: fg), maxLines: 1, overflow: TextOverflow.ellipsis)),
+            Icon(selected ? Icons.check_circle : Icons.circle_outlined, size: 20, color: selected ? Colors.white : AppColors.hairline),
           ],
         ),
       ),
@@ -429,23 +636,13 @@ class _PlantsStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
-    // Offer a friendly shortlist: the starters + a few more container crops.
-    final options = <String>{
-      ...starterCrops.keys,
-      'chili',
-      'cucumber',
-      'chives',
-      'coriander',
-      'beetroot',
-    }.toList();
-
+    final options = <String>{...starterCrops.keys, 'chili', 'cucumber', 'chives', 'coriander', 'beetroot'}.toList();
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
         Text('What will you grow?', style: AppText.title(context)),
         const SizedBox(height: 6),
-        Text('Pick a few to start — add more anytime.',
-            style: AppText.bodyMuted(context)),
+        Text('Pick a few to start — add more anytime.', style: AppText.bodyMuted(context)),
         const SizedBox(height: 14),
         GridView.count(
           crossAxisCount: 2,
@@ -459,12 +656,7 @@ class _PlantsStep extends StatelessWidget {
               _SelectTile(
                 leadingWidget: ClipRRect(
                   borderRadius: BorderRadius.circular(4),
-                  child: SizedBox(
-                    width: 30,
-                    height: 30,
-                    child: CropImage(
-                        slug: slug, category: repo.cropCategory(slug)),
-                  ),
+                  child: SizedBox(width: 30, height: 30, child: CropImage(slug: slug, category: repo.cropCategory(slug))),
                 ),
                 label: repo.cropName(slug),
                 selected: picked.contains(slug),
@@ -475,4 +667,65 @@ class _PlantsStep extends StatelessWidget {
       ],
     );
   }
+}
+
+/// 1.7 + 1.8: the mascot builds the plan on screen, then asks for
+/// notifications with the reason — after the first task is visible.
+class _PlanStep extends StatelessWidget {
+  const _PlanStep({required this.ready, required this.region, required this.frost, required this.matches, required this.firstTask, required this.onDone, required this.onLater});
+  final bool ready;
+  final String region;
+  final FrostProfile frost;
+  final int matches;
+  final String? firstTask;
+  final VoidCallback onDone;
+  final VoidCallback onLater;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(28),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 40),
+            Mascot(ready ? MascotPose.celebrating : MascotPose.thinking, size: 96),
+            const SizedBox(height: 24),
+            Text(ready ? 'Your plan is ready' : 'Creating your growing plan…', style: AppText.display(context)),
+            const SizedBox(height: 16),
+            _Line(done: true, text: 'Frost dates for $region: last ${frost.lastFrost.substring(5)}, first ${frost.firstFrost.substring(5)}'),
+            _Line(done: ready, text: ready ? '$matches crops fit your space this month' : 'Matching crops to your space…'),
+            _Line(done: ready, text: ready ? (firstTask == null ? 'First task lands as soon as a window opens' : 'First task: $firstTask') : 'Finding your first task…'),
+            const Spacer(),
+            if (ready) ...[
+              Text('Want a nudge on the day? One reminder a morning, only when there is something to do — and it stays quiet when it rained.',
+                  style: AppText.bodyMuted(context)),
+              const SizedBox(height: 12),
+              PrimaryButton(label: 'Remind me', icon: Icons.notifications_active_outlined, onPressed: onDone),
+              const SizedBox(height: 8),
+              SecondaryButton(label: 'Maybe later', onPressed: onLater),
+            ] else
+              const Center(child: CircularProgressIndicator(color: AppColors.sprout)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Line extends StatelessWidget {
+  const _Line({required this.done, required this.text});
+  final bool done;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Row(children: [
+          Icon(done ? Icons.check_circle : Icons.radio_button_unchecked, color: done ? AppColors.sprout : AppColors.hairline, size: 20),
+          const SizedBox(width: 10),
+          Expanded(child: Text(text, style: AppText.body(context))),
+        ]),
+      );
 }

@@ -4,6 +4,8 @@
 // gates on onboarding: first run shows the setup flow; once a garden exists the
 // tabbed app takes over. Offline is the default state (PRD §4).
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'db/connection.dart';
@@ -12,21 +14,37 @@ import 'features/app_shell.dart';
 import 'features/garden/garden_repository.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'features/repository_scope.dart';
+import 'notifications/reminders.dart';
+import 'sync/auth_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final repo = await GardenRepository.create(db: openAppDatabase());
-  runApp(CropsyApp(repository: repo));
+  await AuthService.init();
+  await Reminders.init();
+  final auth = AuthService(repo);
+  // Reminders follow the data: any change re-plans the week's notifications.
+  Timer? debounce;
+  repo.addListener(() {
+    debounce?.cancel();
+    debounce = Timer(const Duration(seconds: 2), () async {
+      await Reminders.schedule(await repo.thisWeek(), today: repo.today);
+    });
+  });
+  runApp(CropsyApp(repository: repo, auth: auth));
 }
 
 class CropsyApp extends StatelessWidget {
-  const CropsyApp({super.key, required this.repository});
+  const CropsyApp({super.key, required this.repository, this.auth});
   final GardenRepository repository;
+  final AuthService? auth;
 
   @override
   Widget build(BuildContext context) {
     return RepositoryScope(
       repository: repository,
+      child: AuthScope(
+      auth: auth,
       child: MaterialApp(
         title: 'Cropsy',
         debugShowCheckedModeBanner: false,
@@ -55,6 +73,7 @@ class CropsyApp extends StatelessWidget {
         ),
         home: const _Root(),
       ),
+      ),
     );
   }
 }
@@ -67,11 +86,24 @@ class _Root extends StatefulWidget {
 }
 
 class _RootState extends State<_Root> {
-  bool _entered = false;
+  bool? _hasGarden;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_hasGarden == null) {
+      RepositoryScope.of(context).hasGarden().then((v) {
+        if (mounted) setState(() => _hasGarden = v);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (_entered) return const AppShell();
-    return OnboardingScreen(onDone: () => setState(() => _entered = true));
+    return switch (_hasGarden) {
+      null => const Scaffold(backgroundColor: AppColors.paper),
+      true => const AppShell(),
+      false => OnboardingScreen(onDone: () => setState(() => _hasGarden = true)),
+    };
   }
 }

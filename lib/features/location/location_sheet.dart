@@ -17,6 +17,7 @@ import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/typography.dart';
 import '../repository_scope.dart';
+import 'frost_lookup.dart';
 
 /// Opens the picker and applies the chosen region. Returns the chosen region, or
 /// null if dismissed.
@@ -48,13 +49,38 @@ class _LocationSheetState extends State<_LocationSheet> {
 
   Future<void> _detect() async {
     setState(() => _detecting = true);
-    // Prototype stand-in for a GPS fix + frost lookup. In production this awaits
-    // the platform location service and `GET /api/frost?lat=&lon=`.
-    await Future<void>.delayed(const Duration(milliseconds: 900));
+    final repo = RepositoryScope.of(context);
+    // GPS → GET /api/frost. Offline or denied: snap to the nearest preset.
+    final hit = await frostForDevice();
     if (!mounted) return;
-    final region = nearestRegion(demoDeviceLat, demoDeviceLon);
-    Navigator.pop(context, region);
+    if (hit != null) {
+      await repo.setLocation(name: 'Your location', profile: hit.profile, lat: hit.lat, lon: hit.lon);
+      if (mounted) Navigator.pop(context);
+      return;
+    }
+    setState(() => _detecting = false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Could not get a location. Pick a region or enter a postcode.')),
+    );
   }
+
+  Future<void> _postcode(String pc) async {
+    setState(() => _detecting = true);
+    final repo = RepositoryScope.of(context);
+    final hit = await frostForPostcode(pc);
+    if (!mounted) return;
+    if (hit != null) {
+      await repo.setLocation(name: pc.toUpperCase(), profile: hit.profile, lat: hit.lat, lon: hit.lon, postcode: pc);
+      if (mounted) Navigator.pop(context);
+      return;
+    }
+    setState(() => _detecting = false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Postcode not found (expected 1234AB) — or you are offline.')),
+    );
+  }
+
+  static final _pcPattern = RegExp(r'^[1-9]\d{3}\s?[A-Za-z]{2}$');
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +133,7 @@ class _LocationSheetState extends State<_LocationSheet> {
                 style: AppText.body(context),
                 decoration: InputDecoration(
                   isDense: true,
-                  hintText: 'Enter your town or region',
+                  hintText: 'Town, region or postcode',
                   hintStyle: AppText.bodyMuted(context),
                   prefixIcon: const Icon(Icons.search, color: AppColors.muted),
                   filled: true,
@@ -129,13 +155,20 @@ class _LocationSheetState extends State<_LocationSheet> {
             const Divider(height: 1, color: AppColors.hairline),
             Flexible(
               child: matches.isEmpty
-                  ? Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Text(
-                        'No match for "$_query". Try a nearby city, or pick a region.',
-                        style: AppText.bodyMuted(context),
-                      ),
-                    )
+                  ? _pcPattern.hasMatch(_query.trim())
+                      ? ListTile(
+                          leading: const Icon(Icons.markunread_mailbox_outlined, color: AppColors.sprout),
+                          title: Text('Use postcode ${_query.trim().toUpperCase()}', style: AppText.body(context)),
+                          subtitle: Text('Looks up the frost dates for that cell.', style: AppText.caption(context)),
+                          onTap: _detecting ? null : () => _postcode(_query.trim()),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Text(
+                            'No match for "$_query". Try a nearby city, a postcode (1234AB), or pick a region.',
+                            style: AppText.bodyMuted(context),
+                          ),
+                        )
                   : ListView.separated(
                       shrinkWrap: true,
                       padding: const EdgeInsets.symmetric(vertical: 4),

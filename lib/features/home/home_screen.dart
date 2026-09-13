@@ -6,15 +6,26 @@ library;
 
 import 'package:flutter/material.dart';
 
+import 'package:intl/intl.dart';
+
+import '../../db/database.dart';
 import '../../design/brutal.dart';
 import '../../design/colors.dart';
+import '../../design/components.dart';
+import '../../design/crop_image.dart';
+import '../../design/mascot.dart';
 import '../../design/typography.dart';
 import '../../design/widgets.dart';
 import '../../timing/dates.dart';
+import '../../timing/replan.dart';
 import '../../timing/types.dart';
+import '../../timing/weather_adjust.dart';
+import '../garden/garden_repository.dart';
+import '../garden/plant_detail_screen.dart';
 import '../grow/crop_detail_screen.dart';
 import '../location/location_sheet.dart';
 import '../paywall/paywall_screen.dart';
+import '../settings/settings_screen.dart';
 import '../repository_scope.dart';
 
 const _months = [
@@ -61,6 +72,10 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverToBoxAdapter(child: _Header(region: repo.regionName)),
           SliverToBoxAdapter(child: _SearchRow(onChanged: (q) => setState(() => _query = q))),
           SliverToBoxAdapter(child: _PremiumBanner(onTap: () => _openPaywall(context))),
+          if (_query.isEmpty) ...[
+            const SliverToBoxAdapter(child: _TodaysCare()),
+            const SliverToBoxAdapter(child: _UpcomingHarvest()),
+          ],
           if (_query.isEmpty)
             SliverToBoxAdapter(
               child: _WhatToGrowHeader(
@@ -194,7 +209,14 @@ class _Header extends StatelessWidget {
           const SizedBox(width: 8),
           const Icon(Icons.workspace_premium, color: AppColors.sprout),
           const SizedBox(width: 14),
-          const Icon(Icons.settings_outlined, color: AppColors.muted),
+          IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.settings_outlined, color: AppColors.muted),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+            ),
+          ),
         ],
       ),
     );
@@ -321,6 +343,138 @@ class _WhatToGrowHeader extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// 2.3 — Today's care: the weather card says what it changed, then today's
+/// tasks with checkboxes. Nothing to do → the mascot says so.
+class _TodaysCare extends StatelessWidget {
+  const _TodaysCare();
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    return FutureBuilder<List<ThisWeekItem>>(
+      future: repo.thisWeek(),
+      builder: (context, snap) {
+        if (!snap.hasData) return const SizedBox.shrink();
+        final today = snap.data!.where((i) => i.due.compareTo(repo.today) <= 0).toList();
+        final open = today.where((i) => !i.completed).length;
+        final skipped = today.where((i) => i.hint?.action == AdjustAction.skip).toList();
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(20, 14, 20, 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Today's care ($open)", style: AppText.title(context)),
+              const SizedBox(height: 10),
+              AppCard(
+                child: MascotSays(
+                  pose: skipped.isNotEmpty ? MascotPose.rain : (open == 0 ? MascotPose.sleeping : MascotPose.sun),
+                  size: 44,
+                  text: skipped.isNotEmpty
+                      ? skipped.first.hint!.reason.en
+                      : open == 0
+                          ? 'Nothing to do today. Enjoy it.'
+                          : '$open thing${open == 1 ? '' : 's'} to do today.',
+                ),
+              ),
+              const SizedBox(height: 8),
+              for (final item in today.take(4))
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: AppCard(
+                    onTap: () => repo.setTaskCompleted(item.taskId, !item.completed),
+                    child: Row(children: [
+                      Icon(item.completed ? Icons.check_circle : Icons.circle_outlined,
+                          color: item.completed ? AppColors.done : AppColors.hairline),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text('${kindLabel(item.kind)} · ${item.cropName}',
+                            style: AppText.label(context, color: item.completed ? AppColors.muted : AppColors.ink)),
+                      ),
+                      if (item.hint != null) WeatherHintBadge(item.hint!),
+                    ]),
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// 2.4 — Upcoming harvest: hero cards with the harvest window from the path.
+class _UpcomingHarvest extends StatelessWidget {
+  const _UpcomingHarvest();
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    return FutureBuilder<List<({GardenPlantRow plant, PathNode harvest})>>(
+      future: repo.upcomingHarvests(),
+      builder: (context, snap) {
+        final rows = snap.data ?? const [];
+        if (rows.isEmpty) return const SizedBox.shrink();
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(20, 14, 0, 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Upcoming harvest (${rows.length})', style: AppText.title(context)),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 150,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: rows.length,
+                  separatorBuilder: (_, _) => const SizedBox(width: 10),
+                  itemBuilder: (context, i) {
+                    final r = rows[i];
+                    final h = r.harvest;
+                    final fmt = DateFormat('d MMM');
+                    return GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: r.plant.id)),
+                      ),
+                      child: Container(
+                        width: 200,
+                        decoration: Neo.box(color: AppColors.surface),
+                        clipBehavior: Clip.antiAlias,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 84,
+                              width: double.infinity,
+                              child: CropImage(slug: r.plant.cropSlug, category: repo.cropCategory(r.plant.cropSlug)),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(repo.cropName(r.plant.cropSlug), style: AppText.label(context)),
+                                  Text(
+                                    '${fmt.format(parseIso(h.due))} – ${fmt.format(parseIso(h.until ?? h.due))}',
+                                    style: AppText.caption(context, color: AppColors.clay),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

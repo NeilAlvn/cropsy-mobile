@@ -233,6 +233,21 @@ class GardenRepository extends ChangeNotifier {
     return null;
   }
 
+  /// Home 2.4: growing plants with their harvest window, soonest first.
+  Future<List<({GardenPlantRow plant, PathNode harvest})>> upcomingHarvests() async {
+    final out = <({GardenPlantRow plant, PathNode harvest})>[];
+    for (final p in await growingPlants()) {
+      for (final n in await pathFor(p.id)) {
+        if (n.kind == NodeKind.harvest && n.loggedOn == null) {
+          out.add((plant: p, harvest: n));
+          break;
+        }
+      }
+    }
+    out.sort((a, b) => a.harvest.due.compareTo(b.harvest.due));
+    return out;
+  }
+
   /// The method a plant's path starts from when the user just says "planted":
   /// outdoor starts first (a bought tomato seedling is a transplant), indoor
   /// sowing only when that is the crop's sole method.
@@ -357,13 +372,45 @@ class GardenRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// A resolved location (GPS / postcode → frost API) rather than a preset.
+  Future<void> setLocation({
+    required String name,
+    required FrostProfile profile,
+    required double lat,
+    required double lon,
+    String? postcode,
+  }) async {
+    frost = profile;
+    regionName = name;
+    frostSource = 'open-meteo';
+    final existing = await gardens();
+    if (existing.isNotEmpty) {
+      await (db.update(db.gardens)..where((t) => t.id.equals(existing.first.id)))
+          .write(GardensCompanion(
+        lat: Value(lat),
+        lon: Value(lon),
+        postcode: Value(postcode),
+        dirty: const Value(true),
+      ));
+    }
+    notifyListeners();
+  }
+
+  /// Where the current frost dates came from, for the "based on" row (3.3).
+  String frostSource = 'preset';
+
   Future<String> createGarden({
     required FrostRegion region,
     required GardenKind kind,
     int? sunHours,
     String name = 'My garden',
+    int? sizeM2,
+    String? postcode,
+    FrostProfile? profile,
+    double? lat,
+    double? lon,
   }) async {
-    frost = region.profile;
+    frost = profile ?? region.profile;
     regionName = region.name;
     final id = newUuid();
     await db.into(db.gardens).insert(GardensCompanion.insert(
@@ -372,8 +419,10 @@ class GardenRepository extends ChangeNotifier {
           name: name,
           kind: kind,
           sunHours: Value(sunHours),
-          lat: Value(region.lat),
-          lon: Value(region.lon),
+          lat: Value(lat ?? region.lat),
+          lon: Value(lon ?? region.lon),
+          sizeM2: Value(sizeM2),
+          postcode: Value(postcode),
           dirty: const Value(true),
         ));
     notifyListeners();
