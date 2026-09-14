@@ -19,6 +19,7 @@ import 'garden_repository.dart';
 import '../../sync/photo_uploader.dart';
 import 'growth_log_sheet.dart';
 import 'insights.dart';
+import '../grow/crop_detail_screen.dart';
 import 'timeline_view.dart';
 
 class PlantDetailScreen extends StatefulWidget {
@@ -103,6 +104,13 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                             style: AppText.bodyMuted(context),
                           ),
                         ],
+                        const Spacer(),
+                        // GrowIt 5.4: the crop's guide (calendar, how-tos, FAQ) one tap away.
+                        if (repo.cropBySlug(plant.cropSlug) case final crop?)
+                          TextButton(
+                            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => CropDetailScreen(crop: crop))),
+                            child: Text('Growing guide →', style: AppText.label(context, color: AppColors.sprout)),
+                          ),
                       ],
                     ),
                     const SizedBox(height: 20),

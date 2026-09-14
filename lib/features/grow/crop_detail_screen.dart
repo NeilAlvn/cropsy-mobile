@@ -466,7 +466,8 @@ class _GuideBenefits extends StatelessWidget {
         Text(g.benefits, style: AppText.body(context)),
         if (g.sources.isNotEmpty) ...[
           const SizedBox(height: 8),
-          Text('Sources: ${g.sources.join(' · ')}', style: AppText.caption(context)),
+          // Domains only: 18 full URLs are review data, not reading matter.
+          Text('Sources: ${g.sources.map((u) => Uri.tryParse(u)?.host.replaceFirst('www.', '') ?? u).toSet().join(' · ')}', style: AppText.caption(context)),
         ],
       ],
     );
