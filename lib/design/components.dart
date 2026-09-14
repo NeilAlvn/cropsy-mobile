@@ -220,8 +220,11 @@ class WeatherHintBadge extends StatelessWidget {
 
 /// PRD §4.3: draft content is visibly labelled during the beta.
 class DraftBadge extends StatelessWidget {
-  const DraftBadge({super.key});
+  const DraftBadge({super.key, this.compact = false});
+
+  /// Short form for list tiles.
+  final bool compact;
 
   @override
-  Widget build(BuildContext context) => const Pill(label: 'Concept — nog niet gecontroleerd', icon: Icons.edit_note, color: AppColors.clay);
+  Widget build(BuildContext context) => Pill(label: compact ? 'Concept' : 'Concept — nog niet gecontroleerd', icon: Icons.edit_note, color: AppColors.clay);
 }

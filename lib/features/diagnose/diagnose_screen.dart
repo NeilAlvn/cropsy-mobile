@@ -94,7 +94,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                         children: [
                           Text(p.names.en, style: AppText.heading(context)),
                           Text(p.symptoms.en, style: AppText.caption(context), maxLines: 2, overflow: TextOverflow.ellipsis),
-                          if (p.draft) const Padding(padding: EdgeInsets.only(top: 4), child: DraftBadge()),
+                          if (p.draft) const Padding(padding: EdgeInsets.only(top: 4), child: Align(alignment: Alignment.centerLeft, child: DraftBadge(compact: true))),
                         ],
                       ),
                     ),
