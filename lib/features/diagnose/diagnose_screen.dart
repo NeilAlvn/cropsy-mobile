@@ -94,6 +94,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                         children: [
                           Text(p.names.en, style: AppText.heading(context)),
                           Text(p.symptoms.en, style: AppText.caption(context), maxLines: 2, overflow: TextOverflow.ellipsis),
+                          if (p.draft) const Padding(padding: EdgeInsets.only(top: 4), child: DraftBadge()),
                         ],
                       ),
                     ),
@@ -133,6 +134,7 @@ class ProblemScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
         children: [
           Text(problem.names.nl, style: AppText.bodyMuted(context)),
+          if (problem.draft) const Padding(padding: EdgeInsets.only(top: 8), child: DraftBadge()),
           const SizedBox(height: 12),
           section('Symptoms', problem.symptoms.en),
           section('Treatment (organic first)', problem.treatment.en),

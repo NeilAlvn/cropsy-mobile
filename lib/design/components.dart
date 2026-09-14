@@ -217,3 +217,11 @@ class WeatherHintBadge extends StatelessWidget {
     );
   }
 }
+
+/// PRD §4.3: draft content is visibly labelled during the beta.
+class DraftBadge extends StatelessWidget {
+  const DraftBadge({super.key});
+
+  @override
+  Widget build(BuildContext context) => const Pill(label: 'Concept — nog niet gecontroleerd', icon: Icons.edit_note, color: AppColors.clay);
+}

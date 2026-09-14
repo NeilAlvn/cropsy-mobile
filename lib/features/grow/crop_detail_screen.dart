@@ -147,8 +147,8 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
               _section('Soil', 'Soil prep', const _ContentComing('Soil preparation')),
               _section('How-tos', 'How-tos', _HowTos(crop: crop)),
               _section('Neighbours', 'Neighbours', _Neighbours(slug: crop.slug)),
-              _section('Benefits', 'Why grow it', const _ContentComing('Nutrition and benefits (NEVO)')),
-              _section('FAQ', 'FAQ', const _ContentComing('Grower-reviewed FAQ')),
+              _section('Benefits', 'Why grow it', _GuideBenefits(slug: crop.slug)),
+              _section('FAQ', 'FAQ', _GuideFaq(slug: crop.slug)),
               if (crop.sources.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
@@ -389,7 +389,85 @@ class _HowTos extends StatelessWidget {
               ),
             ),
           ),
-        const _ContentComing('Step-by-step how-tos per stage'),
+        _GuideStages(slug: crop.slug),
+      ],
+    );
+  }
+}
+
+/// Editorial how-tos per stage from the content snapshot; placeholder until
+/// the crop has a guide. Drafts carry the concept badge (beta only).
+class _GuideStages extends StatelessWidget {
+  const _GuideStages({required this.slug});
+  final String slug;
+
+  @override
+  Widget build(BuildContext context) {
+    final g = RepositoryScope.of(context).content.guideFor(slug);
+    if (g == null) return const _ContentComing('Step-by-step how-tos per stage');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (g.draft) const Padding(padding: EdgeInsets.only(bottom: 8), child: DraftBadge()),
+        for (final st in g.stages)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: AppCard(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(st.title, style: AppText.heading(context)),
+                const SizedBox(height: 6),
+                Text(st.body, style: AppText.body(context)),
+              ]),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _GuideFaq extends StatelessWidget {
+  const _GuideFaq({required this.slug});
+  final String slug;
+
+  @override
+  Widget build(BuildContext context) {
+    final g = RepositoryScope.of(context).content.guideFor(slug);
+    if (g == null || g.faq.isEmpty) return const _ContentComing('Grower-reviewed FAQ');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (g.draft) const Padding(padding: EdgeInsets.only(bottom: 8), child: DraftBadge()),
+        for (final f in g.faq)
+          Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              tilePadding: EdgeInsets.zero,
+              title: Text(f.q, style: AppText.label(context)),
+              children: [Padding(padding: const EdgeInsets.only(bottom: 12), child: Text(f.a, style: AppText.body(context)))],
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _GuideBenefits extends StatelessWidget {
+  const _GuideBenefits({required this.slug});
+  final String slug;
+
+  @override
+  Widget build(BuildContext context) {
+    final g = RepositoryScope.of(context).content.guideFor(slug);
+    if (g == null) return const _ContentComing('Nutrition and benefits (NEVO)');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (g.draft) const Padding(padding: EdgeInsets.only(bottom: 8), child: DraftBadge()),
+        Text(g.benefits, style: AppText.body(context)),
+        if (g.sources.isNotEmpty) ...[
+          const SizedBox(height: 8),
+          Text('Sources: ${g.sources.join(' · ')}', style: AppText.caption(context)),
+        ],
       ],
     );
   }

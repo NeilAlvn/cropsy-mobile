@@ -33,7 +33,10 @@ class Price {
 }
 
 class Variety {
-  const Variety({required this.slug, required this.cropSlug, required this.names, required this.daysMin, required this.daysMax, required this.containerOk, required this.suppliers, required this.traits});
+  const Variety({required this.slug, required this.cropSlug, required this.names, required this.daysMin, required this.daysMax, required this.containerOk, required this.suppliers, required this.traits, this.draft = false});
+
+  /// Beta only: unverified row shipped with a visible "concept" label.
+  final bool draft;
   final String slug;
   final String cropSlug;
   final LocalizedText names;
@@ -53,7 +56,10 @@ class CompanionPair {
 }
 
 class Problem {
-  const Problem({required this.slug, required this.names, required this.kind, required this.parts, required this.symptoms, required this.treatment, required this.prevention, required this.affects, required this.image});
+  const Problem({required this.slug, required this.names, required this.kind, required this.parts, required this.symptoms, required this.treatment, required this.prevention, required this.affects, required this.image, this.draft = false});
+
+  /// Beta only: unverified row shipped with a visible "concept" label.
+  final bool draft;
   final String slug;
   final LocalizedText names;
 
@@ -69,6 +75,30 @@ class Problem {
   final String? image;
 }
 
+/// One crop's editorial guide (PRD 3.6–3.8): stage how-tos, FAQ, benefits.
+class Guide {
+  const Guide({required this.cropSlug, required this.lang, required this.starting, required this.seedling, required this.vegetative, required this.flowering, required this.harvest, required this.faq, required this.benefits, required this.sources, this.draft = false});
+  final String cropSlug;
+  final String lang;
+  final String starting;
+  final String seedling;
+  final String vegetative;
+  final String flowering;
+  final String harvest;
+  final List<({String q, String a})> faq;
+  final String benefits;
+  final List<String> sources;
+  final bool draft;
+
+  List<({String title, String body})> get stages => [
+        (title: 'Starting', body: starting),
+        (title: 'Seedling', body: seedling),
+        (title: 'Vegetative', body: vegetative),
+        (title: 'Flowering', body: flowering),
+        (title: 'Harvest', body: harvest),
+      ];
+}
+
 class ContentSnapshot {
   const ContentSnapshot({
     required this.version,
@@ -79,6 +109,7 @@ class ContentSnapshot {
     this.goodCompanions = const [],
     this.badCompanions = const [],
     this.problems = const [],
+    this.guides = const [],
   });
   final String version;
   final List<ContentCollection> collections;
@@ -88,6 +119,18 @@ class ContentSnapshot {
   final List<CompanionPair> goodCompanions;
   final List<CompanionPair> badCompanions;
   final List<Problem> problems;
+  final List<Guide> guides;
+
+  /// The crop's guide in [lang], else any language it has. NL first (PRD §4.4).
+  Guide? guideFor(String cropSlug, {String lang = 'nl'}) {
+    Guide? any;
+    for (final g in guides) {
+      if (g.cropSlug != cropSlug) continue;
+      if (g.lang == lang) return g;
+      any ??= g;
+    }
+    return any;
+  }
 
   static const empty = ContentSnapshot(version: '', collections: [], checklist: [], prices: {});
 
@@ -141,6 +184,7 @@ class ContentSnapshot {
               containerOk: v['container_ok'] as bool? ?? true,
               suppliers: (v['suppliers'] as List? ?? const []).cast<String>(),
               traits: (v['traits'] as List? ?? const []).cast<String>(),
+              draft: v['draft'] as bool? ?? false,
             ),
         ],
         goodCompanions: _pairs((j['companions'] as Map<String, dynamic>?)?['good']),
@@ -157,6 +201,25 @@ class ContentSnapshot {
               prevention: LocalizedText.fromJson(p['prevention'] as Map<String, dynamic>),
               affects: (p['affects'] as List).cast<String>(),
               image: p['image'] as String?,
+              draft: p['draft'] as bool? ?? false,
+            ),
+        ],
+        guides: [
+          for (final g in (j['guides'] as List? ?? const []).cast<Map<String, dynamic>>())
+            Guide(
+              cropSlug: g['crop_slug'] as String,
+              lang: g['lang'] as String,
+              starting: g['starting'] as String,
+              seedling: g['seedling'] as String,
+              vegetative: g['vegetative'] as String,
+              flowering: g['flowering'] as String,
+              harvest: g['harvest'] as String,
+              faq: [
+                for (final f in (g['faq'] as List? ?? const []).cast<Map<String, dynamic>>()) (q: f['q'] as String, a: f['a'] as String),
+              ],
+              benefits: g['benefits'] as String,
+              sources: (g['sources'] as List? ?? const []).cast<String>(),
+              draft: g['draft'] as bool? ?? false,
             ),
         ],
       );
