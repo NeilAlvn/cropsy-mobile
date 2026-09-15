@@ -35,6 +35,9 @@ class AuthService extends ChangeNotifier {
   DateTime? lastSyncAt;
 
   User? get user => _client.auth.currentUser;
+
+  /// JWT for our own API routes (identify, diagnose, account).
+  String? get accessToken => _client.auth.currentSession?.accessToken;
   bool get signedIn => user != null;
 
   static Future<void> init() => Supabase.initialize(url: supabaseUrl, publishableKey: supabaseAnonKey);

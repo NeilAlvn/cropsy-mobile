@@ -11,6 +11,7 @@ import '../../design/mascot.dart';
 import '../../design/typography.dart';
 import '../../timing/content_snapshot.dart';
 import '../repository_scope.dart';
+import '../scan/scan_screen.dart';
 
 const _parts = <(String, String, String)>[
   ('whole', '🌿', 'Whole plant'),
@@ -44,18 +45,20 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
           Text('Diagnose', style: AppText.kicker(context)),
           const SizedBox(height: 10),
           AppCard(
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ScanScreen(mode: ScanMode.diagnose))),
             child: Row(children: [
-              const Icon(Icons.center_focus_strong, color: AppColors.muted),
+              const Icon(Icons.center_focus_strong, color: AppColors.sprout),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Auto diagnose from a photo', style: AppText.label(context, color: AppColors.muted)),
-                    Text('Coming after the beta. Always a guess, never a verdict.', style: AppText.caption(context)),
+                    Text('Auto diagnose from a photo', style: AppText.label(context)),
+                    Text('Always a guess, never a verdict. Premium.', style: AppText.caption(context)),
                   ],
                 ),
               ),
+              const Icon(Icons.chevron_right, color: AppColors.muted),
             ]),
           ),
           const SizedBox(height: 24),
