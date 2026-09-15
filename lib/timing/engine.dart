@@ -43,8 +43,14 @@ List<ScheduledWindow> scheduleGarden(List<Crop> crops, FrostProfile frost) {
   for (final crop in crops) {
     windows.addAll(scheduleCrop(crop, frost));
   }
-  windows.sort((a, b) => a.start.compareTo(b.start));
-  return windows;
+  // JS Array.sort is stable; Dart's List.sort is not. Tie-break on insertion
+  // order so equal start dates keep crop order, matching the TS fixture.
+  final indexed = windows.asMap().entries.toList()
+    ..sort((a, b) {
+      final c = a.value.start.compareTo(b.value.start);
+      return c != 0 ? c : a.key.compareTo(b.key);
+    });
+  return indexed.map((e) => e.value).toList(growable: false);
 }
 
 /// The "this week" view (spec F2): windows whose range overlaps
