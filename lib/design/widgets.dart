@@ -53,6 +53,8 @@ class PhotoCard extends StatelessWidget {
                       ),
                       child: CropImage(slug: crop.slug, category: crop.category),
                     ),
+                    if (crop.draft)
+                      const Positioned(left: 8, top: 8, child: DraftBadge(compact: true)),
                     Positioned(
                       right: 8,
                       bottom: 8,
@@ -86,7 +88,6 @@ class PhotoCard extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis),
                         ),
-                        if (crop.draft) const DraftBadge(compact: true),
                       ],
                     ),
                     const SizedBox(height: 2),
