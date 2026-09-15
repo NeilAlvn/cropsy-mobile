@@ -45,11 +45,11 @@ void main() {
     repo.dispose();
   });
 
-  test('crop catalogue loads the bundled snapshot: 60 verified crops, drafts flagged',
+  test('crop catalogue loads the bundled snapshot: 90 verified crops, drafts flagged',
       () async {
     final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday, observations: (_, _) async => sampleObservations(demoToday));
     // The beta bundle may carry draft crops; they must be flagged, never silent.
-    expect(repo.crops.where((c) => !c.draft), hasLength(60));
+    expect(repo.crops.where((c) => !c.draft), hasLength(90));
     expect(repo.crops.every((c) => c.verified || c.draft), isTrue);
     expect(repo.cropVersion, isNotEmpty);
     repo.dispose();
