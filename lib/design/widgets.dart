@@ -86,6 +86,7 @@ class PhotoCard extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis),
                         ),
+                        if (crop.draft) const DraftBadge(compact: true),
                       ],
                     ),
                     const SizedBox(height: 2),

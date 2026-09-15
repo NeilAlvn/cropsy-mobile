@@ -146,6 +146,7 @@ class Crop {
     this.daysToTransplant,
     this.perennial = false,
     this.image,
+    this.draft = false,
   });
 
   final String slug;
@@ -175,6 +176,9 @@ class Crop {
 
   /// File name in `assets/crops/`, or null.
   final String? image;
+
+  /// Beta snapshots only: timing not yet grower-verified (badge in-app).
+  final bool draft;
 
   factory Crop.fromJson(Map<String, dynamic> j) {
     final harvest = j['harvest'] as Map<String, dynamic>;
@@ -206,6 +210,7 @@ class Crop {
       daysToTransplant: (j['days_to_transplant'] as num?)?.toInt(),
       perennial: j['perennial'] as bool? ?? false,
       image: j['image'] as String?,
+      draft: j['draft'] as bool? ?? false,
     );
   }
 }
