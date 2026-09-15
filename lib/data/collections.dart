@@ -12,12 +12,16 @@ class Collection {
     required this.title,
     required this.subtitle,
     required this.crops,
+    this.draft = false,
   });
 
   final String id;
   final String title;
   final String subtitle;
   final List<Crop> crops;
+
+  /// Beta: unverified content-snapshot collection, shown with a badge.
+  final bool draft;
 
   String? get coverSlug => crops.isEmpty ? null : crops.first.slug;
 }

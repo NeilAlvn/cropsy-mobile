@@ -7,20 +7,24 @@ import 'dart:convert';
 import 'types.dart';
 
 class ContentCollection {
-  const ContentCollection({required this.slug, required this.title, required this.intro, required this.cropSlugs, required this.image});
+  const ContentCollection({required this.slug, required this.title, required this.intro, required this.cropSlugs, required this.image, this.draft = false});
   final String slug;
   final LocalizedText title;
   final LocalizedText intro;
   final List<String> cropSlugs;
   final String? image;
+  final bool draft;
 }
 
 class ChecklistItem {
-  const ChecklistItem({required this.month, required this.title, required this.body, required this.link});
+  const ChecklistItem({required this.month, required this.title, required this.body, required this.link, this.draft = false});
   final int month;
   final LocalizedText title;
   final LocalizedText body;
+
+  /// Crop slug the item is about, or null.
   final String? link;
+  final bool draft;
 }
 
 class Price {
@@ -134,6 +138,8 @@ class ContentSnapshot {
 
   static const empty = ContentSnapshot(version: '', collections: [], checklist: [], prices: {});
 
+  List<ChecklistItem> checklistFor(int month) => checklist.where((c) => c.month == month).toList();
+
   List<Variety> varietiesOf(String cropSlug) => varieties.where((v) => v.cropSlug == cropSlug).toList();
 
   /// Bad pairing between two crops, if the verified matrix lists one.
@@ -154,6 +160,7 @@ class ContentSnapshot {
               intro: LocalizedText.fromJson(c['intro'] as Map<String, dynamic>),
               cropSlugs: (c['crop_slugs'] as List).cast<String>(),
               image: c['image'] as String?,
+              draft: c['draft'] as bool? ?? false,
             ),
         ],
         checklist: [
@@ -163,6 +170,7 @@ class ContentSnapshot {
               title: LocalizedText.fromJson(c['title'] as Map<String, dynamic>),
               body: LocalizedText.fromJson(c['body'] as Map<String, dynamic>),
               link: c['link'] as String?,
+              draft: c['draft'] as bool? ?? false,
             ),
         ],
         prices: {

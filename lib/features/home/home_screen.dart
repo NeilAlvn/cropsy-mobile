@@ -78,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SliverToBoxAdapter(child: _StreakCard()),
             const SliverToBoxAdapter(child: _TodaysCare()),
             const SliverToBoxAdapter(child: _UpcomingHarvest()),
+            SliverToBoxAdapter(child: _MonthChecklist(month: _month!, onMonth: _pickMonth)),
           ],
           if (_query.isEmpty)
             SliverToBoxAdapter(
@@ -562,6 +563,65 @@ class _StreakCard extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+
+/// PRD 2.5: "Checklist for [month]" — seasonal items from the content
+/// snapshot. Hidden until the month has content.
+class _MonthChecklist extends StatelessWidget {
+  const _MonthChecklist({required this.month, required this.onMonth});
+  final int month;
+  final VoidCallback onMonth;
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    final items = repo.content.checklistFor(month);
+    if (items.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            Text('Checklist for ', style: AppText.title(context)),
+            GestureDetector(
+              onTap: onMonth,
+              child: Row(children: [
+                Text(_months[month - 1], style: AppText.title(context, color: AppColors.sprout)),
+                const Icon(Icons.arrow_drop_down, color: AppColors.sprout),
+              ]),
+            ),
+            const Spacer(),
+            SectionFeedbackMenu(targetKind: 'checklist', targetId: 'month-$month'),
+          ]),
+          if (items.any((i) => i.draft)) const Padding(padding: EdgeInsets.only(bottom: 6), child: DraftBadge()),
+          for (final it in items)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: AppCard(
+                onTap: it.link == null
+                    ? null
+                    : () {
+                        final crop = repo.cropBySlug(it.link!);
+                        if (crop != null) Navigator.of(context).push(MaterialPageRoute(builder: (_) => CropDetailScreen(crop: crop)));
+                      },
+                child: Row(children: [
+                  Expanded(
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text(it.title.en, style: AppText.label(context)),
+                      const SizedBox(height: 2),
+                      Text(it.body.en, style: AppText.caption(context)),
+                    ]),
+                  ),
+                  if (it.link != null) const Icon(Icons.chevron_right, color: AppColors.muted),
+                ]),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

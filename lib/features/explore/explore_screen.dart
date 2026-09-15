@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/collections.dart';
 import '../../design/colors.dart';
+import '../../design/components.dart';
 import '../../design/typography.dart';
 import '../../design/widgets.dart';
 import '../../timing/types.dart';
@@ -30,6 +31,7 @@ class ExploreScreen extends StatelessWidget {
                 title: c.title.en,
                 subtitle: c.intro.en,
                 crops: [for (final s in c.cropSlugs) ?repo.cropBySlug(s)],
+                draft: c.draft,
               ),
           ];
     return SafeArea(
@@ -74,7 +76,10 @@ class _CollectionRow extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 2),
-          child: Text(collection.title, style: AppText.heading(context)),
+          child: Row(children: [
+            Text(collection.title, style: AppText.heading(context)),
+            if (collection.draft) ...[const SizedBox(width: 8), const DraftBadge(compact: true)],
+          ]),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
