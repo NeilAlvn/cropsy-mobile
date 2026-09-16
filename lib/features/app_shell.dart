@@ -35,7 +35,9 @@ class _AppShellState extends State<AppShell> {
   int _index = 0;
   bool _barHidden = false;
 
-  static const _tabs = [
+  // Not const: a const child is not rebuilt when its parent is, and these
+  // screens read colour tokens at build time.
+  final _tabs = const [
     HomeScreen(),
     GardenScreen(),
     SeasonScreen(),
@@ -185,11 +187,11 @@ class _SeasonTab extends StatelessWidget {
             child: Container(
               width: 52,
               height: 52,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: AppColors.accent,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.timeline_rounded,
+              child: Icon(Icons.timeline_rounded,
                   color: AppColors.onAccent, size: 26),
             ),
           ),

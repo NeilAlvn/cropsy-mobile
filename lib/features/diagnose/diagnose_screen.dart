@@ -47,7 +47,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
           AppCard(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ScanScreen(mode: ScanMode.diagnose))),
             child: Row(children: [
-              const Icon(Icons.center_focus_strong, color: AppColors.sprout),
+              Icon(Icons.center_focus_strong, color: AppColors.sprout),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -58,7 +58,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: AppColors.muted),
+              Icon(Icons.chevron_right, color: AppColors.muted),
             ]),
           ),
           const SizedBox(height: 24),
@@ -101,7 +101,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                         ],
                       ),
                     ),
-                    const Icon(Icons.chevron_right, color: AppColors.muted),
+                    Icon(Icons.chevron_right, color: AppColors.muted),
                   ]),
                 ),
               ),
@@ -130,7 +130,7 @@ class ProblemScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.paper,
         surfaceTintColor: AppColors.paper,
-        iconTheme: const IconThemeData(color: AppColors.ink),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text(problem.names.en, style: AppText.heading(context)),
       ),
       body: ListView(

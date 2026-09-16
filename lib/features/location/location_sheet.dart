@@ -11,6 +11,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/motion.dart';
 
 import '../../data/frost_presets.dart';
 import '../../design/brutal.dart';
@@ -23,7 +24,7 @@ import 'frost_lookup.dart';
 /// null if dismissed.
 Future<FrostRegion?> showLocationPicker(BuildContext context) async {
   final repo = RepositoryScope.of(context);
-  final picked = await showModalBottomSheet<FrostRegion>(
+  final picked = await showAppSheet<FrostRegion>(
     context: context,
     isScrollControlled: true,
     backgroundColor: AppColors.surface,
@@ -135,29 +136,29 @@ class _LocationSheetState extends State<_LocationSheet> {
                   isDense: true,
                   hintText: 'Town, region or postcode',
                   hintStyle: AppText.bodyMuted(context),
-                  prefixIcon: const Icon(Icons.search, color: AppColors.muted),
+                  prefixIcon: Icon(Icons.search, color: AppColors.muted),
                   filled: true,
                   fillColor: AppColors.paper,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
+                    borderSide: BorderSide(
                         color: AppColors.border, width: Neo.borderWidth),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
+                    borderSide: BorderSide(
                         color: AppColors.sprout, width: Neo.borderWidth),
                   ),
                 ),
               ),
             ),
             _UseLocationTile(detecting: _detecting, onTap: _detecting ? null : _detect),
-            const Divider(height: 1, color: AppColors.hairline),
+            Divider(height: 1, color: AppColors.hairline),
             Flexible(
               child: matches.isEmpty
                   ? _pcPattern.hasMatch(_query.trim())
                       ? ListTile(
-                          leading: const Icon(Icons.markunread_mailbox_outlined, color: AppColors.sprout),
+                          leading: Icon(Icons.markunread_mailbox_outlined, color: AppColors.sprout),
                           title: Text('Use postcode ${_query.trim().toUpperCase()}', style: AppText.body(context)),
                           subtitle: Text('Looks up the frost dates for that cell.', style: AppText.caption(context)),
                           onTap: _detecting ? null : () => _postcode(_query.trim()),
@@ -174,7 +175,7 @@ class _LocationSheetState extends State<_LocationSheet> {
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       itemCount: matches.length,
                       separatorBuilder: (_, _) =>
-                          const Divider(height: 1, color: AppColors.hairline, indent: 20),
+                          Divider(height: 1, color: AppColors.hairline, indent: 20),
                       itemBuilder: (context, i) {
                         final r = matches[i];
                         final selected = r.name == current;
@@ -187,7 +188,7 @@ class _LocationSheetState extends State<_LocationSheet> {
                             style: AppText.caption(context),
                           ),
                           trailing: selected
-                              ? const Icon(Icons.check_circle, color: AppColors.sprout)
+                              ? Icon(Icons.check_circle, color: AppColors.sprout)
                               : null,
                           onTap: () => Navigator.pop(context, r),
                         );
@@ -212,13 +213,13 @@ class _UseLocationTile extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       leading: detecting
-          ? const SizedBox(
+          ? SizedBox(
               width: 22,
               height: 22,
               child: CircularProgressIndicator(
                   strokeWidth: 2.4, color: AppColors.sprout),
             )
-          : const Icon(Icons.my_location, color: AppColors.sprout),
+          : Icon(Icons.my_location, color: AppColors.sprout),
       title: Text(
         detecting ? 'Detecting your location…' : 'Use my current location',
         style: AppText.label(context, color: AppColors.sprout),

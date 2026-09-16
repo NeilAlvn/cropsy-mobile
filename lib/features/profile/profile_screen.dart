@@ -61,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.canvas,
         surfaceTintColor: AppColors.canvas,
-        iconTheme: const IconThemeData(color: AppColors.ink),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text('Profile', style: AppText.subheading(context)),
         centerTitle: true,
       ),
@@ -70,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (context, snap) {
           final d = snap.data;
           if (d == null) {
-            return const Center(child: CircularProgressIndicator(color: AppColors.accent));
+            return Center(child: CircularProgressIndicator(color: AppColors.accent));
           }
           final growing = d.plants.where((p) => p.plantedOn != null).length;
           return ListView(
@@ -272,7 +272,7 @@ class _Group extends StatelessWidget {
           children: [
             for (var i = 0; i < rows.length; i++) ...[
               if (i > 0)
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(left: 56),
                   child: Divider(height: 1, thickness: 1, color: AppColors.hairline),
                 ),
@@ -321,7 +321,7 @@ class _Row extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              const Icon(Icons.chevron_right, size: 16, color: AppColors.inkMuted),
+              Icon(Icons.chevron_right, size: 16, color: AppColors.inkMuted),
             ],
           ),
         ),

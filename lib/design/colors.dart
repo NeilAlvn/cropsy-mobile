@@ -1,116 +1,266 @@
 /// Cropsy colour tokens — VisionTech Design System v0.6 (the base Nime and
-/// Farmsy ship), with Cropsy's brand slots filled.
+/// Farmsy ship), with Cropsy's brand slots filled, in both schemes.
 ///
 /// Brand slot decisions (section 12 of the base):
-/// - `accent` is terracotta clay, the container motif. Nime and Farmsy are both
-///   green, and in a garden app green already means "growing / good", so green
-///   stays the fixed positive semantic and the accent takes the pot instead.
-/// - Because the accent is not a semantic colour, the primary pill fills with
-///   `accent` (base 8.1) and there is no separate vivid accent: the accent is
-///   the functional control colour too.
-/// - `canvas` is a warm neutral grey, within the 5 percent luminance the base
-///   allows around its #F0F1F0 default. Cards are pure white and separate from
-///   the ground by value, with no border.
+/// - `accent` is a grass green, picked against the reference Luuk chose. The
+///   terracotta the app started on is now the mascot's pot and the warm note in
+///   the art ([AppColors.clayWarm]), not the interface colour.
+/// - `accent` is text-safe: white on it clears 4.5:1, which the reference's own
+///   brighter green does not. `accentBright` carries that vividness wherever
+///   nothing has to be read on top of it: node buttons, the sky, art.
+/// - Green doubles as the positive semantic here, so a verdict never renders as
+///   a bare green fill: it keeps its icon and its label (base 10).
 ///
-/// Light theme only for now. Dark values are listed per token in the base; wire
-/// them up when the app stops reading colours from static consts.
+/// Screens read these as `AppColors.ink` and the like. They are getters over
+/// the active [AppPalette], not constants, so the whole app answers a theme
+/// change by rebuilding rather than by threading a palette through every
+/// widget. [AppColors.scheme] is what flips them; `main.dart` drives it from
+/// the platform brightness and the user's setting.
 library;
 
 import 'package:flutter/material.dart';
 
+/// One scheme's worth of colour. Two exist: [AppPalette.light] and
+/// [AppPalette.dark].
+class AppPalette {
+  const AppPalette({
+    required this.brightness,
+    required this.canvas,
+    required this.surface,
+    required this.surfaceRaised,
+    required this.tile,
+    required this.hairline,
+    required this.ink,
+    required this.inkMuted,
+    required this.inkFaint,
+    required this.inkPlaceholder,
+    required this.onInk,
+    required this.scrim,
+    required this.accent,
+    required this.accentDeep,
+    required this.onAccent,
+    required this.accentBright,
+    required this.forest,
+    required this.accentSoft,
+    required this.onAccentSoft,
+    required this.skyTop,
+    required this.skyMid,
+    required this.positive,
+    required this.warning,
+    required this.critical,
+    required this.positiveSoft,
+    required this.warningSoft,
+    required this.criticalSoft,
+    required this.onSemantic,
+    required this.amber,
+    required this.amberDeep,
+    required this.amberSoft,
+    required this.onAmber,
+  });
+
+  final Brightness brightness;
+
+  final Color canvas;
+  final Color surface;
+  final Color surfaceRaised;
+  final Color tile;
+  final Color hairline;
+  final Color ink;
+  final Color inkMuted;
+  final Color inkFaint;
+  final Color inkPlaceholder;
+  final Color onInk;
+  final Color scrim;
+
+  final Color accent;
+  final Color accentDeep;
+  final Color onAccent;
+  final Color accentBright;
+  final Color forest;
+  final Color accentSoft;
+  final Color onAccentSoft;
+  final Color skyTop;
+  final Color skyMid;
+
+  final Color positive;
+  final Color warning;
+  final Color critical;
+  final Color positiveSoft;
+  final Color warningSoft;
+  final Color criticalSoft;
+  final Color onSemantic;
+
+  final Color amber;
+  final Color amberDeep;
+  final Color amberSoft;
+  final Color onAmber;
+
+  static const light = AppPalette(
+    brightness: Brightness.light,
+    canvas: Color(0xFFF3F7EE),
+    surface: Color(0xFFFFFFFF),
+    surfaceRaised: Color(0xFFFFFFFF),
+    tile: Color(0xFFEAF0E4),
+    hairline: Color(0x1417191C),
+    ink: Color(0xFF16211A),
+    inkMuted: Color(0xFF576055),
+    inkFaint: Color(0xFF6A7368),
+    inkPlaceholder: Color(0xFF8B958A),
+    onInk: Color(0xFFFFFFFF),
+    scrim: Color(0x66101114),
+    accent: Color(0xFF2A7F2A),
+    accentDeep: Color(0xFF1F6420),
+    onAccent: Color(0xFFFFFFFF),
+    accentBright: Color(0xFF4CC23F),
+    forest: Color(0xFF15391D),
+    accentSoft: Color(0xFFE2F3D8),
+    onAccentSoft: Color(0xFF22641F),
+    skyTop: Color(0xFFD8F0A8),
+    skyMid: Color(0xFFEFF8DE),
+    positive: Color(0xFF137A4A),
+    warning: Color(0xFF9A5B00),
+    critical: Color(0xFFC0292B),
+    positiveSoft: Color(0xFFE4F3EA),
+    warningSoft: Color(0xFFFBEFD9),
+    criticalSoft: Color(0xFFFBE5E5),
+    onSemantic: Color(0xFFFFFFFF),
+    amber: Color(0xFFE8B33A),
+    amberDeep: Color(0xFFB9821A),
+    amberSoft: Color(0xFFF7E7BE),
+    onAmber: Color(0xFF3A2A06),
+  );
+
+  /// Base 3.2's dark column, tuned the way the light one was: the canvas keeps
+  /// a trace of leaf, the accent lifts until it carries text on a dark ground
+  /// (white no longer would), and the sky becomes the night version of the same
+  /// gradient rather than a grey.
+  static const dark = AppPalette(
+    brightness: Brightness.dark,
+    canvas: Color(0xFF121712),
+    surface: Color(0xFF1A201A),
+    surfaceRaised: Color(0xFF222922),
+    tile: Color(0xFF232B23),
+    hairline: Color(0x1AFFFFFF),
+    ink: Color(0xFFF2F5F0),
+    inkMuted: Color(0xFFAFBAAD),
+    inkFaint: Color(0xFF8B958A),
+    inkPlaceholder: Color(0xFF6A7368),
+    onInk: Color(0xFF121712),
+    scrim: Color(0x99000000),
+    accent: Color(0xFF63C455),
+    accentDeep: Color(0xFF4CA742),
+    onAccent: Color(0xFF0C1A0C),
+    accentBright: Color(0xFF6FD45F),
+    forest: Color(0xFF0E2A13),
+    accentSoft: Color(0xFF23361F),
+    onAccentSoft: Color(0xFF9FDD92),
+    skyTop: Color(0xFF1C2A16),
+    skyMid: Color(0xFF161E14),
+    positive: Color(0xFF3DBE72),
+    warning: Color(0xFFF2B544),
+    critical: Color(0xFFF0605F),
+    positiveSoft: Color(0x283DBE72),
+    warningSoft: Color(0x28F2B544),
+    criticalSoft: Color(0x28F0605F),
+    onSemantic: Color(0xFF101114),
+    amber: Color(0xFFE8B33A),
+    amberDeep: Color(0xFFA9760F),
+    amberSoft: Color(0xFF3A2E12),
+    onAmber: Color(0xFF14100A),
+  );
+}
+
 abstract final class AppColors {
+  /// The scheme every token below reads. Rebuilding on this is `main.dart`'s
+  /// job; nothing else should listen to it.
+  static final scheme = ValueNotifier<AppPalette>(AppPalette.light);
+
+  static AppPalette get palette => scheme.value;
+  static bool get isDark => palette.brightness == Brightness.dark;
+
   // ---------------------------------------------------------------- neutrals
-  /// Screen background. Base 3.2 `canvas`, warmed a touch toward the leaf.
-  static const canvas = Color(0xFFF3F7EE);
+  /// Screen background. Base 3.2 `canvas`.
+  static Color get canvas => palette.canvas;
 
   /// Cards, sheets, dialogs. Base 3.2 `surface`.
-  static const surface = Color(0xFFFFFFFF);
+  static Color get surface => palette.surface;
+  static Color get surfaceRaised => palette.surfaceRaised;
 
   /// Image tiles, grouped row containers, input fills, skeletons.
-  static const tile = Color(0xFFEAF0E4);
+  static Color get tile => palette.tile;
 
-  /// Borders, dividers, rings. Never on a card: white on canvas is the edge.
-  static const hairline = Color(0x1417191C);
+  /// Borders, dividers, rings. Never on a card: the surface is the edge.
+  static Color get hairline => palette.hairline;
 
-  static const ink = Color(0xFF16211A);
-  static const inkMuted = Color(0xFF576055);
-  static const inkFaint = Color(0xFF6A7368);
-  static const inkPlaceholder = Color(0xFF8B958A);
-  static const onInk = Color(0xFFFFFFFF);
-  static const scrim = Color(0x66101114);
+  static Color get ink => palette.ink;
+  static Color get inkMuted => palette.inkMuted;
+  static Color get inkFaint => palette.inkFaint;
+  static Color get inkPlaceholder => palette.inkPlaceholder;
+  static Color get onInk => palette.onInk;
+  static Color get scrim => palette.scrim;
 
   // ------------------------------------------------------------------- brand
-  /// Base 3.3 `accent`. Grass green, 5.0:1 against white.
-  static const accent = Color(0xFF2A7F2A);
+  static Color get accent => palette.accent;
+  static Color get accentDeep => palette.accentDeep;
+  static Color get onAccent => palette.onAccent;
 
-  /// Pressed and deep accents.
-  static const accentDeep = Color(0xFF1F6420);
-  static const onAccent = Color(0xFFFFFFFF);
+  /// Fills only, never under text.
+  static Color get accentBright => palette.accentBright;
 
-  /// The reference's vivid green. Fills only, never under text: node buttons,
-  /// the sky gradient, illustration. Fails as a text ground on purpose.
-  static const accentBright = Color(0xFF4CC23F);
+  /// The dark ground under banners and the splash.
+  static Color get forest => palette.forest;
+  static Color get accentSoft => palette.accentSoft;
+  static Color get onAccentSoft => palette.onAccentSoft;
 
-  /// The dark ground of the reference: month bars, banners, the splash.
-  static const forest = Color(0xFF15391D);
-
-  /// Accent at ~12 percent over canvas. Selected rows, highlight cards.
-  static const accentSoft = Color(0xFFE2F3D8);
-
-  /// Text on [accentSoft], 4.5:1.
-  static const onAccentSoft = Color(0xFF22641F);
-
-  /// The season path's month markers. Amber keeps a month from reading as one
-  /// more task: the green discs are things to do, these are where you are.
-  /// The chest's gold is the same family.
-  static const amber = Color(0xFFE8B33A);
-  static const amberDeep = Color(0xFFB9821A);
-  static const amberSoft = Color(0xFFF7E7BE);
-  static const onAmber = Color(0xFF3A2A06);
-
-  /// The path's sky, top to bottom.
-  static const skyTop = Color(0xFFD8F0A8);
-  static const skyMid = Color(0xFFEFF8DE);
-
-  /// Terracotta survives as the mascot's pot and the warm note in art, so it
-  /// keeps a token even though it is no longer the accent.
-  static const clayWarm = Color(0xFFB4532F);
+  /// The season path's sky, top to bottom.
+  static Color get skyTop => palette.skyTop;
+  static Color get skyMid => palette.skyMid;
 
   // --------------------------------------------------------------- semantics
-  // Fixed across every VisionTech app. Text-safe on canvas and tile.
-  static const positive = Color(0xFF137A4A);
-  static const warning = Color(0xFF9A5B00);
-  static const critical = Color(0xFFC0292B);
-  static const positiveSoft = Color(0xFFE4F3EA);
-  static const warningSoft = Color(0xFFFBEFD9);
-  static const criticalSoft = Color(0xFFFBE5E5);
-  static const onSemantic = Color(0xFFFFFFFF);
+  static Color get positive => palette.positive;
+  static Color get warning => palette.warning;
+  static Color get critical => palette.critical;
+  static Color get positiveSoft => palette.positiveSoft;
+  static Color get warningSoft => palette.warningSoft;
+  static Color get criticalSoft => palette.criticalSoft;
+  static Color get onSemantic => palette.onSemantic;
 
-  // Functional fills: rings, bars, dots, meters. Not text-safe on light.
+  /// The season path's month markers.
+  static Color get amber => palette.amber;
+  static Color get amberDeep => palette.amberDeep;
+  static Color get amberSoft => palette.amberSoft;
+  static Color get onAmber => palette.onAmber;
+
+  // Functional fills: rings, bars, dots, meters. Not text-safe on light, and
+  // the same in both schemes by design (base 3.4).
   static const vividPositive = Color(0xFF79FB32);
   static const vividWarning = Color(0xFFF2812F);
   static const vividCritical = Color(0xFFCE1A3B);
   static const onVivid = Color(0xFF101114);
 
+  /// Terracotta survives as the mascot's pot and the warm note in the art, so
+  /// it keeps a token even though it is no longer the accent.
+  static const clayWarm = Color(0xFFB4532F);
+
   // ------------------------------------------------------- legacy aliases
-  // The old Cropsy names, kept so the 30-odd screens keep compiling while they
-  // migrate to the token names above. Delete an alias once its callers move.
-  static const sprout = accent;
-  static const sproutDeep = accentDeep;
+  // The old Cropsy names, kept so the screens keep compiling while they move to
+  // the token names above. Delete an alias once its callers move.
+  static Color get sprout => accent;
+  static Color get sproutDeep => accentDeep;
   static const clay = clayWarm;
   static const clayDeep = Color(0xFF93401F);
-  static const paper = canvas;
-  static const sand = tile;
-  static const muted = inkMuted;
-  static const border = hairline;
+  static Color get paper => canvas;
+  static Color get sand => tile;
+  static Color get muted => inkMuted;
+  static Color get border => hairline;
   static const lemon = vividWarning;
-  static const sky = inkMuted;
+  static Color get sky => inkMuted;
 
   // Weather hints (F4). The base allows no fourth semantic hue, so rain reads
   // as information in `ink` and only heat and frost carry a semantic.
-  static const rain = ink;
-  static const heat = warning;
-  static const frost = inkMuted;
+  static Color get rain => ink;
+  static Color get heat => warning;
+  static Color get frost => inkMuted;
 
   // Planting-calendar lanes. Data colours, one hue per activity.
   static const bandSowIndoor = Color(0xFFBFE0A6);
@@ -119,11 +269,11 @@ abstract final class AppColors {
   static const bandHarvest = clayWarm;
 
   // Difficulty and status map onto the fixed semantics.
-  static const easy = positive;
-  static const medium = warning;
-  static const hard = critical;
-  static const done = positive;
-  static const warn = critical;
+  static Color get easy => positive;
+  static Color get medium => warning;
+  static Color get hard => critical;
+  static Color get done => positive;
+  static Color get warn => critical;
 
   /// Category dot colours, keyed by the crop `category` field (9 categories).
   /// Taxonomy colours, not brand: they label content the way a legend does.

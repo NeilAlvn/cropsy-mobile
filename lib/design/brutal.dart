@@ -31,7 +31,7 @@ abstract final class Neo {
   static const double borderWidth = 1;
 
   /// Hairline ring. Inputs, ghost buttons, dividers — not cards.
-  static const Border border = Border.fromBorderSide(
+  static Border border = Border.fromBorderSide(
     BorderSide(color: AppColors.hairline, width: borderWidth),
   );
 
@@ -41,25 +41,25 @@ abstract final class Neo {
   ];
 
   /// Level 2, overlay: bottom sheets, dialogs, popovers.
-  static const List<BoxShadow> overlay = [
+  static List<BoxShadow> overlay = [
     BoxShadow(color: Color(0x2417191C), offset: Offset(0, 16), blurRadius: 40),
   ];
 
   /// Legacy names, mapped onto the two levels above.
-  static const List<BoxShadow> shadow = float;
-  static const List<BoxShadow> shadowSm = float;
+  static List<BoxShadow> shadow = float;
+  static List<BoxShadow> shadowSm = float;
 
   /// Standard surface: a flat white card by default. Pass `shadowed: true`
   /// only for something that genuinely floats over content.
   static BoxDecoration box({
-    Color color = AppColors.surface,
+    Color? color,
     double r = radius,
     bool shadowed = false,
     bool bordered = false,
     List<BoxShadow>? shadowOverride,
   }) =>
       BoxDecoration(
-        color: color,
+        color: color ?? AppColors.surface,
         borderRadius: BorderRadius.circular(r),
         border: bordered ? border : null,
         boxShadow: shadowed ? (shadowOverride ?? float) : null,

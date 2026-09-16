@@ -7,9 +7,9 @@ void main() {
       (tester) async {
     Widget app({required bool highContrast}) => MediaQuery(
           data: MediaQueryData(highContrast: highContrast),
-          child: const Directionality(
+          child: Directionality(
             textDirection: TextDirection.ltr,
-            child: GlassSurface(child: SizedBox(width: 64, height: 64)),
+            child: GlassSurface(child: const SizedBox(width: 64, height: 64)),
           ),
         );
 

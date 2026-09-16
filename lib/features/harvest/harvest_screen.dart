@@ -76,16 +76,16 @@ class _HeroCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('THIS SEASON', style: AppText.kicker(context, color: Colors.white70)),
+          Text('THIS SEASON', style: AppText.kicker(context, color: AppColors.onInk.withValues(alpha: 0.7))),
           const SizedBox(height: 6),
-          Text(parts.isEmpty ? 'Nothing yet' : parts.join(' · '), style: AppText.display(context, color: Colors.white)),
+          Text(parts.isEmpty ? 'Nothing yet' : parts.join(' · '), style: AppText.display(context, color: AppColors.onInk)),
           const SizedBox(height: 4),
           Text(
             tally.euros > 0
                 ? '≈ €${tally.euros.toStringAsFixed(2)} saved at NL supermarket prices'
                     '${tally.unpriced > 0 ? ' · ${tally.unpriced} unpriced' : ''}'
                 : '$count harvest${count == 1 ? '' : 's'} logged · price table coming with the content update',
-            style: AppText.body(context, color: Colors.white),
+            style: AppText.body(context, color: AppColors.onInk),
           ),
         ],
       ),

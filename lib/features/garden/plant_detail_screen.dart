@@ -4,6 +4,7 @@
 library;
 
 import 'dart:io';
+import '../../design/motion.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -44,7 +45,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
             backgroundColor: AppColors.paper,
             surfaceTintColor: AppColors.paper,
             elevation: 0,
-            iconTheme: const IconThemeData(color: AppColors.ink),
+            iconTheme: IconThemeData(color: AppColors.ink),
             title: plant == null
                 ? null
                 : Text(repo.cropName(plant.cropSlug),
@@ -53,7 +54,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                 ? null
                 : [
                     PopupMenuButton<String>(
-                      icon: const Icon(Icons.more_horiz, color: AppColors.ink),
+                      icon: Icon(Icons.more_horiz, color: AppColors.ink),
                       color: AppColors.surface,
                       onSelected: (v) => switch (v) {
                         'edit' => _editPlant(repo, plant),
@@ -184,11 +185,14 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
   }
 
   Future<void> _logHarvest(GardenRepository repo, GardenPlantRow plant) async {
-    final result = await showModalBottomSheet<(double, String)>(
+    final result = await showAppSheet<(double, String)>(
       context: context,
       isScrollControlled: true,
       backgroundColor: AppColors.paper,
-      builder: (_) => _HarvestSheet(cropName: repo.cropName(plant.cropSlug)),
+      builder: (_) => _HarvestSheet(
+        cropName: repo.cropName(plant.cropSlug),
+        pricedUnit: repo.content.prices[plant.cropSlug]?.unit,
+      ),
     );
     if (result != null) {
       await repo.logHarvest(
@@ -207,7 +211,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
   }
 
   Future<void> _editPlant(GardenRepository repo, GardenPlantRow plant) async {
-    final changed = await showModalBottomSheet<bool>(
+    final changed = await showAppSheet<bool>(
       context: context,
       isScrollControlled: true,
       backgroundColor: AppColors.paper,
@@ -263,9 +267,9 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
     }
   }
 
-  Widget _menuRow(IconData icon, String label, {Color color = AppColors.ink}) =>
+  Widget _menuRow(IconData icon, String label, {Color? color}) =>
       Row(children: [
-        Icon(icon, size: 20, color: color),
+        Icon(icon, size: 20, color: color ?? AppColors.ink),
         const SizedBox(width: 12),
         Text(label, style: AppText.body(context, color: color)),
       ]);
@@ -312,7 +316,7 @@ class _Journal extends StatelessWidget {
                             : FutureBuilder<File?>(
                                 future: PhotoUploader.localFile(e.photoPath!),
                                 builder: (context, snap) => snap.data == null
-                                    ? const Icon(Icons.photo_outlined, color: AppColors.muted)
+                                    ? Icon(Icons.photo_outlined, color: AppColors.muted)
                                     : Image.file(snap.data!, fit: BoxFit.cover),
                               ),
                       ),
@@ -344,8 +348,13 @@ class _Journal extends StatelessWidget {
 }
 
 class _HarvestSheet extends StatefulWidget {
-  const _HarvestSheet({required this.cropName});
+  const _HarvestSheet({required this.cropName, this.pricedUnit});
+
   final String cropName;
+
+  /// The unit this crop is priced in, when it has a price at all. The sheet
+  /// opens on it, so a logged harvest lands in the tally by default.
+  final String? pricedUnit;
 
   @override
   State<_HarvestSheet> createState() => _HarvestSheetState();
@@ -353,7 +362,7 @@ class _HarvestSheet extends StatefulWidget {
 
 class _HarvestSheetState extends State<_HarvestSheet> {
   final _qty = TextEditingController();
-  String _unit = 'pcs';
+  late String _unit = widget.pricedUnit ?? 'pcs';
 
   @override
   Widget build(BuildContext context) {
@@ -389,7 +398,18 @@ class _HarvestSheetState extends State<_HarvestSheet> {
             ),
           ]),
           const SizedBox(height: 8),
-          Text('The season tally turns this into "money saved" once prices are in.', style: AppText.caption(context)),
+          Text(
+            switch (widget.pricedUnit) {
+              null => 'This crop has no shop price yet, so it counts towards the '
+                  'yield but not towards money saved.',
+              final priced when priced == _unit =>
+                'Counts towards your season tally.',
+              final priced =>
+                'Your tally prices this crop per $priced, so this adds to the '
+                'yield but not to money saved.',
+            },
+            style: AppText.caption(context),
+          ),
           const SizedBox(height: 20),
           PrimaryButton(
             label: 'Save harvest',
@@ -473,14 +493,14 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Row(
                   children: [
-                    const Icon(Icons.event, size: 20, color: AppColors.sprout),
+                    Icon(Icons.event, size: 20, color: AppColors.sprout),
                     const SizedBox(width: 12),
                     Text('Planted', style: AppText.bodyMuted(context)),
                     const Spacer(),
                     Text(DateFormat('d MMM yyyy').format(parseIso(_plantedOn!)),
                         style: AppText.label(context)),
                     const SizedBox(width: 6),
-                    const Icon(Icons.chevron_right, color: AppColors.muted),
+                    Icon(Icons.chevron_right, color: AppColors.muted),
                   ],
                 ),
               ),

@@ -53,6 +53,35 @@ abstract final class Haptics {
   static void complete() => HapticFeedback.heavyImpact();
 }
 
+/// A bottom sheet on the base's own timing: 380 ms in on the enter curve, and
+/// a shorter exit (base 9). Flutter's default is 250 ms both ways, which makes
+/// a sheet feel like a dialog.
+///
+/// Every sheet in the app goes through here, so the timing is one number in one
+/// place rather than an argument each call site has to remember.
+Future<T?> showAppSheet<T>({
+  required BuildContext context,
+  required WidgetBuilder builder,
+  bool isScrollControlled = false,
+  Color? backgroundColor,
+  ShapeBorder? shape,
+}) {
+  final motion = Motion.of(context);
+  return showModalBottomSheet<T>(
+    context: context,
+    builder: builder,
+    isScrollControlled: isScrollControlled,
+    backgroundColor: backgroundColor,
+    shape: shape,
+    sheetAnimationStyle: AnimationStyle(
+      duration: motion[Motion.sheet],
+      curve: Motion.easeEnter,
+      reverseDuration: motion[Motion.exit],
+      reverseCurve: Motion.easeExit,
+    ),
+  );
+}
+
 /// Press feedback: scale to 0.97 on a spring, and one haptic on the press.
 /// Wrap anything tappable that is not already a Material control.
 class Pressable extends StatefulWidget {

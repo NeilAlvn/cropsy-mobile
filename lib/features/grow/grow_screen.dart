@@ -45,7 +45,7 @@ class _GrowScreenState extends State<GrowScreen> {
                 const SizedBox(height: 2),
                 Text.rich(TextSpan(
                   style: AppText.display(context),
-                  children: const [
+                  children: [
                     TextSpan(text: 'Pick something '),
                     TextSpan(
                         text: 'to grow',
@@ -88,17 +88,17 @@ class _SearchField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: 'Search 60 crops…',
         hintStyle: AppText.bodyMuted(context),
-        prefixIcon: const Icon(Icons.search_rounded, color: AppColors.muted),
+        prefixIcon: Icon(Icons.search_rounded, color: AppColors.muted),
         filled: true,
         fillColor: AppColors.surface,
         contentPadding: const EdgeInsets.symmetric(vertical: 0),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.hairline),
+          borderSide: BorderSide(color: AppColors.hairline),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.sprout),
+          borderSide: BorderSide(color: AppColors.sprout),
         ),
       ),
     );
@@ -124,7 +124,7 @@ class _CropCard extends StatelessWidget {
               CategoryDot(crop.category, size: 12),
               const Spacer(),
               if (crop.containerOk)
-                const Icon(Icons.check_circle,
+                Icon(Icons.check_circle,
                     size: 15, color: AppColors.sprout),
             ],
           ),

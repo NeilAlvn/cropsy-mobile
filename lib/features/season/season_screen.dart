@@ -230,11 +230,20 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 stops: [0, 0.35],
               ).createShader(rect),
               blendMode: BlendMode.dstIn,
-              child: Image.asset(
-                'assets/landscape/${_landscapeFor(today.month)}.jpg',
-                fit: BoxFit.cover,
-                height: 200,
-                excludeFromSemantics: true,
+              child: ColorFiltered(
+                // The ground art is painted for daylight. At night it sits
+                // under the same dimming the rest of the scheme gets, rather
+                // than glowing at the foot of a dark screen.
+                colorFilter: ColorFilter.mode(
+                  AppColors.canvas.withValues(alpha: AppColors.isDark ? 0.55 : 0),
+                  BlendMode.srcATop,
+                ),
+                child: Image.asset(
+                  'assets/landscape/${_landscapeFor(today.month)}.jpg',
+                  fit: BoxFit.cover,
+                  height: 200,
+                  excludeFromSemantics: true,
+                ),
               ),
             ),
           ),
@@ -423,7 +432,7 @@ class _Sky extends StatelessWidget {
   const _Sky();
 
   @override
-  Widget build(BuildContext context) => const DecoratedBox(
+  Widget build(BuildContext context) => DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -561,11 +570,11 @@ class _TodayItem implements _Item {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Row(
             children: [
-              const Expanded(child: Divider(color: AppColors.hairline, thickness: 2)),
+              Expanded(child: Divider(color: AppColors.hairline, thickness: 2)),
               const SizedBox(width: 12),
               Text('Today', style: AppText.kicker(context, color: AppColors.inkMuted)),
               const SizedBox(width: 12),
-              const Expanded(child: Divider(color: AppColors.hairline, thickness: 2)),
+              Expanded(child: Divider(color: AppColors.hairline, thickness: 2)),
             ],
           ),
         ),
@@ -841,7 +850,7 @@ class _MarkerItem implements _Item {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (_) => const HarvestScreen()));
       case SeasonMarkerKind.orderSeeds:
-        showModalBottomSheet<void>(
+        showAppSheet<void>(
           context: context,
           isScrollControlled: true,
           backgroundColor: AppColors.surface,
@@ -866,7 +875,7 @@ class _MarkerItem implements _Item {
     final plants = await repo.plants();
     final harvested = plants.where((p) => p.stage == 'harvested').length;
     if (!context.mounted) return;
-    await showModalBottomSheet<void>(
+    await showAppSheet<void>(
       context: context,
       backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
@@ -913,7 +922,7 @@ class _MarkerItem implements _Item {
   }
 
   /// The mascot explains the marker. Base 8.13: a sheet, not a dialog.
-  void _tell(BuildContext context) => showModalBottomSheet<void>(
+  void _tell(BuildContext context) => showAppSheet<void>(
         context: context,
         backgroundColor: AppColors.surface,
         shape: const RoundedRectangleBorder(
@@ -961,7 +970,7 @@ class _MarkerItem implements _Item {
 
     var plant = growing.first;
     if (growing.length > 1) {
-      final picked = await showModalBottomSheet<GardenPlantRow>(
+      final picked = await showAppSheet<GardenPlantRow>(
         context: context,
         backgroundColor: AppColors.surface,
         shape: const RoundedRectangleBorder(
@@ -1056,7 +1065,7 @@ class _SuggestionItem implements _Item {
         label: '$count crops can still go in',
         caption: 'Nothing planned for ${_months[month - 1]}',
         badge: 'assets/nodes/chest.png',
-        onTap: () => showModalBottomSheet<void>(
+        onTap: () => showAppSheet<void>(
           context: context,
           isScrollControlled: true,
           backgroundColor: AppColors.surface,
@@ -1167,11 +1176,11 @@ class _PathStop extends StatelessWidget {
                           child: Container(
                             width: 28,
                             height: 28,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: AppColors.positive,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(Icons.check,
+                            child: Icon(Icons.check,
                                 size: 18, color: AppColors.onSemantic),
                           ),
                         ),
@@ -1182,7 +1191,7 @@ class _PathStop extends StatelessWidget {
                           child: Container(
                             width: 30,
                             height: 30,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: AppColors.surface,
                             ),
@@ -1388,7 +1397,7 @@ class _MonthOptions extends StatelessWidget {
                 child: Container(
                   width: 36,
                   height: 4,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: AppColors.hairline,
                     borderRadius: BorderRadius.all(Radius.circular(999)),
                   ),

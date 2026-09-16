@@ -599,13 +599,13 @@ class _CircleBack extends StatelessWidget {
         onTap: () => Navigator.of(context).pop(),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.onInk,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: AppColors.border, width: Neo.borderWidth),
             boxShadow: Neo.shadowSm,
           ),
           padding: const EdgeInsets.all(7),
-          child: const Icon(Icons.arrow_back, color: AppColors.ink, size: 20),
+          child: Icon(Icons.arrow_back, color: AppColors.ink, size: 20),
         ),
       );
 }

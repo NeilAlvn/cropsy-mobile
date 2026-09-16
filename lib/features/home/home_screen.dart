@@ -144,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
   Future<void> _pickMonth() async {
-    final picked = await showModalBottomSheet<int>(
+    final picked = await showAppSheet<int>(
       context: context,
       isScrollControlled: true,
       backgroundColor: AppColors.surface,
@@ -182,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return ListTile(
                     title: Text(_months[i], style: AppText.body(context)),
                     trailing: m == _month
-                        ? const Icon(Icons.check, color: AppColors.sprout)
+                        ? Icon(Icons.check, color: AppColors.sprout)
                         : null,
                     onTap: () => Navigator.pop(context, m),
                   );
@@ -215,7 +215,7 @@ class _HomeBand extends StatelessWidget {
       value: SystemUiOverlayStyle.dark,
       child: Container(
       padding: EdgeInsets.fromLTRB(20, top + 12, 20, 20),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -311,7 +311,7 @@ class _RegionChip extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.location_on, size: 18, color: AppColors.accent),
+                  Icon(Icons.location_on, size: 18, color: AppColors.accent),
                   const SizedBox(width: 6),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 220),
@@ -321,7 +321,7 @@ class _RegionChip extends StatelessWidget {
                         overflow: TextOverflow.ellipsis),
                   ),
                   const SizedBox(width: 4),
-                  const Icon(Icons.expand_more, size: 18, color: AppColors.inkMuted),
+                  Icon(Icons.expand_more, size: 18, color: AppColors.inkMuted),
                 ],
               ),
             ),
@@ -374,7 +374,7 @@ class _SearchField extends StatelessWidget {
           contentPadding: const EdgeInsets.symmetric(vertical: 14),
           hintText: 'Search vegetables',
           hintStyle: AppText.body(context, color: AppColors.inkPlaceholder),
-          prefixIcon: const Icon(Icons.search, size: 20, color: AppColors.inkMuted),
+          prefixIcon: Icon(Icons.search, size: 20, color: AppColors.inkMuted),
           filled: true,
           fillColor: AppColors.surface,
           enabledBorder: OutlineInputBorder(
@@ -383,7 +383,7 @@ class _SearchField extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(Neo.radiusPill),
-            borderSide: const BorderSide(color: AppColors.accent, width: 2),
+            borderSide: BorderSide(color: AppColors.accent, width: 2),
           ),
         ),
       ),
@@ -426,17 +426,17 @@ class _LifetimeCardState extends State<_LifetimeCard> {
         padding: const EdgeInsets.fromLTRB(14, 8, 6, 8),
         child: Row(
           children: [
-            const Icon(Icons.workspace_premium, color: Colors.white, size: 22),
+            Icon(Icons.workspace_premium, color: AppColors.onInk, size: 22),
             const SizedBox(width: 12),
             Expanded(
               child: GestureDetector(
                 onTap: widget.onTap,
                 child: Text('Unlock lifetime, one price, forever',
-                    style: AppText.label(context, color: Colors.white)),
+                    style: AppText.label(context, color: AppColors.onInk)),
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.close, color: Colors.white70, size: 20),
+              icon: Icon(Icons.close, color: AppColors.onInk.withValues(alpha: 0.7), size: 20),
               onPressed: () async {
                 await repo.setMeta(_key, repo.today);
                 if (mounted) setState(() => _show = false);
@@ -746,7 +746,7 @@ class _MonthChecklist extends StatelessWidget {
                       Text(it.body.en, style: AppText.caption(context)),
                     ]),
                   ),
-                  if (it.link != null) const Icon(Icons.chevron_right, color: AppColors.muted),
+                  if (it.link != null) Icon(Icons.chevron_right, color: AppColors.muted),
                 ]),
               ),
             ),

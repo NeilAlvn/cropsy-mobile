@@ -116,7 +116,7 @@ class _Header extends StatelessWidget {
                   Text.rich(
                     TextSpan(
                       style: AppText.display(context),
-                      children: const [
+                      children: [
                         TextSpan(text: 'What to do '),
                         TextSpan(
                           text: 'in your garden',
@@ -157,7 +157,7 @@ class _ProgressRing extends StatelessWidget {
               value: pct,
               strokeWidth: 6,
               backgroundColor: AppColors.sand,
-              valueColor: const AlwaysStoppedAnimation(AppColors.sprout),
+              valueColor: AlwaysStoppedAnimation(AppColors.sprout),
             ),
           ),
           Text('$done/$total', style: AppText.label(context)),

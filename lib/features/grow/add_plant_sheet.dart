@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/motion.dart';
 import 'package:intl/intl.dart';
 
 import '../../design/colors.dart';
@@ -42,7 +43,7 @@ String methodLabel(MethodType m) => switch (m) {
     };
 
 Future<PlantDetails?> showAddPlantSheet(BuildContext context, {required Crop crop, required String today}) {
-  return showModalBottomSheet<PlantDetails>(
+  return showAppSheet<PlantDetails>(
     context: context,
     isScrollControlled: true,
     backgroundColor: AppColors.paper,
@@ -107,12 +108,12 @@ class _SheetState extends State<_Sheet> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Row(children: [
-                  const Icon(Icons.event, size: 20, color: AppColors.sprout),
+                  Icon(Icons.event, size: 20, color: AppColors.sprout),
                   const SizedBox(width: 12),
                   Text('Planting date', style: AppText.bodyMuted(context)),
                   const Spacer(),
                   Text(DateFormat('d MMM yyyy').format(parseIso(_on)), style: AppText.label(context)),
-                  const Icon(Icons.chevron_right, color: AppColors.muted),
+                  Icon(Icons.chevron_right, color: AppColors.muted),
                 ]),
               ),
             ),

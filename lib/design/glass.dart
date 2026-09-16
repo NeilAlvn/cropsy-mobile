@@ -40,7 +40,7 @@ class GlassSurface extends StatelessWidget {
     this.borderRadius,
     this.blur = 24,
     this.saturation = 1.7,
-    this.tint = AppColors.surface,
+    this.tint,
     this.tintOpacity = 0.55,
     this.shadowed = true,
     this.padding,
@@ -50,7 +50,7 @@ class GlassSurface extends StatelessWidget {
   final BorderRadius? borderRadius;
   final double blur;
   final double saturation;
-  final Color tint;
+  final Color? tint;
   final double tintOpacity;
   final bool shadowed;
   final EdgeInsets? padding;
@@ -61,11 +61,12 @@ class GlassSurface extends StatelessWidget {
     // Reduced transparency and increased contrast both mean "stop making me
     // read through things": fall back to the solid surface (base 10).
     final opaque = MediaQuery.highContrastOf(context);
+    final fill = tint ?? AppColors.surface;
 
     final pane = DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: radius,
-        color: opaque ? tint : tint.withValues(alpha: tintOpacity),
+        color: opaque ? fill : fill.withValues(alpha: tintOpacity),
         // The specular edge. Brighter where a light above-left would catch it.
         border: Border.all(color: Colors.white.withValues(alpha: 0.55), width: 1),
         gradient: opaque
@@ -114,14 +115,14 @@ class GlassIconButton extends StatelessWidget {
     required this.onTap,
     required this.semanticLabel,
     this.size = 44,
-    this.color = AppColors.ink,
+    this.color,
   });
 
   final IconData icon;
   final VoidCallback onTap;
   final String semanticLabel;
   final double size;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) => Semantics(
@@ -135,7 +136,7 @@ class GlassIconButton extends StatelessWidget {
             child: SizedBox(
               width: size,
               height: size,
-              child: Icon(icon, size: 22, color: color),
+              child: Icon(icon, size: 22, color: color ?? AppColors.ink),
             ),
           ),
         ),

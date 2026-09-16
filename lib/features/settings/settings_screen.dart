@@ -14,6 +14,7 @@ import '../../config.dart';
 import '../../db/database.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
+import '../../design/theme_mode.dart';
 import '../../design/typography.dart';
 import '../../purchases/purchase_service.dart';
 import '../../sync/auth_service.dart';
@@ -59,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.paper,
         surfaceTintColor: AppColors.paper,
-        iconTheme: const IconThemeData(color: AppColors.ink),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text('Settings', style: AppText.heading(context)),
       ),
       body: ListView(
@@ -121,7 +122,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           AppCard(
             child: ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.download_outlined, color: AppColors.sprout),
+              leading: Icon(Icons.download_outlined, color: AppColors.sprout),
               title: Text('Export my data (JSON)', style: AppText.label(context)),
               subtitle: Text('Copies everything to the clipboard.', style: AppText.caption(context)),
               onTap: () => _run(() async {
@@ -129,6 +130,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
               }, done: 'Copied to clipboard.'),
             ),
           ),
+          const SizedBox(height: 24),
+          SectionHeader('Appearance'),
+          Builder(builder: (context) {
+            final theme = AppThemeScope.of(context);
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SegmentedButton<AppThemeChoice>(
+                  segments: const [
+                    ButtonSegment(value: AppThemeChoice.system, label: Text('System')),
+                    ButtonSegment(value: AppThemeChoice.light, label: Text('Light')),
+                    ButtonSegment(value: AppThemeChoice.dark, label: Text('Dark')),
+                  ],
+                  selected: {theme.choice},
+                  onSelectionChanged: (v) async {
+                    theme.choice = v.first;
+                    await repo.setMeta(AppTheme.metaKey, AppTheme.wire(v.first));
+                  },
+                ),
+                const SizedBox(height: 4),
+                Text('System follows your phone.', style: AppText.caption(context)),
+              ],
+            );
+          }),
           const SizedBox(height: 24),
           SectionHeader('Language'),
           FutureBuilder<ProfileRow?>(
@@ -170,7 +195,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               contentPadding: EdgeInsets.zero,
               leading: Icon(icon, color: AppColors.sprout),
               title: Text(label, style: AppText.label(context)),
-              trailing: const Icon(Icons.open_in_new, size: 16, color: AppColors.muted),
+              trailing: Icon(Icons.open_in_new, size: 16, color: AppColors.muted),
               onTap: () => launchUrl(Uri.parse('$websiteUrl$path'), mode: LaunchMode.externalApplication),
             ),
           const SizedBox(height: 24),

@@ -88,7 +88,7 @@ class _ScanScreenState extends State<ScanScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.paper,
         surfaceTintColor: AppColors.paper,
-        iconTheme: const IconThemeData(color: AppColors.ink),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text(identify ? 'Identify a plant' : 'Diagnose a plant', style: AppText.heading(context)),
       ),
       body: ListView(
@@ -188,7 +188,7 @@ class _Results extends StatelessWidget {
                   ]),
                 ),
                 Pill(label: '${(s.score * 100).round()}%', color: s.score >= 0.5 ? AppColors.sprout : AppColors.muted),
-                if ((identify ? s.cropSlug : s.problemSlug) != null) const Icon(Icons.chevron_right, color: AppColors.muted),
+                if ((identify ? s.cropSlug : s.problemSlug) != null) Icon(Icons.chevron_right, color: AppColors.muted),
               ]),
             ),
           ),

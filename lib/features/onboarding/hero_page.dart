@@ -115,7 +115,7 @@ class _HeroPageState extends State<HeroPage> {
         // ── Brutalist content card rising from the bottom ──
         Container(
           width: double.infinity,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: AppColors.paper,
             border: Border(
               top: BorderSide(color: AppColors.border, width: Neo.borderWidth),

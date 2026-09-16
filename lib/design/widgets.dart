@@ -55,7 +55,7 @@ class PhotoCard extends StatelessWidget {
                       child: GlassSurface(
                         borderRadius: BorderRadius.circular(16),
                         blur: 16,
-                        child: const SizedBox(
+                        child: SizedBox(
                           width: 32,
                           height: 32,
                           child: Icon(Icons.favorite_border,

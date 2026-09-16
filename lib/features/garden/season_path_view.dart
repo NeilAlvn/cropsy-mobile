@@ -65,7 +65,7 @@ class _SeasonPathViewState extends State<SeasonPathView> {
                 await Navigator.of(context).push(MaterialPageRoute(builder: (_) => PlannerGridScreen(garden: gardens.first)));
               },
               child: Row(children: [
-                const Icon(Icons.grid_on, color: AppColors.sprout),
+                Icon(Icons.grid_on, color: AppColors.sprout),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -73,7 +73,7 @@ class _SeasonPathViewState extends State<SeasonPathView> {
                     Text('Lay out your bed in 30 cm squares.', style: AppText.caption(context)),
                   ]),
                 ),
-                const Icon(Icons.chevron_right, color: AppColors.muted),
+                Icon(Icons.chevron_right, color: AppColors.muted),
               ]),
             ),
             const SizedBox(height: 18),
@@ -155,7 +155,7 @@ class _MonthHeader extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: i + 1 == m ? BoxDecoration(color: AppColors.sprout, borderRadius: BorderRadius.circular(8)) : null,
-              child: Text(_monthAbbr[i], style: AppText.caption(context, color: i + 1 == m ? Colors.white : AppColors.muted)),
+              child: Text(_monthAbbr[i], style: AppText.caption(context, color: i + 1 == m ? AppColors.onAccent : AppColors.muted)),
             ),
           ),
         ),

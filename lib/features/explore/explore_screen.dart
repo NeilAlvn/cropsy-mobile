@@ -49,7 +49,7 @@ class ExploreScreen extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text.rich(TextSpan(
                   style: AppText.display(context),
-                  children: const [
+                  children: [
                     TextSpan(text: 'Find your next '),
                     TextSpan(
                         text: 'crop',
@@ -63,13 +63,13 @@ class ExploreScreen extends StatelessWidget {
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => const ScanScreen(), fullscreenDialog: true)),
                   child: Row(children: [
-                    const Icon(Icons.center_focus_strong, color: AppColors.accent),
+                    Icon(Icons.center_focus_strong, color: AppColors.accent),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text('Identify a plant from a photo',
                           style: AppText.label(context)),
                     ),
-                    const Icon(Icons.chevron_right, size: 16, color: AppColors.inkMuted),
+                    Icon(Icons.chevron_right, size: 16, color: AppColors.inkMuted),
                   ]),
                 ),
               ],

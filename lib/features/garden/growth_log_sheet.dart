@@ -4,6 +4,7 @@
 library;
 
 import 'dart:io';
+import '../../design/motion.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,7 +30,7 @@ const growthStages = ['starting', 'seedling', 'vegetative', 'flowering', 'harves
 String stageLabel(String s) => s[0].toUpperCase() + s.substring(1);
 
 Future<GrowthLog?> showGrowthLogSheet(BuildContext context, {required String cropName, String? currentStage}) {
-  return showModalBottomSheet<GrowthLog>(
+  return showAppSheet<GrowthLog>(
     context: context,
     isScrollControlled: true,
     backgroundColor: AppColors.paper,
@@ -91,7 +92,7 @@ class _SheetState extends State<_Sheet> {
                         ),
                         child: Column(children: [
                           Text(emoji, style: const TextStyle(fontSize: 24)),
-                          Text(label, style: AppText.caption(context, color: _mood == v ? Colors.white : AppColors.muted)),
+                          Text(label, style: AppText.caption(context, color: _mood == v ? AppColors.onAccent : AppColors.muted)),
                         ]),
                       ),
                     ),

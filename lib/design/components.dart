@@ -34,7 +34,7 @@ class KindMark extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         width: size,
         height: size,
-        decoration: const BoxDecoration(color: AppColors.tile, shape: BoxShape.circle),
+        decoration: BoxDecoration(color: AppColors.tile, shape: BoxShape.circle),
         padding: EdgeInsets.all(size * 0.08),
         child: Image.asset('assets/marks/${kindMark(kind)}.png',
             fit: BoxFit.contain, excludeFromSemantics: true),
@@ -69,13 +69,13 @@ class PrimaryButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.icon,
-    this.color = AppColors.accent,
+    this.color,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final IconData? icon;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {

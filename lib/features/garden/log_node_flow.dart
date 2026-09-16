@@ -51,7 +51,7 @@ Future<bool> openNodeLog(
   String plantId,
   PathNode node,
 ) async {
-  final action = await showModalBottomSheet<_LogAction>(
+  final action = await showAppSheet<_LogAction>(
     context: context,
     backgroundColor: AppColors.surface,
     shape: const RoundedRectangleBorder(
@@ -67,7 +67,7 @@ Future<bool> openNodeLog(
       if (!context.mounted) return true;
       Haptics.complete();
       if (result.shiftDays != 0 || result.warnings.isNotEmpty) {
-        await showModalBottomSheet<void>(
+        await showAppSheet<void>(
           context: context,
           backgroundColor: AppColors.surface,
           shape: const RoundedRectangleBorder(

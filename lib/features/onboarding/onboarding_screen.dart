@@ -135,7 +135,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       HeroPage(
         media: const HeroMedia.image('assets/onboarding/welcome.jpg'),
         kicker: 'CROPSY',
-        title: const [
+        title: [
           TextSpan(text: 'Know what to do\n'),
           TextSpan(text: 'this week', style: TextStyle(color: AppColors.sprout)),
           TextSpan(text: ' in your garden.'),
@@ -350,7 +350,7 @@ class _FloatingHeader extends StatelessWidget {
             onTap: first ? onSkip : onBack,
             child: first
                 ? Text('Skip', style: AppText.label(context))
-                : const Icon(Icons.arrow_back_ios_new, size: 18, color: AppColors.ink),
+                : Icon(Icons.arrow_back_ios_new, size: 18, color: AppColors.ink),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -360,7 +360,7 @@ class _FloatingHeader extends StatelessWidget {
                 value: (page + 1) / pageCount,
                 minHeight: 8,
                 backgroundColor: AppColors.hairline,
-                valueColor: const AlwaysStoppedAnimation(AppColors.sprout),
+                valueColor: AlwaysStoppedAnimation(AppColors.sprout),
               ),
             ),
           ),
@@ -693,8 +693,8 @@ class _SelectTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fg = selected ? Colors.white : AppColors.ink;
-    final Widget? leading = icon != null ? Icon(icon, size: 22, color: selected ? Colors.white : AppColors.sprout) : leadingWidget;
+    final fg = selected ? AppColors.onAccent : AppColors.ink;
+    final Widget? leading = icon != null ? Icon(icon, size: 22, color: selected ? AppColors.onAccent : AppColors.sprout) : leadingWidget;
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -710,7 +710,7 @@ class _SelectTile extends StatelessWidget {
           children: [
             if (leading != null) ...[leading, const SizedBox(width: 8)],
             Expanded(child: Text(label, style: AppText.label(context, color: fg), maxLines: 1, overflow: TextOverflow.ellipsis)),
-            Icon(selected ? Icons.check_circle : Icons.circle_outlined, size: 20, color: selected ? Colors.white : AppColors.hairline),
+            Icon(selected ? Icons.check_circle : Icons.circle_outlined, size: 20, color: selected ? AppColors.onAccent : AppColors.hairline),
           ],
         ),
       ),
@@ -796,7 +796,7 @@ class _PlanStep extends StatelessWidget {
               const SizedBox(height: 8),
               SecondaryButton(label: 'Maybe later', onPressed: onLater),
             ] else
-              const Center(child: CircularProgressIndicator(color: AppColors.sprout)),
+              Center(child: CircularProgressIndicator(color: AppColors.sprout)),
           ],
         ),
       ),

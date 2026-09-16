@@ -44,7 +44,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
             children: [
               Align(
                 alignment: Alignment.centerRight,
-                child: IconButton(icon: const Icon(Icons.close, color: AppColors.ink), onPressed: () => Navigator.of(context).pop()),
+                child: IconButton(icon: Icon(Icons.close, color: AppColors.ink), onPressed: () => Navigator.of(context).pop()),
               ),
               Text('One free garden,\nfree forever.', style: AppText.display(context)),
               const SizedBox(height: 8),
@@ -64,19 +64,19 @@ class _PaywallScreenState extends State<PaywallScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(children: [
-                                Text(_plans[i].$1, style: AppText.heading(context, color: _plan == i ? Colors.white : AppColors.ink)),
+                                Text(_plans[i].$1, style: AppText.heading(context, color: _plan == i ? AppColors.onAccent : AppColors.ink)),
                                 const SizedBox(width: 8),
                                 Text(
                                   i == 0 ? _plans[0].$2 : (purchases?.price(i == 1 ? Plan.lifetime : Plan.yearly) ?? _plans[i].$2),
-                                  style: AppText.label(context, color: _plan == i ? Colors.white70 : AppColors.muted),
+                                  style: AppText.label(context, color: _plan == i ? AppColors.onAccent.withValues(alpha: 0.7) : AppColors.muted),
                                 ),
                               ]),
                               const SizedBox(height: 4),
-                              Text(_plans[i].$3, style: AppText.caption(context, color: _plan == i ? Colors.white : AppColors.muted)),
+                              Text(_plans[i].$3, style: AppText.caption(context, color: _plan == i ? AppColors.onAccent : AppColors.muted)),
                             ],
                           ),
                         ),
-                        Icon(_plan == i ? Icons.check_circle : Icons.circle_outlined, color: _plan == i ? Colors.white : AppColors.hairline),
+                        Icon(_plan == i ? Icons.check_circle : Icons.circle_outlined, color: _plan == i ? AppColors.onAccent : AppColors.hairline),
                       ]),
                     ),
                   ),

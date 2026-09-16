@@ -56,8 +56,8 @@ class _FeedbackRowState extends State<FeedbackRow> {
     return Row(children: [
       Text('Is this information useful?', style: AppText.caption(context)),
       const Spacer(),
-      IconButton(icon: const Icon(Icons.thumb_up_outlined, size: 20, color: AppColors.muted), onPressed: () => _send('like')),
-      IconButton(icon: const Icon(Icons.thumb_down_outlined, size: 20, color: AppColors.muted), onPressed: () => _send('dislike')),
+      IconButton(icon: Icon(Icons.thumb_up_outlined, size: 20, color: AppColors.muted), onPressed: () => _send('like')),
+      IconButton(icon: Icon(Icons.thumb_down_outlined, size: 20, color: AppColors.muted), onPressed: () => _send('dislike')),
       TextButton(onPressed: _report, child: Text('Report error', style: AppText.caption(context, color: AppColors.clay))),
     ]);
   }
@@ -92,7 +92,7 @@ class SectionFeedbackMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
-      icon: const Icon(Icons.more_horiz, color: AppColors.muted),
+      icon: Icon(Icons.more_horiz, color: AppColors.muted),
       color: AppColors.surface,
       onSelected: (v) async {
         switch (v) {

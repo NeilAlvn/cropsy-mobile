@@ -65,7 +65,7 @@ class _PlannerGridScreenState extends State<PlannerGridScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.paper,
         surfaceTintColor: AppColors.paper,
-        iconTheme: const IconThemeData(color: AppColors.ink),
+        iconTheme: IconThemeData(color: AppColors.ink),
         title: Text('Garden planner', style: AppText.heading(context)),
         actions: [TextButton(onPressed: _save, child: const Text('Save'))],
       ),

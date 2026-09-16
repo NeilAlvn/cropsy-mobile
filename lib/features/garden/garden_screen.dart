@@ -5,6 +5,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/motion.dart';
 
 import '../../db/database.dart';
 import '../../design/colors.dart';
@@ -56,7 +57,7 @@ class _GardenScreenState extends State<GardenScreen> {
                             children: [
                               TextSpan(
                                   text: '${repo.regionName.split(' ').first} '),
-                              const TextSpan(
+                              TextSpan(
                                   text: 'plot',
                                   style: TextStyle(color: AppColors.sprout)),
                             ],
@@ -65,7 +66,7 @@ class _GardenScreenState extends State<GardenScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.tune, color: AppColors.muted),
+                      icon: Icon(Icons.tune, color: AppColors.muted),
                       tooltip: 'Edit garden',
                       onPressed: () => _editGarden(context, repo),
                     ),
@@ -99,7 +100,7 @@ class _GardenScreenState extends State<GardenScreen> {
   Future<void> _editGarden(BuildContext context, GardenRepository repo) async {
     final gardens = await repo.gardens();
     if (gardens.isEmpty || !context.mounted) return;
-    await showModalBottomSheet<bool>(
+    await showAppSheet<bool>(
       context: context,
       isScrollControlled: true,
       backgroundColor: AppColors.paper,
@@ -187,7 +188,7 @@ class _PlantList extends StatelessWidget {
                           ),
                         )
                       else
-                        const Icon(Icons.chevron_right, color: AppColors.muted),
+                        Icon(Icons.chevron_right, color: AppColors.muted),
                     ],
                   ),
                 ),
@@ -210,7 +211,7 @@ Widget _swipeToRemoveBackground(BuildContext context) => Container(
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.delete_outline, color: AppColors.warn),
+          Icon(Icons.delete_outline, color: AppColors.warn),
           const SizedBox(width: 6),
           Text('Remove', style: AppText.label(context, color: AppColors.warn)),
         ],
