@@ -7,6 +7,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/app_lang.dart';
 import 'package:intl/intl.dart';
 
 import '../../design/colors.dart';
@@ -205,7 +206,7 @@ class _NotBehindSheet extends StatelessWidget {
             ),
             for (final w in result.warnings) ...[
               const SizedBox(height: 12),
-              AppCard(child: Text(w.reason.en, style: AppText.body(context))),
+              AppCard(child: Text(w.reason.of(context), style: AppText.body(context))),
             ],
             const SizedBox(height: 16),
             PrimaryButton(label: 'Got it', onPressed: () => Navigator.pop(context)),

@@ -3,6 +3,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
 import '../../design/colors.dart';
@@ -130,7 +131,7 @@ class _CropCard extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          Text(crop.names.en, style: AppText.heading(context)),
+          Text(crop.names.of(context), style: AppText.heading(context)),
           const SizedBox(height: 2),
           Text(
             crop.containerOk && crop.minPotLitres != null

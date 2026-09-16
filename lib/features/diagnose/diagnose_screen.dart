@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
 import '../../design/colors.dart';
@@ -96,8 +97,8 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(p.names.en, style: AppText.heading(context)),
-                          Text(p.symptoms.en, style: AppText.caption(context), maxLines: 2, overflow: TextOverflow.ellipsis),
+                          Text(p.names.of(context), style: AppText.heading(context)),
+                          Text(p.symptoms.of(context), style: AppText.caption(context), maxLines: 2, overflow: TextOverflow.ellipsis),
                           if (p.draft) const Padding(padding: EdgeInsets.only(top: 4), child: Align(alignment: Alignment.centerLeft, child: DraftBadge(compact: true))),
                         ],
                       ),
@@ -132,7 +133,7 @@ class ProblemScreen extends StatelessWidget {
         backgroundColor: AppColors.paper,
         surfaceTintColor: AppColors.paper,
         iconTheme: IconThemeData(color: AppColors.ink),
-        title: Text(problem.names.en, style: AppText.heading(context)),
+        title: Text(problem.names.of(context), style: AppText.heading(context)),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
@@ -140,9 +141,9 @@ class ProblemScreen extends StatelessWidget {
           Text(problem.names.nl, style: AppText.bodyMuted(context)),
           if (problem.draft) const Padding(padding: EdgeInsets.only(top: 8), child: DraftBadge()),
           const SizedBox(height: 12),
-          section('Symptoms', problem.symptoms.en),
-          section('Treatment (organic first)', problem.treatment.en),
-          section('Prevention', problem.prevention.en),
+          section('Symptoms', problem.symptoms.of(context)),
+          section('Treatment (organic first)', problem.treatment.of(context)),
+          section('Prevention', problem.prevention.of(context)),
           if (problem.affects.isNotEmpty) ...[
             SectionHeader('Often on'),
             Wrap(spacing: 8, runSpacing: 8, children: [for (final s in problem.affects) Pill(label: repo.cropName(s))]),

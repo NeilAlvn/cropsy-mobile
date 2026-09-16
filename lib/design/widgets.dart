@@ -3,6 +3,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../l10n/app_lang.dart';
 import '../design/icons.dart';
 
 import '../data/crop_derived.dart';
@@ -77,7 +78,7 @@ class PhotoCard extends StatelessWidget {
                         CategoryDot(crop.category),
                         const SizedBox(width: 6),
                         Expanded(
-                          child: Text(crop.names.en,
+                          child: Text(crop.names.of(context),
                               style: AppText.subheading(context),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis),

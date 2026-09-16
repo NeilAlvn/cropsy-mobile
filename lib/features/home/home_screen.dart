@@ -5,6 +5,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import 'package:flutter/services.dart';
 
@@ -533,7 +534,7 @@ class _TodaysCare extends StatelessWidget {
                   pose: skipped.isNotEmpty ? MascotPose.rain : (open == 0 ? MascotPose.sleeping : MascotPose.sun),
                   size: 44,
                   text: skipped.isNotEmpty
-                      ? skipped.first.hint!.reason.en
+                      ? skipped.first.hint!.reason.of(context)
                       : open == 0
                           ? 'Nothing to do today. Enjoy it.'
                           : '$open thing${open == 1 ? '' : 's'} to do today.',
@@ -742,9 +743,9 @@ class _MonthChecklist extends StatelessWidget {
                 child: Row(children: [
                   Expanded(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text(it.title.en, style: AppText.label(context)),
+                      Text(it.title.of(context), style: AppText.label(context)),
                       const SizedBox(height: 2),
-                      Text(it.body.en, style: AppText.caption(context)),
+                      Text(it.body.of(context), style: AppText.caption(context)),
                     ]),
                   ),
                   if (it.link != null) Icon(PhosphorIcons.caretRight, color: AppColors.muted),

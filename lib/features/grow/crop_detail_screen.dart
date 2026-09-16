@@ -6,6 +6,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import 'package:intl/intl.dart';
 
@@ -90,7 +91,7 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                       Text(crop.category.toUpperCase(), style: AppText.kicker(context)),
                     ]),
                     const SizedBox(height: 6),
-                    Text(crop.names.en, style: AppText.display(context)),
+                    Text(crop.names.of(context), style: AppText.display(context)),
                     if (crop.draft) const Padding(padding: EdgeInsets.only(top: 4), child: DraftBadge()),
                     Text(crop.names.nl, style: AppText.bodyMuted(context)),
                     const SizedBox(height: 14),
@@ -127,7 +128,7 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(v.names.en, style: AppText.label(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                    Text(v.names.of(context), style: AppText.label(context), maxLines: 1, overflow: TextOverflow.ellipsis),
                                     Text(v.traits.take(3).join(' · '), style: AppText.caption(context), maxLines: 1, overflow: TextOverflow.ellipsis),
                                     const Spacer(),
                                     Text(v.suppliers.isEmpty ? '' : 'at ${v.suppliers.first}', style: AppText.caption(context, color: AppColors.sprout)),
@@ -646,8 +647,8 @@ class _Cta extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(growing
-              ? '${crop.names.en} added to Growing 🌱'
-              : '${crop.names.en} added to Planning'),
+              ? '${crop.names.of(context)} added to Growing 🌱'
+              : '${crop.names.of(context)} added to Planning'),
         ));
         Navigator.of(context).pop();
       }

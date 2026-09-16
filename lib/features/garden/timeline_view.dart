@@ -5,6 +5,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/app_lang.dart';
 import '../../l10n/mascot_lines.dart';
 import '../../design/icons.dart';
 
@@ -139,11 +140,11 @@ class _NodeTile extends StatelessWidget {
                     Text(when, style: AppText.bodyMuted(context)),
                     if (node.movedReason != null && !node.skipped) ...[
                       const SizedBox(height: 4),
-                      Text('Moved from ${_fmt(node.plannedDue)} · ${node.movedReason!.en}',
+                      Text('Moved from ${_fmt(node.plannedDue)} · ${node.movedReason!.of(context)}',
                           style: AppText.caption(context, color: AppColors.sky)),
                     ],
                     if (node.skipped && node.movedReason != null)
-                      Text(node.movedReason!.en, style: AppText.caption(context)),
+                      Text(node.movedReason!.of(context), style: AppText.caption(context)),
                   ],
                 ),
               ),

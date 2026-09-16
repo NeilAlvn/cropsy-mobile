@@ -3,6 +3,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
 import '../../data/collections.dart';
@@ -30,7 +31,7 @@ class ExploreScreen extends StatelessWidget {
             for (final c in fromContent)
               Collection(
                 id: c.slug,
-                title: c.title.en,
+                title: c.title.of(context),
                 subtitle: c.intro.en,
                 crops: [for (final s in c.cropSlugs) ?repo.cropBySlug(s)],
                 draft: c.draft,

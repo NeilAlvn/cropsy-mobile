@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import '../../design/motion.dart';
 import 'package:intl/intl.dart';
@@ -100,7 +101,7 @@ class _SheetState extends State<_Sheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Set plant details', style: AppText.title(context)),
-            Text(widget.crop.names.en, style: AppText.bodyMuted(context)),
+            Text(widget.crop.names.of(context), style: AppText.bodyMuted(context)),
             const SizedBox(height: 4),
             Text('Your input sets the harvest timing and care reminders.', style: AppText.caption(context)),
             const SizedBox(height: 16),
