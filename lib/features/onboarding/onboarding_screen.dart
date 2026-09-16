@@ -56,7 +56,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   String? _firstTask;
   int _matches = 0;
 
-  static const _pageCount = 15;
+  static const _pageCount = 16;
   static const _pageDuration = Duration(milliseconds: 380);
   static const _pageCurve = Curves.easeInOutCubic;
 
@@ -140,7 +140,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           TextSpan(text: 'this week', style: TextStyle(color: AppColors.sprout)),
           TextSpan(text: ' in your garden.'),
         ],
-        subtitle: 'Planting dates and reminders tuned to Dutch & EU weather — built for balconies and containers.',
+        subtitle: 'Planting dates and reminders tuned to Dutch and EU weather, built for balconies and containers.',
         buttonLabel: 'Get started',
         onNext: _next,
         // Reinstall path: sign in, sync pulls the garden, the root re-gates.
@@ -151,9 +151,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: _Copy(
           pose: MascotPose.pointing,
           title: 'Every date checked against Dutch seed calendars',
-          body: 'Each crop is cross-checked against at least two NL sources — IVN, Tuinadvies, zaaitijden.nl, Groei & Bloei — before it reaches you. '
+          body: 'Each crop is cross-checked against at least two NL sources, IVN, Tuinadvies, zaaitijden.nl and Groei & Bloei, before it reaches you. '
               'And when life gets in the way, the plan moves with you. Nothing is ever "overdue".',
         ),
+      ),
+      _Step(
+        onNext: _next,
+        child: const _PathIntro(),
       ),
       _Step(
         onNext: _next,
@@ -364,6 +368,89 @@ class _FloatingHeader extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The season path, before the gardener has one: three stops and the shape of
+/// the year, so the middle tab is not a surprise on first run.
+class _PathIntro extends StatelessWidget {
+  const _PathIntro();
+
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Your season, as one path',
+              style: AppText.title(context)),
+          const SizedBox(height: 8),
+          Text(
+            'Sowing, potting on, harvest, the frost dates that govern them, and the '
+            'months when nothing is planned yet. Tick a step off and everything after '
+            'it moves with you.',
+            style: AppText.bodyMuted(context),
+          ),
+          const SizedBox(height: 24),
+          const _MiniPath(),
+        ],
+      );
+}
+
+/// A still of the path: the same badges the real one uses, three stops of it.
+class _MiniPath extends StatelessWidget {
+  const _MiniPath();
+
+  static const _stops = <(String, String, String)>[
+    ('sow', 'Sow lettuce', '1 Apr'),
+    ('frost', 'IJsheiligen', '11 May'),
+    ('harvest', 'Harvest tomato', '24 Aug'),
+  ];
+
+  @override
+  Widget build(BuildContext context) => Column(
+        children: [
+          for (var i = 0; i < _stops.length; i++)
+            Row(
+              children: [
+                SizedBox(
+                  width: 96,
+                  child: Column(
+                    children: [
+                      Image.asset('assets/nodes/${_stops[i].$1}.png',
+                          width: 64, height: 64, excludeFromSemantics: true),
+                      if (i < _stops.length - 1)
+                        SizedBox(
+                          height: 24,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                  color: AppColors.ink.withValues(alpha: 0.12),
+                                  width: 4,
+                                ),
+                              ),
+                            ),
+                            child: const SizedBox(width: 4),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(_stops[i].$2, style: AppText.label(context)),
+                        Text(_stops[i].$3, style: AppText.caption(context)),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+        ],
+      );
 }
 
 class _Step extends StatelessWidget {
