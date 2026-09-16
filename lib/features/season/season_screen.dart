@@ -20,10 +20,12 @@ import '../../design/motion.dart';
 import '../../design/typography.dart';
 import '../../design/widgets.dart';
 import '../../timing/dates.dart';
+import '../../timing/replan.dart';
 import '../../timing/season.dart';
 import '../../timing/types.dart';
 import '../../timing/weather_adjust.dart';
 import '../garden/garden_repository.dart';
+import '../garden/log_node_flow.dart';
 import '../garden/plant_detail_screen.dart';
 import '../grow/crop_detail_screen.dart';
 import '../harvest/harvest_screen.dart';
@@ -53,14 +55,21 @@ const double _monthCentre = _monthTop + _monthDisc / 2;
 const double _badgeTop = 14;
 const double _badgeCentre = _badgeTop + _badge / 2;
 
-/// How far a node sits from the centre line, in points. Four positions,
-/// repeating: the snake reads without needing a curve solver.
+/// Where a stop sits across the row, -1 (left edge) to 1 (right edge). Four
+/// positions, repeating: the snake reads without needing a curve solver.
+///
+/// This is an alignment, not a translation. A `Transform` would move the paint
+/// and leave the hit box behind, so a swung node would be tappable nowhere.
 double _swing(int i) => switch (i % 4) {
       0 => 0,
-      1 => 78,
+      1 => 0.5,
       2 => 0,
-      _ => -78,
+      _ => -0.5,
     };
+
+/// Where a stop's centre lands, given the row's width and the stop's size.
+double _centreX(double width, double swing, double stop) =>
+    width / 2 + swing * (width - stop) / 2;
 
 /// Which landscape sits behind a month.
 String _landscapeFor(int month) => switch (month) {
@@ -284,6 +293,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
             today: today,
             repo: repo,
             logged: logged,
+            onChanged: _reload,
             swing: swings[i]!,
             above: neighbour(i, -1),
             below: neighbour(i, 1),
@@ -309,6 +319,22 @@ class _SeasonScreenState extends State<SeasonScreen> {
       }
     }
     return rows;
+  }
+
+  /// After a log, the path's states and every downstream date can have moved,
+  /// so it is rebuilt from the repository rather than patched in place.
+  Future<void> _reload() async {
+    if (!mounted) return;
+    // Load first, swap after: the path keeps its current shape until the new
+    // one is ready, rather than blanking for a frame.
+    final next = _load();
+    await next;
+    if (!mounted) return;
+    setState(() {
+      _data = next;
+      // Already where the gardener was; do not yank the scroll back to today.
+      _jumped = true;
+    });
   }
 
   void _jumpToToday(List<_Item> rows) {
@@ -411,7 +437,7 @@ class _HeaderItem implements _Item {
               ),
             ),
             Align(
-              alignment: Alignment.topCenter,
+              alignment: const Alignment(0, -1),
               child: Padding(
                 padding: const EdgeInsets.only(top: _monthTop),
                 child: _MonthDisc(month: month, current: current),
@@ -497,6 +523,7 @@ class _NodeItem implements _Item {
     required this.today,
     required this.repo,
     required this.logged,
+    required this.onChanged,
     required this.swing,
     required this.above,
     required this.below,
@@ -508,6 +535,9 @@ class _NodeItem implements _Item {
 
   /// `plantId:nodeKind` for everything the gardener has logged.
   final Set<String> logged;
+
+  /// Called when a log changed the plan.
+  final VoidCallback onChanged;
   final double swing;
   final double? above;
   final double? below;
@@ -554,27 +584,57 @@ class _NodeItem implements _Item {
           slug: node.cropSlug,
           category: repo.cropCategory(node.cropSlug),
         ),
-        onTap: () {
-          if (node.kind == SeasonNodeKind.succession) {
-            _planIt(context);
-            return;
-          }
-          final plantId = node.plantId;
-          if (plantId != null) {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => PlantDetailScreen(plantId: plantId)));
-            return;
-          }
-          final crop = repo.cropBySlug(node.cropSlug);
-          if (crop != null) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => CropDetailScreen(crop: crop)));
-          }
-        },
+        onTap: () => _open(context),
       );
 }
 
 extension on _NodeItem {
+  /// A node the gardener can act on opens its log sheet, so the path is where
+  /// the work is recorded rather than a table of contents for other screens.
+  Future<void> _open(BuildContext context) async {
+    if (node.kind == SeasonNodeKind.succession) return _planIt(context);
+
+    final plantId = node.plantId;
+    if (plantId == null) {
+      final crop = repo.cropBySlug(node.cropSlug);
+      if (crop != null && context.mounted) {
+        await Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => CropDetailScreen(crop: crop)));
+      }
+      return;
+    }
+
+    final task = await _taskFor(plantId);
+    if (!context.mounted) return;
+    if (task == null) {
+      // Nothing loggable: the plant is still being planned, so its own screen
+      // is the right place to start it.
+      await Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: plantId)));
+      onChanged();
+      return;
+    }
+    if (await openNodeLog(context, repo, plantId, task)) onChanged();
+  }
+
+  /// The plant's own unlogged node behind this window, if there is one.
+  Future<PathNode?> _taskFor(String plantId) async {
+    final wanted = switch (node.kind) {
+      SeasonNodeKind.sowWindow => const [NodeKind.sow, NodeKind.transplant],
+      SeasonNodeKind.harvestWindow => const [NodeKind.harvest],
+      SeasonNodeKind.succession => const <NodeKind>[],
+    };
+    if (wanted.isEmpty) return null;
+    for (final candidate in await repo.pathFor(plantId)) {
+      if (wanted.contains(candidate.kind) &&
+          candidate.loggedOn == null &&
+          !candidate.skipped) {
+        return candidate;
+      }
+    }
+    return null;
+  }
+
   /// A succession prompt is an offer, so its tap takes it: the crop joins the
   /// garden's planning list, the same act the planning screen calls "Plan it".
   Future<void> _planIt(BuildContext context) async {
@@ -852,50 +912,47 @@ class _PathStop extends StatelessWidget {
               ),
             ),
             Align(
-              alignment: Alignment.topCenter,
+              alignment: Alignment(swing, -1),
               child: Padding(
                 padding: const EdgeInsets.only(top: _badgeTop),
-                child: Transform.translate(
-                  offset: Offset(swing, 0),
-                  child: Pressable(
-                    onTap: onTap,
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      alignment: Alignment.center,
-                      children: [
-                        Opacity(opacity: state == _State.done ? 0.75 : 1, child: art),
-                        if (state == _State.done)
-                          Positioned(
-                            right: -2,
-                            bottom: 4,
-                            child: Container(
-                              width: 28,
-                              height: 28,
-                              decoration: const BoxDecoration(
-                                color: AppColors.positive,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(Icons.check,
-                                  size: 18, color: AppColors.onSemantic),
+                child: Pressable(
+                  onTap: onTap,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.center,
+                    children: [
+                      Opacity(opacity: state == _State.done ? 0.75 : 1, child: art),
+                      if (state == _State.done)
+                        Positioned(
+                          right: -2,
+                          bottom: 4,
+                          child: Container(
+                            width: 28,
+                            height: 28,
+                            decoration: const BoxDecoration(
+                              color: AppColors.positive,
+                              shape: BoxShape.circle,
                             ),
+                            child: const Icon(Icons.check,
+                                size: 18, color: AppColors.onSemantic),
                           ),
-                        if (corner != null)
-                          Positioned(
-                            left: -6,
-                            top: 0,
-                            child: Container(
-                              width: 30,
-                              height: 30,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.surface,
-                              ),
-                              padding: const EdgeInsets.all(2),
-                              child: ClipOval(child: corner),
+                        ),
+                      if (corner != null)
+                        Positioned(
+                          left: -6,
+                          top: 0,
+                          child: Container(
+                            width: 30,
+                            height: 30,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.surface,
                             ),
+                            padding: const EdgeInsets.all(2),
+                            child: ClipOval(child: corner),
                           ),
-                      ],
-                    ),
+                        ),
+                    ],
                   ),
                 ),
               ),
@@ -961,17 +1018,17 @@ class _TrailPainter extends CustomPainter {
       ..strokeWidth = 8
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
-    final stop = Offset(size.width / 2 + swing, centre);
+    final stop = Offset(_centreX(size.width, swing, radius * 2), centre);
 
     // The neighbours' badges sit at the same height inside their own rows, so
     // the trail leaves this row's top and bottom edges aimed straight at them.
     if (above != null) {
-      _segment(canvas, paint, Offset(size.width / 2 + above!, centre - _nodeRow),
+      _segment(canvas, paint, Offset(_centreX(size.width, above!, radius * 2), centre - _nodeRow),
           Offset(stop.dx, stop.dy - radius));
     }
     if (below != null) {
       _segment(canvas, paint, Offset(stop.dx, stop.dy + radius),
-          Offset(size.width / 2 + below!, centre + _nodeRow));
+          Offset(_centreX(size.width, below!, radius * 2), centre + _nodeRow));
     }
   }
 
