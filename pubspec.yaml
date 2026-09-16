@@ -82,6 +82,9 @@ flutter:
     - assets/data/content-snapshot.json
     - assets/crops/
     - assets/onboarding/
+    - assets/mascot/
+    - assets/marks/
+    - assets/illustration/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

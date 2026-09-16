@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../../db/database.dart';
 import '../../design/colors.dart';
+import '../../design/mascot.dart';
 import '../../design/components.dart';
 import '../../design/crop_image.dart';
 import '../../design/typography.dart';
@@ -333,10 +334,12 @@ class _Empty extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(planning ? '📋' : '🌱', style: const TextStyle(fontSize: 44)),
-              const SizedBox(height: 12),
+              // Base 8.16: a 96 illustration, a heading, two lines, one pill.
+              Mascot(planning ? MascotPose.thinking : MascotPose.holdingSeedling,
+                  size: 96),
+              const SizedBox(height: 16),
               Text(planning ? 'Nothing planned yet' : 'Nothing growing yet',
-                  style: AppText.title(context)),
+                  style: AppText.heading(context)),
               const SizedBox(height: 6),
               Text(
                 planning

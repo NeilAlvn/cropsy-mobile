@@ -10,16 +10,36 @@ import 'brutal.dart';
 import 'colors.dart';
 import 'typography.dart';
 
-/// Emoji per task kind — the friendly, glanceable signal in task tiles.
-String kindEmoji(TaskKind kind) => switch (kind) {
-      TaskKind.water => '💧',
-      TaskKind.sow => '🌱',
-      TaskKind.transplant => '🌿',
-      TaskKind.harvest => '🧺',
-      TaskKind.feed => '🧴',
-      TaskKind.potOn => '🪴',
-      TaskKind.thin => '✂️',
+/// Illustration per task kind — the mark shown in task tiles. Base 7: emoji are
+/// not icons, so every kind has a drawn asset under assets/marks.
+String kindMark(TaskKind kind) => switch (kind) {
+      TaskKind.water => 'water',
+      TaskKind.sow => 'sow',
+      TaskKind.transplant => 'transplant',
+      TaskKind.harvest => 'harvest',
+      TaskKind.feed => 'feed',
+      TaskKind.potOn => 'pot_on',
+      TaskKind.thin => 'thin',
     };
+
+/// The mark in a circle, sized for a list row.
+class KindMark extends StatelessWidget {
+  const KindMark(this.kind, {super.key, this.size = 40});
+
+  final TaskKind kind;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) => ClipOval(
+        child: Container(
+          width: size,
+          height: size,
+          color: AppColors.tile,
+          child: Image.asset('assets/marks/${kindMark(kind)}.jpg',
+              fit: BoxFit.cover, excludeFromSemantics: true),
+        ),
+      );
+}
 
 String kindLabel(TaskKind kind) => switch (kind) {
       TaskKind.water => 'Water',

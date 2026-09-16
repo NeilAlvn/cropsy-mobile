@@ -195,12 +195,7 @@ class _TaskTile extends StatelessWidget {
             width: 44,
             height: 44,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: AppColors.sand,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(kindEmoji(item.kind),
-                style: const TextStyle(fontSize: 22)),
+            child: KindMark(item.kind, size: 44),
           ),
           const SizedBox(width: 12),
           Expanded(

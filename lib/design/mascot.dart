@@ -1,6 +1,6 @@
-/// The mascot's 12 pose slots (PRD §6). Placeholder silhouette until the
-/// house-style pass delivers Rive/Lottie; screens build against this API so
-/// the swap touches only this file.
+/// The mascot's 12 pose slots (PRD §6) — a terracotta pot with a seedling, one
+/// image per pose under assets/mascot. Screens build against this API, so a
+/// later swap to Rive/Lottie touches only this file.
 library;
 
 import 'package:flutter/material.dart';
@@ -22,20 +22,19 @@ enum MascotPose {
   frost,
 }
 
-// Placeholder glyph per pose. Replaced by the real asset in Phase 3.
-const _glyph = <MascotPose, String>{
-  MascotPose.idle: '🌱',
-  MascotPose.wave: '👋',
-  MascotPose.thinking: '🤔',
-  MascotPose.celebrating: '🎉',
-  MascotPose.sleeping: '😴',
-  MascotPose.watering: '💧',
-  MascotPose.holdingSeedling: '🪴',
-  MascotPose.shrug: '🤷',
-  MascotPose.pointing: '👉',
-  MascotPose.rain: '🌧️',
-  MascotPose.sun: '☀️',
-  MascotPose.frost: '❄️',
+const _asset = <MascotPose, String>{
+  MascotPose.idle: 'idle',
+  MascotPose.wave: 'wave',
+  MascotPose.thinking: 'thinking',
+  MascotPose.celebrating: 'celebrating',
+  MascotPose.sleeping: 'sleeping',
+  MascotPose.watering: 'watering',
+  MascotPose.holdingSeedling: 'holding_seedling',
+  MascotPose.shrug: 'shrug',
+  MascotPose.pointing: 'pointing',
+  MascotPose.rain: 'rain',
+  MascotPose.sun: 'sun',
+  MascotPose.frost: 'frost',
 };
 
 class Mascot extends StatelessWidget {
@@ -45,12 +44,19 @@ class Mascot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: const BoxDecoration(color: AppColors.sand, shape: BoxShape.circle),
-      alignment: Alignment.center,
-      child: Text(_glyph[pose]!, style: TextStyle(fontSize: size * 0.5)),
+    // The art is drawn on the canvas grey, so it sits in a circle of the same
+    // value and reads as one shape rather than a pasted square.
+    return ClipOval(
+      child: Container(
+        width: size,
+        height: size,
+        color: AppColors.tile,
+        child: Image.asset(
+          'assets/mascot/${_asset[pose]}.jpg',
+          fit: BoxFit.cover,
+          excludeFromSemantics: true,
+        ),
+      ),
     );
   }
 }

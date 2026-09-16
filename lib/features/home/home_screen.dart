@@ -495,11 +495,14 @@ class _TodaysCare extends StatelessWidget {
                     onTap: () => repo.setTaskCompleted(item.taskId, !item.completed),
                     child: Row(children: [
                       Icon(item.completed ? Icons.check_circle : Icons.circle_outlined,
-                          color: item.completed ? AppColors.done : AppColors.hairline),
+                          color: item.completed ? AppColors.positive : AppColors.hairline),
+                      const SizedBox(width: 12),
+                      KindMark(item.kind, size: 36),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text('${kindLabel(item.kind)} · ${item.cropName}',
-                            style: AppText.label(context, color: item.completed ? AppColors.muted : AppColors.ink)),
+                            style: AppText.label(context,
+                                color: item.completed ? AppColors.inkMuted : AppColors.ink)),
                       ),
                       if (item.hint != null) WeatherHintBadge(item.hint!),
                     ]),
@@ -627,7 +630,12 @@ class _StreakCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Text('🔥', style: TextStyle(fontSize: 22, color: s.count == 0 ? AppColors.hairline : null)),
+              // Base 7: no emoji as icons. The count carries the streak.
+              const SizedBox(width: 12),
+              Text('${s.count}',
+                  style: AppText.title(context,
+                          color: s.count == 0 ? AppColors.inkPlaceholder : AppColors.accent)
+                      .copyWith(fontFeatures: const [FontFeature.tabularFigures()])),
             ]),
           ),
         );
