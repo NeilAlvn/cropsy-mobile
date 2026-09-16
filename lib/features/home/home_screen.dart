@@ -5,6 +5,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:intl/intl.dart';
 
@@ -14,6 +15,7 @@ import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/crop_image.dart';
 import '../../design/feedback_row.dart';
+import '../../design/glass.dart';
 import '../../design/mascot.dart';
 import '../../design/typography.dart';
 import '../../design/widgets.dart';
@@ -27,7 +29,7 @@ import '../garden/plant_detail_screen.dart';
 import '../grow/crop_detail_screen.dart';
 import '../location/location_sheet.dart';
 import '../paywall/paywall_screen.dart';
-import '../settings/settings_screen.dart';
+import '../profile/profile_screen.dart';
 import '../repository_scope.dart';
 
 const _months = [
@@ -68,11 +70,16 @@ class _HomeScreenState extends State<HomeScreen> {
         : repo.whatToGrowIn(_month!, filter: _filter);
 
     return SafeArea(
+      top: false,
       bottom: false,
       child: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(child: _Header(region: repo.regionName)),
-          SliverToBoxAdapter(child: _SearchRow(onChanged: (q) => setState(() => _query = q))),
+          SliverToBoxAdapter(
+            child: _HomeBand(
+              region: repo.regionName,
+              onSearch: (q) => setState(() => _query = q),
+            ),
+          ),
           SliverToBoxAdapter(child: _LifetimeCard(onTap: () => _openPaywall(context))),
           if (_query.isEmpty) ...[
             const SliverToBoxAdapter(child: _StreakCard()),
@@ -179,84 +186,153 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _Header extends StatelessWidget {
-  const _Header({required this.region});
+/// The home header band. Base 3.5 lets one primary surface run the atmosphere
+/// as a band carrying chrome only: the wordmark, the region, the profile and
+/// the search field. Content begins below it, on the canvas. Nothing scored may
+/// sit on the band, and nothing here is.
+class _HomeBand extends StatelessWidget {
+  const _HomeBand({required this.region, required this.onSearch});
+
   final String region;
+  final ValueChanged<String> onSearch;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 4),
-      child: Row(
+    final top = MediaQuery.paddingOf(context).top;
+    // The band carries chrome on the accent, so the status bar runs light.
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Container(
+      padding: EdgeInsets.fromLTRB(20, top + 12, 20, 20),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          // Accent holding under the chrome, then bleeding into canvas (base 3.5).
+          colors: [AppColors.accent, AppColors.accent, AppColors.canvas],
+          stops: [0, 0.62, 1],
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: InkWell(
-              borderRadius: BorderRadius.circular(8),
-              onTap: () => showLocationPicker(context),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Row(
-                  children: [
-                    const Icon(Icons.location_on, size: 18, color: AppColors.sprout),
-                    const SizedBox(width: 4),
-                    Flexible(
-                      child: Text(region,
-                          style: AppText.label(context),
-                          overflow: TextOverflow.ellipsis),
-                    ),
-                    const Icon(Icons.expand_more, size: 18, color: AppColors.muted),
-                  ],
-                ),
-              ),
-            ),
+          Row(
+            children: [
+              Text('Cropsy',
+                  style: AppText.title(context, color: AppColors.onAccent)),
+              const Spacer(),
+              const _ProfileButton(),
+            ],
           ),
-          const SizedBox(width: 8),
-          const Icon(Icons.workspace_premium, color: AppColors.sprout),
-          const SizedBox(width: 14),
-          IconButton(
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
-            icon: const Icon(Icons.settings_outlined, color: AppColors.muted),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const SettingsScreen()),
-            ),
-          ),
+          const SizedBox(height: 12),
+          _RegionChip(region: region),
+          const SizedBox(height: 16),
+          _SearchField(onChanged: onSearch),
         ],
+      ),
       ),
     );
   }
 }
 
-class _SearchRow extends StatelessWidget {
-  const _SearchRow({required this.onChanged});
-  final ValueChanged<String> onChanged;
+/// A glass pill on the atmosphere, which is the one place base 3.5 allows one.
+class _RegionChip extends StatelessWidget {
+  const _RegionChip({required this.region});
 
-  /// Base 8.10: pill, 48 tall, tile fill, no ring.
+  final String region;
+
+  @override
+  Widget build(BuildContext context) => Align(
+        alignment: Alignment.centerLeft,
+        child: GestureDetector(
+          onTap: () => showLocationPicker(context),
+          child: GlassSurface(
+            blur: 12,
+            // Low saturation here: on the accent band the boost turns the pill
+            // hotter than the ground it sits on.
+            saturation: 1.05,
+            tint: AppColors.surface,
+            tintOpacity: 0.22,
+            shadowed: false,
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: SizedBox(
+              height: 36,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.location_on, size: 18, color: AppColors.onAccent),
+                  const SizedBox(width: 6),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 220),
+                    child: Text(region,
+                        style: AppText.label(context, color: AppColors.onAccent),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(Icons.expand_more, size: 18, color: AppColors.onAccent),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+}
+
+/// The gardener's avatar, and the way into the profile.
+class _ProfileButton extends StatelessWidget {
+  const _ProfileButton();
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-      child: SizedBox(
-        height: 48,
-        child: TextField(
-          onChanged: onChanged,
-          style: AppText.body(context),
-          decoration: InputDecoration(
-            isDense: true,
-            contentPadding: const EdgeInsets.symmetric(vertical: 14),
-            hintText: 'Search vegetables',
-            hintStyle: AppText.body(context, color: AppColors.inkPlaceholder),
-            prefixIcon: const Icon(Icons.search, size: 20, color: AppColors.inkMuted),
-            filled: true,
-            fillColor: AppColors.tile,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(Neo.radiusPill),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(Neo.radiusPill),
-              borderSide: const BorderSide(color: AppColors.accent, width: 2),
-            ),
+    final repo = RepositoryScope.of(context);
+    return Semantics(
+      button: true,
+      label: 'Profile',
+      child: GestureDetector(
+        onTap: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => const ProfileScreen())),
+        child: FutureBuilder<ProfileRow?>(
+          future: repo.profile(),
+          builder: (context, snap) => ProfileAvatar(
+            name: snap.data?.displayName ?? 'Gardener',
+            size: 40,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Base 8.10: pill, 48 tall, tile fill. It sits at the foot of the band, where
+/// the gradient has already faded to canvas.
+class _SearchField extends StatelessWidget {
+  const _SearchField({required this.onChanged});
+
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 48,
+      child: TextField(
+        onChanged: onChanged,
+        style: AppText.body(context),
+        decoration: InputDecoration(
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(vertical: 14),
+          hintText: 'Search vegetables',
+          hintStyle: AppText.body(context, color: AppColors.inkPlaceholder),
+          prefixIcon: const Icon(Icons.search, size: 20, color: AppColors.inkMuted),
+          filled: true,
+          fillColor: AppColors.surface,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(Neo.radiusPill),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(Neo.radiusPill),
+            borderSide: const BorderSide(color: AppColors.accent, width: 2),
           ),
         ),
       ),
