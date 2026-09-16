@@ -343,9 +343,12 @@ class ProfileAvatar extends StatelessWidget {
       width: size,
       height: size,
       alignment: Alignment.center,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.accentSoft,
         shape: BoxShape.circle,
+        // A white ring, so the avatar reads on the home band's lime as well as
+        // on a white card.
+        border: Border.all(color: AppColors.surface, width: 2),
       ),
       child: Text(
         initial,

@@ -244,9 +244,9 @@ class WeatherHintBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (color, icon, text) = switch (adjustment.action) {
-      AdjustAction.skip => (AppColors.rain, Icons.water_drop, 'Skip — enough rain'),
-      AdjustAction.bringForward => (AppColors.heat, Icons.wb_sunny, 'Water earlier — heat'),
-      AdjustAction.defer => (AppColors.frost, Icons.ac_unit, 'Hold — soil too cold'),
+      AdjustAction.skip => (AppColors.rain, Icons.water_drop, 'Enough rain'),
+      AdjustAction.bringForward => (AppColors.heat, Icons.wb_sunny, 'Heat coming'),
+      AdjustAction.defer => (AppColors.frost, Icons.ac_unit, 'Soil too cold'),
       AdjustAction.none => (AppColors.muted, Icons.info_outline, ''),
     };
     return Pill(

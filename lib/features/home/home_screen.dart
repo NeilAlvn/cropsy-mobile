@@ -210,38 +210,78 @@ class _HomeBand extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final top = MediaQuery.paddingOf(context).top;
-    // The band carries chrome on the accent, so the status bar runs light.
+    // The band is light, so the status bar runs dark.
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Container(
       padding: EdgeInsets.fromLTRB(20, top + 12, 20, 20),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          // Accent holding under the chrome, then bleeding into canvas (base 3.5).
-          colors: [AppColors.accent, AppColors.accent, AppColors.canvas],
-          stops: [0, 0.62, 1],
+          // The reference's light lime ground, fading into canvas (base 3.5).
+          colors: [AppColors.skyTop, AppColors.skyMid, AppColors.canvas],
+          stops: [0, 0.55, 1],
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Cropsy',
-                  style: AppText.title(context, color: AppColors.onAccent)),
-              const Spacer(),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Cropsy', style: AppText.kicker(context, color: AppColors.accentDeep)),
+                    const _Greeting(),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              // The mascot greets from the band, the way the reference puts its
+              // character beside the hello (PRD §6: it is the voice of the app).
+              const Mascot(MascotPose.wave, size: 84),
+              const SizedBox(width: 4),
               const _ProfileButton(),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 4),
           _RegionChip(region: region),
           const SizedBox(height: 16),
           _SearchField(onChanged: onSearch),
         ],
       ),
       ),
+    );
+  }
+}
+
+/// "Hey, `name`" if we know it, the plain hello if we do not.
+class _Greeting extends StatelessWidget {
+  const _Greeting();
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    return FutureBuilder<ProfileRow?>(
+      future: repo.profile(),
+      builder: (context, snap) {
+        final name = snap.data?.displayName;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(name == null ? 'Hey there' : 'Hey, $name',
+                style: AppText.title(context),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis),
+            Text('Here is your garden this week.', style: AppText.caption(context)),
+          ],
+        );
+      },
     );
   }
 }
@@ -263,7 +303,7 @@ class _RegionChip extends StatelessWidget {
             // hotter than the ground it sits on.
             saturation: 1.05,
             tint: AppColors.surface,
-            tintOpacity: 0.22,
+            tintOpacity: 0.6,
             shadowed: false,
             padding: const EdgeInsets.symmetric(horizontal: 14),
             child: SizedBox(
@@ -271,17 +311,17 @@ class _RegionChip extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.location_on, size: 18, color: AppColors.onAccent),
+                  const Icon(Icons.location_on, size: 18, color: AppColors.accent),
                   const SizedBox(width: 6),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 220),
                     child: Text(region,
-                        style: AppText.label(context, color: AppColors.onAccent),
+                        style: AppText.label(context, color: AppColors.ink),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis),
                   ),
                   const SizedBox(width: 4),
-                  const Icon(Icons.expand_more, size: 18, color: AppColors.onAccent),
+                  const Icon(Icons.expand_more, size: 18, color: AppColors.inkMuted),
                 ],
               ),
             ),
@@ -509,12 +549,14 @@ class _TodaysCare extends StatelessWidget {
                       Icon(item.completed ? Icons.check_circle : Icons.circle_outlined,
                           color: item.completed ? AppColors.positive : AppColors.hairline),
                       const SizedBox(width: 12),
-                      KindMark(item.kind, size: 36),
+                      KindMark(item.kind, size: 32),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text('${kindLabel(item.kind)} · ${item.cropName}',
                             style: AppText.label(context,
-                                color: item.completed ? AppColors.inkMuted : AppColors.ink)),
+                                color: item.completed ? AppColors.inkMuted : AppColors.ink),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis),
                       ),
                       if (item.hint != null) WeatherHintBadge(item.hint!),
                     ]),

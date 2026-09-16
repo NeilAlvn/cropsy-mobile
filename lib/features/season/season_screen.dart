@@ -251,8 +251,8 @@ class _Sky extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [AppColors.canvas, Color(0xFFF6EFE9), Color(0xFFEDF2E4)],
-            stops: [0, 0.55, 1],
+            colors: [AppColors.skyTop, AppColors.skyMid, AppColors.canvas],
+            stops: [0, 0.45, 1],
           ),
         ),
       );
@@ -286,7 +286,7 @@ class _HeaderItem implements _Item {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
           decoration: BoxDecoration(
-            color: current ? AppColors.accent : AppColors.ink,
+            color: current ? AppColors.accent : AppColors.forest,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(

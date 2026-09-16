@@ -20,38 +20,53 @@ import 'package:flutter/material.dart';
 
 abstract final class AppColors {
   // ---------------------------------------------------------------- neutrals
-  /// Screen background. Base 3.2 `canvas`.
-  static const canvas = Color(0xFFF1F0EE);
+  /// Screen background. Base 3.2 `canvas`, warmed a touch toward the leaf.
+  static const canvas = Color(0xFFF3F7EE);
 
   /// Cards, sheets, dialogs. Base 3.2 `surface`.
   static const surface = Color(0xFFFFFFFF);
 
   /// Image tiles, grouped row containers, input fills, skeletons.
-  static const tile = Color(0xFFEDECE8);
+  static const tile = Color(0xFFEAF0E4);
 
   /// Borders, dividers, rings. Never on a card: white on canvas is the edge.
   static const hairline = Color(0x1417191C);
 
-  static const ink = Color(0xFF17191C);
-  static const inkMuted = Color(0xFF5C6068);
-  static const inkFaint = Color(0xFF6B6F78);
-  static const inkPlaceholder = Color(0xFF8A8E98);
+  static const ink = Color(0xFF16211A);
+  static const inkMuted = Color(0xFF576055);
+  static const inkFaint = Color(0xFF6A7368);
+  static const inkPlaceholder = Color(0xFF8B958A);
   static const onInk = Color(0xFFFFFFFF);
   static const scrim = Color(0x66101114);
 
   // ------------------------------------------------------------------- brand
-  /// Base 3.3 `accent`. Terracotta, 4.9:1 against white.
-  static const accent = Color(0xFFB4532F);
+  /// Base 3.3 `accent`. Grass green, 5.0:1 against white.
+  static const accent = Color(0xFF2A7F2A);
 
   /// Pressed and deep accents.
-  static const accentDeep = Color(0xFF93401F);
+  static const accentDeep = Color(0xFF1F6420);
   static const onAccent = Color(0xFFFFFFFF);
 
+  /// The reference's vivid green. Fills only, never under text: node buttons,
+  /// the sky gradient, illustration. Fails as a text ground on purpose.
+  static const accentBright = Color(0xFF4CC23F);
+
+  /// The dark ground of the reference: month bars, banners, the splash.
+  static const forest = Color(0xFF15391D);
+
   /// Accent at ~12 percent over canvas. Selected rows, highlight cards.
-  static const accentSoft = Color(0xFFF3E4DC);
+  static const accentSoft = Color(0xFFE2F3D8);
 
   /// Text on [accentSoft], 4.5:1.
-  static const onAccentSoft = Color(0xFF8E3F22);
+  static const onAccentSoft = Color(0xFF22641F);
+
+  /// The path's sky, top to bottom.
+  static const skyTop = Color(0xFFD8F0A8);
+  static const skyMid = Color(0xFFEFF8DE);
+
+  /// Terracotta survives as the mascot's pot and the warm note in art, so it
+  /// keeps a token even though it is no longer the accent.
+  static const clayWarm = Color(0xFFB4532F);
 
   // --------------------------------------------------------------- semantics
   // Fixed across every VisionTech app. Text-safe on canvas and tile.
@@ -74,8 +89,8 @@ abstract final class AppColors {
   // migrate to the token names above. Delete an alias once its callers move.
   static const sprout = accent;
   static const sproutDeep = accentDeep;
-  static const clay = accent;
-  static const clayDeep = accentDeep;
+  static const clay = clayWarm;
+  static const clayDeep = Color(0xFF93401F);
   static const paper = canvas;
   static const sand = tile;
   static const muted = inkMuted;
@@ -93,7 +108,7 @@ abstract final class AppColors {
   static const bandSowIndoor = Color(0xFFBFE0A6);
   static const bandSowOutdoor = Color(0xFF63B36B);
   static const bandPlantOut = Color(0xFF137A4A);
-  static const bandHarvest = accent;
+  static const bandHarvest = clayWarm;
 
   // Difficulty and status map onto the fixed semantics.
   static const easy = positive;

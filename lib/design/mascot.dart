@@ -1,11 +1,11 @@
-/// The mascot's 12 pose slots (PRD §6) — a terracotta pot with a seedling, one
-/// image per pose under assets/mascot. Screens build against this API, so a
-/// later swap to Rive/Lottie touches only this file.
+/// The mascot's 12 pose slots (PRD §6) — a terracotta pot with a seedling,
+/// rendered as a glossy 3D character, one cut-out image per pose under
+/// assets/mascot. Screens build against this API, so a later swap to Rive or
+/// Lottie touches only this file.
 library;
 
 import 'package:flutter/material.dart';
 
-import 'colors.dart';
 
 enum MascotPose {
   idle,
@@ -44,18 +44,15 @@ class Mascot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // The art is drawn on the canvas grey, so it sits in a circle of the same
-    // value and reads as one shape rather than a pasted square.
-    return ClipOval(
-      child: Container(
-        width: size,
-        height: size,
-        color: AppColors.tile,
-        child: Image.asset(
-          'assets/mascot/${_asset[pose]}.jpg',
-          fit: BoxFit.cover,
-          excludeFromSemantics: true,
-        ),
+    // The art is a cut-out, so it stands free on whatever it is put on rather
+    // than inside a tile of its own.
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Image.asset(
+        'assets/mascot/${_asset[pose]}.png',
+        fit: BoxFit.contain,
+        excludeFromSemantics: true,
       ),
     );
   }
