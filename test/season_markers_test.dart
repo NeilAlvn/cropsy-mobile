@@ -7,7 +7,7 @@ MarkerFacts _facts({
   int plants = 3,
   bool photo = false,
   double euros = 0,
-  String? weather,
+  LocalizedText? weather,
 }) =>
     MarkerFacts(
       today: DateTime.utc(2026, 9, 16),
@@ -17,7 +17,8 @@ MarkerFacts _facts({
       euros: euros,
       kilos: 0,
       weatherTitle: weather,
-      weatherCaption: weather == null ? null : 'because reasons',
+      weatherCaption:
+          weather == null ? null : const LocalizedText(nl: 'omdat', en: 'because'),
     );
 
 Set<SeasonMarkerKind> _kinds(List<SeasonMarker> m) => m.map((e) => e.kind).toSet();
@@ -58,12 +59,16 @@ void main() {
 
   test('the payoff reads the tally when there is one', () {
     final marks = seasonMarkers(_facts(euros: 24.4));
-    expect(marks.firstWhere((m) => m.kind == SeasonMarkerKind.payoff).caption,
+    expect(marks.firstWhere((m) => m.kind == SeasonMarkerKind.payoff).caption.nl,
+        contains('€24'));
+    expect(marks.firstWhere((m) => m.kind == SeasonMarkerKind.payoff).caption.en,
         contains('€24'));
   });
 
   test('a weather change lands on today', () {
-    final marks = seasonMarkers(_facts(weather: 'Rain did the watering'));
+    final marks = seasonMarkers(_facts(
+      weather: const LocalizedText(nl: 'Regen deed het', en: 'Rain did the watering'),
+    ));
     final weather = marks.firstWhere((m) => m.kind == SeasonMarkerKind.weather);
     expect(weather.on, '2026-09-16');
   });

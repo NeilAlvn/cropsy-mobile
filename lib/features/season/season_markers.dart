@@ -5,6 +5,7 @@
 /// and a handful of counts, so it is a pure function and gets tested as one.
 library;
 
+import '../../l10n/strings.dart';
 import '../../timing/dates.dart';
 import '../../timing/types.dart';
 
@@ -31,8 +32,8 @@ class SeasonMarker {
 
   /// ISO date the marker sits on.
   final String on;
-  final String title;
-  final String caption;
+  final LocalizedText title;
+  final LocalizedText caption;
 }
 
 /// What the app knows when it builds the markers. Primitives only: the builder
@@ -60,8 +61,8 @@ class MarkerFacts {
   final double kilos;
 
   /// Today's weather change, if the engine made one.
-  final String? weatherTitle;
-  final String? weatherCaption;
+  final LocalizedText? weatherTitle;
+  final LocalizedText? weatherCaption;
 }
 
 String _iso(int year, int month, int day) =>
@@ -75,28 +76,28 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
     SeasonMarker(
       kind: SeasonMarkerKind.ijsheiligen,
       on: _iso(year, 5, 11),
-      title: 'IJsheiligen',
-      caption: 'Tender crops stay in until 15 May',
+      title: Str.ijsheiligen,
+      caption: Str.ijsheiligenSub,
     ),
     SeasonMarker(
       kind: SeasonMarkerKind.lastFrost,
       on: facts.frost.lastFrost,
-      title: 'Last frost, on average',
-      caption: 'After this, tender crops can go out',
+      title: Str.lastFrost,
+      caption: Str.lastFrostSub,
     ),
     SeasonMarker(
       kind: SeasonMarkerKind.firstFrost,
       on: facts.frost.firstFrost,
-      title: 'First frost, on average',
-      caption: 'Bring tender crops in before this',
+      title: Str.firstFrost,
+      caption: Str.firstFrostSub,
     ),
     SeasonMarker(
       kind: SeasonMarkerKind.recap,
       on: _iso(year, 12, 20),
-      title: 'Your $year, in one card',
+      title: Str.recapTitle(year),
       caption: facts.euros > 0
-          ? '€${facts.euros.round()} picked so far'
-          : 'What you grew, picked and saved',
+          ? Str.recapPicked(facts.euros.round())
+          : Str.recapSub,
     ),
   ];
 
@@ -106,26 +107,26 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
     out.add(SeasonMarker(
       kind: SeasonMarkerKind.orderSeeds,
       on: _iso(year, 1, 10),
-      title: 'Order your seed',
-      caption: '${facts.plantCount} crops on your list',
+      title: Str.orderSeed,
+      caption: Str.cropsOnList(facts.plantCount),
     ));
 
     if (!facts.photoThisMonth) {
       out.add(SeasonMarker(
         kind: SeasonMarkerKind.photo,
         on: _iso(year, facts.today.month, 15),
-        title: 'Snap this month\'s photo',
-        caption: 'Your season, in pictures',
+        title: Str.monthPhoto,
+        caption: Str.seasonInPictures,
       ));
     }
 
     out.add(SeasonMarker(
       kind: SeasonMarkerKind.payoff,
       on: facts.frost.firstFrost,
-      title: 'Season tally',
+      title: Str.seasonTally,
       caption: facts.euros > 0 || facts.kilos > 0
-          ? '€${facts.euros.round()} and ${facts.kilos.toStringAsFixed(1)} kg so far'
-          : 'Log a harvest and it adds up here',
+          ? Str.tallySoFar(facts.euros.round(), facts.kilos.toStringAsFixed(1))
+          : Str.tallyEmpty,
     ));
   }
 
@@ -135,7 +136,11 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
       kind: SeasonMarkerKind.weather,
       on: toIso(facts.today),
       title: weather,
-      caption: facts.weatherCaption ?? 'The weather moved a task',
+      caption: facts.weatherCaption ??
+          const LocalizedText(
+            nl: 'Het weer heeft een taak verzet',
+            en: 'The weather moved a task',
+          ),
     ));
   }
 

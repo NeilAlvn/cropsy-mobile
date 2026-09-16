@@ -35,13 +35,10 @@ import '../garden/plant_detail_screen.dart';
 import '../grow/crop_detail_screen.dart';
 import '../harvest/harvest_screen.dart';
 import '../repository_scope.dart';
+import '../../l10n/app_lang.dart';
+import '../../l10n/strings.dart';
 import 'season_rows.dart';
 import 'season_markers.dart';
-
-const _months = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-];
 
 /// Rows are fixed height, which is what lets the screen open on today without
 /// measuring anything.
@@ -151,14 +148,14 @@ class _SeasonScreenState extends State<SeasonScreen> {
 
     // The weather overlay already runs for This Week; the path shows the same
     // change, so the two never disagree.
-    String? weatherTitle, weatherCaption;
+    LocalizedText? weatherTitle, weatherCaption;
     for (final item in await repo.thisWeek()) {
       final hint = item.hint;
       if (hint == null || hint.action == AdjustAction.none) continue;
       (weatherTitle, weatherCaption) = switch (hint.action) {
-        AdjustAction.skip => ('Rain did the watering', 'Skipped for you, the streak still counts'),
-        AdjustAction.bringForward => ('Heat on the way', 'Water earlier than planned'),
-        AdjustAction.defer => ('Soil still too cold', 'Sowing held until it warms'),
+        AdjustAction.skip => (Str.rainDidIt, Str.rainDidItSub),
+        AdjustAction.bringForward => (Str.heatComing, Str.heatComingSub),
+        AdjustAction.defer => (Str.soilCold, Str.soilColdSub),
         AdjustAction.none => (null, null),
       };
       break;
@@ -188,7 +185,11 @@ class _SeasonScreenState extends State<SeasonScreen> {
             _ => 'sow',
           },
           due: t.node.due,
-          title: '${nodeKindTitle(t.node.kind)} ${repo.cropName(t.cropSlug)}',
+          title: Str.stepOnCrop(
+            nodeKindLine(t.node.kind),
+            repo.cropBySlug(t.cropSlug)?.names ??
+                LocalizedText(nl: t.cropSlug, en: t.cropSlug),
+          ),
         ),
     ];
 
@@ -499,10 +500,11 @@ class _HeaderItem implements _Item {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(_months[month - 1],
+                      Text(Str.monthTitle(month).of(context),
                           style: AppText.subheading(context),
                           textAlign: TextAlign.right),
-                      Text(current ? 'You are here' : '$count crops suit it',
+                      Text(
+                          (current ? Str.youAreHere : Str.cropsSuitMonth(count)).of(context),
                           style: AppText.caption(context),
                           textAlign: TextAlign.right,
                           maxLines: 2),
@@ -551,7 +553,7 @@ class _MonthDisc extends StatelessWidget {
         ],
       ),
       child: Text(
-        _months[month - 1].substring(0, 3).toUpperCase(),
+        Str.monthShort(month).of(context),
         style: AppText.kicker(context,
             color: current ? AppColors.onAmber : AppColors.amberDeep),
       ),
@@ -574,7 +576,8 @@ class _TodayItem implements _Item {
             children: [
               Expanded(child: Divider(color: AppColors.hairline, thickness: 2)),
               const SizedBox(width: 12),
-              Text('Today', style: AppText.kicker(context, color: AppColors.inkMuted)),
+              Text(Str.today.of(context),
+                  style: AppText.kicker(context, color: AppColors.inkMuted)),
               const SizedBox(width: 12),
               Expanded(child: Divider(color: AppColors.hairline, thickness: 2)),
             ],
@@ -640,11 +643,16 @@ class _NodeItem implements _Item {
     };
   }
 
-  String get _label => switch (node.kind) {
-        SeasonNodeKind.sowWindow => 'Sow ${repo.cropName(node.cropSlug)}',
-        SeasonNodeKind.harvestWindow => 'Harvest ${repo.cropName(node.cropSlug)}',
-        SeasonNodeKind.succession => 'Follow on: ${repo.cropName(node.cropSlug)}',
+  LocalizedText _label(BuildContext context) => switch (node.kind) {
+        SeasonNodeKind.sowWindow => Str.sowCrop(_crop(context)),
+        SeasonNodeKind.harvestWindow => Str.harvestCrop(_crop(context)),
+        SeasonNodeKind.succession => Str.followOn(_crop(context)),
       };
+
+  /// The crop's own name, which the snapshot carries in both languages.
+  LocalizedText _crop(BuildContext context) =>
+      repo.cropBySlug(node.cropSlug)?.names ??
+      LocalizedText(nl: node.cropSlug, en: node.cropSlug);
 
   @override
   Widget build(BuildContext context) => _PathStop(
@@ -652,8 +660,8 @@ class _NodeItem implements _Item {
         above: above,
         below: below,
         state: state,
-        label: _label,
-        caption: _window(node.start, node.end),
+        label: _label(context).of(context),
+        caption: _window(node.start, node.end, context),
         badge: 'assets/nodes/${_badgeFor(node)}.png',
         corner: CropImage(
           slug: node.cropSlug,
@@ -765,8 +773,8 @@ class _TaskItem implements _Item {
         above: above,
         below: below,
         state: state,
-        label: task.title,
-        caption: _day(task.due),
+        label: task.title.of(context),
+        caption: _day(task.due, context),
         badge: 'assets/nodes/${task.kind}.png',
         corner: CropImage(
           slug: task.cropSlug,
@@ -838,8 +846,8 @@ class _MarkerItem implements _Item {
         // A frost date is never "done" the way a task is: it is a fact about
         // the year, so it never carries a tick.
         state: state == _State.done ? _State.ahead : state,
-        label: marker.title,
-        caption: marker.caption,
+        label: marker.title.of(context),
+        caption: marker.caption.of(context),
         badge: 'assets/nodes/$_badgeAsset.png',
         onTap: () => _open(context),
       );
@@ -894,20 +902,25 @@ class _MarkerItem implements _Item {
                 const Mascot(MascotPose.celebrating, size: 64),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text('Your ${today.year}, in one card',
+                  child: Text(Str.recapTitle(today.year).of(context),
                       style: AppText.heading(context)),
                 ),
               ]),
               const SizedBox(height: 16),
               Row(children: [
-                Expanded(child: _Figure(value: '${plants.length}', label: 'Plants grown')),
+                Expanded(
+                    child: _Figure(
+                        value: '${plants.length}',
+                        label: Str.plantsGrown.of(context))),
                 const SizedBox(width: 12),
-                Expanded(child: _Figure(value: '$harvested', label: 'Picked')),
+                Expanded(
+                    child: _Figure(
+                        value: '$harvested', label: Str.picked.of(context))),
                 const SizedBox(width: 12),
                 Expanded(
                   child: _Figure(
                     value: '€${tally.euros.round()}',
-                    label: 'Saved',
+                    label: Str.saved.of(context),
                   ),
                 ),
               ]),
@@ -936,31 +949,29 @@ class _MarkerItem implements _Item {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(marker.title, style: AppText.heading(context)),
+              Text(marker.title.of(context), style: AppText.heading(context)),
               const SizedBox(height: 12),
-              MascotSays(
+              MascotSays.say(
                 pose: switch (marker.kind) {
                   SeasonMarkerKind.recap => MascotPose.celebrating,
                   SeasonMarkerKind.weather => MascotPose.rain,
                   _ => MascotPose.frost,
                 },
                 size: 72,
-                text: _explain(),
+                line: _explain(),
               ),
             ],
           ),
         ),
       );
 
-  String _explain() => switch (marker.kind) {
-        SeasonMarkerKind.ijsheiligen =>
-          'The ice saints, 11 to 15 May. A late night frost in this week is common in the Netherlands, so tomatoes, courgettes and basil stay under cover until it passes.',
-        SeasonMarkerKind.lastFrost =>
-          'The average last spring frost for your region. Every sowing date in the app is counted from it, and an average is not a promise: watch the forecast either side of it.',
-        SeasonMarkerKind.firstFrost =>
-          'The average first autumn frost for your region. Harvest windows are counted back from it, so anything still ripening after this date is on borrowed time.',
-        SeasonMarkerKind.recap =>
-          'At the end of December the season adds up: what you grew, what you picked, and what it saved you.',
+  /// The mascot's own explanation of the marker, from the deck.
+  LocalizedText _explain() => switch (marker.kind) {
+        SeasonMarkerKind.ijsheiligen => MascotLines.ijsheiligen,
+        SeasonMarkerKind.lastFrost => MascotLines.lastFrost,
+        SeasonMarkerKind.firstFrost => MascotLines.firstFrost,
+        SeasonMarkerKind.recap => MascotLines.recap,
+        SeasonMarkerKind.orderSeeds => MascotLines.seedOrder,
         _ => marker.caption,
       };
 
@@ -1064,8 +1075,8 @@ class _SuggestionItem implements _Item {
         below: below,
         state: _State.ahead,
         chest: true,
-        label: '$count crops can still go in',
-        caption: 'Nothing planned for ${_months[month - 1]}',
+        label: Str.cropsCanGoIn(count).of(context),
+        caption: Str.nothingPlanned(Str.month(month)).of(context),
         badge: 'assets/nodes/chest.png',
         onTap: () => showAppSheet<void>(
           context: context,
@@ -1353,13 +1364,14 @@ class _Crest extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Season', style: AppText.kicker(context)),
-          Text('${today.year} in your garden', style: AppText.title(context)),
+          Text(Str.season.of(context), style: AppText.kicker(context)),
+          Text(Str.yearInGarden(today.year).of(context), style: AppText.title(context)),
           const SizedBox(height: 4),
           Row(children: [
             Expanded(
               child: Text(
-                open > 0 ? '$open open now · $done done' : '$done done · nothing open today',
+                (open > 0 ? Str.openAndDone(open, done) : Str.doneNothingOpen(done))
+                    .of(context),
                 style: AppText.bodyMuted(context),
               ),
             ),
@@ -1406,7 +1418,7 @@ class _MonthOptions extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Text('Still sowable in ${_months[month - 1]}',
+              Text(Str.stillSowable(Str.month(month)).of(context),
                   style: AppText.heading(context)),
               const SizedBox(height: 4),
               Text('${crops.length} crops for your region.',
@@ -1435,14 +1447,14 @@ class _MonthOptions extends StatelessWidget {
       );
 }
 
-String _day(String iso) {
+String _day(String iso, BuildContext context) {
   final d = parseIso(iso);
-  return '${d.day} ${_months[d.month - 1].substring(0, 3)}';
+  return '${d.day} ${Str.monthShort(d.month).of(context)}';
 }
 
-String _window(String start, String end) {
+String _window(String start, String end, BuildContext context) {
+  String fmt(DateTime d) => '${d.day} ${Str.monthShort(d.month).of(context)}';
   final s = parseIso(start);
   final e = parseIso(end);
-  String fmt(DateTime d) => '${d.day} ${_months[d.month - 1].substring(0, 3)}';
   return start == end ? fmt(s) : '${fmt(s)} – ${fmt(e)}';
 }

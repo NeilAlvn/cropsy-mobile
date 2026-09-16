@@ -7,6 +7,7 @@ library;
 
 import '../../timing/dates.dart';
 import '../../timing/season.dart';
+import '../../timing/types.dart';
 import 'season_markers.dart';
 
 enum SeasonRowKind { month, today, node, task, marker, suggestion }
@@ -30,7 +31,7 @@ class SeasonTask {
   /// The node kind's name, which is also its badge asset.
   final String kind;
   final String due;
-  final String title;
+  final LocalizedText title;
 }
 
 class SeasonRow {
