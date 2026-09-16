@@ -13,6 +13,7 @@ import 'db/connection.dart';
 import 'design/brutal.dart';
 import 'design/colors.dart';
 import 'design/theme_mode.dart';
+import 'l10n/app_lang.dart';
 import 'features/app_shell.dart';
 import 'features/garden/garden_repository.dart';
 import 'features/onboarding/onboarding_screen.dart';
@@ -49,11 +50,13 @@ Future<void> main() async {
   final theme = AppTheme(
     initial: AppTheme.parse(await repo.meta(AppTheme.metaKey)),
   );
+  final lang = AppLang((await repo.profile())?.lang ?? 'nl');
   runApp(CropsyApp(
     repository: repo,
     auth: auth,
     purchases: purchases,
     theme: theme,
+    lang: lang,
   ));
 }
 
@@ -62,12 +65,14 @@ class CropsyApp extends StatelessWidget {
     super.key,
     required this.repository,
     required this.theme,
+    required this.lang,
     this.auth,
     this.purchases,
   });
 
   final GardenRepository repository;
   final AppTheme theme;
+  final AppLang lang;
   final AuthService? auth;
   final PurchaseService? purchases;
 
@@ -79,7 +84,9 @@ class CropsyApp extends StatelessWidget {
         auth: auth,
         child: PurchaseScope(
           purchases: purchases,
-          child: AppThemeScope(
+          child: AppLangScope(
+            notifier: lang,
+            child: AppThemeScope(
             notifier: theme,
             // The colour tokens are getters over the live scheme, so a scheme
             // change is answered by rebuilding the app, not by threading a
@@ -100,6 +107,7 @@ class CropsyApp extends StatelessWidget {
                 home: const _Root(),
               ),
             ),
+          ),
           ),
         ),
       ),

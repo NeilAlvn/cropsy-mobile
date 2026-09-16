@@ -5,6 +5,8 @@
 library;
 
 import 'dart:io';
+import '../../l10n/app_lang.dart';
+import '../../l10n/mascot_lines.dart';
 
 import 'package:flutter/material.dart';
 import '../../design/icons.dart';
@@ -54,7 +56,7 @@ class _ScanScreenState extends State<ScanScreen> {
     if (photo == null || !mounted) return;
     final token = AuthScope.maybeOf(context)?.accessToken;
     if (token == null) {
-      setState(() => _message = 'Sign in first (Settings). Scans are counted per account.');
+      setState(() => _message = MascotLines.scanSignIn.of(context));
       return;
     }
     setState(() => _busy = true);
@@ -150,7 +152,7 @@ class _Results extends StatelessWidget {
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
     if (result.reason == 'not_a_plant') {
-      return const MascotSays(pose: MascotPose.shrug, text: "That does not look like a plant. We're experts in fruits and veggies. Try a leaf or a fruit.");
+      return const MascotSays.say(pose: MascotPose.shrug, line: MascotLines.scanNotAPlant);
     }
     if (result.suggestions.isEmpty) {
       return MascotSays(pose: MascotPose.shrug, text: identify ? 'No match. Try a closer shot of a leaf or flower, or search by name.' : (result.healthy == true ? 'Looks healthy from here.' : 'Nothing recognisable. Browse the common problems below instead.'));

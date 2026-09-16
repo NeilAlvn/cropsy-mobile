@@ -6,6 +6,9 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../l10n/app_lang.dart';
+import '../timing/types.dart';
+
 
 enum MascotPose {
   idle,
@@ -61,9 +64,21 @@ class Mascot extends StatelessWidget {
 /// A line the mascot says, next to its pose. Used for empty states, plan
 /// changes and the "not behind" sheet.
 class MascotSays extends StatelessWidget {
-  const MascotSays({super.key, required this.pose, required this.text, this.size = 56});
+  const MascotSays({super.key, required this.pose, required this.text, this.size = 56})
+      : line = null;
+
+  /// The deck's own lines (lib/l10n/mascot_lines.dart), which carry both
+  /// languages and pick one at build time.
+  const MascotSays.say({
+    super.key,
+    required this.pose,
+    required LocalizedText this.line,
+    this.size = 56,
+  }) : text = '';
+
   final MascotPose pose;
   final String text;
+  final LocalizedText? line;
   final double size;
 
   @override
@@ -73,7 +88,12 @@ class MascotSays extends StatelessWidget {
       children: [
         Mascot(pose, size: size),
         const SizedBox(width: 12),
-        Expanded(child: Text(text, style: Theme.of(context).textTheme.bodyLarge)),
+        Expanded(
+          child: Text(
+            line?.of(context) ?? text,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+        ),
       ],
     );
   }

@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/mascot_lines.dart';
 import 'package:intl/intl.dart';
 
 import '../../db/database.dart';
@@ -37,7 +38,7 @@ class HarvestScreen extends StatelessWidget {
               if (tally != null) _HeroCard(tally: tally, count: rows.length),
               const SizedBox(height: 24),
               if (rows.isEmpty)
-                const MascotSays(pose: MascotPose.holdingSeedling, text: 'Nothing picked yet. Log a harvest from a plant and the tally starts.')
+                const MascotSays.say(pose: MascotPose.holdingSeedling, line: MascotLines.harvestEmpty)
               else ...[
                 SectionHeader('Your harvests'),
                 for (final r in rows)

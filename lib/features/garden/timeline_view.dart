@@ -5,6 +5,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/mascot_lines.dart';
 import '../../design/icons.dart';
 
 import '../../design/colors.dart';
@@ -49,9 +50,9 @@ class _TimelineViewState extends State<TimelineView> {
         final nodes = snap.data ?? const [];
         if (snap.connectionState != ConnectionState.done) return const SizedBox.shrink();
         if (nodes.isEmpty) {
-          return const MascotSays(
+          return const MascotSays.say(
             pose: MascotPose.idle,
-            text: 'No path yet. Press Start when this plant goes in. The path builds itself.',
+            line: MascotLines.pathEmpty,
           );
         }
         final today = repo.today;

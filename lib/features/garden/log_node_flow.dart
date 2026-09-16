@@ -17,6 +17,7 @@ import '../../design/typography.dart';
 import '../../timing/dates.dart';
 import '../../timing/replan.dart';
 import '../../timing/types.dart';
+import '../../l10n/mascot_lines.dart';
 import 'garden_repository.dart';
 
 MascotPose poseForNode(NodeKind k) => switch (k) {
@@ -28,6 +29,18 @@ MascotPose poseForNode(NodeKind k) => switch (k) {
       NodeKind.water => MascotPose.watering,
       NodeKind.harvest => MascotPose.celebrating,
       NodeKind.harvested => MascotPose.celebrating,
+    };
+
+/// The step's name in both languages, for the deck's own sentences.
+LocalizedText nodeKindLine(NodeKind k) => switch (k) {
+      NodeKind.sow => const LocalizedText(nl: 'Zaaien', en: 'Sow'),
+      NodeKind.potOn => const LocalizedText(nl: 'Verpotten', en: 'Pot on'),
+      NodeKind.transplant => const LocalizedText(nl: 'Uitplanten', en: 'Plant out'),
+      NodeKind.thin => const LocalizedText(nl: 'Uitdunnen', en: 'Thin seedlings'),
+      NodeKind.feed => const LocalizedText(nl: 'Bijmesten', en: 'Feed'),
+      NodeKind.water => const LocalizedText(nl: 'Water geven', en: 'Water'),
+      NodeKind.harvest => const LocalizedText(nl: 'Oogstvenster', en: 'Harvest window'),
+      NodeKind.harvested => const LocalizedText(nl: 'Geoogst', en: 'Harvested'),
     };
 
 String nodeKindTitle(NodeKind k) => switch (k) {
@@ -179,13 +192,16 @@ class _NotBehindSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MascotSays(
+            MascotSays.say(
               pose: result.warnings.isEmpty ? MascotPose.shrug : MascotPose.frost,
-              text: d == 0
-                  ? 'Logged. Nothing else needed to move.'
-                  : "You're not behind. ${nodeKindTitle(anchor.kind)} was ${d.abs()} days "
-                      "${d > 0 ? 'later' : 'earlier'} than planned, so $moved upcoming "
-                      "step${moved == 1 ? '' : 's'} moved with it.",
+              line: d == 0
+                  ? MascotLines.notBehindNothingMoved
+                  : MascotLines.notBehind(
+                      step: nodeKindLine(anchor.kind),
+                      days: d.abs(),
+                      later: d > 0,
+                      moved: moved,
+                    ),
             ),
             for (final w in result.warnings) ...[
               const SizedBox(height: 12),

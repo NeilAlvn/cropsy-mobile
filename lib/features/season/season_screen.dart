@@ -12,6 +12,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/mascot_lines.dart';
 import '../../design/icons.dart';
 
 import '../../design/colors.dart';
@@ -269,10 +270,10 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 return const Center(
                   child: Padding(
                     padding: EdgeInsets.all(40),
-                    child: MascotSays(
+                    child: MascotSays.say(
                       pose: MascotPose.idle,
                       size: 96,
-                      text: 'Add a plant and your season lays itself out here.',
+                      line: MascotLines.seasonEmpty,
                     ),
                   ),
                 );

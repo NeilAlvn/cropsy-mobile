@@ -16,6 +16,7 @@ import '../../db/database.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/theme_mode.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/typography.dart';
 import '../../purchases/purchase_service.dart';
 import '../../sync/auth_service.dart';
@@ -165,6 +166,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 segments: const [ButtonSegment(value: 'nl', label: Text('Nederlands')), ButtonSegment(value: 'en', label: Text('English'))],
                 selected: {lang},
                 onSelectionChanged: (v) async {
+                  AppLangScope.of(context).code = v.first;
                   await repo.saveProfile(lang: v.first);
                   if (context.mounted) setState(() {});
                 },
@@ -172,7 +174,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           const SizedBox(height: 4),
-          Text('Crop content ships in both languages; the interface follows in the content update.', style: AppText.caption(context)),
+          Text(
+            'Crop content and the mascot speak both languages. The rest of the '
+            'interface follows in the content update.',
+            style: AppText.caption(context),
+          ),
           const SizedBox(height: 24),
           SectionHeader('Help'),
           for (final (q, a) in _faq)
