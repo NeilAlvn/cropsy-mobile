@@ -36,9 +36,14 @@ const _months = [
 /// Rows are fixed height, which is what lets the screen open on today without
 /// measuring anything.
 const double _nodeRow = 132;
-const double _headerRow = 96;
+const double _headerRow = 128;
 const double _todayRow = 52;
 const double _badge = 92;
+
+/// The month marker, smaller than a task node so the path still reads as tasks.
+const double _monthDisc = 60;
+const double _monthTop = 16;
+const double _monthCentre = _monthTop + _monthDisc / 2;
 
 /// Where the badge sits inside its row. The label sits beside it, on the other
 /// side of the centre line, so the trail never runs through type.
@@ -167,24 +172,26 @@ class _SeasonScreenState extends State<SeasonScreen> {
       optionsFor: (month) => repo.whatToGrowIn(month).length,
     );
 
-    // Swing per path stop, worked out first so a node can look ahead and back.
+    // Swing per path stop, worked out first so a stop can look ahead and back.
+    // A month marker sits on the centre line and restarts the snake under it.
     final swings = <int, double>{};
     var stop = 0;
     for (var i = 0; i < shape.length; i++) {
-      final kind = shape[i].kind;
-      if (kind == SeasonRowKind.node || kind == SeasonRowKind.suggestion) {
-        swings[i] = _swing(stop++);
+      switch (shape[i].kind) {
+        case SeasonRowKind.month:
+          swings[i] = 0;
+          stop = 1;
+        case SeasonRowKind.node:
+        case SeasonRowKind.suggestion:
+          swings[i] = _swing(stop++);
+        case SeasonRowKind.today:
+          break;
       }
     }
+    // The today line is a divider, not a stop: the trail runs behind it.
     double? neighbour(int from, int step) {
       for (var i = from + step; i >= 0 && i < shape.length; i += step) {
         if (swings.containsKey(i)) return swings[i];
-        // A month header or the today line breaks the path; the line should
-        // stop there rather than reach across the gap.
-        if (shape[i].kind != SeasonRowKind.node &&
-            shape[i].kind != SeasonRowKind.suggestion) {
-          return null;
-        }
       }
       return null;
     }
@@ -198,6 +205,8 @@ class _SeasonScreenState extends State<SeasonScreen> {
             month: row.month,
             current: row.current,
             repo: repo,
+            above: neighbour(i, -1),
+            below: neighbour(i, 1),
           ));
         case SeasonRowKind.today:
           rows.add(const _TodayItem());
@@ -265,13 +274,22 @@ abstract class _Item {
   Widget build(BuildContext context);
 }
 
-/// The month bar, the path's equivalent of Duolingo's unit header.
+/// The month marker: a stop on the path like any other, but a different shape
+/// and colour, so a month reads as a milestone rather than as another task.
 class _HeaderItem implements _Item {
-  const _HeaderItem({required this.month, required this.current, required this.repo});
+  const _HeaderItem({
+    required this.month,
+    required this.current,
+    required this.repo,
+    required this.above,
+    required this.below,
+  });
 
   final int month;
   final bool current;
   final GardenRepository repo;
+  final double? above;
+  final double? below;
 
   @override
   double get height => _headerRow;
@@ -281,36 +299,82 @@ class _HeaderItem implements _Item {
     final count = repo.whatToGrowIn(month).length;
     return SizedBox(
       height: _headerRow,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-          decoration: BoxDecoration(
-            color: current ? AppColors.accent : AppColors.forest,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(_months[month - 1],
-                        style: AppText.subheading(context, color: AppColors.onInk)),
-                    Text(
-                      current ? 'You are here' : '$count crops suit this month',
-                      style: AppText.caption(context,
-                          color: AppColors.onInk.withValues(alpha: 0.7)),
-                    ),
-                  ],
+      child: CustomPaint(
+        painter: _TrailPainter(
+          swing: 0,
+          above: above,
+          below: below,
+          dashed: !current,
+          centre: _monthCentre,
+          radius: _monthDisc / 2 + 4,
+        ),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: FractionallySizedBox(
+                widthFactor: 0.4,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(_months[month - 1],
+                          style: AppText.subheading(context),
+                          textAlign: TextAlign.right),
+                      Text(current ? 'You are here' : '$count crops suit it',
+                          style: AppText.caption(context),
+                          textAlign: TextAlign.right,
+                          maxLines: 2),
+                    ],
+                  ),
                 ),
               ),
-              Icon(current ? Icons.place : Icons.calendar_month,
-                  color: AppColors.onInk.withValues(alpha: 0.9), size: 22),
-            ],
-          ),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: _monthTop),
+                child: _MonthDisc(month: month, current: current),
+              ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+/// Amber, not green: the months are the path's own markers, and colouring them
+/// like the task nodes would make the year read as more things to do.
+class _MonthDisc extends StatelessWidget {
+  const _MonthDisc({required this.month, required this.current});
+
+  final int month;
+  final bool current;
+
+  @override
+  Widget build(BuildContext context) {
+    final face = current ? AppColors.amber : AppColors.amberSoft;
+    final rim = current ? AppColors.amberDeep : AppColors.amber;
+    return Container(
+      width: _monthDisc,
+      height: _monthDisc,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: face,
+        // The raised rim the node buttons have, drawn rather than rendered.
+        border: Border.all(color: rim, width: 3),
+        boxShadow: [
+          BoxShadow(color: rim, offset: const Offset(0, 4), blurRadius: 0),
+        ],
+      ),
+      child: Text(
+        _months[month - 1].substring(0, 3).toUpperCase(),
+        style: AppText.kicker(context,
+            color: current ? AppColors.onAmber : AppColors.amberDeep),
       ),
     );
   }
@@ -625,12 +689,19 @@ class _TrailPainter extends CustomPainter {
     required this.above,
     required this.below,
     required this.dashed,
+    this.centre = _badgeCentre,
+    this.radius = _badge / 2 + 2,
   });
 
   final double swing;
   final double? above;
   final double? below;
   final bool dashed;
+
+  /// Where this row's stop sits, and how wide it is, so the trail meets its
+  /// edge. A month marker is smaller and sits higher than a task node.
+  final double centre;
+  final double radius;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -639,19 +710,17 @@ class _TrailPainter extends CustomPainter {
       ..strokeWidth = 8
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
-    final centre = Offset(size.width / 2 + swing, _badgeCentre);
-    // The badge's own height, so the trail meets its edge rather than its centre.
-    const radius = _badge / 2 + 2;
+    final stop = Offset(size.width / 2 + swing, centre);
 
     // The neighbours' badges sit at the same height inside their own rows, so
     // the trail leaves this row's top and bottom edges aimed straight at them.
     if (above != null) {
-      _segment(canvas, paint, Offset(size.width / 2 + above!, _badgeCentre - _nodeRow),
-          Offset(centre.dx, centre.dy - radius));
+      _segment(canvas, paint, Offset(size.width / 2 + above!, centre - _nodeRow),
+          Offset(stop.dx, stop.dy - radius));
     }
     if (below != null) {
-      _segment(canvas, paint, Offset(centre.dx, centre.dy + radius),
-          Offset(size.width / 2 + below!, _badgeCentre + _nodeRow));
+      _segment(canvas, paint, Offset(stop.dx, stop.dy + radius),
+          Offset(size.width / 2 + below!, centre + _nodeRow));
     }
   }
 
@@ -674,7 +743,11 @@ class _TrailPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_TrailPainter old) =>
-      old.swing != swing || old.above != above || old.below != below || old.dashed != dashed;
+      old.swing != swing ||
+      old.above != above ||
+      old.below != below ||
+      old.dashed != dashed ||
+      old.centre != centre;
 }
 
 /// The season's header: where the year stands, above the first stop.

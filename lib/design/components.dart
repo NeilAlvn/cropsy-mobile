@@ -31,14 +31,13 @@ class KindMark extends StatelessWidget {
   final double size;
 
   @override
-  Widget build(BuildContext context) => ClipOval(
-        child: Container(
-          width: size,
-          height: size,
-          color: AppColors.tile,
-          child: Image.asset('assets/marks/${kindMark(kind)}.jpg',
-              fit: BoxFit.cover, excludeFromSemantics: true),
-        ),
+  Widget build(BuildContext context) => Container(
+        width: size,
+        height: size,
+        decoration: const BoxDecoration(color: AppColors.tile, shape: BoxShape.circle),
+        padding: EdgeInsets.all(size * 0.08),
+        child: Image.asset('assets/marks/${kindMark(kind)}.png',
+            fit: BoxFit.contain, excludeFromSemantics: true),
       );
 }
 

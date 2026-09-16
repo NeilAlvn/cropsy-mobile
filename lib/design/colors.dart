@@ -60,6 +60,14 @@ abstract final class AppColors {
   /// Text on [accentSoft], 4.5:1.
   static const onAccentSoft = Color(0xFF22641F);
 
+  /// The season path's month markers. Amber keeps a month from reading as one
+  /// more task: the green discs are things to do, these are where you are.
+  /// The chest's gold is the same family.
+  static const amber = Color(0xFFE8B33A);
+  static const amberDeep = Color(0xFFB9821A);
+  static const amberSoft = Color(0xFFF7E7BE);
+  static const onAmber = Color(0xFF3A2A06);
+
   /// The path's sky, top to bottom.
   static const skyTop = Color(0xFFD8F0A8);
   static const skyMid = Color(0xFFEFF8DE);
