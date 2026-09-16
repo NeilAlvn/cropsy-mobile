@@ -14,6 +14,8 @@ library;
 import 'package:flutter/material.dart';
 
 import '../../design/colors.dart';
+import '../../db/database.dart';
+import '../../design/components.dart';
 import '../../design/crop_image.dart';
 import '../../design/mascot.dart';
 import '../../design/motion.dart';
@@ -25,6 +27,7 @@ import '../../timing/season.dart';
 import '../../timing/types.dart';
 import '../../timing/weather_adjust.dart';
 import '../garden/garden_repository.dart';
+import '../garden/growth_log_sheet.dart';
 import '../garden/log_node_flow.dart';
 import '../garden/plant_detail_screen.dart';
 import '../grow/crop_detail_screen.dart';
@@ -88,8 +91,14 @@ class SeasonScreen extends StatefulWidget {
 
 class _SeasonScreenState extends State<SeasonScreen> {
   final _scroll = ScrollController();
-  Future<({List<SeasonNode> nodes, List<SeasonMarker> markers, Set<String> logged})>?
-      _data;
+  Future<
+      ({
+        List<SeasonNode> nodes,
+        List<SeasonMarker> markers,
+        List<SeasonTask> tasks,
+        Set<String> logged,
+        int streak
+      })>? _data;
   bool _jumped = false;
 
   @override
@@ -101,9 +110,16 @@ class _SeasonScreenState extends State<SeasonScreen> {
   /// The path is the plants' own nodes plus everything the season itself puts
   /// on it: frost dates, the seed order, the photo, the payoff, the recap and
   /// whatever the weather changed today.
-  Future<({List<SeasonNode> nodes, List<SeasonMarker> markers, Set<String> logged})>
-      _load() async {
+  Future<
+      ({
+        List<SeasonNode> nodes,
+        List<SeasonMarker> markers,
+        List<SeasonTask> tasks,
+        Set<String> logged,
+        int streak
+      })> _load() async {
     final repo = RepositoryScope.of(context);
+    final premium = PurchaseScope.maybeOf(context)?.premium ?? false;
     final today = parseIso(repo.today);
     final nodes = await repo.seasonNodes();
     final plants = await repo.plants();
@@ -156,7 +172,33 @@ class _SeasonScreenState extends State<SeasonScreen> {
       weatherTitle: weatherTitle,
       weatherCaption: weatherCaption,
     ));
-    return (nodes: nodes, markers: markers, logged: logged);
+    final tasks = [
+      for (final t in await repo.seasonTasks())
+        SeasonTask(
+          nodeId: t.node.id,
+          plantId: t.plantId,
+          cropSlug: t.cropSlug,
+          kind: switch (t.node.kind) {
+            NodeKind.potOn => 'pot_on',
+            NodeKind.transplant => 'transplant',
+            NodeKind.thin => 'thin',
+            NodeKind.feed => 'feed',
+            _ => 'sow',
+          },
+          due: t.node.due,
+          title: '${nodeKindTitle(t.node.kind)} ${repo.cropName(t.cropSlug)}',
+        ),
+    ];
+
+    final streak = await repo.streak(premium: premium);
+
+    return (
+      nodes: nodes,
+      markers: markers,
+      tasks: tasks,
+      logged: logged,
+      streak: streak.count,
+    );
   }
 
   @override
@@ -200,12 +242,19 @@ class _SeasonScreenState extends State<SeasonScreen> {
         SafeArea(
           bottom: false,
           child: FutureBuilder<
-              ({List<SeasonNode> nodes, List<SeasonMarker> markers, Set<String> logged})>(
+              ({
+                List<SeasonNode> nodes,
+                List<SeasonMarker> markers,
+                List<SeasonTask> tasks,
+                Set<String> logged,
+                int streak
+              })>(
             future: _data,
             builder: (context, snap) {
               final data = snap.data;
               if (data == null) return const SizedBox.shrink();
-              final rows = _build(data.nodes, data.markers, data.logged, today, repo);
+              final rows =
+                  _build(data.nodes, data.markers, data.tasks, data.logged, today, repo);
               if (data.nodes.isEmpty) {
                 return const Center(
                   child: Padding(
@@ -222,7 +271,9 @@ class _SeasonScreenState extends State<SeasonScreen> {
               return CustomScrollView(
                 controller: _scroll,
                 slivers: [
-                  SliverToBoxAdapter(child: _Crest(today: today, rows: rows)),
+                  SliverToBoxAdapter(
+                    child: _Crest(today: today, rows: rows, streak: data.streak),
+                  ),
                   SliverList.builder(
                     itemCount: rows.length,
                     itemBuilder: (context, i) => rows[i].build(context),
@@ -240,12 +291,13 @@ class _SeasonScreenState extends State<SeasonScreen> {
   /// Turns the path's shape into the rows that draw it. Each node is told where
   /// its neighbours sit so the connector between them joins up.
   List<_Item> _build(List<SeasonNode> nodes, List<SeasonMarker> markers,
-      Set<String> logged, DateTime today, GardenRepository repo) {
+      List<SeasonTask> tasks, Set<String> logged, DateTime today, GardenRepository repo) {
     final shape = seasonRows(
       nodes: nodes,
       today: today,
       optionsFor: (month) => repo.whatToGrowIn(month).length,
       markers: markers,
+      tasks: tasks,
     );
 
     // Swing per path stop, worked out first so a stop can look ahead and back.
@@ -259,6 +311,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
           stop = 1;
         case SeasonRowKind.node:
         case SeasonRowKind.marker:
+        case SeasonRowKind.task:
         case SeasonRowKind.suggestion:
           swings[i] = _swing(stop++);
         case SeasonRowKind.today:
@@ -298,11 +351,22 @@ class _SeasonScreenState extends State<SeasonScreen> {
             above: neighbour(i, -1),
             below: neighbour(i, 1),
           ));
+        case SeasonRowKind.task:
+          rows.add(_TaskItem(
+            task: row.task!,
+            today: today,
+            repo: repo,
+            onChanged: _reload,
+            swing: swings[i]!,
+            above: neighbour(i, -1),
+            below: neighbour(i, 1),
+          ));
         case SeasonRowKind.marker:
           rows.add(_MarkerItem(
             marker: row.marker!,
             today: today,
             repo: repo,
+            onChanged: _reload,
             swing: swings[i]!,
             above: neighbour(i, -1),
             below: neighbour(i, 1),
@@ -654,6 +718,61 @@ extension on _NodeItem {
   }
 }
 
+/// A plant's own pending step between sowing and harvest: pot on, plant out,
+/// thin, feed. Tapping it logs it, the same as any other node.
+class _TaskItem implements _Item {
+  const _TaskItem({
+    required this.task,
+    required this.today,
+    required this.repo,
+    required this.onChanged,
+    required this.swing,
+    required this.above,
+    required this.below,
+  });
+
+  final SeasonTask task;
+  final DateTime today;
+  final GardenRepository repo;
+  final VoidCallback onChanged;
+  final double swing;
+  final double? above;
+  final double? below;
+
+  @override
+  double get height => _nodeRow;
+
+  _State get state {
+    final due = parseIso(task.due);
+    // A step is open from its due date on: it does not expire, it waits.
+    return due.isAfter(today) ? _State.ahead : _State.now;
+  }
+
+  @override
+  Widget build(BuildContext context) => _PathStop(
+        swing: swing,
+        above: above,
+        below: below,
+        state: state,
+        label: task.title,
+        caption: _day(task.due),
+        badge: 'assets/nodes/${task.kind}.png',
+        corner: CropImage(
+          slug: task.cropSlug,
+          category: repo.cropCategory(task.cropSlug),
+        ),
+        onTap: () => _open(context),
+      );
+
+  Future<void> _open(BuildContext context) async {
+    final node = (await repo.pathFor(task.plantId))
+        .where((n) => n.id == task.nodeId)
+        .firstOrNull;
+    if (node == null || !context.mounted) return;
+    if (await openNodeLog(context, repo, task.plantId, node)) onChanged();
+  }
+}
+
 /// Everything on the path that is not a plant's own task: the frost dates, the
 /// seed order, the monthly photo, the payoff, the recap, and what the weather
 /// changed today.
@@ -662,6 +781,7 @@ class _MarkerItem implements _Item {
     required this.marker,
     required this.today,
     required this.repo,
+    required this.onChanged,
     required this.swing,
     required this.above,
     required this.below,
@@ -670,6 +790,9 @@ class _MarkerItem implements _Item {
   final SeasonMarker marker;
   final DateTime today;
   final GardenRepository repo;
+
+  /// A logged photo takes this month's marker off the path.
+  final VoidCallback onChanged;
   final double swing;
   final double? above;
   final double? below;
@@ -727,13 +850,66 @@ class _MarkerItem implements _Item {
           ),
           builder: (context) => _MonthOptions(month: 3, crops: repo.whatToGrowIn(3)),
         );
+      case SeasonMarkerKind.recap:
+        _recap(context);
       case SeasonMarkerKind.ijsheiligen:
       case SeasonMarkerKind.lastFrost:
       case SeasonMarkerKind.firstFrost:
-      case SeasonMarkerKind.recap:
       case SeasonMarkerKind.weather:
         _tell(context);
     }
+  }
+
+  /// The year in figures. PRD §7.5: the tally is the payoff, not points.
+  Future<void> _recap(BuildContext context) async {
+    final tally = await repo.seasonTally();
+    final plants = await repo.plants();
+    final harvested = plants.where((p) => p.stage == 'harvested').length;
+    if (!context.mounted) return;
+    await showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(children: [
+                const Mascot(MascotPose.celebrating, size: 64),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text('Your ${today.year}, in one card',
+                      style: AppText.heading(context)),
+                ),
+              ]),
+              const SizedBox(height: 16),
+              Row(children: [
+                Expanded(child: _Figure(value: '${plants.length}', label: 'Plants grown')),
+                const SizedBox(width: 12),
+                Expanded(child: _Figure(value: '$harvested', label: 'Picked')),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _Figure(
+                    value: '€${tally.euros.round()}',
+                    label: 'Saved',
+                  ),
+                ),
+              ]),
+              if (tally.unpriced > 0) ...[
+                const SizedBox(height: 10),
+                Text('${tally.unpriced} harvests have no price yet, so they are not counted.',
+                    style: AppText.caption(context)),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   /// The mascot explains the marker. Base 8.13: a sheet, not a dialog.
@@ -777,12 +953,74 @@ class _MarkerItem implements _Item {
         _ => marker.caption,
       };
 
+  /// The month's photo, taken from the path: pick the plant if there is more
+  /// than one, then the same growth log the plant screen uses.
   Future<void> _openPhoto(BuildContext context) async {
     final growing = await repo.growingPlants();
-    if (!context.mounted) return;
-    if (growing.isEmpty) return;
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => PlantDetailScreen(plantId: growing.first.id)));
+    if (!context.mounted || growing.isEmpty) return;
+
+    var plant = growing.first;
+    if (growing.length > 1) {
+      final picked = await showModalBottomSheet<GardenPlantRow>(
+        context: context,
+        backgroundColor: AppColors.surface,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+        builder: (context) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Which plant?', style: AppText.heading(context)),
+                const SizedBox(height: 12),
+                for (final p in growing)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: AppCard(
+                      onTap: () => Navigator.pop(context, p),
+                      child: Row(children: [
+                        SizedBox(
+                          width: 44,
+                          height: 44,
+                          child: ClipOval(
+                            child: CropImage(
+                              slug: p.cropSlug,
+                              category: repo.cropCategory(p.cropSlug),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(repo.cropName(p.cropSlug), style: AppText.subheading(context)),
+                      ]),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      );
+      if (picked == null || !context.mounted) return;
+      plant = picked;
+    }
+
+    final log = await showGrowthLogSheet(
+      context,
+      cropName: repo.cropName(plant.cropSlug),
+      currentStage: plant.stage,
+    );
+    if (log == null) return;
+    await repo.addJournalEntry(
+      plantId: plant.id,
+      note: log.note,
+      mood: log.mood,
+      stage: log.stage,
+      photoPaths: log.photoPaths,
+    );
+    Haptics.complete();
+    onChanged();
   }
 }
 
@@ -1058,12 +1296,41 @@ class _TrailPainter extends CustomPainter {
       old.centre != centre;
 }
 
+/// One figure in the recap.
+class _Figure extends StatelessWidget {
+  const _Figure({required this.value, required this.label});
+
+  final String value;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => AppCard(
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
+        child: Column(
+          children: [
+            Text(value,
+                style: AppText.title(context).copyWith(
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
+                maxLines: 1),
+            Text(label,
+                style: AppText.caption(context),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis),
+          ],
+        ),
+      );
+}
+
 /// The season's header: where the year stands, above the first stop.
 class _Crest extends StatelessWidget {
-  const _Crest({required this.today, required this.rows});
+  const _Crest({required this.today, required this.rows, required this.streak});
 
   final DateTime today;
   final List<_Item> rows;
+
+  /// Consecutive days with a task ticked or skipped with a reason (§7.3).
+  final int streak;
 
   @override
   Widget build(BuildContext context) {
@@ -1078,10 +1345,21 @@ class _Crest extends StatelessWidget {
           Text('Season', style: AppText.kicker(context)),
           Text('${today.year} in your garden', style: AppText.title(context)),
           const SizedBox(height: 4),
-          Text(
-            open > 0 ? '$open open now · $done done' : '$done done · nothing open today',
-            style: AppText.bodyMuted(context),
-          ),
+          Row(children: [
+            Expanded(
+              child: Text(
+                open > 0 ? '$open open now · $done done' : '$done done · nothing open today',
+                style: AppText.bodyMuted(context),
+              ),
+            ),
+            if (streak > 0)
+              Pill(
+                label: '$streak day${streak == 1 ? '' : 's'}',
+                icon: Icons.local_fire_department,
+                color: AppColors.onAccentSoft,
+                bg: AppColors.accentSoft,
+              ),
+          ]),
         ],
       ),
     );
@@ -1144,6 +1422,11 @@ class _MonthOptions extends StatelessWidget {
           ),
         ),
       );
+}
+
+String _day(String iso) {
+  final d = parseIso(iso);
+  return '${d.day} ${_months[d.month - 1].substring(0, 3)}';
 }
 
 String _window(String start, String end) {

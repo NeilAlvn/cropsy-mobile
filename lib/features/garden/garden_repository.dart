@@ -314,6 +314,26 @@ class GardenRepository extends ChangeNotifier {
     return months.toList()..sort();
   }
 
+  /// Every plant's pending path nodes, for the season path: the steps between
+  /// sowing and harvest that the crop schedule alone does not know about.
+  ///
+  /// Watering is left out on purpose. It recurs, the weather overlay already
+  /// moves it, and a path with a watering node every few days is a list, not a
+  /// path (PRD §7.1 collapses it).
+  Future<List<({String plantId, String cropSlug, PathNode node})>> seasonTasks() async {
+    const wanted = {NodeKind.potOn, NodeKind.transplant, NodeKind.thin, NodeKind.feed};
+    final out = <({String plantId, String cropSlug, PathNode node})>[];
+    for (final plant in await growingPlants()) {
+      for (final node in await pathFor(plant.id)) {
+        if (!wanted.contains(node.kind)) continue;
+        if (node.loggedOn != null || node.skipped) continue;
+        out.add((plantId: plant.id, cropSlug: plant.cropSlug, node: node));
+      }
+    }
+    out.sort((a, b) => a.node.due.compareTo(b.node.due));
+    return out;
+  }
+
   /// Home 2.4: growing plants with their harvest window, soonest first.
   Future<List<({GardenPlantRow plant, PathNode harvest})>> upcomingHarvests() async {
     final out = <({GardenPlantRow plant, PathNode harvest})>[];

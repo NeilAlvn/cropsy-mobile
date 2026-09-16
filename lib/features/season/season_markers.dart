@@ -94,7 +94,9 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
       kind: SeasonMarkerKind.recap,
       on: _iso(year, 12, 20),
       title: 'Your $year, in one card',
-      caption: 'What you grew, picked and saved',
+      caption: facts.euros > 0
+          ? '€${facts.euros.round()} picked so far'
+          : 'What you grew, picked and saved',
     ),
   ];
 
