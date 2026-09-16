@@ -8,6 +8,7 @@ import '../db/database.dart' show GardenKind;
 import '../timing/weather_adjust.dart';
 import 'brutal.dart';
 import 'colors.dart';
+import 'motion.dart';
 import 'typography.dart';
 
 /// Illustration per task kind — the mark shown in task tiles. Base 7: emoji are
@@ -83,8 +84,9 @@ class PrimaryButton extends StatelessWidget {
     // Base 8.1: disabled swaps tokens, it never fades the whole button.
     final fill = disabled ? AppColors.tile : color;
     final fg = disabled ? AppColors.inkPlaceholder : AppColors.onAccent;
-    return GestureDetector(
+    return Pressable(
       onTap: onPressed,
+      haptic: Haptics.press,
       child: Container(
         height: 56,
         decoration: BoxDecoration(
@@ -115,8 +117,9 @@ class SecondaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Pressable(
       onTap: onPressed,
+      haptic: Haptics.press,
       child: Container(
         height: 56,
         decoration: BoxDecoration(
@@ -136,16 +139,27 @@ class SecondaryButton extends StatelessWidget {
 }
 
 class AppCard extends StatelessWidget {
-  const AppCard({super.key, required this.child, this.onTap, this.padding});
+  const AppCard({
+    super.key,
+    required this.child,
+    this.onTap,
+    this.padding,
+    this.haptic = Haptics.selection,
+  });
 
   final Widget child;
   final VoidCallback? onTap;
   final EdgeInsets? padding;
 
+  /// The haptic the press fires. Cards whose tap completes something pass
+  /// [Haptics.complete]; passing null leaves the press silent.
+  final void Function()? haptic;
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Pressable(
       onTap: onTap,
+      haptic: haptic,
       child: Container(
         decoration: Neo.box(),
         padding: padding ?? const EdgeInsets.all(16),

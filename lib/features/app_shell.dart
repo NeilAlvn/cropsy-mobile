@@ -7,9 +7,11 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../design/colors.dart';
 import '../design/glass.dart';
+import '../design/motion.dart';
 import 'diagnose/diagnose_screen.dart';
 import 'explore/explore_screen.dart';
 import 'garden/garden_screen.dart';
@@ -29,6 +31,7 @@ class AppShell extends StatefulWidget {
 
 class _AppShellState extends State<AppShell> {
   int _index = 0;
+  bool _barHidden = false;
 
   static const _tabs = [
     HomeScreen(),
@@ -42,6 +45,19 @@ class _AppShellState extends State<AppShell> {
         fullscreenDialog: true,
       ));
 
+  /// One listener for every screen: the bar answers the user's scroll
+  /// direction, so no screen has to wire a controller to it.
+  bool _onScroll(UserScrollNotification n) {
+    if (n.depth != 0) return false;
+    final hide = switch (n.direction) {
+      ScrollDirection.reverse => true,
+      ScrollDirection.forward => false,
+      ScrollDirection.idle => _barHidden,
+    };
+    if (hide != _barHidden) setState(() => _barHidden = hide);
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
@@ -54,21 +70,29 @@ class _AppShellState extends State<AppShell> {
       extendBody: true,
       body: Stack(
         children: [
-          MediaQuery(
-            data: mq.copyWith(
-              padding: mq.padding.copyWith(bottom: mq.padding.bottom + inset),
+          NotificationListener<UserScrollNotification>(
+            onNotification: _onScroll,
+            child: MediaQuery(
+              data: mq.copyWith(
+                padding: mq.padding.copyWith(bottom: mq.padding.bottom + inset),
+              ),
+              child: IndexedStack(index: _index, children: _tabs),
             ),
-            child: IndexedStack(index: _index, children: _tabs),
           ),
           Positioned(
             left: 0,
             right: 0,
             bottom: mq.padding.bottom > 0 ? mq.padding.bottom : _barGap,
             child: Center(
-              child: _TabPill(
-                index: _index,
-                onSelect: (i) => setState(() => _index = i),
-                onScan: _openScan,
+              child: AnimatedSlide(
+                offset: _barHidden ? const Offset(0, 1.6) : Offset.zero,
+                duration: Motion.of(context)[Motion.sheet],
+                curve: _barHidden ? Motion.easeExit : Motion.easeEnter,
+                child: _TabPill(
+                  index: _index,
+                  onSelect: (i) => setState(() => _index = i),
+                  onScan: _openScan,
+                ),
               ),
             ),
           ),
@@ -134,8 +158,7 @@ class _Tab extends StatelessWidget {
       selected: on,
       label: label,
       button: true,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
+      child: Pressable(
         onTap: () => onTap(index),
         child: SizedBox(
           width: 52,
@@ -156,8 +179,9 @@ class _ScanTab extends StatelessWidget {
   Widget build(BuildContext context) => Semantics(
         button: true,
         label: 'Scan a plant',
-        child: GestureDetector(
+        child: Pressable(
           onTap: onTap,
+          haptic: Haptics.press,
           child: Container(
             width: 56,
             margin: const EdgeInsets.symmetric(horizontal: 2),

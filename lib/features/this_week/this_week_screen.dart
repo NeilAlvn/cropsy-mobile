@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../design/colors.dart';
+import '../../design/motion.dart';
 import '../../design/components.dart';
 import '../../design/typography.dart';
 import '../../timing/dates.dart';
@@ -175,6 +176,8 @@ class _TaskTile extends StatelessWidget {
   /// plant's path so the user can back-date or skip with a reason (§7.1).
   Future<void> _tap(BuildContext context) async {
     if (item.kind == TaskKind.water || item.completed) {
+      // Base 9: a completion gets the completion haptic, undoing one does not.
+      if (!item.completed) Haptics.complete();
       await repo.setTaskCompleted(item.taskId, !item.completed);
       return;
     }

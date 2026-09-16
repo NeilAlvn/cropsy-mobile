@@ -11,6 +11,7 @@ import 'colors.dart';
 import 'components.dart';
 import 'crop_image.dart';
 import 'glass.dart';
+import 'motion.dart';
 import 'typography.dart';
 
 /// A photo-forward crop card (Home grid, collection rows).
@@ -32,7 +33,7 @@ class PhotoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: GestureDetector(
+      child: Pressable(
         onTap: onTap,
         child: Container(
           clipBehavior: Clip.antiAlias,
@@ -134,7 +135,7 @@ class FilterChipsRow extends StatelessWidget {
         itemBuilder: (context, i) {
           final (value, label) = options[i];
           final on = value == selected;
-          return GestureDetector(
+          return Pressable(
             onTap: () => onSelect(value),
             child: Container(
               height: 36,
@@ -182,7 +183,7 @@ class SegmentedTabs extends StatelessWidget {
         children: [
           for (var i = 0; i < labels.length; i++)
             Expanded(
-              child: GestureDetector(
+              child: Pressable(
                 onTap: () => onChanged(i),
                 child: Container(
                   height: 38,

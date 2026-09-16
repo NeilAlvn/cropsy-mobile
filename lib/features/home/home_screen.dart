@@ -17,6 +17,7 @@ import '../../design/crop_image.dart';
 import '../../design/feedback_row.dart';
 import '../../design/glass.dart';
 import '../../design/mascot.dart';
+import '../../design/motion.dart';
 import '../../design/typography.dart';
 import '../../design/widgets.dart';
 import '../../timing/dates.dart';
@@ -80,12 +81,22 @@ class _HomeScreenState extends State<HomeScreen> {
               onSearch: (q) => setState(() => _query = q),
             ),
           ),
-          SliverToBoxAdapter(child: _LifetimeCard(onTap: () => _openPaywall(context))),
+          SliverToBoxAdapter(
+            child: ArriveIn(
+              index: 0,
+              child: _LifetimeCard(onTap: () => _openPaywall(context)),
+            ),
+          ),
           if (_query.isEmpty) ...[
-            const SliverToBoxAdapter(child: _StreakCard()),
-            const SliverToBoxAdapter(child: _TodaysCare()),
-            const SliverToBoxAdapter(child: _UpcomingHarvest()),
-            SliverToBoxAdapter(child: _MonthChecklist(month: _month!, onMonth: _pickMonth)),
+            const SliverToBoxAdapter(child: ArriveIn(index: 1, child: _StreakCard())),
+            const SliverToBoxAdapter(child: ArriveIn(index: 2, child: _TodaysCare())),
+            const SliverToBoxAdapter(child: ArriveIn(index: 3, child: _UpcomingHarvest())),
+            SliverToBoxAdapter(
+              child: ArriveIn(
+                index: 4,
+                child: _MonthChecklist(month: _month!, onMonth: _pickMonth),
+              ),
+            ),
           ],
           if (_query.isEmpty)
             SliverToBoxAdapter(
@@ -492,6 +503,7 @@ class _TodaysCare extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: AppCard(
+                    haptic: item.completed ? Haptics.selection : Haptics.complete,
                     onTap: () => repo.setTaskCompleted(item.taskId, !item.completed),
                     child: Row(children: [
                       Icon(item.completed ? Icons.check_circle : Icons.circle_outlined,
