@@ -76,7 +76,7 @@ class _LocationSheetState extends State<_LocationSheet> {
     }
     setState(() => _detecting = false);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Postcode not found (expected 1234AB) — or you are offline.')),
+      const SnackBar(content: Text('Postcode not found (expected 1234AB), or you are offline.')),
     );
   }
 
@@ -120,7 +120,7 @@ class _LocationSheetState extends State<_LocationSheet> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'This sets your frost dates — the backbone of every planting date.',
+                  'This sets your frost dates, the backbone of every planting date.',
                   style: AppText.bodyMuted(context),
                 ),
               ),

@@ -93,7 +93,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         }
                         if (purchases == null || !purchases.configured) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Purchases open with the beta — nothing is charged yet.')),
+                            const SnackBar(content: Text('Purchases open with the beta. Nothing is charged yet.')),
                           );
                           return;
                         }

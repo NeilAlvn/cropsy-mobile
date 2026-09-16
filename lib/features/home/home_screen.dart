@@ -431,7 +431,7 @@ class _LifetimeCardState extends State<_LifetimeCard> {
             Expanded(
               child: GestureDetector(
                 onTap: widget.onTap,
-                child: Text('Unlock lifetime — one price, forever',
+                child: Text('Unlock lifetime, one price, forever',
                     style: AppText.label(context, color: Colors.white)),
               ),
             ),
@@ -675,7 +675,7 @@ class _StreakCard extends StatelessWidget {
                     ),
                     Text(
                       s.count == 0
-                          ? 'Tick one task, or skip one with a reason — rain counts.'
+                          ? 'Tick one task, or skip one with a reason. Rain counts.'
                           : premium
                               ? 'Unlimited freeze days.'
                               : '$freezesLeft freeze day${freezesLeft == 1 ? '' : 's'} left this month.',

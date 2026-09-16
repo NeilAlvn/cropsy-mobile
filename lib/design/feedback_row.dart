@@ -51,7 +51,7 @@ class _FeedbackRowState extends State<FeedbackRow> {
   @override
   Widget build(BuildContext context) {
     if (_sent != null) {
-      return Text(_sent == 'error' ? 'Thanks — we check every report within a week.' : 'Thanks for the feedback.', style: AppText.caption(context, color: AppColors.sprout));
+      return Text(_sent == 'error' ? 'Thanks. We check every report within a week.' : 'Thanks for the feedback.', style: AppText.caption(context, color: AppColors.sprout));
     }
     return Row(children: [
       Text('Is this information useful?', style: AppText.caption(context)),
@@ -86,7 +86,7 @@ class SectionFeedbackMenu extends StatelessWidget {
     );
     if (text == null || text.trim().isEmpty || !context.mounted) return;
     await RepositoryScope.of(context).addFeedback(targetKind: targetKind, targetId: targetId, sentiment: sentiment, body: text.trim());
-    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Thanks — noted.')));
+    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Thanks, noted.')));
   }
 
   @override

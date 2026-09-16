@@ -240,8 +240,8 @@ Adjustment _adjustTask(
         taskId: task.id,
         action: AdjustAction.skip,
         reason: LocalizedText(
-          nl: 'Genoeg regen rond deze dag ($mm mm) — overslaan.',
-          en: 'Enough rain around this day ($mm mm) — skip watering.',
+          nl: 'Genoeg regen rond deze dag ($mm mm). Overslaan.',
+          en: 'Enough rain around this day ($mm mm). Skip watering.',
         ),
       );
     }
@@ -263,8 +263,8 @@ Adjustment _adjustTask(
         action: AdjustAction.bringForward,
         to: day,
         reason: LocalizedText(
-          nl: 'Hitte verwacht ($t°C) — eerder water geven.',
-          en: 'Heat expected ($t°C) — water earlier.',
+          nl: 'Hitte verwacht ($t°C). Eerder water geven.',
+          en: 'Heat expected ($t°C). Water earlier.',
         ),
       );
     }
@@ -287,8 +287,8 @@ Adjustment _adjustTask(
           action: AdjustAction.defer,
           to: obs.date,
           reason: LocalizedText(
-            nl: 'Bodem nog te koud (< $gate°C) — uitgesteld tot het warmer is.',
-            en: 'Soil still too cold (< $gate°C) — held until it warms up.',
+            nl: 'Bodem nog te koud (< $gate°C). Uitgesteld tot het warmer is.',
+            en: 'Soil still too cold (< $gate°C). Held until it warms up.',
           ),
         );
       }
@@ -299,8 +299,8 @@ Adjustment _adjustTask(
       action: AdjustAction.defer,
       to: toIso(addDays(due, p.maxDeferDays)),
       reason: LocalizedText(
-        nl: 'Bodem blijft te koud (< $gate°C) — nog even wachten.',
-        en: 'Soil staying too cold (< $gate°C) — wait a little longer.',
+        nl: 'Bodem blijft te koud (< $gate°C). Nog even wachten.',
+        en: 'Soil staying too cold (< $gate°C). Wait a little longer.',
       ),
     );
   }

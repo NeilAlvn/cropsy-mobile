@@ -78,7 +78,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
           if (all.isEmpty)
             const MascotSays(
               pose: MascotPose.thinking,
-              text: 'The 25 problems common on Dutch balconies — slakken, luizen, meeldauw, neusrot… — are being written and checked. They land with the content update.',
+              text: 'The 25 problems common on Dutch balconies, slakken, luizen, meeldauw, neusrot, are being written and checked. They land with the content update.',
             )
           else if (problems.isEmpty)
             Text('Nothing listed for that part yet.', style: AppText.bodyMuted(context))

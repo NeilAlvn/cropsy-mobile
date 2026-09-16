@@ -495,7 +495,7 @@ class _LocationStepState extends State<_LocationStep> {
       children: [
         Text('Where do you grow?', style: AppText.title(context)),
         const SizedBox(height: 6),
-        Text('Sets your frost dates — the backbone of every planting date. Rounded to ~10 km, never tracked.',
+        Text('Sets your frost dates, the backbone of every planting date. Rounded to ~10 km, never tracked.',
             style: AppText.bodyMuted(context)),
         const SizedBox(height: 14),
         PrimaryButton(label: _busy ? 'Looking up…' : 'Use my location', icon: Icons.my_location, onPressed: _busy ? null : _gps),
@@ -645,7 +645,7 @@ class _PlantsStep extends StatelessWidget {
       children: [
         Text('What will you grow?', style: AppText.title(context)),
         const SizedBox(height: 6),
-        Text('Pick a few to start — add more anytime.', style: AppText.bodyMuted(context)),
+        Text('Pick a few to start. Add more anytime.', style: AppText.bodyMuted(context)),
         const SizedBox(height: 14),
         GridView.count(
           crossAxisCount: 2,
@@ -702,7 +702,7 @@ class _PlanStep extends StatelessWidget {
             _Line(done: ready, text: ready ? (firstTask == null ? 'First task lands as soon as a window opens' : 'First task: $firstTask') : 'Finding your first task…'),
             const Spacer(),
             if (ready) ...[
-              Text('Want a nudge on the day? One reminder a morning, only when there is something to do — and it stays quiet when it rained.',
+              Text('Want a nudge on the day? One reminder a morning, only when there is something to do, and it stays quiet when it rained.',
                   style: AppText.bodyMuted(context)),
               const SizedBox(height: 12),
               PrimaryButton(label: 'Remind me', icon: Icons.notifications_active_outlined, onPressed: onDone),

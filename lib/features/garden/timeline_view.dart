@@ -50,7 +50,7 @@ class _TimelineViewState extends State<TimelineView> {
         if (nodes.isEmpty) {
           return const MascotSays(
             pose: MascotPose.idle,
-            text: 'No path yet. Press Start when this plant goes in — the path builds itself.',
+            text: 'No path yet. Press Start when this plant goes in. The path builds itself.',
           );
         }
         final today = repo.today;

@@ -17,6 +17,7 @@ import '../../design/components.dart';
 import '../../design/typography.dart';
 import '../../purchases/purchase_service.dart';
 import '../../sync/auth_service.dart';
+import '../../sync/sync_engine.dart';
 import '../paywall/paywall_screen.dart';
 import '../garden/garden_repository.dart';
 import '../repository_scope.dart';
@@ -86,7 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Text(
                   switch (plan) {
                     Plan.free => '1 garden · 6 growing plants · full timeline, reminders and every crop.',
-                    Plan.lifetime => 'Lifetime — nothing to cancel.',
+                    Plan.lifetime => 'Lifetime. Nothing to cancel.',
                     Plan.yearly => 'Renews yearly. Manage or cancel in the App Store / Play Store.',
                   },
                   style: AppText.caption(context),
@@ -202,7 +203,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onPressed: _busy
                 ? null
                 : () => _run(() => auth.sendMagicLink(_email.text.trim()),
-                    done: 'Check your mail — the link signs you in.'),
+                    done: 'Check your mail. The link signs you in.'),
           ),
           const SizedBox(height: 10),
           TextField(
@@ -226,7 +227,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onPressed: _busy
                     ? null
                     : () => _run(() => auth.signUp(_email.text.trim(), _password.text),
-                        done: 'Account created — confirm via the mail we sent.'),
+                        done: 'Account created. Confirm via the mail we sent.'),
               ),
             ),
           ]),
@@ -258,6 +259,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 padding: const EdgeInsets.only(top: 4),
                 child: Text('${e.key}: ${e.value}', style: AppText.caption(context, color: AppColors.warn), maxLines: 3, overflow: TextOverflow.ellipsis),
               ),
+          // What actually moved, per table. Without this a sync that silently
+          // pushed nothing looks exactly like one that worked.
+          if (auth.lastReport != null && !auth.syncing) ...[
+            const SizedBox(height: 8),
+            Text(_movement(auth.lastReport!), style: AppText.caption(context)),
+          ],
           const SizedBox(height: 12),
           Row(children: [
             Expanded(child: PrimaryButton(label: 'Sync now', onPressed: auth.syncing ? null : () => _run(() async => auth.syncNow()))),
@@ -273,6 +280,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
+  }
+
+  /// "12 rows up, 4 down" per table, or that nothing needed to move.
+  String _movement(SyncReport report) {
+    final parts = <String>[];
+    for (final table in {...report.pushed.keys, ...report.pulled.keys}) {
+      final up = report.pushed[table] ?? 0;
+      final down = report.pulled[table] ?? 0;
+      if (up == 0 && down == 0) continue;
+      parts.add('$table ${up > 0 ? '↑$up' : ''}${up > 0 && down > 0 ? ' ' : ''}${down > 0 ? '↓$down' : ''}');
+    }
+    return parts.isEmpty ? 'Everything was already in step.' : parts.join(' · ');
   }
 
   Future<void> _deleteAccount(AuthService auth, GardenRepository repo) async {
@@ -316,9 +335,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
 const _faq = <(String, String)>[
   ('Where do the planting dates come from?', 'From the frost dates for your location (KNMI / Open-Meteo climate normals, rounded to ~10 km) combined with crop rules cross-checked against at least two Dutch seed calendars.'),
-  ('I fell behind. Is my plan ruined?', 'No. Log what you actually did and when; every later step moves with it. Nothing is ever "overdue" — it is "moved".'),
+  ('I fell behind. Is my plan ruined?', 'No. Log what you actually did and when; every later step moves with it. Nothing is ever "overdue", it is "moved".'),
   ('Why did a watering disappear?', 'It rained enough around that day, or rain is forecast. The weather line on Home says what changed.'),
   ('Does it work offline?', 'Yes. Crops, dates, reminders and the timeline all run on the phone. Weather hints and sync need a connection.'),
-  ('What does the free tier include?', 'One garden, six growing plants, the full timeline, reminders and every crop — forever. Lifetime unlocks more room.'),
+  ('What does the free tier include?', 'One garden, six growing plants, the full timeline, reminders and every crop, forever. Lifetime unlocks more room.'),
   ('How do I delete my account?', 'Settings → Account → Delete account. It removes your account and every synced row; local data stays on this phone until you delete the app.'),
 ];

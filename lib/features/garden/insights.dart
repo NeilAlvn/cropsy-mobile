@@ -37,7 +37,7 @@ List<Insight> insightsFor({
     out.add(Insight(MascotPose.shrug, 'The harvest window runs past the first frost (${frost.firstFrost}). Grow it anyway for what ripens first, move the pot inside, or swap for a faster variety next time.'));
   }
   if (crop.frostTender && toFirst >= 0 && toFirst <= 21) {
-    out.add(Insight(MascotPose.frost, 'First frost is expected in about $toFirst days (${frost.firstFrost}). ${crop.names.en} does not survive it — pick what is ripe and cover or move it in.'));
+    out.add(Insight(MascotPose.frost, 'First frost is expected in about $toFirst days (${frost.firstFrost}). ${crop.names.en} does not survive it. Pick what is ripe and cover or move it in.'));
   }
   if (crop.frostTender && toLast > 0 && toLast <= 21) {
     out.add(Insight(MascotPose.frost, 'Last frost is still ~$toLast days away (${frost.lastFrost}). Keep ${crop.names.en.toLowerCase()} inside until after IJsheiligen.'));
@@ -54,7 +54,7 @@ List<Insight> insightsFor({
     }
     final rain = ahead.take(3).fold<num>(0, (s, o) => s + o.precipMm);
     if (rain >= 15) {
-      out.add(Insight(MascotPose.rain, '${rain.round()} mm of rain in the next three days — skip watering, check drainage holes.'));
+      out.add(Insight(MascotPose.rain, '${rain.round()} mm of rain in the next three days. Skip watering and check the drainage holes.'));
     }
   }
   return out;

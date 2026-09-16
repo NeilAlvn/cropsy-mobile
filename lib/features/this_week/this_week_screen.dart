@@ -256,9 +256,9 @@ class _WeatherBanner extends StatelessWidget {
     }
     final hotAhead = obs.where((o) => o.date.compareTo(repo.today) >= 0).any((o) => o.tempMaxC >= 30);
     final text = recentRain >= 10
-        ? 'Rained ${recentRain.round()} mm in the last three days — waterings around today are skipped.'
+        ? 'Rained ${recentRain.round()} mm in the last three days. Waterings around today are skipped.'
         : hotAhead
-            ? 'Heat ahead (30°C+) — containers dry out in a day, so waterings move earlier.'
+            ? 'Heat ahead (30°C+). Containers dry out in a day, so waterings move earlier.'
             : 'Nothing dramatic in the forecast. The plan stands.';
     final wet = recentRain >= 10;
     return Padding(

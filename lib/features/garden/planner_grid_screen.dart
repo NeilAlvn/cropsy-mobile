@@ -80,7 +80,7 @@ class _PlannerGridScreenState extends State<PlannerGridScreen> {
             _Stepper(label: 'rows', value: _rows, onChanged: (v) => setState(() => _rows = v)),
           ]),
           const SizedBox(height: 12),
-          Text(_brush == null ? 'Pick a crop below, then tap cells.' : 'Painting ${repo.cropName(_brush!)} — tap a filled cell to clear it.',
+          Text(_brush == null ? 'Pick a crop below, then tap cells.' : 'Painting ${repo.cropName(_brush!)} . Tap a filled cell to clear it.',
               style: AppText.caption(context)),
           const SizedBox(height: 8),
           AspectRatio(

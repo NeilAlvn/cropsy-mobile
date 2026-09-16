@@ -265,5 +265,5 @@ class DraftBadge extends StatelessWidget {
   final bool compact;
 
   @override
-  Widget build(BuildContext context) => Pill(label: compact ? 'Concept' : 'Concept — nog niet gecontroleerd', icon: Icons.edit_note, color: AppColors.clay);
+  Widget build(BuildContext context) => Pill(label: compact ? 'Concept' : 'Concept, nog niet gecontroleerd', icon: Icons.edit_note, color: AppColors.clay);
 }

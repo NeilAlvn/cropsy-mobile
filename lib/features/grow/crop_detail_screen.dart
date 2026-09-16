@@ -231,7 +231,7 @@ class _Calendar extends StatelessWidget {
         PlantingCalendarBar(crop: crop, frost: repo.frost, today: repo.today),
         const SizedBox(height: 12),
         Text('These dates are frost-relative (anchored to $anchor for '
-            '${repo.regionName}) — so they shift with your region, not a fixed calendar.',
+            '${repo.regionName}) . They shift with your region, not a fixed calendar.',
             style: AppText.bodyMuted(context)),
         const SizedBox(height: 8),
         // 3.3 "Calendar based on" row: frost cell + where the dates came from.
@@ -288,7 +288,7 @@ class _Timeline extends StatelessWidget {
         const SizedBox(height: 14),
         if (harvestDate != null)
           Text('At ${repo.regionName}, your first harvest lands around '
-              '${fmt.format(parseIso(harvestDate))} — computed from the region\'s '
+              '${fmt.format(parseIso(harvestDate))} , computed from the region\'s '
               'frost dates, not a fixed calendar.',
               style: AppText.bodyMuted(context)),
       ],
@@ -323,7 +323,7 @@ class _Location extends StatelessWidget {
       row(Icons.local_fire_department_outlined, 'First frost',
           fmt.format(parseIso(repo.frost.firstFrost))),
       row(Icons.wb_sunny_outlined, 'Preferred sun', crop.sun),
-      row(Icons.ac_unit, 'Frost tender', crop.frostTender ? 'Yes — wait for last frost' : 'No'),
+      row(Icons.ac_unit, 'Frost tender', crop.frostTender ? 'Yes, wait for last frost' : 'No'),
       if (minSoil != null) row(Icons.device_thermostat, 'Min soil temp', '$minSoil °C'),
       if (crop.minPotLitres != null)
         row(Icons.crop_square, 'Min pot size', '${crop.minPotLitres} L'),
@@ -507,7 +507,7 @@ class _Neighbours extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.only(bottom: 8),
-          child: Pill(label: 'Draft — verified matrix lands in the content update', icon: Icons.edit_note, color: AppColors.clay),
+          child: Pill(label: 'Draft. The verified matrix lands in the content update', icon: Icons.edit_note, color: AppColors.clay),
         ),
         _NeighboursBody(good: good, bad: bad),
       ],

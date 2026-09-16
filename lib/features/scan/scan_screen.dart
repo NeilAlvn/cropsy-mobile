@@ -53,7 +53,7 @@ class _ScanScreenState extends State<ScanScreen> {
     if (photo == null || !mounted) return;
     final token = AuthScope.maybeOf(context)?.accessToken;
     if (token == null) {
-      setState(() => _message = 'Sign in first (Settings) — scans are counted per account.');
+      setState(() => _message = 'Sign in first (Settings). Scans are counted per account.');
       return;
     }
     setState(() => _busy = true);
@@ -149,7 +149,7 @@ class _Results extends StatelessWidget {
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
     if (result.reason == 'not_a_plant') {
-      return const MascotSays(pose: MascotPose.shrug, text: "That does not look like a plant. We're experts in fruits and veggies — try a leaf or a fruit.");
+      return const MascotSays(pose: MascotPose.shrug, text: "That does not look like a plant. We're experts in fruits and veggies. Try a leaf or a fruit.");
     }
     if (result.suggestions.isEmpty) {
       return MascotSays(pose: MascotPose.shrug, text: identify ? 'No match. Try a closer shot of a leaf or flower, or search by name.' : (result.healthy == true ? 'Looks healthy from here.' : 'Nothing recognisable. Browse the common problems below instead.'));
