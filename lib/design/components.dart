@@ -100,7 +100,12 @@ class PrimaryButton extends StatelessWidget {
               Icon(icon, color: fg, size: 20),
               const SizedBox(width: 8),
             ],
-            Text(label, style: AppText.button(context, color: fg)),
+            Flexible(
+              child: Text(label,
+                  style: AppText.button(context, color: fg),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis),
+            ),
           ],
         ),
       ),
@@ -125,11 +130,17 @@ class SecondaryButton extends StatelessWidget {
           color: AppColors.ink,
           borderRadius: BorderRadius.circular(Neo.radiusPill),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        // Tighter than a primary's 24: these sit two to a row.
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(label, style: AppText.button(context, color: AppColors.onInk)),
+            Flexible(
+              child: Text(label,
+                  style: AppText.button(context, color: AppColors.onInk),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis),
+            ),
           ],
         ),
       ),

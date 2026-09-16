@@ -104,13 +104,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   if (plan == Plan.yearly)
                     Expanded(
                       child: SecondaryButton(
-                        label: 'Manage subscription',
+                        label: 'Manage plan',
                         onPressed: () => launchUrl(Uri.parse('https://apps.apple.com/account/subscriptions'), mode: LaunchMode.externalApplication),
                       ),
                     ),
                   if (p?.configured == true) ...[
                     const SizedBox(width: 8),
-                    Expanded(child: SecondaryButton(label: 'Restore purchases', onPressed: () => _run(() async => p!.restore(), done: 'Checked with the store.'))),
+                    Expanded(child: SecondaryButton(label: 'Restore', onPressed: () => _run(() async => p!.restore(), done: 'Checked with the store.'))),
                   ],
                 ]),
               ]),
