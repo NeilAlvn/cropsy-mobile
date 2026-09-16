@@ -231,37 +231,34 @@ class _SearchRow extends StatelessWidget {
   const _SearchRow({required this.onChanged});
   final ValueChanged<String> onChanged;
 
+  /// Base 8.10: pill, 48 tall, tile fill, no ring.
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              onChanged: onChanged,
-              style: AppText.body(context),
-              decoration: InputDecoration(
-                isDense: true,
-                hintText: 'Search vegetables',
-                hintStyle: AppText.bodyMuted(context),
-                prefixIcon: const Icon(Icons.search, color: AppColors.muted),
-                filled: true,
-                fillColor: AppColors.surface,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                      color: AppColors.border, width: Neo.borderWidth),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                      color: AppColors.sprout, width: Neo.borderWidth),
-                ),
-              ),
+      child: SizedBox(
+        height: 48,
+        child: TextField(
+          onChanged: onChanged,
+          style: AppText.body(context),
+          decoration: InputDecoration(
+            isDense: true,
+            contentPadding: const EdgeInsets.symmetric(vertical: 14),
+            hintText: 'Search vegetables',
+            hintStyle: AppText.body(context, color: AppColors.inkPlaceholder),
+            prefixIcon: const Icon(Icons.search, size: 20, color: AppColors.inkMuted),
+            filled: true,
+            fillColor: AppColors.tile,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(Neo.radiusPill),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(Neo.radiusPill),
+              borderSide: const BorderSide(color: AppColors.accent, width: 2),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -348,15 +345,11 @@ class _WhatToGrowHeader extends StatelessWidget {
             padding: const EdgeInsets.only(right: 20),
             child: Row(
               children: [
-                Text('What to grow in ', style: AppText.title(context)),
-                GestureDetector(
-                  onTap: onMonth,
-                  child: Row(
-                    children: [
-                      Text(_months[month - 1],
-                          style: AppText.title(context, color: AppColors.sprout)),
-                      const Icon(Icons.arrow_drop_down, color: AppColors.sprout),
-                    ],
+                Expanded(
+                  child: GestureDetector(
+                    onTap: onMonth,
+                    child: _MonthTitle(
+                        lead: 'What to grow in ', month: _months[month - 1]),
                   ),
                 ),
                 const Spacer(),
@@ -586,13 +579,12 @@ class _MonthChecklist extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(children: [
-            Text('Checklist for ', style: AppText.title(context)),
-            GestureDetector(
-              onTap: onMonth,
-              child: Row(children: [
-                Text(_months[month - 1], style: AppText.title(context, color: AppColors.sprout)),
-                const Icon(Icons.arrow_drop_down, color: AppColors.sprout),
-              ]),
+            Expanded(
+              child: GestureDetector(
+                onTap: onMonth,
+                child: _MonthTitle(
+                    lead: 'Checklist for ', month: _months[month - 1]),
+              ),
             ),
             const Spacer(),
             SectionFeedbackMenu(targetKind: 'checklist', targetId: 'month-$month'),
@@ -624,4 +616,32 @@ class _MonthChecklist extends StatelessWidget {
       ),
     );
   }
+}
+
+
+/// A section title that ends in the month picker. One text flow, so a long
+/// month wraps instead of eating the words before it.
+class _MonthTitle extends StatelessWidget {
+  const _MonthTitle({required this.lead, required this.month});
+
+  final String lead;
+  final String month;
+
+  @override
+  Widget build(BuildContext context) => Text.rich(
+        TextSpan(
+          text: lead,
+          style: AppText.heading(context),
+          children: [
+            TextSpan(
+                text: month,
+                style: AppText.heading(context, color: AppColors.accent)),
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: Icon(Icons.arrow_drop_down,
+                  size: 22, color: AppColors.accent),
+            ),
+          ],
+        ),
+      );
 }

@@ -49,7 +49,7 @@ class PrimaryButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.icon,
-    this.color = AppColors.sprout,
+    this.color = AppColors.accent,
   });
 
   final String label;
@@ -60,22 +60,26 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final disabled = onPressed == null;
+    // Base 8.1: disabled swaps tokens, it never fades the whole button.
+    final fill = disabled ? AppColors.tile : color;
+    final fg = disabled ? AppColors.inkPlaceholder : AppColors.onAccent;
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        decoration: Neo.box(
-          color: disabled ? color.withValues(alpha: 0.4) : color,
-          shadowed: !disabled,
+        height: 56,
+        decoration: BoxDecoration(
+          color: fill,
+          borderRadius: BorderRadius.circular(Neo.radiusPill),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (icon != null) ...[
-              Icon(icon, color: Colors.white, size: 20),
+              Icon(icon, color: fg, size: 20),
               const SizedBox(width: 8),
             ],
-            Text(label, style: AppText.button(context)),
+            Text(label, style: AppText.button(context, color: fg)),
           ],
         ),
       ),
@@ -94,12 +98,16 @@ class SecondaryButton extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        decoration: Neo.box(color: AppColors.surface),
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        height: 56,
+        decoration: BoxDecoration(
+          color: AppColors.ink,
+          borderRadius: BorderRadius.circular(Neo.radiusPill),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(label, style: AppText.button(context, color: AppColors.ink)),
+            Text(label, style: AppText.button(context, color: AppColors.onInk)),
           ],
         ),
       ),
@@ -120,7 +128,7 @@ class AppCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: Neo.box(),
-        padding: padding ?? const EdgeInsets.all(14),
+        padding: padding ?? const EdgeInsets.all(16),
         child: child,
       ),
     );
@@ -128,20 +136,18 @@ class AppCard extends StatelessWidget {
 }
 
 class CategoryDot extends StatelessWidget {
-  const CategoryDot(this.category, {super.key, this.size = 12});
+  const CategoryDot(this.category, {super.key, this.size = 8});
 
   final String category;
   final double size;
 
-  /// A bordered square swatch — reads as intentional, not a stray bullet.
   @override
   Widget build(BuildContext context) => Container(
         width: size,
         height: size,
         decoration: BoxDecoration(
           color: AppColors.categoryColor(category),
-          borderRadius: BorderRadius.circular(2),
-          border: Border.all(color: AppColors.border, width: 1.5),
+          shape: BoxShape.circle,
         ),
       );
 }
@@ -158,16 +164,16 @@ class Pill extends StatelessWidget {
   Widget build(BuildContext context) {
     final fg = color ?? AppColors.ink;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      height: 32,
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: bg ?? AppColors.sand,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border, width: 1),
+        color: bg ?? AppColors.tile,
+        borderRadius: BorderRadius.circular(Neo.radiusPill),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) ...[Icon(icon, size: 13, color: fg), const SizedBox(width: 4)],
+          if (icon != null) ...[Icon(icon, size: 14, color: fg), const SizedBox(width: 6)],
           Text(label, style: AppText.caption(context, color: fg)),
         ],
       ),
@@ -183,7 +189,7 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(bottom: 10, top: 4),
+        padding: const EdgeInsets.only(bottom: 12, top: 8),
         child: Row(
           children: [
             Text(text, style: AppText.heading(context)),

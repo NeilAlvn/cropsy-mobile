@@ -7,8 +7,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'db/connection.dart';
+import 'design/brutal.dart';
 import 'design/colors.dart';
 import 'features/app_shell.dart';
 import 'features/garden/garden_repository.dart';
@@ -64,25 +66,27 @@ class CropsyApp extends StatelessWidget {
         title: 'Cropsy',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          scaffoldBackgroundColor: AppColors.paper,
+          scaffoldBackgroundColor: AppColors.canvas,
           colorScheme: ColorScheme.fromSeed(
-            seedColor: AppColors.sprout,
-            primary: AppColors.sprout,
-            surface: AppColors.paper,
+            seedColor: AppColors.accent,
+            primary: AppColors.accent,
+            onPrimary: AppColors.onAccent,
+            surface: AppColors.canvas,
           ),
           useMaterial3: true,
-          textTheme: Typography.blackMountainView.apply(bodyColor: AppColors.ink),
-          // Every text field picks up the bordered neo look.
+          textTheme: GoogleFonts.plusJakartaSansTextTheme()
+              .apply(bodyColor: AppColors.ink, displayColor: AppColors.ink),
+          // Base 8.11: 56 tall, tile radius, hairline ring, 2 accent on focus.
           inputDecorationTheme: InputDecorationTheme(
             filled: true,
             fillColor: AppColors.surface,
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(color: AppColors.border, width: 2.5),
+              borderRadius: BorderRadius.circular(Neo.radiusTile),
+              borderSide: const BorderSide(color: AppColors.hairline, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(color: AppColors.sprout, width: 2.5),
+              borderRadius: BorderRadius.circular(Neo.radiusTile),
+              borderSide: const BorderSide(color: AppColors.accent, width: 2),
             ),
           ),
         ),

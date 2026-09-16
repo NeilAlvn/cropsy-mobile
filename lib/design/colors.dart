@@ -1,56 +1,109 @@
-/// Cropsy colour tokens — a fresh identity, deliberately unlike Farmsy's muted
-/// forest-green + cream. Concept: hands-in-soil, calm competence. Sprout green +
-/// terracotta clay (the container motif) on warm paper.
+/// Cropsy colour tokens — VisionTech Design System v0.6 (the base Nime and
+/// Farmsy ship), with Cropsy's brand slots filled.
 ///
-/// First pass — expected to evolve once Luuk reacts to the prototype.
+/// Brand slot decisions (section 12 of the base):
+/// - `accent` is terracotta clay, the container motif. Nime and Farmsy are both
+///   green, and in a garden app green already means "growing / good", so green
+///   stays the fixed positive semantic and the accent takes the pot instead.
+/// - Because the accent is not a semantic colour, the primary pill fills with
+///   `accent` (base 8.1) and there is no separate vivid accent: the accent is
+///   the functional control colour too.
+/// - `canvas` is a warm neutral grey, within the 5 percent luminance the base
+///   allows around its #F0F1F0 default. Cards are pure white and separate from
+///   the ground by value, with no border.
+///
+/// Light theme only for now. Dark values are listed per token in the base; wire
+/// them up when the app stops reading colours from static consts.
 library;
 
 import 'package:flutter/material.dart';
 
 abstract final class AppColors {
-  // Brand
-  static const sprout = Color(0xFF5C8A3A); // primary — alive leaf green
-  static const sproutDeep = Color(0xFF44692A); // pressed / deep accents
-  static const clay = Color(0xFFC56A45); // accent — terracotta pot
-  static const clayDeep = Color(0xFFA9542F);
+  // ---------------------------------------------------------------- neutrals
+  /// Screen background. Base 3.2 `canvas`.
+  static const canvas = Color(0xFFF1F0EE);
 
-  // Surfaces
-  static const paper = Color(0xFFF7F6F1); // app background
-  static const sand = Color(0xFFEFEBE0); // cards / sections
+  /// Cards, sheets, dialogs. Base 3.2 `surface`.
   static const surface = Color(0xFFFFFFFF);
 
-  // Text
-  static const ink = Color(0xFF1E1B16); // primary text (warm near-black)
-  static const muted = Color(0xFF6E6A61); // secondary / captions
-  static const hairline = Color(0xFFE4DFD3); // dividers / borders
+  /// Image tiles, grouped row containers, input fills, skeletons.
+  static const tile = Color(0xFFEDECE8);
 
-  // Modern × natural tokens — soft hairline outlines + diffused elevation.
-  // `border` is a warm light hairline (not a bold outline) for a calm, clean feel.
-  static const border = Color(0xFFDDD6C8); // soft hairline outline on surfaces
-  static const lemon = Color(0xFFEAB93F); // warm accent — banners, highlights
-  static const sky = Color(0xFF74A9C7); // secondary pop
+  /// Borders, dividers, rings. Never on a card: white on canvas is the edge.
+  static const hairline = Color(0x1417191C);
 
-  // Weather accents (F4 hint badges)
-  static const rain = Color(0xFF4A7BA6);
-  static const heat = Color(0xFFE8A13A);
-  static const frost = Color(0xFF8FB0C7);
+  static const ink = Color(0xFF17191C);
+  static const inkMuted = Color(0xFF5C6068);
+  static const inkFaint = Color(0xFF6B6F78);
+  static const inkPlaceholder = Color(0xFF8A8E98);
+  static const onInk = Color(0xFFFFFFFF);
+  static const scrim = Color(0x66101114);
 
-  // Planting-calendar band colours (per activity lane)
-  static const bandSowIndoor = Color(0xFFA9CE8B); // pale sprout
-  static const bandSowOutdoor = Color(0xFF6DA544); // green
-  static const bandPlantOut = Color(0xFF44692A); // deep green
-  static const bandHarvest = Color(0xFFC56A45); // clay
+  // ------------------------------------------------------------------- brand
+  /// Base 3.3 `accent`. Terracotta, 4.9:1 against white.
+  static const accent = Color(0xFFB4532F);
 
-  // Difficulty
-  static const easy = Color(0xFF5C8A3A);
-  static const medium = Color(0xFFE8A13A);
-  static const hard = Color(0xFFC0392B);
+  /// Pressed and deep accents.
+  static const accentDeep = Color(0xFF93401F);
+  static const onAccent = Color(0xFFFFFFFF);
 
-  // Status
-  static const done = Color(0xFF5C8A3A);
-  static const warn = Color(0xFFC0392B);
+  /// Accent at ~12 percent over canvas. Selected rows, highlight cards.
+  static const accentSoft = Color(0xFFF3E4DC);
+
+  /// Text on [accentSoft], 4.5:1.
+  static const onAccentSoft = Color(0xFF8E3F22);
+
+  // --------------------------------------------------------------- semantics
+  // Fixed across every VisionTech app. Text-safe on canvas and tile.
+  static const positive = Color(0xFF137A4A);
+  static const warning = Color(0xFF9A5B00);
+  static const critical = Color(0xFFC0292B);
+  static const positiveSoft = Color(0xFFE4F3EA);
+  static const warningSoft = Color(0xFFFBEFD9);
+  static const criticalSoft = Color(0xFFFBE5E5);
+  static const onSemantic = Color(0xFFFFFFFF);
+
+  // Functional fills: rings, bars, dots, meters. Not text-safe on light.
+  static const vividPositive = Color(0xFF79FB32);
+  static const vividWarning = Color(0xFFF2812F);
+  static const vividCritical = Color(0xFFCE1A3B);
+  static const onVivid = Color(0xFF101114);
+
+  // ------------------------------------------------------- legacy aliases
+  // The old Cropsy names, kept so the 30-odd screens keep compiling while they
+  // migrate to the token names above. Delete an alias once its callers move.
+  static const sprout = accent;
+  static const sproutDeep = accentDeep;
+  static const clay = accent;
+  static const clayDeep = accentDeep;
+  static const paper = canvas;
+  static const sand = tile;
+  static const muted = inkMuted;
+  static const border = hairline;
+  static const lemon = vividWarning;
+  static const sky = inkMuted;
+
+  // Weather hints (F4). The base allows no fourth semantic hue, so rain reads
+  // as information in `ink` and only heat and frost carry a semantic.
+  static const rain = ink;
+  static const heat = warning;
+  static const frost = inkMuted;
+
+  // Planting-calendar lanes. Data colours, one hue per activity.
+  static const bandSowIndoor = Color(0xFFBFE0A6);
+  static const bandSowOutdoor = Color(0xFF63B36B);
+  static const bandPlantOut = Color(0xFF137A4A);
+  static const bandHarvest = accent;
+
+  // Difficulty and status map onto the fixed semantics.
+  static const easy = positive;
+  static const medium = warning;
+  static const hard = critical;
+  static const done = positive;
+  static const warn = critical;
 
   /// Category dot colours, keyed by the crop `category` field (9 categories).
+  /// Taxonomy colours, not brand: they label content the way a legend does.
   static const category = <String, Color>{
     'fruit': Color(0xFFD1495B),
     'fruit-veg': Color(0xFFE8743B),
@@ -64,5 +117,5 @@ abstract final class AppColors {
   };
 
   static Color categoryColor(String category) =>
-      AppColors.category[category] ?? muted;
+      AppColors.category[category] ?? inkMuted;
 }

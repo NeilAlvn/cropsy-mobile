@@ -10,6 +10,7 @@ import 'brutal.dart';
 import 'colors.dart';
 import 'components.dart';
 import 'crop_image.dart';
+import 'glass.dart';
 import 'typography.dart';
 
 /// A photo-forward crop card (Home grid, collection rows).
@@ -44,30 +45,21 @@ class PhotoCard extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    DecoratedBox(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                              color: AppColors.border, width: Neo.borderWidth),
-                        ),
-                      ),
-                      child: CropImage(slug: crop.slug, category: crop.category),
-                    ),
+                    CropImage(slug: crop.slug, category: crop.category),
                     if (crop.draft)
                       const Positioned(left: 8, top: 8, child: DraftBadge(compact: true)),
                     Positioned(
                       right: 8,
                       bottom: 8,
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                              color: AppColors.border, width: 1),
+                      child: GlassSurface(
+                        borderRadius: BorderRadius.circular(16),
+                        blur: 16,
+                        child: const SizedBox(
+                          width: 32,
+                          height: 32,
+                          child: Icon(Icons.favorite_border,
+                              size: 16, color: AppColors.ink),
                         ),
-                        child: const Icon(Icons.favorite_border,
-                            size: 15, color: AppColors.ink),
                       ),
                     ),
                   ],
@@ -84,7 +76,7 @@ class PhotoCard extends StatelessWidget {
                         const SizedBox(width: 6),
                         Expanded(
                           child: Text(crop.names.en,
-                              style: AppText.heading(context),
+                              style: AppText.subheading(context),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis),
                         ),
@@ -145,17 +137,17 @@ class FilterChipsRow extends StatelessWidget {
           return GestureDetector(
             onTap: () => onSelect(value),
             child: Container(
+              height: 36,
               alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: Neo.box(
-                color: on ? AppColors.sprout : AppColors.surface,
-                shadowed: on,
-                shadowOverride: Neo.shadowSm,
+              padding: const EdgeInsets.symmetric(horizontal: 14),
+              decoration: BoxDecoration(
+                color: on ? AppColors.ink : AppColors.surface,
+                borderRadius: BorderRadius.circular(Neo.radiusPill),
               ),
               child: Text(
                 label,
                 style: AppText.label(context,
-                    color: on ? Colors.white : AppColors.ink),
+                    color: on ? AppColors.onInk : AppColors.ink),
               ),
             ),
           );
@@ -182,7 +174,10 @@ class SegmentedTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(4),
-      decoration: Neo.box(color: AppColors.sand),
+      decoration: BoxDecoration(
+        color: AppColors.tile,
+        borderRadius: BorderRadius.circular(Neo.radiusPill),
+      ),
       child: Row(
         children: [
           for (var i = 0; i < labels.length; i++)
@@ -195,14 +190,15 @@ class SegmentedTabs extends StatelessWidget {
                   margin: EdgeInsets.only(right: i == labels.length - 1 ? 0 : 4),
                   decoration: i == index
                       ? BoxDecoration(
-                          color: AppColors.sprout,
-                          borderRadius: BorderRadius.circular(12),
+                          color: AppColors.surface,
+                          borderRadius: BorderRadius.circular(Neo.radiusPill),
+                          boxShadow: Neo.float,
                         )
                       : null,
                   child: Text(
                     labels[i],
                     style: AppText.label(context,
-                        color: i == index ? Colors.white : AppColors.muted),
+                        color: i == index ? AppColors.ink : AppColors.inkMuted),
                   ),
                 ),
               ),

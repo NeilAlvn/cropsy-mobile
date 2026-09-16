@@ -1,9 +1,11 @@
-/// Modernist building blocks: hairline outlines + soft diffused elevation,
-/// generously rounded corners. Every boxy surface in Cropsy is built from these
-/// so the look stays consistent — cards, buttons, chips, tabs, tiles.
+/// Shape and elevation — VisionTech base sections 5 and 6.
 ///
-/// (Filename/class kept as `Neo` to avoid churn across imports; the values are
-/// now a calm modern × natural language, not neo-brutalism.)
+/// Three structural radii plus one for sheets, and nothing else. Content is
+/// flat: cards, tiles and rows carry no shadow and no border, because a white
+/// surface on the grey canvas is already the edge. Only things that float over
+/// content (tab bar, sheets, toasts, icon buttons over media) cast a shadow.
+///
+/// (Filename/class kept as `Neo` so imports across the app do not churn.)
 library;
 
 import 'package:flutter/material.dart';
@@ -11,35 +13,55 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 
 abstract final class Neo {
-  static const double radius = 16;
+  /// Base 5 `radius-card`. Cards, dialogs, grouped list containers.
+  static const double radius = 20;
+
+  /// Image tiles, thumbnails, inputs, skeletons.
+  static const double radiusTile = 16;
+
+  /// Buttons, chips, badges, search fields, the tab bar.
+  static const double radiusPill = 999;
+
+  /// Top corners of bottom sheets and full-screen modals.
+  static const double radiusSheet = 28;
+
+  /// Small images inside a row (40 to 56 wide).
+  static const double radiusThumb = 12;
+
   static const double borderWidth = 1;
 
+  /// Hairline ring. Inputs, ghost buttons, dividers — not cards.
   static const Border border = Border.fromBorderSide(
     BorderSide(color: AppColors.hairline, width: borderWidth),
   );
 
-  /// Soft, diffused elevation — a gentle drop plus a tight ambient shadow.
-  static const List<BoxShadow> shadow = [
-    BoxShadow(color: Color(0x14000000), offset: Offset(0, 8), blurRadius: 20),
-    BoxShadow(color: Color(0x0A000000), offset: Offset(0, 1), blurRadius: 3),
+  /// Level 1, floating: tab bar, icon buttons over media, toasts.
+  static const List<BoxShadow> float = [
+    BoxShadow(color: Color(0x1A17191C), offset: Offset(0, 8), blurRadius: 24),
   ];
 
-  /// A lighter lift for dense elements (list rows, chips).
-  static const List<BoxShadow> shadowSm = [
-    BoxShadow(color: Color(0x12000000), offset: Offset(0, 4), blurRadius: 12),
+  /// Level 2, overlay: bottom sheets, dialogs, popovers.
+  static const List<BoxShadow> overlay = [
+    BoxShadow(color: Color(0x2417191C), offset: Offset(0, 16), blurRadius: 40),
   ];
 
-  /// Standard surface: fill + hairline outline + soft elevation.
+  /// Legacy names, mapped onto the two levels above.
+  static const List<BoxShadow> shadow = float;
+  static const List<BoxShadow> shadowSm = float;
+
+  /// Standard surface: a flat white card by default. Pass `shadowed: true`
+  /// only for something that genuinely floats over content.
   static BoxDecoration box({
     Color color = AppColors.surface,
     double r = radius,
-    bool shadowed = true,
+    bool shadowed = false,
+    bool bordered = false,
     List<BoxShadow>? shadowOverride,
   }) =>
       BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(r),
-        border: border,
-        boxShadow: shadowed ? (shadowOverride ?? shadow) : null,
+        border: bordered ? border : null,
+        boxShadow: shadowed ? (shadowOverride ?? float) : null,
       );
 }
