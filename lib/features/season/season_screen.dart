@@ -22,11 +22,14 @@ import '../../design/widgets.dart';
 import '../../timing/dates.dart';
 import '../../timing/season.dart';
 import '../../timing/types.dart';
+import '../../timing/weather_adjust.dart';
 import '../garden/garden_repository.dart';
 import '../garden/plant_detail_screen.dart';
 import '../grow/crop_detail_screen.dart';
+import '../harvest/harvest_screen.dart';
 import '../repository_scope.dart';
 import 'season_rows.dart';
+import 'season_markers.dart';
 
 const _months = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -76,13 +79,75 @@ class SeasonScreen extends StatefulWidget {
 
 class _SeasonScreenState extends State<SeasonScreen> {
   final _scroll = ScrollController();
-  Future<List<SeasonNode>>? _nodes;
+  Future<({List<SeasonNode> nodes, List<SeasonMarker> markers, Set<String> logged})>?
+      _data;
   bool _jumped = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _nodes ??= RepositoryScope.of(context).seasonNodes();
+    _data ??= _load();
+  }
+
+  /// The path is the plants' own nodes plus everything the season itself puts
+  /// on it: frost dates, the seed order, the photo, the payoff, the recap and
+  /// whatever the weather changed today.
+  Future<({List<SeasonNode> nodes, List<SeasonMarker> markers, Set<String> logged})>
+      _load() async {
+    final repo = RepositoryScope.of(context);
+    final today = parseIso(repo.today);
+    final nodes = await repo.seasonNodes();
+    final plants = await repo.plants();
+    final tally = await repo.seasonTally();
+
+    // A node is done when the gardener logged it, not when its date passed.
+    final logged = <String>{};
+    for (final plant in plants) {
+      for (final node in await repo.pathFor(plant.id)) {
+        if (node.loggedOn != null) logged.add('${plant.id}:${node.kind.name}');
+      }
+    }
+
+    // One photo a month is the ask, so the marker only appears when this month
+    // has none yet.
+    final stamp = repo.today.substring(0, 7);
+    var photoThisMonth = false;
+    for (final plant in plants) {
+      for (final entry in await repo.journal(plant.id)) {
+        if (entry.photoPath != null && entry.entryOn.startsWith(stamp)) {
+          photoThisMonth = true;
+          break;
+        }
+      }
+      if (photoThisMonth) break;
+    }
+
+    // The weather overlay already runs for This Week; the path shows the same
+    // change, so the two never disagree.
+    String? weatherTitle, weatherCaption;
+    for (final item in await repo.thisWeek()) {
+      final hint = item.hint;
+      if (hint == null || hint.action == AdjustAction.none) continue;
+      (weatherTitle, weatherCaption) = switch (hint.action) {
+        AdjustAction.skip => ('Rain did the watering', 'Skipped for you, the streak still counts'),
+        AdjustAction.bringForward => ('Heat on the way', 'Water earlier than planned'),
+        AdjustAction.defer => ('Soil still too cold', 'Sowing held until it warms'),
+        AdjustAction.none => (null, null),
+      };
+      break;
+    }
+
+    final markers = seasonMarkers(MarkerFacts(
+      today: today,
+      frost: repo.frost,
+      plantCount: plants.length,
+      photoThisMonth: photoThisMonth,
+      euros: tally.euros,
+      kilos: tally.kg,
+      weatherTitle: weatherTitle,
+      weatherCaption: weatherCaption,
+    ));
+    return (nodes: nodes, markers: markers, logged: logged);
   }
 
   @override
@@ -125,14 +190,14 @@ class _SeasonScreenState extends State<SeasonScreen> {
         ),
         SafeArea(
           bottom: false,
-          child: FutureBuilder<List<SeasonNode>>(
-            future: _nodes,
+          child: FutureBuilder<
+              ({List<SeasonNode> nodes, List<SeasonMarker> markers, Set<String> logged})>(
+            future: _data,
             builder: (context, snap) {
-              if (snap.connectionState != ConnectionState.done) {
-                return const SizedBox.shrink();
-              }
-              final rows = _build(snap.data ?? const [], today, repo);
-              if (rows.whereType<_NodeItem>().isEmpty) {
+              final data = snap.data;
+              if (data == null) return const SizedBox.shrink();
+              final rows = _build(data.nodes, data.markers, data.logged, today, repo);
+              if (data.nodes.isEmpty) {
                 return const Center(
                   child: Padding(
                     padding: EdgeInsets.all(40),
@@ -165,11 +230,13 @@ class _SeasonScreenState extends State<SeasonScreen> {
 
   /// Turns the path's shape into the rows that draw it. Each node is told where
   /// its neighbours sit so the connector between them joins up.
-  List<_Item> _build(List<SeasonNode> nodes, DateTime today, GardenRepository repo) {
+  List<_Item> _build(List<SeasonNode> nodes, List<SeasonMarker> markers,
+      Set<String> logged, DateTime today, GardenRepository repo) {
     final shape = seasonRows(
       nodes: nodes,
       today: today,
       optionsFor: (month) => repo.whatToGrowIn(month).length,
+      markers: markers,
     );
 
     // Swing per path stop, worked out first so a stop can look ahead and back.
@@ -182,6 +249,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
           swings[i] = 0;
           stop = 1;
         case SeasonRowKind.node:
+        case SeasonRowKind.marker:
         case SeasonRowKind.suggestion:
           swings[i] = _swing(stop++);
         case SeasonRowKind.today:
@@ -213,6 +281,16 @@ class _SeasonScreenState extends State<SeasonScreen> {
         case SeasonRowKind.node:
           rows.add(_NodeItem(
             node: row.node!,
+            today: today,
+            repo: repo,
+            logged: logged,
+            swing: swings[i]!,
+            above: neighbour(i, -1),
+            below: neighbour(i, 1),
+          ));
+        case SeasonRowKind.marker:
+          rows.add(_MarkerItem(
+            marker: row.marker!,
             today: today,
             repo: repo,
             swing: swings[i]!,
@@ -418,6 +496,7 @@ class _NodeItem implements _Item {
     required this.node,
     required this.today,
     required this.repo,
+    required this.logged,
     required this.swing,
     required this.above,
     required this.below,
@@ -426,6 +505,9 @@ class _NodeItem implements _Item {
   final SeasonNode node;
   final DateTime today;
   final GardenRepository repo;
+
+  /// `plantId:nodeKind` for everything the gardener has logged.
+  final Set<String> logged;
   final double swing;
   final double? above;
   final double? below;
@@ -434,9 +516,23 @@ class _NodeItem implements _Item {
   double get height => _nodeRow;
 
   _State get state {
-    if (parseIso(node.end).isBefore(today)) return _State.done;
+    if (_isLogged) return _State.done;
+    // A window that has passed unlogged is not a failure, and the base bans
+    // "overdue" anywhere (PRD §7.2), so it simply reads as no longer open.
+    if (parseIso(node.end).isBefore(today)) return _State.ahead;
     if (!parseIso(node.start).isAfter(today)) return _State.now;
     return _State.ahead;
+  }
+
+  bool get _isLogged {
+    final plantId = node.plantId;
+    if (plantId == null) return false;
+    return switch (node.kind) {
+      SeasonNodeKind.sowWindow => logged.contains('$plantId:sow'),
+      SeasonNodeKind.harvestWindow => logged.contains('$plantId:harvest') ||
+          logged.contains('$plantId:harvested'),
+      SeasonNodeKind.succession => false,
+    };
   }
 
   String get _label => switch (node.kind) {
@@ -459,8 +555,12 @@ class _NodeItem implements _Item {
           category: repo.cropCategory(node.cropSlug),
         ),
         onTap: () {
+          if (node.kind == SeasonNodeKind.succession) {
+            _planIt(context);
+            return;
+          }
           final plantId = node.plantId;
-          if (plantId != null && node.kind != SeasonNodeKind.succession) {
+          if (plantId != null) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) => PlantDetailScreen(plantId: plantId)));
             return;
@@ -472,6 +572,158 @@ class _NodeItem implements _Item {
           }
         },
       );
+}
+
+extension on _NodeItem {
+  /// A succession prompt is an offer, so its tap takes it: the crop joins the
+  /// garden's planning list, the same act the planning screen calls "Plan it".
+  Future<void> _planIt(BuildContext context) async {
+    final gardens = await repo.gardens();
+    if (gardens.isEmpty) return;
+    final crop = repo.cropBySlug(node.cropSlug);
+    await repo.addPlant(
+      gardenId: gardens.first.id,
+      cropSlug: node.cropSlug,
+      potLitres: crop?.minPotLitres?.toInt(),
+    );
+    if (!context.mounted) return;
+    Haptics.complete();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('${repo.cropName(node.cropSlug)} added to Planning'),
+    ));
+  }
+}
+
+/// Everything on the path that is not a plant's own task: the frost dates, the
+/// seed order, the monthly photo, the payoff, the recap, and what the weather
+/// changed today.
+class _MarkerItem implements _Item {
+  const _MarkerItem({
+    required this.marker,
+    required this.today,
+    required this.repo,
+    required this.swing,
+    required this.above,
+    required this.below,
+  });
+
+  final SeasonMarker marker;
+  final DateTime today;
+  final GardenRepository repo;
+  final double swing;
+  final double? above;
+  final double? below;
+
+  @override
+  double get height => _nodeRow;
+
+  _State get state {
+    final on = parseIso(marker.on);
+    if (on.isBefore(today)) return _State.done;
+    // A marker has no window, so "now" is the day itself.
+    if (on.isAtSameMomentAs(today)) return _State.now;
+    return _State.ahead;
+  }
+
+  String get _badgeAsset => switch (marker.kind) {
+        SeasonMarkerKind.ijsheiligen => 'frost',
+        SeasonMarkerKind.lastFrost => 'frost',
+        SeasonMarkerKind.firstFrost => 'frost',
+        SeasonMarkerKind.orderSeeds => 'seeds',
+        SeasonMarkerKind.photo => 'photo',
+        SeasonMarkerKind.payoff => 'tally',
+        SeasonMarkerKind.recap => 'recap',
+        SeasonMarkerKind.weather => 'rain',
+      };
+
+  @override
+  Widget build(BuildContext context) => _PathStop(
+        swing: swing,
+        above: above,
+        below: below,
+        // A frost date is never "done" the way a task is: it is a fact about
+        // the year, so it never carries a tick.
+        state: state == _State.done ? _State.ahead : state,
+        label: marker.title,
+        caption: marker.caption,
+        badge: 'assets/nodes/$_badgeAsset.png',
+        onTap: () => _open(context),
+      );
+
+  void _open(BuildContext context) {
+    switch (marker.kind) {
+      case SeasonMarkerKind.photo:
+        _openPhoto(context);
+      case SeasonMarkerKind.payoff:
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => const HarvestScreen()));
+      case SeasonMarkerKind.orderSeeds:
+        showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: AppColors.surface,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+          ),
+          builder: (context) => _MonthOptions(month: 3, crops: repo.whatToGrowIn(3)),
+        );
+      case SeasonMarkerKind.ijsheiligen:
+      case SeasonMarkerKind.lastFrost:
+      case SeasonMarkerKind.firstFrost:
+      case SeasonMarkerKind.recap:
+      case SeasonMarkerKind.weather:
+        _tell(context);
+    }
+  }
+
+  /// The mascot explains the marker. Base 8.13: a sheet, not a dialog.
+  void _tell(BuildContext context) => showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: AppColors.surface,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+        builder: (context) => Padding(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 36),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(marker.title, style: AppText.heading(context)),
+              const SizedBox(height: 12),
+              MascotSays(
+                pose: switch (marker.kind) {
+                  SeasonMarkerKind.recap => MascotPose.celebrating,
+                  SeasonMarkerKind.weather => MascotPose.rain,
+                  _ => MascotPose.frost,
+                },
+                size: 72,
+                text: _explain(),
+              ),
+            ],
+          ),
+        ),
+      );
+
+  String _explain() => switch (marker.kind) {
+        SeasonMarkerKind.ijsheiligen =>
+          'The ice saints, 11 to 15 May. A late night frost in this week is common in the Netherlands, so tomatoes, courgettes and basil stay under cover until it passes.',
+        SeasonMarkerKind.lastFrost =>
+          'The average last spring frost for your region. Every sowing date in the app is counted from it, and an average is not a promise: watch the forecast either side of it.',
+        SeasonMarkerKind.firstFrost =>
+          'The average first autumn frost for your region. Harvest windows are counted back from it, so anything still ripening after this date is on borrowed time.',
+        SeasonMarkerKind.recap =>
+          'At the end of December the season adds up: what you grew, what you picked, and what it saved you.',
+        _ => marker.caption,
+      };
+
+  Future<void> _openPhoto(BuildContext context) async {
+    final growing = await repo.growingPlants();
+    if (!context.mounted) return;
+    if (growing.isEmpty) return;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => PlantDetailScreen(plantId: growing.first.id)));
+  }
 }
 
 /// A future month with nothing planned. The point of the season spine: never a
@@ -674,8 +926,7 @@ class _NowBubble extends StatelessWidget {
             ),
             child: Text(label,
                 style: AppText.label(context, color: AppColors.accent),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis),
+                maxLines: 2),
           ),
         ],
       );
