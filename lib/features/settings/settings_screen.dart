@@ -6,6 +6,7 @@ library;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -122,7 +123,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           AppCard(
             child: ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.download_outlined, color: AppColors.sprout),
+              leading: Icon(PhosphorIcons.downloadSimple, color: AppColors.sprout),
               title: Text('Export my data (JSON)', style: AppText.label(context)),
               subtitle: Text('Copies everything to the clipboard.', style: AppText.caption(context)),
               onTap: () => _run(() async {
@@ -182,20 +183,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: Text(q, style: AppText.label(context)),
                 iconColor: AppColors.sprout,
                 collapsedIconColor: AppColors.muted,
-                children: [Align(alignment: Alignment.centerLeft, child: Padding(padding: const EdgeInsets.only(bottom: 10), child: Text(a, style: AppText.bodyMuted(context))))],
+                children: [Align(alignment: Alignment.centerLeft, child: Padding(padding: EdgeInsets.only(bottom: 10), child: Text(a, style: AppText.bodyMuted(context))))],
               ),
             ),
-          const SizedBox(height: 12),
-          for (final (label, icon, path) in const [
-            ('Contact us', Icons.mail_outline, '/support'),
-            ('Privacy', Icons.lock_outline, '/privacy'),
-            ('Terms', Icons.description_outlined, '/terms'),
+          SizedBox(height: 12),
+          for (final (label, icon, path) in [
+            ('Contact us', PhosphorIcons.envelope, '/support'),
+            ('Privacy', PhosphorIcons.lock, '/privacy'),
+            ('Terms', PhosphorIcons.fileText, '/terms'),
           ])
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: Icon(icon, color: AppColors.sprout),
               title: Text(label, style: AppText.label(context)),
-              trailing: Icon(Icons.open_in_new, size: 16, color: AppColors.muted),
+              trailing: Icon(PhosphorIcons.arrowSquareOut, size: 16, color: AppColors.muted),
               onTap: () => launchUrl(Uri.parse('$websiteUrl$path'), mode: LaunchMode.externalApplication),
             ),
           const SizedBox(height: 24),

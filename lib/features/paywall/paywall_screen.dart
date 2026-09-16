@@ -5,6 +5,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 
 import '../../design/brutal.dart';
 import '../../design/colors.dart';
@@ -44,7 +45,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
             children: [
               Align(
                 alignment: Alignment.centerRight,
-                child: IconButton(icon: Icon(Icons.close, color: AppColors.ink), onPressed: () => Navigator.of(context).pop()),
+                child: IconButton(icon: Icon(PhosphorIcons.x, color: AppColors.ink), onPressed: () => Navigator.of(context).pop()),
               ),
               Text('One free garden,\nfree forever.', style: AppText.display(context)),
               const SizedBox(height: 8),
@@ -76,7 +77,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                             ],
                           ),
                         ),
-                        Icon(_plan == i ? Icons.check_circle : Icons.circle_outlined, color: _plan == i ? AppColors.onAccent : AppColors.hairline),
+                        Icon(_plan == i ? PhosphorIcons.checkCircle : PhosphorIcons.circle, color: _plan == i ? AppColors.onAccent : AppColors.hairline),
                       ]),
                     ),
                   ),

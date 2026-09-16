@@ -9,6 +9,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../design/icons.dart';
 import 'package:flutter/rendering.dart';
 
 import '../design/colors.dart';
@@ -117,11 +118,35 @@ class _TabPill extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _Tab(icon: Icons.home_rounded, label: 'Home', index: 0, current: index, onTap: onSelect),
-            _Tab(icon: Icons.grass_rounded, label: 'My garden', index: 1, current: index, onTap: onSelect),
+            _Tab(
+                icon: PhosphorIcons.house,
+                activeIcon: PhosphorFill.house,
+                label: 'Home',
+                index: 0,
+                current: index,
+                onTap: onSelect),
+            _Tab(
+                icon: PhosphorIcons.plant,
+                activeIcon: PhosphorFill.plant,
+                label: 'My garden',
+                index: 1,
+                current: index,
+                onTap: onSelect),
             _SeasonTab(active: index == 2, onTap: () => onSelect(2)),
-            _Tab(icon: Icons.eco_rounded, label: 'Explore', index: 3, current: index, onTap: onSelect),
-            _Tab(icon: Icons.healing_rounded, label: 'Diagnose', index: 4, current: index, onTap: onSelect),
+            _Tab(
+                icon: PhosphorIcons.leaf,
+                activeIcon: PhosphorFill.leaf,
+                label: 'Explore',
+                index: 3,
+                current: index,
+                onTap: onSelect),
+            _Tab(
+                icon: PhosphorIcons.bandaids,
+                activeIcon: PhosphorFill.bandaids,
+                label: 'Diagnose',
+                index: 4,
+                current: index,
+                onTap: onSelect),
           ],
         ),
       ),
@@ -132,6 +157,7 @@ class _TabPill extends StatelessWidget {
 class _Tab extends StatelessWidget {
   const _Tab({
     required this.icon,
+    required this.activeIcon,
     required this.label,
     required this.index,
     required this.current,
@@ -139,6 +165,9 @@ class _Tab extends StatelessWidget {
   });
 
   final IconData icon;
+
+  /// The Fill weight of the same glyph, for the selected tab (base 7).
+  final IconData activeIcon;
   final String label;
   final int index;
   final int current;
@@ -157,7 +186,11 @@ class _Tab extends StatelessWidget {
         child: SizedBox(
           width: 52,
           height: 44,
-          child: Icon(icon, size: 24, color: on ? AppColors.ink : AppColors.inkMuted),
+          child: Icon(
+            on ? activeIcon : icon,
+            size: 24,
+            color: on ? AppColors.ink : AppColors.inkMuted,
+          ),
         ),
       ),
     );
@@ -191,7 +224,7 @@ class _SeasonTab extends StatelessWidget {
                 color: AppColors.accent,
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.timeline_rounded,
+              child: Icon(PhosphorIcons.path,
                   color: AppColors.onAccent, size: 26),
             ),
           ),

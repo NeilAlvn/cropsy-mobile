@@ -3,6 +3,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../design/icons.dart';
 
 import '../db/database.dart' show GardenKind;
 import '../timing/weather_adjust.dart';
@@ -254,10 +255,10 @@ class WeatherHintBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (color, icon, text) = switch (adjustment.action) {
-      AdjustAction.skip => (AppColors.rain, Icons.water_drop, 'Enough rain'),
-      AdjustAction.bringForward => (AppColors.heat, Icons.wb_sunny, 'Heat coming'),
-      AdjustAction.defer => (AppColors.frost, Icons.ac_unit, 'Soil too cold'),
-      AdjustAction.none => (AppColors.muted, Icons.info_outline, ''),
+      AdjustAction.skip => (AppColors.rain, PhosphorIcons.drop, 'Enough rain'),
+      AdjustAction.bringForward => (AppColors.heat, PhosphorIcons.sun, 'Heat coming'),
+      AdjustAction.defer => (AppColors.frost, PhosphorIcons.snowflake, 'Soil too cold'),
+      AdjustAction.none => (AppColors.muted, PhosphorIcons.info, ''),
     };
     return Pill(
       label: text,
@@ -276,5 +277,5 @@ class DraftBadge extends StatelessWidget {
   final bool compact;
 
   @override
-  Widget build(BuildContext context) => Pill(label: compact ? 'Concept' : 'Concept, nog niet gecontroleerd', icon: Icons.edit_note, color: AppColors.clay);
+  Widget build(BuildContext context) => Pill(label: compact ? 'Concept' : 'Concept, nog niet gecontroleerd', icon: PhosphorIcons.notePencil, color: AppColors.clay);
 }

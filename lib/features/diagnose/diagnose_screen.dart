@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 
 import '../../design/colors.dart';
 import '../../design/components.dart';
@@ -47,7 +48,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
           AppCard(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ScanScreen(mode: ScanMode.diagnose))),
             child: Row(children: [
-              Icon(Icons.center_focus_strong, color: AppColors.sprout),
+              Icon(PhosphorIcons.crosshairSimple, color: AppColors.sprout),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -58,7 +59,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right, color: AppColors.muted),
+              Icon(PhosphorIcons.caretRight, color: AppColors.muted),
             ]),
           ),
           const SizedBox(height: 24),
@@ -101,7 +102,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                         ],
                       ),
                     ),
-                    Icon(Icons.chevron_right, color: AppColors.muted),
+                    Icon(PhosphorIcons.caretRight, color: AppColors.muted),
                   ]),
                 ),
               ),

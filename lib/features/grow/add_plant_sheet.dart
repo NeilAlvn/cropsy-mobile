@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 import '../../design/motion.dart';
 import 'package:intl/intl.dart';
 
@@ -28,11 +29,11 @@ class PlantDetails {
   final String? variety;
 }
 
-const places = <(String, String, IconData)>[
-  ('ground', 'In the ground', Icons.yard),
-  ('raised_bed', 'Raised bed', Icons.grid_view),
-  ('outdoor_container', 'Pot outside', Icons.balcony),
-  ('indoor_container', 'Pot inside', Icons.window),
+final places = <(String, String, IconData)>[
+  ('ground', 'In the ground', PhosphorIcons.flowerLotus),
+  ('raised_bed', 'Raised bed', PhosphorIcons.squaresFour),
+  ('outdoor_container', 'Pot outside', PhosphorIcons.buildings),
+  ('indoor_container', 'Pot inside', PhosphorIcons.browsers),
 ];
 
 String methodLabel(MethodType m) => switch (m) {
@@ -108,12 +109,12 @@ class _SheetState extends State<_Sheet> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Row(children: [
-                  Icon(Icons.event, size: 20, color: AppColors.sprout),
+                  Icon(PhosphorIcons.calendarBlank, size: 20, color: AppColors.sprout),
                   const SizedBox(width: 12),
                   Text('Planting date', style: AppText.bodyMuted(context)),
                   const Spacer(),
                   Text(DateFormat('d MMM yyyy').format(parseIso(_on)), style: AppText.label(context)),
-                  Icon(Icons.chevron_right, color: AppColors.muted),
+                  Icon(PhosphorIcons.caretRight, color: AppColors.muted),
                 ]),
               ),
             ),
@@ -165,7 +166,7 @@ class _SheetState extends State<_Sheet> {
             const SizedBox(height: 20),
             PrimaryButton(
               label: 'Growing it',
-              icon: Icons.eco,
+              icon: PhosphorIcons.leaf,
               onPressed: () => Navigator.pop(
                 context,
                 PlantDetails(

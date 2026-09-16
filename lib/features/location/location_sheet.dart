@@ -11,6 +11,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 import '../../design/motion.dart';
 
 import '../../data/frost_presets.dart';
@@ -136,7 +137,7 @@ class _LocationSheetState extends State<_LocationSheet> {
                   isDense: true,
                   hintText: 'Town, region or postcode',
                   hintStyle: AppText.bodyMuted(context),
-                  prefixIcon: Icon(Icons.search, color: AppColors.muted),
+                  prefixIcon: Icon(PhosphorIcons.magnifyingGlass, color: AppColors.muted),
                   filled: true,
                   fillColor: AppColors.paper,
                   enabledBorder: OutlineInputBorder(
@@ -158,7 +159,7 @@ class _LocationSheetState extends State<_LocationSheet> {
               child: matches.isEmpty
                   ? _pcPattern.hasMatch(_query.trim())
                       ? ListTile(
-                          leading: Icon(Icons.markunread_mailbox_outlined, color: AppColors.sprout),
+                          leading: Icon(PhosphorIcons.envelopeSimple, color: AppColors.sprout),
                           title: Text('Use postcode ${_query.trim().toUpperCase()}', style: AppText.body(context)),
                           subtitle: Text('Looks up the frost dates for that cell.', style: AppText.caption(context)),
                           onTap: _detecting ? null : () => _postcode(_query.trim()),
@@ -180,7 +181,7 @@ class _LocationSheetState extends State<_LocationSheet> {
                         final r = matches[i];
                         final selected = r.name == current;
                         return ListTile(
-                          leading: Icon(Icons.place_outlined,
+                          leading: Icon(PhosphorIcons.mapPin,
                               color: selected ? AppColors.sprout : AppColors.muted),
                           title: Text(r.name, style: AppText.body(context)),
                           subtitle: Text(
@@ -188,7 +189,7 @@ class _LocationSheetState extends State<_LocationSheet> {
                             style: AppText.caption(context),
                           ),
                           trailing: selected
-                              ? Icon(Icons.check_circle, color: AppColors.sprout)
+                              ? Icon(PhosphorIcons.checkCircle, color: AppColors.sprout)
                               : null,
                           onTap: () => Navigator.pop(context, r),
                         );
@@ -219,7 +220,7 @@ class _UseLocationTile extends StatelessWidget {
               child: CircularProgressIndicator(
                   strokeWidth: 2.4, color: AppColors.sprout),
             )
-          : Icon(Icons.my_location, color: AppColors.sprout),
+          : Icon(PhosphorIcons.crosshair, color: AppColors.sprout),
       title: Text(
         detecting ? 'Detecting your location…' : 'Use my current location',
         style: AppText.label(context, color: AppColors.sprout),

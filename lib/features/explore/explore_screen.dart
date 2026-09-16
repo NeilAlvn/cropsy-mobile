@@ -3,6 +3,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 
 import '../../data/collections.dart';
 import '../../design/colors.dart';
@@ -63,13 +64,13 @@ class ExploreScreen extends StatelessWidget {
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => const ScanScreen(), fullscreenDialog: true)),
                   child: Row(children: [
-                    Icon(Icons.center_focus_strong, color: AppColors.accent),
+                    Icon(PhosphorIcons.crosshairSimple, color: AppColors.accent),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text('Identify a plant from a photo',
                           style: AppText.label(context)),
                     ),
-                    Icon(Icons.chevron_right, size: 16, color: AppColors.inkMuted),
+                    Icon(PhosphorIcons.caretRight, size: 16, color: AppColors.inkMuted),
                   ]),
                 ),
               ],

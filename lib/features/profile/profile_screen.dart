@@ -6,6 +6,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 
 import '../../db/database.dart';
 import '../../design/brutal.dart';
@@ -101,13 +102,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SectionHeader('Your garden'),
               _Group(rows: [
                 _Row(
-                  icon: Icons.location_on_outlined,
+                  icon: PhosphorIcons.mapPin,
                   title: 'Region',
                   value: repo.regionName,
                   onTap: () => showLocationPicker(context),
                 ),
                 _Row(
-                  icon: Icons.workspace_premium_outlined,
+                  icon: PhosphorIcons.medal,
                   title: 'Membership',
                   value: d.premium ? 'Lifetime' : 'Free',
                   onTap: () => Navigator.of(context).push(
@@ -119,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SectionHeader('Account'),
               _Group(rows: [
                 _Row(
-                  icon: Icons.settings_outlined,
+                  icon: PhosphorIcons.gear,
                   title: auth?.signedIn == true ? 'Settings and sync' : 'Sign in to sync',
                   onTap: () => Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => const SettingsScreen()))
@@ -220,7 +221,7 @@ class _Identity extends StatelessWidget {
             if (premium)
               Pill(
                 label: 'Lifetime',
-                icon: Icons.workspace_premium,
+                icon: PhosphorIcons.medal,
                 color: AppColors.onAccentSoft,
                 bg: AppColors.accentSoft,
               ),
@@ -321,7 +322,7 @@ class _Row extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              Icon(Icons.chevron_right, size: 16, color: AppColors.inkMuted),
+              Icon(PhosphorIcons.caretRight, size: 16, color: AppColors.inkMuted),
             ],
           ),
         ),

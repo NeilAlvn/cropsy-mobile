@@ -5,6 +5,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 
 import '../../design/colors.dart';
 import '../../design/components.dart';
@@ -127,11 +128,11 @@ class _NodeTile extends StatelessWidget {
                           style: AppText.heading(context, color: dim ? AppColors.muted : AppColors.ink)),
                       const Spacer(),
                       if (state == _NodeState.done)
-                        Pill(label: 'Done ${_fmt(node.loggedOn!)}', color: AppColors.done, icon: Icons.check)
+                        Pill(label: 'Done ${_fmt(node.loggedOn!)}', color: AppColors.done, icon: PhosphorIcons.check)
                       else if (state == _NodeState.current)
-                        const Pill(label: 'Now', color: AppColors.clay, icon: Icons.play_arrow)
+                        Pill(label: 'Now', color: AppColors.clay, icon: PhosphorIcons.play)
                       else if (state == _NodeState.skipped)
-                        const Pill(label: 'Skipped', icon: Icons.redo),
+                        Pill(label: 'Skipped', icon: PhosphorIcons.arrowClockwise),
                     ]),
                     const SizedBox(height: 2),
                     Text(when, style: AppText.bodyMuted(context)),

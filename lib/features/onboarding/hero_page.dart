@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../design/brutal.dart';
@@ -142,7 +143,7 @@ class _HeroPageState extends State<HeroPage> {
                   const SizedBox(height: 20),
                   PrimaryButton(
                     label: widget.buttonLabel,
-                    icon: Icons.arrow_forward,
+                    icon: PhosphorIcons.arrowRight,
                     onPressed: widget.onNext,
                   ),
                   if (widget.onSkip != null) ...[

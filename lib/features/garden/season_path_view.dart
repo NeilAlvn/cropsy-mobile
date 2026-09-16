@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 
 import '../../design/colors.dart';
 import '../../design/components.dart';
@@ -65,7 +66,7 @@ class _SeasonPathViewState extends State<SeasonPathView> {
                 await Navigator.of(context).push(MaterialPageRoute(builder: (_) => PlannerGridScreen(garden: gardens.first)));
               },
               child: Row(children: [
-                Icon(Icons.grid_on, color: AppColors.sprout),
+                Icon(PhosphorIcons.gridFour, color: AppColors.sprout),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -73,7 +74,7 @@ class _SeasonPathViewState extends State<SeasonPathView> {
                     Text('Lay out your bed in 30 cm squares.', style: AppText.caption(context)),
                   ]),
                 ),
-                Icon(Icons.chevron_right, color: AppColors.muted),
+                Icon(PhosphorIcons.caretRight, color: AppColors.muted),
               ]),
             ),
             const SizedBox(height: 18),

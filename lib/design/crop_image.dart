@@ -5,6 +5,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../design/icons.dart';
 
 import 'colors.dart';
 
@@ -45,7 +46,7 @@ class CropImage extends StatelessWidget {
         ),
       ),
       child: Center(
-        child: Icon(Icons.eco_rounded, color: c.withValues(alpha: 0.55), size: 34),
+        child: Icon(PhosphorIcons.leaf, color: c.withValues(alpha: 0.55), size: 34),
       ),
     );
   }

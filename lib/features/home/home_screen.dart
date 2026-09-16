@@ -5,6 +5,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 import 'package:flutter/services.dart';
 
 import 'package:intl/intl.dart';
@@ -182,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return ListTile(
                     title: Text(_months[i], style: AppText.body(context)),
                     trailing: m == _month
-                        ? Icon(Icons.check, color: AppColors.sprout)
+                        ? Icon(PhosphorIcons.check, color: AppColors.sprout)
                         : null,
                     onTap: () => Navigator.pop(context, m),
                   );
@@ -311,7 +312,7 @@ class _RegionChip extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.location_on, size: 18, color: AppColors.accent),
+                  Icon(PhosphorIcons.mapPin, size: 18, color: AppColors.accent),
                   const SizedBox(width: 6),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 220),
@@ -321,7 +322,7 @@ class _RegionChip extends StatelessWidget {
                         overflow: TextOverflow.ellipsis),
                   ),
                   const SizedBox(width: 4),
-                  Icon(Icons.expand_more, size: 18, color: AppColors.inkMuted),
+                  Icon(PhosphorIcons.caretDown, size: 18, color: AppColors.inkMuted),
                 ],
               ),
             ),
@@ -374,7 +375,7 @@ class _SearchField extends StatelessWidget {
           contentPadding: const EdgeInsets.symmetric(vertical: 14),
           hintText: 'Search vegetables',
           hintStyle: AppText.body(context, color: AppColors.inkPlaceholder),
-          prefixIcon: Icon(Icons.search, size: 20, color: AppColors.inkMuted),
+          prefixIcon: Icon(PhosphorIcons.magnifyingGlass, size: 20, color: AppColors.inkMuted),
           filled: true,
           fillColor: AppColors.surface,
           enabledBorder: OutlineInputBorder(
@@ -426,7 +427,7 @@ class _LifetimeCardState extends State<_LifetimeCard> {
         padding: const EdgeInsets.fromLTRB(14, 8, 6, 8),
         child: Row(
           children: [
-            Icon(Icons.workspace_premium, color: AppColors.onInk, size: 22),
+            Icon(PhosphorIcons.medal, color: AppColors.onInk, size: 22),
             const SizedBox(width: 12),
             Expanded(
               child: GestureDetector(
@@ -436,7 +437,7 @@ class _LifetimeCardState extends State<_LifetimeCard> {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.close, color: AppColors.onInk.withValues(alpha: 0.7), size: 20),
+              icon: Icon(PhosphorIcons.x, color: AppColors.onInk.withValues(alpha: 0.7), size: 20),
               onPressed: () async {
                 await repo.setMeta(_key, repo.today);
                 if (mounted) setState(() => _show = false);
@@ -546,7 +547,7 @@ class _TodaysCare extends StatelessWidget {
                     haptic: item.completed ? Haptics.selection : Haptics.complete,
                     onTap: () => repo.setTaskCompleted(item.taskId, !item.completed),
                     child: Row(children: [
-                      Icon(item.completed ? Icons.check_circle : Icons.circle_outlined,
+                      Icon(item.completed ? PhosphorIcons.checkCircle : PhosphorIcons.circle,
                           color: item.completed ? AppColors.positive : AppColors.hairline),
                       const SizedBox(width: 12),
                       KindMark(item.kind, size: 32),
@@ -746,7 +747,7 @@ class _MonthChecklist extends StatelessWidget {
                       Text(it.body.en, style: AppText.caption(context)),
                     ]),
                   ),
-                  if (it.link != null) Icon(Icons.chevron_right, color: AppColors.muted),
+                  if (it.link != null) Icon(PhosphorIcons.caretRight, color: AppColors.muted),
                 ]),
               ),
             ),
@@ -776,7 +777,7 @@ class _MonthTitle extends StatelessWidget {
                 style: AppText.heading(context, color: AppColors.accent)),
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
-              child: Icon(Icons.arrow_drop_down,
+              child: Icon(PhosphorIcons.caretDown,
                   size: 22, color: AppColors.accent),
             ),
           ],

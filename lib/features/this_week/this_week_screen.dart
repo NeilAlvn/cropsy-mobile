@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 import 'package:intl/intl.dart';
 
 import '../../design/colors.dart';
@@ -224,8 +225,8 @@ class _TaskTile extends StatelessWidget {
           const SizedBox(width: 8),
           Icon(
             item.completed
-                ? Icons.check_circle_rounded
-                : Icons.radio_button_unchecked_rounded,
+                ? PhosphorIcons.checkCircle
+                : PhosphorIcons.circle,
             color: item.completed ? AppColors.done : AppColors.hairline,
             size: 26,
           ),
@@ -275,7 +276,7 @@ class _WeatherBanner extends StatelessWidget {
             const SizedBox(width: 12),
             Column(
               children: [
-                Icon(wet ? Icons.umbrella : hotAhead ? Icons.wb_sunny : Icons.cloud_outlined,
+                Icon(wet ? PhosphorIcons.umbrella : hotAhead ? PhosphorIcons.sun : PhosphorIcons.cloud,
                     color: wet ? AppColors.rain : hotAhead ? AppColors.heat : AppColors.muted, size: 26),
                 const SizedBox(height: 2),
                 Text('${today.tempMaxC.round()}°', style: AppText.label(context)),

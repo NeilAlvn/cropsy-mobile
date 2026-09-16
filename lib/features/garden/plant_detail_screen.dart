@@ -7,6 +7,7 @@ import 'dart:io';
 import '../../design/motion.dart';
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 import 'package:intl/intl.dart';
 
 import '../../db/database.dart';
@@ -54,7 +55,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                 ? null
                 : [
                     PopupMenuButton<String>(
-                      icon: Icon(Icons.more_horiz, color: AppColors.ink),
+                      icon: Icon(PhosphorIcons.dotsThree, color: AppColors.ink),
                       color: AppColors.surface,
                       onSelected: (v) => switch (v) {
                         'edit' => _editPlant(repo, plant),
@@ -65,17 +66,17 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                       itemBuilder: (context) => [
                         PopupMenuItem(
                           value: 'edit',
-                          child: _menuRow(Icons.tune, 'Edit plant'),
+                          child: _menuRow(PhosphorIcons.slidersHorizontal, 'Edit plant'),
                         ),
                         if (plant.plantedOn != null)
                           PopupMenuItem(
                             value: 'stop',
                             child: _menuRow(
-                                Icons.undo, 'Move back to planning'),
+                                PhosphorIcons.arrowCounterClockwise, 'Move back to planning'),
                           ),
                         PopupMenuItem(
                           value: 'remove',
-                          child: _menuRow(Icons.delete_outline,
+                          child: _menuRow(PhosphorIcons.trash,
                               'Remove from garden',
                               color: AppColors.warn),
                         ),
@@ -316,7 +317,7 @@ class _Journal extends StatelessWidget {
                             : FutureBuilder<File?>(
                                 future: PhotoUploader.localFile(e.photoPath!),
                                 builder: (context, snap) => snap.data == null
-                                    ? Icon(Icons.photo_outlined, color: AppColors.muted)
+                                    ? Icon(PhosphorIcons.image, color: AppColors.muted)
                                     : Image.file(snap.data!, fit: BoxFit.cover),
                               ),
                       ),
@@ -493,14 +494,14 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Row(
                   children: [
-                    Icon(Icons.event, size: 20, color: AppColors.sprout),
+                    Icon(PhosphorIcons.calendarBlank, size: 20, color: AppColors.sprout),
                     const SizedBox(width: 12),
                     Text('Planted', style: AppText.bodyMuted(context)),
                     const Spacer(),
                     Text(DateFormat('d MMM yyyy').format(parseIso(_plantedOn!)),
                         style: AppText.label(context)),
                     const SizedBox(width: 6),
-                    Icon(Icons.chevron_right, color: AppColors.muted),
+                    Icon(PhosphorIcons.caretRight, color: AppColors.muted),
                   ],
                 ),
               ),

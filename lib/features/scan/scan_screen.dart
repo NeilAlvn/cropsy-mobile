@@ -7,6 +7,7 @@ library;
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../design/colors.dart';
@@ -92,12 +93,12 @@ class _ScanScreenState extends State<ScanScreen> {
         title: Text(identify ? 'Identify a plant' : 'Diagnose a plant', style: AppText.heading(context)),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
+        padding: EdgeInsets.fromLTRB(20, 8, 20, 40),
         children: [
           SegmentedButton<ScanMode>(
-            segments: const [
-              ButtonSegment(value: ScanMode.identify, label: Text('What is it?'), icon: Icon(Icons.search)),
-              ButtonSegment(value: ScanMode.diagnose, label: Text('Is it OK?'), icon: Icon(Icons.healing_outlined)),
+            segments: [
+              ButtonSegment(value: ScanMode.identify, label: Text('What is it?'), icon: Icon(PhosphorIcons.magnifyingGlass)),
+              ButtonSegment(value: ScanMode.diagnose, label: Text('Is it OK?'), icon: Icon(PhosphorIcons.bandaids)),
             ],
             selected: {_mode},
             onSelectionChanged: (s) => setState(() {
@@ -119,7 +120,7 @@ class _ScanScreenState extends State<ScanScreen> {
           ),
           const SizedBox(height: 12),
           Row(children: [
-            Expanded(child: PrimaryButton(label: 'Take photo', icon: Icons.photo_camera_outlined, onPressed: _busy ? null : () => _pick(ImageSource.camera))),
+            Expanded(child: PrimaryButton(label: 'Take photo', icon: PhosphorIcons.camera, onPressed: _busy ? null : () => _pick(ImageSource.camera))),
             const SizedBox(width: 10),
             Expanded(child: SecondaryButton(label: 'From photos', onPressed: _busy ? null : () => _pick(ImageSource.gallery))),
           ]),
@@ -188,7 +189,7 @@ class _Results extends StatelessWidget {
                   ]),
                 ),
                 Pill(label: '${(s.score * 100).round()}%', color: s.score >= 0.5 ? AppColors.sprout : AppColors.muted),
-                if ((identify ? s.cropSlug : s.problemSlug) != null) Icon(Icons.chevron_right, color: AppColors.muted),
+                if ((identify ? s.cropSlug : s.problemSlug) != null) Icon(PhosphorIcons.caretRight, color: AppColors.muted),
               ]),
             ),
           ),

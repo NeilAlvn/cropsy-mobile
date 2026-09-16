@@ -8,6 +8,7 @@ library;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 
 import '../../db/database.dart';
 import '../../design/colors.dart';
@@ -177,8 +178,8 @@ class _Stepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(mainAxisSize: MainAxisSize.min, children: [
-        IconButton(visualDensity: VisualDensity.compact, onPressed: value > 1 ? () => onChanged(value - 1) : null, icon: const Icon(Icons.remove_circle_outline, size: 20)),
+        IconButton(visualDensity: VisualDensity.compact, onPressed: value > 1 ? () => onChanged(value - 1) : null, icon: Icon(PhosphorIcons.minusCircle, size: 20)),
         Text('$value $label', style: AppText.caption(context)),
-        IconButton(visualDensity: VisualDensity.compact, onPressed: value < 12 ? () => onChanged(value + 1) : null, icon: const Icon(Icons.add_circle_outline, size: 20)),
+        IconButton(visualDensity: VisualDensity.compact, onPressed: value < 12 ? () => onChanged(value + 1) : null, icon: Icon(PhosphorIcons.plusCircle, size: 20)),
       ]);
 }

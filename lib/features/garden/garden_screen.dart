@@ -5,6 +5,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 import '../../design/motion.dart';
 
 import '../../db/database.dart';
@@ -66,7 +67,7 @@ class _GardenScreenState extends State<GardenScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.tune, color: AppColors.muted),
+                      icon: Icon(PhosphorIcons.slidersHorizontal, color: AppColors.muted),
                       tooltip: 'Edit garden',
                       onPressed: () => _editGarden(context, repo),
                     ),
@@ -188,7 +189,7 @@ class _PlantList extends StatelessWidget {
                           ),
                         )
                       else
-                        Icon(Icons.chevron_right, color: AppColors.muted),
+                        Icon(PhosphorIcons.caretRight, color: AppColors.muted),
                     ],
                   ),
                 ),
@@ -211,7 +212,7 @@ Widget _swipeToRemoveBackground(BuildContext context) => Container(
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.delete_outline, color: AppColors.warn),
+          Icon(PhosphorIcons.trash, color: AppColors.warn),
           const SizedBox(width: 6),
           Text('Remove', style: AppText.label(context, color: AppColors.warn)),
         ],
@@ -370,7 +371,7 @@ class _HarvestCountdown extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.only(top: 4),
           child: Row(children: [
-            const Icon(Icons.eco, size: 13, color: AppColors.clay),
+            Icon(PhosphorIcons.leaf, size: 13, color: AppColors.clay),
             const SizedBox(width: 4),
             Text(
               days > 0 ? 'Harvest in $days days' : 'Ready to harvest',

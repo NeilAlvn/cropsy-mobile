@@ -6,6 +6,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/companions.dart';
@@ -95,12 +96,12 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                     const SizedBox(height: 14),
                     Wrap(spacing: 8, runSpacing: 8, children: [
                       if (crop.containerOk && crop.minPotLitres != null)
-                        Pill(label: '${crop.minPotLitres} L pot', icon: Icons.crop_square),
-                      Pill(label: crop.sun, icon: Icons.wb_sunny_outlined),
+                        Pill(label: '${crop.minPotLitres} L pot', icon: PhosphorIcons.square),
+                      Pill(label: crop.sun, icon: PhosphorIcons.sun),
                       Pill(
                           label: '${crop.harvestDaysMin}–${crop.harvestDaysMax} days',
-                          icon: Icons.schedule),
-                      Pill(label: difficultyLabel(difficultyOf(crop)), icon: Icons.bar_chart),
+                          icon: PhosphorIcons.clock),
+                      Pill(label: difficultyLabel(difficultyOf(crop)), icon: PhosphorIcons.chartBar),
                     ]),
                   ],
                 ),
@@ -236,12 +237,12 @@ class _Calendar extends StatelessWidget {
         const SizedBox(height: 8),
         // 3.3 "Calendar based on" row: frost cell + where the dates came from.
         Wrap(spacing: 8, runSpacing: 6, children: [
-          Pill(label: 'Based on: ${repo.regionName}', icon: Icons.place_outlined),
+          Pill(label: 'Based on: ${repo.regionName}', icon: PhosphorIcons.mapPin),
           Pill(
             label: repo.frostSource == 'open-meteo' ? 'KNMI/Open-Meteo climate normals' : 'NL regional preset',
-            icon: Icons.thermostat,
+            icon: PhosphorIcons.thermometer,
           ),
-          Pill(label: 'Verified against ${crop.sources.length} NL sources', icon: Icons.verified_outlined),
+          Pill(label: 'Verified against ${crop.sources.length} NL sources', icon: PhosphorIcons.sealCheck),
         ]),
       ],
     );
@@ -318,18 +319,18 @@ class _Location extends StatelessWidget {
           ]),
         );
     return Column(children: [
-      row(Icons.place_outlined, 'Region', repo.regionName),
-      row(Icons.ac_unit, 'Last frost', fmt.format(parseIso(repo.frost.lastFrost))),
-      row(Icons.local_fire_department_outlined, 'First frost',
+      row(PhosphorIcons.mapPin, 'Region', repo.regionName),
+      row(PhosphorIcons.snowflake, 'Last frost', fmt.format(parseIso(repo.frost.lastFrost))),
+      row(PhosphorIcons.fire, 'First frost',
           fmt.format(parseIso(repo.frost.firstFrost))),
-      row(Icons.wb_sunny_outlined, 'Preferred sun', crop.sun),
-      row(Icons.ac_unit, 'Frost tender', crop.frostTender ? 'Yes, wait for last frost' : 'No'),
-      if (minSoil != null) row(Icons.device_thermostat, 'Min soil temp', '$minSoil °C'),
+      row(PhosphorIcons.sun, 'Preferred sun', crop.sun),
+      row(PhosphorIcons.snowflake, 'Frost tender', crop.frostTender ? 'Yes, wait for last frost' : 'No'),
+      if (minSoil != null) row(PhosphorIcons.thermometer, 'Min soil temp', '$minSoil °C'),
       if (crop.minPotLitres != null)
-        row(Icons.crop_square, 'Min pot size', '${crop.minPotLitres} L'),
-      row(Icons.check_circle_outline, 'Container-friendly',
+        row(PhosphorIcons.square, 'Min pot size', '${crop.minPotLitres} L'),
+      row(PhosphorIcons.checkCircle, 'Container-friendly',
           crop.containerOk ? 'Yes' : 'No'),
-      row(Icons.public, 'NL balcony suitability', crop.containerOk && !crop.frostTender ? 'Great' : crop.containerOk ? 'Good after IJsheiligen' : 'Needs a bed'),
+      row(PhosphorIcons.globe, 'NL balcony suitability', crop.containerOk && !crop.frostTender ? 'Great' : crop.containerOk ? 'Good after IJsheiligen' : 'Needs a bed'),
     ]);
   }
 }
@@ -505,9 +506,9 @@ class _Neighbours extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(bottom: 8),
-          child: Pill(label: 'Draft. The verified matrix lands in the content update', icon: Icons.edit_note, color: AppColors.clay),
+          child: Pill(label: 'Draft. The verified matrix lands in the content update', icon: PhosphorIcons.notePencil, color: AppColors.clay),
         ),
         _NeighboursBody(good: good, bad: bad),
       ],
@@ -605,7 +606,7 @@ class _CircleBack extends StatelessWidget {
             boxShadow: Neo.shadowSm,
           ),
           padding: const EdgeInsets.all(7),
-          child: Icon(Icons.arrow_back, color: AppColors.ink, size: 20),
+          child: Icon(PhosphorIcons.arrowLeft, color: AppColors.ink, size: 20),
         ),
       );
 }
@@ -663,7 +664,7 @@ class _Cta extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
             child: PrimaryButton(
-                label: 'Growing it', icon: Icons.eco, onPressed: () => add(growing: true))),
+                label: 'Growing it', icon: PhosphorIcons.leaf, onPressed: () => add(growing: true))),
       ]),
     );
   }

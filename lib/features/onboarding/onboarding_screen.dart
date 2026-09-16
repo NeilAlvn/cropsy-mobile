@@ -7,6 +7,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 
 import '../../data/frost_presets.dart';
 import '../../data/seed.dart';
@@ -190,7 +191,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: _Choices(
           title: 'Where do you grow?',
           subtitle: 'Pick all that apply.',
-          options: const [('backyard', 'Garden', Icons.yard), ('balcony', 'Balcony', Icons.balcony), ('indoor', 'Indoors', Icons.window), ('farm', 'Allotment', Icons.agriculture), ('other', 'Somewhere else', Icons.more_horiz)],
+          options: [('backyard', 'Garden', PhosphorIcons.flowerLotus), ('balcony', 'Balcony', PhosphorIcons.buildings), ('indoor', 'Indoors', PhosphorIcons.browsers), ('farm', 'Allotment', PhosphorIcons.tractor), ('other', 'Somewhere else', PhosphorIcons.dotsThree)],
           selected: _spaces,
           onToggle: (k) => setState(() => _spaces.contains(k) ? _spaces.remove(k) : _spaces.add(k)),
         ),
@@ -201,7 +202,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: _Choices(
           title: 'How do you grow?',
           subtitle: 'Pick all that apply.',
-          options: const [('ground', 'In the ground', Icons.grass), ('raised_beds', 'Raised beds', Icons.grid_view), ('indoor_containers', 'Pots inside', Icons.window), ('outdoor_containers', 'Pots outside', Icons.balcony)],
+          options: [('ground', 'In the ground', PhosphorIcons.plant), ('raised_beds', 'Raised beds', PhosphorIcons.squaresFour), ('indoor_containers', 'Pots inside', PhosphorIcons.browsers), ('outdoor_containers', 'Pots outside', PhosphorIcons.buildings)],
           selected: _methods,
           onToggle: (k) => setState(() => _methods.contains(k) ? _methods.remove(k) : _methods.add(k)),
         ),
@@ -211,7 +212,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: _Choices(
           title: 'How much space?',
           subtitle: 'Roughly — it sets how many plants fit.',
-          options: [for (var i = 0; i < _sizeBuckets.length; i++) ('$i', _sizeBuckets[i].$1, Icons.square_foot)],
+          options: [for (var i = 0; i < _sizeBuckets.length; i++) ('$i', _sizeBuckets[i].$1, PhosphorIcons.ruler)],
           selected: {'$_sizeBucket'},
           onToggle: (k) => setState(() => _sizeBucket = int.parse(k)),
         ),
@@ -221,7 +222,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: _Choices(
           title: 'How much sun?',
           subtitle: 'On a clear day, how long is it in direct sun?',
-          options: const [('full', 'Full sun (6h+)', Icons.wb_sunny), ('partial', 'Partial (3–6h)', Icons.wb_cloudy), ('shade', 'Shade (< 3h)', Icons.umbrella)],
+          options: [('full', 'Full sun (6h+)', PhosphorIcons.sun), ('partial', 'Partial (3–6h)', PhosphorIcons.cloud), ('shade', 'Shade (< 3h)', PhosphorIcons.umbrella)],
           selected: {_sun},
           onToggle: (k) => setState(() => _sun = k),
         ),
@@ -232,7 +233,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: _Choices(
           title: 'Grown anything before?',
           subtitle: 'So we pitch the advice right.',
-          options: const [('never', 'Never', Icons.eco_outlined), ('some', 'A season or two', Icons.eco), ('extensive', 'Plenty', Icons.forest)],
+          options: [('never', 'Never', PhosphorIcons.leaf), ('some', 'A season or two', PhosphorIcons.leaf), ('extensive', 'Plenty', PhosphorIcons.tree)],
           selected: {_experience},
           onToggle: (k) => setState(() => _experience = k),
         ),
@@ -243,7 +244,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: _Choices(
           title: 'What do you like to eat?',
           subtitle: 'Pick all that apply.',
-          options: const [('vegetables', 'Vegetables', Icons.restaurant), ('herbs', 'Herbs', Icons.spa), ('salad', 'Salad leaves', Icons.energy_savings_leaf), ('fruit', 'Fruit', Icons.apple), ('roots', 'Root veg', Icons.park)],
+          options: [('vegetables', 'Vegetables', PhosphorIcons.forkKnife), ('herbs', 'Herbs', PhosphorIcons.flower), ('salad', 'Salad leaves', PhosphorIcons.leaf), ('fruit', 'Fruit', PhosphorIcons.appleLogo), ('roots', 'Root veg', PhosphorIcons.tree)],
           selected: _foods,
           onToggle: (k) => setState(() => _foods.contains(k) ? _foods.remove(k) : _foods.add(k)),
         ),
@@ -253,7 +254,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: _Choices(
           title: "What's most important?",
           subtitle: 'Pick all that apply.',
-          options: const [('easy', 'Easy to grow', Icons.thumb_up), ('fast', 'Fast harvest', Icons.speed), ('yield', 'High yield', Icons.shopping_basket), ('kids', 'Fun with kids', Icons.child_care), ('cost', 'Saves money', Icons.savings)],
+          options: [('easy', 'Easy to grow', PhosphorIcons.thumbsUp), ('fast', 'Fast harvest', PhosphorIcons.speedometer), ('yield', 'High yield', PhosphorIcons.basket), ('kids', 'Fun with kids', PhosphorIcons.baby), ('cost', 'Saves money', PhosphorIcons.piggyBank)],
           selected: _interests,
           onToggle: (k) => setState(() => _interests.contains(k) ? _interests.remove(k) : _interests.add(k)),
         ),
@@ -263,7 +264,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: _Choices(
           title: 'Interested in companion planting?',
           subtitle: 'We can warn when two plants dislike each other.',
-          options: const [('yes', 'Yes, show me', Icons.favorite), ('no', 'Not now', Icons.favorite_border)],
+          options: [('yes', 'Yes, show me', PhosphorIcons.heartStraight), ('no', 'Not now', PhosphorIcons.heartStraight)],
           selected: {_companions ? 'yes' : 'no'},
           onToggle: (k) => setState(() => _companions = k == 'yes'),
         ),
@@ -350,7 +351,7 @@ class _FloatingHeader extends StatelessWidget {
             onTap: first ? onSkip : onBack,
             child: first
                 ? Text('Skip', style: AppText.label(context))
-                : Icon(Icons.arrow_back_ios_new, size: 18, color: AppColors.ink),
+                : Icon(PhosphorIcons.caretLeft, size: 18, color: AppColors.ink),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -469,7 +470,7 @@ class _Step extends StatelessWidget {
           Expanded(child: child),
           Padding(
             padding: const EdgeInsets.all(20),
-            child: PrimaryButton(label: buttonLabel, icon: Icons.arrow_forward, onPressed: enabled ? onNext : null),
+            child: PrimaryButton(label: buttonLabel, icon: PhosphorIcons.arrowRight, onPressed: enabled ? onNext : null),
           ),
         ],
       ),
@@ -585,7 +586,7 @@ class _LocationStepState extends State<_LocationStep> {
         Text('Sets your frost dates, the backbone of every planting date. Rounded to ~10 km, never tracked.',
             style: AppText.bodyMuted(context)),
         const SizedBox(height: 14),
-        PrimaryButton(label: _busy ? 'Looking up…' : 'Use my location', icon: Icons.my_location, onPressed: _busy ? null : _gps),
+        PrimaryButton(label: _busy ? 'Looking up…' : 'Use my location', icon: PhosphorIcons.crosshair, onPressed: _busy ? null : _gps),
         const SizedBox(height: 10),
         Row(children: [
           Expanded(
@@ -620,7 +621,7 @@ class _LocationStepState extends State<_LocationStep> {
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: _SelectTile(
-              icon: Icons.place_outlined,
+              icon: PhosphorIcons.mapPin,
               label: r.name,
               selected: l == null && r.name == widget.region.name,
               onTap: () => widget.onRegion(r),
@@ -679,7 +680,7 @@ class _YesNo extends StatelessWidget {
           onPressed: () => onChanged(v),
           icon: Icon(icon, color: value == v ? AppColors.sprout : AppColors.hairline),
         );
-    return Row(mainAxisSize: MainAxisSize.min, children: [b(true, Icons.thumb_up), b(false, Icons.thumb_down)]);
+    return Row(mainAxisSize: MainAxisSize.min, children: [b(true, PhosphorIcons.thumbsUp), b(false, PhosphorIcons.thumbsDown)]);
   }
 }
 
@@ -710,7 +711,7 @@ class _SelectTile extends StatelessWidget {
           children: [
             if (leading != null) ...[leading, const SizedBox(width: 8)],
             Expanded(child: Text(label, style: AppText.label(context, color: fg), maxLines: 1, overflow: TextOverflow.ellipsis)),
-            Icon(selected ? Icons.check_circle : Icons.circle_outlined, size: 20, color: selected ? AppColors.onAccent : AppColors.hairline),
+            Icon(selected ? PhosphorIcons.checkCircle : PhosphorIcons.circle, size: 20, color: selected ? AppColors.onAccent : AppColors.hairline),
           ],
         ),
       ),
@@ -792,7 +793,7 @@ class _PlanStep extends StatelessWidget {
               Text('Want a nudge on the day? One reminder a morning, only when there is something to do, and it stays quiet when it rained.',
                   style: AppText.bodyMuted(context)),
               const SizedBox(height: 12),
-              PrimaryButton(label: 'Remind me', icon: Icons.notifications_active_outlined, onPressed: onDone),
+              PrimaryButton(label: 'Remind me', icon: PhosphorIcons.bell, onPressed: onDone),
               const SizedBox(height: 8),
               SecondaryButton(label: 'Maybe later', onPressed: onLater),
             ] else
@@ -813,7 +814,7 @@ class _Line extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: Row(children: [
-          Icon(done ? Icons.check_circle : Icons.radio_button_unchecked, color: done ? AppColors.sprout : AppColors.hairline, size: 20),
+          Icon(done ? PhosphorIcons.checkCircle : PhosphorIcons.circle, color: done ? AppColors.sprout : AppColors.hairline, size: 20),
           const SizedBox(width: 10),
           Expanded(child: Text(text, style: AppText.body(context))),
         ]),

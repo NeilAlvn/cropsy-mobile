@@ -3,6 +3,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 
 import '../../design/colors.dart';
 import '../../design/components.dart';
@@ -88,7 +89,7 @@ class _SearchField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: 'Search 60 crops…',
         hintStyle: AppText.bodyMuted(context),
-        prefixIcon: Icon(Icons.search_rounded, color: AppColors.muted),
+        prefixIcon: Icon(PhosphorIcons.magnifyingGlass, color: AppColors.muted),
         filled: true,
         fillColor: AppColors.surface,
         contentPadding: const EdgeInsets.symmetric(vertical: 0),
@@ -124,7 +125,7 @@ class _CropCard extends StatelessWidget {
               CategoryDot(crop.category, size: 12),
               const Spacer(),
               if (crop.containerOk)
-                Icon(Icons.check_circle,
+                Icon(PhosphorIcons.checkCircle,
                     size: 15, color: AppColors.sprout),
             ],
           ),

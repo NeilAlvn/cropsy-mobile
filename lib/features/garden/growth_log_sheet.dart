@@ -7,6 +7,7 @@ import 'dart:io';
 import '../../design/motion.dart';
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -118,8 +119,8 @@ class _SheetState extends State<_Sheet> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  _PhotoButton(icon: Icons.photo_camera_outlined, onTap: () => _addPhoto(ImageSource.camera)),
-                  _PhotoButton(icon: Icons.photo_library_outlined, onTap: () => _addPhoto(ImageSource.gallery)),
+                  _PhotoButton(icon: PhosphorIcons.camera, onTap: () => _addPhoto(ImageSource.camera)),
+                  _PhotoButton(icon: PhosphorIcons.images, onTap: () => _addPhoto(ImageSource.gallery)),
                   for (final path in _photos)
                     Padding(
                       padding: const EdgeInsets.only(right: 8),

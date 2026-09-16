@@ -12,6 +12,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../design/icons.dart';
 
 import '../../design/colors.dart';
 import '../../db/database.dart';
@@ -1180,7 +1181,7 @@ class _PathStop extends StatelessWidget {
                               color: AppColors.positive,
                               shape: BoxShape.circle,
                             ),
-                            child: Icon(Icons.check,
+                            child: Icon(PhosphorIcons.check,
                                 size: 18, color: AppColors.onSemantic),
                           ),
                         ),
@@ -1364,7 +1365,7 @@ class _Crest extends StatelessWidget {
             if (streak > 0)
               Pill(
                 label: '$streak day${streak == 1 ? '' : 's'}',
-                icon: Icons.local_fire_department,
+                icon: PhosphorIcons.fire,
                 color: AppColors.onAccentSoft,
                 bg: AppColors.accentSoft,
               ),

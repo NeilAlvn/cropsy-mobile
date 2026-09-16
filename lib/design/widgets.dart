@@ -3,6 +3,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../design/icons.dart';
 
 import '../data/crop_derived.dart';
 import '../timing/types.dart';
@@ -58,7 +59,7 @@ class PhotoCard extends StatelessWidget {
                         child: SizedBox(
                           width: 32,
                           height: 32,
-                          child: Icon(Icons.favorite_border,
+                          child: Icon(PhosphorIcons.heartStraight,
                               size: 16, color: AppColors.ink),
                         ),
                       ),
