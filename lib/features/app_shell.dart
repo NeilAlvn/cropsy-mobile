@@ -1,9 +1,11 @@
-/// The app shell — Home · My Garden · (scan) · Explore · Diagnose.
+/// The app shell — Home · My Garden · (season) · Explore · Diagnose.
 ///
 /// Base 8.8: a detached glass pill at the bottom centre, 64 tall, 44 targets,
-/// no labels. The scan tab is the one emphasised action, a 52 accent circle
-/// inside the pill. Content scrolls underneath it, which is what makes the
-/// glass read as glass.
+/// no labels. The emphasised action in the middle is the season path, because
+/// that is the loop the app exists for; scanning is an occasional utility and
+/// lives where the intent arises, at the top of Diagnose and on a plant.
+/// Content scrolls underneath the pill, which is what makes the glass read as
+/// glass.
 library;
 
 import 'package:flutter/material.dart';
@@ -16,7 +18,7 @@ import 'diagnose/diagnose_screen.dart';
 import 'explore/explore_screen.dart';
 import 'garden/garden_screen.dart';
 import 'home/home_screen.dart';
-import 'scan/scan_screen.dart';
+import 'season/season_screen.dart';
 
 /// Pill height plus the gap the base asks for above the home indicator.
 const double _barHeight = 64;
@@ -36,14 +38,10 @@ class _AppShellState extends State<AppShell> {
   static const _tabs = [
     HomeScreen(),
     GardenScreen(),
+    SeasonScreen(),
     ExploreScreen(),
     DiagnoseScreen(),
   ];
-
-  void _openScan() => Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => const ScanScreen(),
-        fullscreenDialog: true,
-      ));
 
   /// One listener for every screen: the bar answers the user's scroll
   /// direction, so no screen has to wire a controller to it.
@@ -91,7 +89,6 @@ class _AppShellState extends State<AppShell> {
                 child: _TabPill(
                   index: _index,
                   onSelect: (i) => setState(() => _index = i),
-                  onScan: _openScan,
                 ),
               ),
             ),
@@ -103,15 +100,10 @@ class _AppShellState extends State<AppShell> {
 }
 
 class _TabPill extends StatelessWidget {
-  const _TabPill({
-    required this.index,
-    required this.onSelect,
-    required this.onScan,
-  });
+  const _TabPill({required this.index, required this.onSelect});
 
   final int index;
   final ValueChanged<int> onSelect;
-  final VoidCallback onScan;
 
   @override
   Widget build(BuildContext context) {
@@ -125,9 +117,9 @@ class _TabPill extends StatelessWidget {
           children: [
             _Tab(icon: Icons.home_rounded, label: 'Home', index: 0, current: index, onTap: onSelect),
             _Tab(icon: Icons.grass_rounded, label: 'My garden', index: 1, current: index, onTap: onSelect),
-            _ScanTab(onTap: onScan),
-            _Tab(icon: Icons.eco_rounded, label: 'Explore', index: 2, current: index, onTap: onSelect),
-            _Tab(icon: Icons.healing_rounded, label: 'Diagnose', index: 3, current: index, onTap: onSelect),
+            _SeasonTab(active: index == 2, onTap: () => onSelect(2)),
+            _Tab(icon: Icons.eco_rounded, label: 'Explore', index: 3, current: index, onTap: onSelect),
+            _Tab(icon: Icons.healing_rounded, label: 'Diagnose', index: 4, current: index, onTap: onSelect),
           ],
         ),
       ),
@@ -170,15 +162,19 @@ class _Tab extends StatelessWidget {
   }
 }
 
-class _ScanTab extends StatelessWidget {
-  const _ScanTab({required this.onTap});
+/// The one emphasised tab (base 8.8): a 52 accent circle inside the pill, never
+/// rising above it.
+class _SeasonTab extends StatelessWidget {
+  const _SeasonTab({required this.active, required this.onTap});
 
+  final bool active;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) => Semantics(
         button: true,
-        label: 'Scan a plant',
+        selected: active,
+        label: 'Season path',
         child: Pressable(
           onTap: onTap,
           haptic: Haptics.press,
@@ -193,7 +189,7 @@ class _ScanTab extends StatelessWidget {
                 color: AppColors.accent,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.center_focus_strong,
+              child: const Icon(Icons.timeline_rounded,
                   color: AppColors.onAccent, size: 26),
             ),
           ),

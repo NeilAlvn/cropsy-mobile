@@ -12,6 +12,7 @@ import '../../design/widgets.dart';
 import '../../timing/types.dart';
 import '../grow/crop_detail_screen.dart';
 import '../repository_scope.dart';
+import '../scan/scan_screen.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
@@ -55,6 +56,22 @@ class ExploreScreen extends StatelessWidget {
                         style: TextStyle(color: AppColors.sprout)),
                   ],
                 )),
+                const SizedBox(height: 16),
+                // Identify used to hang off the tab bar's centre button. The
+                // intent is "what is this plant", which belongs next to search.
+                AppCard(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const ScanScreen(), fullscreenDialog: true)),
+                  child: Row(children: [
+                    const Icon(Icons.center_focus_strong, color: AppColors.accent),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text('Identify a plant from a photo',
+                          style: AppText.label(context)),
+                    ),
+                    const Icon(Icons.chevron_right, size: 16, color: AppColors.inkMuted),
+                  ]),
+                ),
               ],
             ),
           ),
