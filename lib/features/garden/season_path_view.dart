@@ -80,7 +80,7 @@ class _SeasonPathViewState extends State<SeasonPathView> {
               ]),
             ),
             const SizedBox(height: 18),
-            SectionHeader('Your season'),
+            SectionHeader(Str.yourSeason.of(context)),
             if (lanes.isEmpty)
               const MascotSays(pose: MascotPose.idle, text: 'Add a plant and the season lays itself out here.')
             else
@@ -96,7 +96,10 @@ class _SeasonPathViewState extends State<SeasonPathView> {
                     children: [
                       _MonthHeader(today: repo.today),
                       for (final e in lanes.entries)
-                        _Lane(label: repo.cropName(e.value.first.cropSlug), nodes: e.value, year: year),
+                        _Lane(
+                            label: repo.cropNames(e.value.first.cropSlug).of(context),
+                            nodes: e.value,
+                            year: year),
                     ],
                   ),
                 ),
@@ -109,7 +112,7 @@ class _SeasonPathViewState extends State<SeasonPathView> {
             ]),
             if (prompts.isNotEmpty) ...[
               const SizedBox(height: 18),
-              SectionHeader('Bed frees up'),
+              SectionHeader(Str.bedFreesUp.of(context)),
               for (final p in prompts)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10),

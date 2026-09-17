@@ -138,7 +138,7 @@ class _PlannerGridScreenState extends State<PlannerGridScreen> {
             Text(Str.redCells.of(context), style: AppText.caption(context, color: AppColors.warn)),
           ],
           const SizedBox(height: 18),
-          SectionHeader('Your crops'),
+          SectionHeader(Str.yourCrops.of(context)),
           Wrap(
             spacing: 8,
             runSpacing: 8,
@@ -146,7 +146,7 @@ class _PlannerGridScreenState extends State<PlannerGridScreen> {
               for (final slug in _paletteSlugs(repo))
                 ChoiceChip(
                   avatar: SizedBox(width: 20, height: 20, child: ClipOval(child: CropImage(slug: slug, category: repo.cropCategory(slug)))),
-                  label: Text(repo.cropName(slug)),
+                  label: Text(repo.cropNames(slug).of(context)),
                   selected: _brush == slug,
                   onSelected: (_) => setState(() => _brush = _brush == slug ? null : slug),
                 ),

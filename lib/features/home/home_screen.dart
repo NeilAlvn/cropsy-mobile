@@ -559,7 +559,7 @@ class _TodaysCare extends StatelessWidget {
                       Expanded(
                         child: Text(
                             '${kindLine(item.kind).of(context)} · '
-                            '${repo.cropBySlug(item.cropSlug)?.names.of(context) ?? item.cropName}',
+                            '${item.cropNames.of(context)}',
                             style: AppText.label(context,
                                 color: item.completed ? AppColors.inkMuted : AppColors.ink),
                             maxLines: 1,
@@ -628,7 +628,7 @@ class _UpcomingHarvest extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(repo.cropName(r.plant.cropSlug), style: AppText.label(context)),
+                                  Text(repo.cropNames(r.plant.cropSlug).of(context), style: AppText.label(context)),
                                   Text(
                                     '${fmt.format(parseIso(h.due))} – ${fmt.format(parseIso(h.until ?? h.due))}',
                                     style: AppText.caption(context, color: AppColors.clay),

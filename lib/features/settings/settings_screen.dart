@@ -216,7 +216,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onTap: () => launchUrl(Uri.parse('$websiteUrl$path'), mode: LaunchMode.externalApplication),
             ),
           const SizedBox(height: 24),
-          SectionHeader('About'),
+          SectionHeader(Str.about.of(context)),
           Text(Str.cropDataVersion(repo.cropVersion).of(context), style: AppText.caption(context)),
           Text(Str.frostDates(repo.regionName, repo.frostSource).of(context), style: AppText.caption(context)),
         ],

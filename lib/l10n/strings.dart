@@ -460,6 +460,21 @@ abstract final class Str {
   );
   static const planted = LocalizedText(nl: 'Geplant', en: 'Planted');
   static const growthStage = LocalizedText(nl: 'Groeifase', en: 'Growth stage');
+  static const yourPath = LocalizedText(nl: 'Jouw pad', en: 'Your path');
+  static const journal = LocalizedText(nl: 'Logboek', en: 'Journal');
+  static const yourSeason = LocalizedText(nl: 'Jouw seizoen', en: 'Your season');
+  static const bedFreesUp = LocalizedText(nl: 'Plek komt vrij', en: 'Bed frees up');
+  static const about = LocalizedText(nl: 'Over', en: 'About');
+  static const yourCrops = LocalizedText(nl: 'Jouw gewassen', en: 'Your crops');
+  static const plannedSection = LocalizedText(nl: 'Gepland', en: 'Planned');
+  static const types = LocalizedText(nl: 'Rassen', en: 'Types');
+  static const oftenOn = LocalizedText(nl: 'Vaak bij', en: 'Often on');
+  static const insightsForYou = LocalizedText(
+    nl: 'Wat nu belangrijk is',
+    en: 'Insights for you',
+  );
+  static LocalizedText plantedOn(String day) =>
+      LocalizedText(nl: 'geplant $day', en: 'planted $day');
   static const countsTowardsTally = LocalizedText(
     nl: 'Telt mee voor je seizoensoogst.',
     en: 'Counts towards your season tally.',

@@ -732,7 +732,7 @@ extension on _NodeItem {
     if (!context.mounted) return;
     Haptics.complete();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('${repo.cropName(node.cropSlug)} added to Planning'),
+      content: Text(Str.addedToPlanning(repo.cropNames(node.cropSlug).of(context)).of(context)),
     ));
   }
 }
@@ -1015,7 +1015,7 @@ class _MarkerItem implements _Item {
                           ),
                         ),
                         const SizedBox(width: 12),
-                        Text(repo.cropName(p.cropSlug), style: AppText.subheading(context)),
+                        Text(repo.cropNames(p.cropSlug).of(context), style: AppText.subheading(context)),
                       ]),
                     ),
                   ),
@@ -1030,8 +1030,7 @@ class _MarkerItem implements _Item {
 
     final log = await showGrowthLogSheet(
       context,
-      cropName: repo.cropBySlug(plant.cropSlug)?.names ??
-          LocalizedText(nl: plant.cropSlug, en: plant.cropSlug),
+      cropName: repo.cropNames(plant.cropSlug),
       currentStage: plant.stage,
     );
     if (log == null) return;

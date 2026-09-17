@@ -146,8 +146,8 @@ class ProblemScreen extends StatelessWidget {
           section('Treatment (organic first)', problem.treatment.of(context)),
           section('Prevention', problem.prevention.of(context)),
           if (problem.affects.isNotEmpty) ...[
-            SectionHeader('Often on'),
-            Wrap(spacing: 8, runSpacing: 8, children: [for (final s in problem.affects) Pill(label: repo.cropName(s))]),
+            SectionHeader(Str.oftenOn.of(context)),
+            Wrap(spacing: 8, runSpacing: 8, children: [for (final s in problem.affects) Pill(label: repo.cropNames(s).of(context))]),
           ],
         ],
       ),

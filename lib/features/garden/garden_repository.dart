@@ -41,7 +41,7 @@ class ThisWeekItem {
     required this.taskId,
     this.plantId,
     required this.cropSlug,
-    required this.cropName,
+    required this.cropNames,
     required this.category,
     required this.kind,
     required this.due,
@@ -52,7 +52,10 @@ class ThisWeekItem {
   final String taskId;
   final String? plantId;
   final String cropSlug;
-  final String cropName;
+
+  /// The crop's name in both languages, so a screen and a notification can
+  /// each pick their own side.
+  final LocalizedText cropNames;
   final String category;
   final TaskKind kind;
   final String due;
@@ -200,7 +203,11 @@ class GardenRepository extends ChangeNotifier {
     return null;
   }
 
-  String cropName(String slug) => cropBySlug(slug)?.names.en ?? slug;
+  /// The crop's name in both languages. Everything the gardener reads goes
+  /// through this and picks a side with `.of(context)`.
+  LocalizedText cropNames(String slug) =>
+      cropBySlug(slug)?.names ?? LocalizedText(nl: slug, en: slug);
+
   String cropCategory(String slug) => cropBySlug(slug)?.category ?? 'herb';
 
   List<Collection>? _collections;
@@ -803,7 +810,7 @@ class GardenRepository extends ChangeNotifier {
             taskId: r.id,
             plantId: r.gardenPlantId,
             cropSlug: plantById[r.gardenPlantId]!.cropSlug,
-            cropName: cropName(plantById[r.gardenPlantId]!.cropSlug),
+            cropNames: cropNames(plantById[r.gardenPlantId]!.cropSlug),
             category: cropCategory(plantById[r.gardenPlantId]!.cropSlug),
             kind: r.kind,
             due: r.due,

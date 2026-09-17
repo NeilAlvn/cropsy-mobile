@@ -122,7 +122,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (mounted) {
       setState(() {
         _matches = repo.whatToGrowIn(month).length;
-        _firstTask = week.isEmpty ? null : '${week.first.kind.name} ${week.first.cropName.toLowerCase()}';
+        _firstTask = week.isEmpty
+        ? null
+        : '${week.first.kind.name} ${week.first.cropNames.en.toLowerCase()}';
       });
     }
   }
@@ -749,7 +751,7 @@ class _PlantsStep extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                   child: SizedBox(width: 30, height: 30, child: CropImage(slug: slug, category: repo.cropCategory(slug))),
                 ),
-                label: repo.cropName(slug),
+                label: repo.cropNames(slug).of(context),
                 selected: picked.contains(slug),
                 onTap: () => onToggle(slug),
               ),

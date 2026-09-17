@@ -33,6 +33,17 @@ const growthStages = ['starting', 'seedling', 'vegetative', 'flowering', 'harves
 
 String stageLabel(String s) => s[0].toUpperCase() + s.substring(1);
 
+/// The growth stages, in both languages.
+LocalizedText stageLine(String stage) => switch (stage) {
+      'starting' => Str.stageStarting,
+      'seedling' => Str.stageSeedling,
+      'vegetative' => Str.stageVegetative,
+      'flowering' => Str.stageFlowering,
+      'harvesting' => Str.stageHarvesting,
+      'harvested' => Str.stageHarvested,
+      _ => LocalizedText(nl: stage, en: stage),
+    };
+
 Future<GrowthLog?> showGrowthLogSheet(BuildContext context,
     {required LocalizedText cropName, String? currentStage}) {
   return showAppSheet<GrowthLog>(
@@ -114,7 +125,7 @@ class _SheetState extends State<_Sheet> {
               runSpacing: 8,
               children: [
                 for (final s in growthStages)
-                  ChoiceChip(label: Text(stageLabel(s)), selected: _stage == s, onSelected: (_) => setState(() => _stage = s)),
+                  ChoiceChip(label: Text(stageLine(s).of(context)), selected: _stage == s, onSelected: (_) => setState(() => _stage = s)),
               ],
             ),
             const SizedBox(height: 14),

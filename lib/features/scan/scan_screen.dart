@@ -183,7 +183,9 @@ class _Results extends StatelessWidget {
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(
-                      identify && s.cropSlug != null ? repo.cropName(s.cropSlug!) : s.name,
+                      identify && s.cropSlug != null
+                          ? repo.cropNames(s.cropSlug!).of(context)
+                          : s.name,
                       style: AppText.label(context),
                     ),
                     if (s.latin != null) Text(s.latin!, style: AppText.caption(context)),

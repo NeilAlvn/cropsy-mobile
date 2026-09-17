@@ -114,7 +114,7 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SectionHeader('Types'),
+                      SectionHeader(Str.types.of(context)),
                       SizedBox(
                         height: 84,
                         child: ListView(
@@ -582,7 +582,7 @@ class _NeighbourRow extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(repo.cropName(slugs[i]),
+                  Text(repo.cropNames(slugs[i]).of(context),
                       style: AppText.caption(context),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis),

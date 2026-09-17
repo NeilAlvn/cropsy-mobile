@@ -9,6 +9,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../features/garden/garden_repository.dart';
 import '../timing/dates.dart';
+import '../timing/types.dart';
 
 class Reminders {
   static final _plugin = FlutterLocalNotificationsPlugin();
@@ -37,7 +38,15 @@ class Reminders {
   }
 
   /// Replace every scheduled reminder with the next seven days of items.
-  static Future<void> schedule(List<ThisWeekItem> items, {required String today, int hour = 8}) async {
+  ///
+  /// [dutch] follows the profile's language: a notification is the one piece of
+  /// the app that speaks while no screen is open, so it has to be told.
+  static Future<void> schedule(
+    List<ThisWeekItem> items, {
+    required String today,
+    bool dutch = true,
+    int hour = 8,
+  }) async {
     await _plugin.cancelAll();
     final byDay = <String, List<ThisWeekItem>>{};
     for (final i in items) {
@@ -50,10 +59,18 @@ class Reminders {
       final at = DateTime(d.year, d.month, d.day, hour);
       if (!at.isAfter(DateTime.now())) continue;
       final list = byDay[day]!;
-      final body = list.map((i) => '${_verb(i)} ${i.cropName.toLowerCase()}').take(4).join(', ');
+      final body = list
+          .map((i) =>
+              '${_verb(i).pick(dutch)} ${i.cropNames.pick(dutch).toLowerCase()}')
+          .take(4)
+          .join(', ');
       await _plugin.zonedSchedule(
         id: id++,
-        title: list.length == 1 ? 'One thing to do today' : '${list.length} things to do today',
+        title: list.length == 1
+            ? (dutch ? 'Eén ding te doen vandaag' : 'One thing to do today')
+            : (dutch
+                ? '${list.length} dingen te doen vandaag'
+                : '${list.length} things to do today'),
         body: body,
         scheduledDate: tz.TZDateTime.from(at.toUtc(), tz.UTC),
         notificationDetails: _details,
@@ -62,14 +79,14 @@ class Reminders {
     }
   }
 
-  static String _verb(ThisWeekItem i) => switch (i.kind.name) {
-        'water' => 'Water',
-        'sow' => 'Sow',
-        'transplant' => 'Plant out',
-        'harvest' => 'Harvest',
-        'feed' => 'Feed',
-        'potOn' => 'Pot on',
-        'thin' => 'Thin',
-        _ => 'Check',
+  static LocalizedText _verb(ThisWeekItem i) => switch (i.kind.name) {
+        'water' => const LocalizedText(nl: 'Water geven', en: 'Water'),
+        'sow' => const LocalizedText(nl: 'Zaaien', en: 'Sow'),
+        'transplant' => const LocalizedText(nl: 'Uitplanten', en: 'Plant out'),
+        'harvest' => const LocalizedText(nl: 'Oogsten', en: 'Harvest'),
+        'feed' => const LocalizedText(nl: 'Bijmesten', en: 'Feed'),
+        'potOn' => const LocalizedText(nl: 'Verpotten', en: 'Pot on'),
+        'thin' => const LocalizedText(nl: 'Uitdunnen', en: 'Thin'),
+        _ => const LocalizedText(nl: 'Checken', en: 'Check'),
       };
 }

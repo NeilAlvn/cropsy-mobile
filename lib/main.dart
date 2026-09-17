@@ -39,18 +39,23 @@ Future<void> main() async {
       purchases.logOut();
     }
   });
+  final theme = AppTheme(
+    initial: AppTheme.parse(await repo.meta(AppTheme.metaKey)),
+  );
+  final lang = AppLang((await repo.profile())?.lang ?? 'nl');
+
   // Reminders follow the data: any change re-plans the week's notifications.
   Timer? debounce;
   repo.addListener(() {
     debounce?.cancel();
     debounce = Timer(const Duration(seconds: 2), () async {
-      await Reminders.schedule(await repo.thisWeek(), today: repo.today);
+      await Reminders.schedule(
+        await repo.thisWeek(),
+        today: repo.today,
+        dutch: lang.isDutch,
+      );
     });
   });
-  final theme = AppTheme(
-    initial: AppTheme.parse(await repo.meta(AppTheme.metaKey)),
-  );
-  final lang = AppLang((await repo.profile())?.lang ?? 'nl');
   runApp(CropsyApp(
     repository: repo,
     auth: auth,

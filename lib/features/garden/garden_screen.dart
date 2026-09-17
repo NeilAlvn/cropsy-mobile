@@ -140,7 +140,7 @@ class _PlantList extends StatelessWidget {
         return ListView(
           padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
           children: [
-            if (planning) ...[const SeasonPathView(), const SizedBox(height: 18), SectionHeader('Planned')],
+            if (planning) ...[const SeasonPathView(), const SizedBox(height: 18), SectionHeader(Str.plannedSection.of(context))],
             for (final p in plants)
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
@@ -149,7 +149,7 @@ class _PlantList extends StatelessWidget {
                   direction: DismissDirection.endToStart,
                   background: _swipeToRemoveBackground(context),
                   confirmDismiss: (_) => _confirmRemove(
-                      context, repo.cropName(p.cropSlug)),
+                      context, repo.cropNames(p.cropSlug).of(context)),
                   onDismissed: (_) => repo.removePlant(p.id),
                   child: AppCard(
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
@@ -172,7 +172,7 @@ class _PlantList extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(repo.cropName(p.cropSlug),
+                            Text(repo.cropNames(p.cropSlug).of(context),
                                 style: AppText.heading(context)),
                             Text(
                               p.potLitres != null

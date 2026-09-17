@@ -127,7 +127,7 @@ class _NodeTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(children: [
-                      Text(nodeTitle(node.kind),
+                      Text(nodeKindLine(node.kind).of(context),
                           style: AppText.heading(context, color: dim ? AppColors.muted : AppColors.ink)),
                       const Spacer(),
                       if (state == _NodeState.done)

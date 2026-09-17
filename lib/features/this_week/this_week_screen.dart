@@ -216,7 +216,7 @@ class _TaskTile extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 2),
-                Text(item.cropName, style: AppText.bodyMuted(context)),
+                Text(item.cropNames.of(context), style: AppText.bodyMuted(context)),
                 if (hint != null) ...[
                   const SizedBox(height: 8),
                   WeatherHintBadge(hint),

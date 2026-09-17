@@ -52,7 +52,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
             iconTheme: IconThemeData(color: AppColors.ink),
             title: plant == null
                 ? null
-                : Text(repo.cropName(plant.cropSlug),
+                : Text(repo.cropNames(plant.cropSlug).of(context),
                     style: AppText.heading(context)),
             actions: plant == null
                 ? null
@@ -105,7 +105,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                         if (plant.plantedOn != null) ...[
                           const SizedBox(width: 8),
                           Text(
-                            '· planted ${DateFormat('d MMM').format(parseIso(plant.plantedOn!))}',
+                            '· ${Str.plantedOn(DateFormat('d MMM').format(parseIso(plant.plantedOn!))).of(context)}',
                             style: AppText.bodyMuted(context),
                           ),
                         ],
@@ -158,11 +158,11 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                             );
                           },
                         ),
-                      SectionHeader('Your path'),
+                      SectionHeader(Str.yourPath.of(context)),
                       TimelineView(plantId: plant.id),
                       const SizedBox(height: 24),
                     ],
-                    SectionHeader('Journal'),
+                    SectionHeader(Str.journal.of(context)),
                     _Journal(plantId: plant.id, repo: repo),
                   ],
                 ),
@@ -197,7 +197,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
       isScrollControlled: true,
       backgroundColor: AppColors.paper,
       builder: (_) => _HarvestSheet(
-        cropName: repo.cropName(plant.cropSlug),
+        cropName: repo.cropNames(plant.cropSlug),
         pricedUnit: repo.content.prices[plant.cropSlug]?.unit,
       ),
     );
@@ -239,7 +239,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
   }
 
   Future<void> _removePlant(GardenRepository repo, GardenPlantRow plant) async {
-    final name = repo.cropName(plant.cropSlug);
+    final name = repo.cropNames(plant.cropSlug).of(context);
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -338,7 +338,7 @@ class _Journal extends StatelessWidget {
                             ),
                             const SizedBox(height: 2),
                             if (e.stage != null)
-                              Text(stageLabel(e.stage!), style: AppText.caption(context)),
+                              Text(stageLine(e.stage!).of(context), style: AppText.caption(context)),
                             if (e.note != null) Text(e.note!, style: AppText.body(context)),
                           ],
                         ),
@@ -357,7 +357,8 @@ class _Journal extends StatelessWidget {
 class _HarvestSheet extends StatefulWidget {
   const _HarvestSheet({required this.cropName, this.pricedUnit});
 
-  final String cropName;
+  /// The crop's own name, in both languages.
+  final LocalizedText cropName;
 
   /// The unit this crop is priced in, when it has a price at all. The sheet
   /// opens on it, so a logged harvest lands in the tally by default.
@@ -385,7 +386,7 @@ class _HarvestSheetState extends State<_HarvestSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(Str.logHarvest.of(context), style: AppText.title(context)),
-          Text(widget.cropName, style: AppText.bodyMuted(context)),
+          Text(widget.cropName.of(context), style: AppText.bodyMuted(context)),
           const SizedBox(height: 16),
           Row(children: [
             Expanded(
@@ -478,7 +479,7 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(Str.editPlant.of(context), style: AppText.title(context)),
-          Text(repo.cropName(widget.plant.cropSlug),
+          Text(repo.cropNames(widget.plant.cropSlug).of(context),
               style: AppText.bodyMuted(context)),
           const SizedBox(height: 16),
           TextField(
@@ -549,7 +550,9 @@ class _StageRow extends StatelessWidget {
             underline: const SizedBox.shrink(),
             items: [
               for (final s in _stages)
-                DropdownMenuItem(value: s, child: Text(s[0].toUpperCase() + s.substring(1), style: AppText.label(context))),
+                DropdownMenuItem(
+                    value: s,
+                    child: Text(stageLine(s).of(context), style: AppText.label(context))),
             ],
             onChanged: (v) async {
               if (v == null) return;

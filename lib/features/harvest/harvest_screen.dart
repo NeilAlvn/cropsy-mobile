@@ -112,7 +112,8 @@ class _HarvestTile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${repo.cropName(row.cropSlug)} · ${row.amount}', style: AppText.label(context)),
+              Text('${repo.cropNames(row.cropSlug).of(context)} · ${row.amount}',
+                  style: AppText.label(context)),
               Text(DateFormat('EEEE d MMM').format(parseIso(row.harvestedOn)), style: AppText.caption(context)),
             ],
           ),

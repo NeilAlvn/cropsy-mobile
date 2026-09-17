@@ -48,6 +48,10 @@ class LocalizedText {
 
   Map<String, dynamic> toJson() => {'nl': nl, 'en': en};
 
+  /// The side a caller with no `BuildContext` needs: notifications, logs,
+  /// anything outside the widget tree. Screens use `.of(context)` instead.
+  String pick(bool dutch) => dutch ? nl : en;
+
   @override
   bool operator ==(Object other) =>
       other is LocalizedText && other.nl == nl && other.en == en;
