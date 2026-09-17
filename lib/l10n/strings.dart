@@ -242,10 +242,10 @@ abstract final class Str {
     en: 'System follows your phone.',
   );
   static const langNote = LocalizedText(
-    nl: 'Gewasinformatie en de mascotte spreken beide talen. De rest van de '
-        'interface volgt met de contentupdate.',
-    en: 'Crop content and the mascot speak both languages. The rest of the '
-        'interface follows in the content update.',
+    nl: 'De hele app spreekt beide talen. Een enkele teeltuitleg is er nog '
+        'alleen in het Nederlands; dat staat er dan bij.',
+    en: 'The whole app speaks both languages. A few growing guides are Dutch '
+        'only for now, and say so where you read them.',
   );
   static const signInBlurb = LocalizedText(
     nl: 'Log in om je tuin te bewaren en te synchroniseren. Zonder account '
@@ -367,6 +367,45 @@ abstract final class Str {
   static const harvest = LocalizedText(nl: 'Oogst', en: 'Harvest');
   static const thisSeason = LocalizedText(nl: 'DIT SEIZOEN', en: 'THIS SEASON');
   static const nothingYet = LocalizedText(nl: 'Nog niets', en: 'Nothing yet');
+  static LocalizedText savedAtPrices(String euros) => LocalizedText(
+        nl: '≈ €$euros bespaard tegen NL supermarktprijzen',
+        en: '≈ €$euros saved at NL supermarket prices',
+      );
+  static LocalizedText unpricedCount(int n) => LocalizedText(
+        nl: n == 1 ? '1 zonder prijs' : '$n zonder prijs',
+        en: n == 1 ? '1 unpriced' : '$n unpriced',
+      );
+  static LocalizedText harvestsLogged(int n) => LocalizedText(
+        nl: n == 1 ? '1 oogst gelogd' : '$n oogsten gelogd',
+        en: n == 1 ? '1 harvest logged' : '$n harvests logged',
+      );
+  static const planFreePrice = LocalizedText(nl: '€0', en: '€0');
+  static const planLifetimePrice =
+      LocalizedText(nl: '€49,99 eenmalig', en: '€49.99 once');
+  static const planYearlyPrice =
+      LocalizedText(nl: '€19,99 / jaar', en: '€19.99 / year');
+  static const planFreeBlurb = LocalizedText(
+    nl: '1 tuin · 6 planten in de grond · volledige tijdlijn, herinneringen en '
+        'alle gewassen · 20 fotos · 2 streakbevriezingen per maand',
+    en: '1 garden · 6 growing plants · full timeline, reminders and every crop '
+        '· 20 photos · 2 streak freezes a month',
+  );
+  static const planLifetimeBlurb = LocalizedText(
+    nl: 'Onbeperkt tuinen en planten · plannerraster · diagnose · onbeperkt '
+        "fotos en bevriezingen · export",
+    en: 'Unlimited gardens and plants · planner grid · diagnose · unlimited '
+        'photos and freezes · export',
+  );
+  static const planYearlyBlurb = LocalizedText(
+    nl: 'Alles uit Levenslang, als abonnement. Zeg elk moment op in de App '
+        'Store.',
+    en: 'Everything in Lifetime, as a subscription. Cancel in the App Store '
+        'any time.',
+  );
+  static const noPriceForUnit = LocalizedText(
+    nl: 'Nog geen prijs voor deze eenheid',
+    en: 'No price for this unit yet',
+  );
 
   // ── diagnose ──────────────────────────────────────────────────────────────
   static const diagnose = LocalizedText(nl: 'Diagnose', en: 'Diagnose');
@@ -468,6 +507,69 @@ abstract final class Str {
   static const yourCrops = LocalizedText(nl: 'Jouw gewassen', en: 'Your crops');
   static const plannedSection = LocalizedText(nl: 'Gepland', en: 'Planned');
   static const types = LocalizedText(nl: 'Rassen', en: 'Types');
+
+  /// A crop page's sections: the jump chip and the heading say the same thing.
+  static LocalizedText cropSection(String id) => switch (id) {
+        'Calendar' => const LocalizedText(nl: 'Kalender', en: 'Calendar'),
+        'Timeline' => const LocalizedText(nl: 'Tijdlijn', en: 'Timeline'),
+        'Difficulty' => const LocalizedText(nl: 'Moeilijkheid', en: 'Difficulty'),
+        'Location' => const LocalizedText(nl: 'Standplaats', en: 'Location'),
+        'Soil' => const LocalizedText(nl: 'Grond', en: 'Soil'),
+        'How-tos' => const LocalizedText(nl: 'Zo doe je het', en: 'How-tos'),
+        'Neighbours' => const LocalizedText(nl: 'Buren', en: 'Neighbours'),
+        'Benefits' => const LocalizedText(nl: 'Waarom telen', en: 'Benefits'),
+        'FAQ' => const LocalizedText(nl: 'Vragen', en: 'FAQ'),
+        _ => LocalizedText(nl: id, en: id),
+      };
+  static const plantingCalendar = LocalizedText(
+    nl: 'Zaaikalender',
+    en: 'Planting calendar',
+  );
+  static const growthTimeline = LocalizedText(
+    nl: 'Groeitijdlijn',
+    en: 'Growth timeline',
+  );
+  static const suitableLocation = LocalizedText(
+    nl: 'Geschikte standplaats',
+    en: 'Suitable location',
+  );
+  static const soilPrep = LocalizedText(nl: 'Grond voorbereiden', en: 'Soil prep');
+  static const whyGrowIt = LocalizedText(nl: 'Waarom telen', en: 'Why grow it');
+  static const comingSoil = LocalizedText(
+    nl: 'Grond voorbereiden',
+    en: 'Soil preparation',
+  );
+  static const comingHowTos = LocalizedText(
+    nl: 'Stap voor stap per fase',
+    en: 'Step-by-step how-tos per stage',
+  );
+  static const comingFaq = LocalizedText(
+    nl: 'Vragen, nagekeken door telers',
+    en: 'Grower-reviewed FAQ',
+  );
+  static const comingBenefits = LocalizedText(
+    nl: 'Voeding en gezondheid (NEVO)',
+    en: 'Nutrition and benefits (NEVO)',
+  );
+  static LocalizedText contentComing(LocalizedText what) => LocalizedText(
+        nl: '${what.nl}: wordt geschreven en nagekeken voor Nederlandse tuinen. '
+            'Komt in de contentupdate.',
+        en: '${what.en}: being written and checked for Dutch gardens. '
+            'Coming in the content update.',
+      );
+  /// Said above a guide we only have in one language yet.
+  static LocalizedText guideOnlyIn(String lang) => switch (lang) {
+        'nl' => const LocalizedText(
+            nl: 'Deze uitleg is er nu alleen in het Nederlands.',
+            en: 'This guide is in Dutch for now.',
+          ),
+        _ => const LocalizedText(
+            nl: 'Deze uitleg is er nu alleen in het Engels.',
+            en: 'This guide is in English for now.',
+          ),
+      };
+  static LocalizedText atSupplier(String supplier) =>
+      LocalizedText(nl: 'bij $supplier', en: 'at $supplier');
   static const oftenOn = LocalizedText(nl: 'Vaak bij', en: 'Often on');
   static const insightsForYou = LocalizedText(
     nl: 'Wat nu belangrijk is',

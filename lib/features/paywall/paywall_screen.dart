@@ -6,6 +6,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../timing/types.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
@@ -26,10 +27,10 @@ class PaywallScreen extends StatefulWidget {
 class _PaywallScreenState extends State<PaywallScreen> {
   int _plan = 0; // 0 free · 1 lifetime · 2 yearly
 
-  static const _plans = <(String, String, String)>[
-    ('Free', '€0', '1 garden · 6 growing plants · full timeline, reminders and every crop · 20 photos · 2 streak freezes a month'),
-    ('Lifetime', '€49.99 once', 'Unlimited gardens and plants · planner grid · diagnose · unlimited photos and freezes · export'),
-    ('Yearly', '€19.99 / year', 'Everything in Lifetime, as a subscription. Cancel in the App Store any time.'),
+  static const _plans = <(LocalizedText, LocalizedText, LocalizedText)>[
+    (Str.planFree, Str.planFreePrice, Str.planFreeBlurb),
+    (Str.planLifetime, Str.planLifetimePrice, Str.planLifetimeBlurb),
+    (Str.planYearly, Str.planYearlyPrice, Str.planYearlyBlurb),
   ];
 
   bool _busy = false;
@@ -67,15 +68,18 @@ class _PaywallScreenState extends State<PaywallScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(children: [
-                                Text(_plans[i].$1, style: AppText.heading(context, color: _plan == i ? AppColors.onAccent : AppColors.ink)),
+                                Text(_plans[i].$1.of(context), style: AppText.heading(context, color: _plan == i ? AppColors.onAccent : AppColors.ink)),
                                 const SizedBox(width: 8),
                                 Text(
-                                  i == 0 ? _plans[0].$2 : (purchases?.price(i == 1 ? Plan.lifetime : Plan.yearly) ?? _plans[i].$2),
+                                  i == 0
+                                      ? _plans[0].$2.of(context)
+                                      : (purchases?.price(i == 1 ? Plan.lifetime : Plan.yearly) ??
+                                          _plans[i].$2.of(context)),
                                   style: AppText.label(context, color: _plan == i ? AppColors.onAccent.withValues(alpha: 0.7) : AppColors.muted),
                                 ),
                               ]),
                               const SizedBox(height: 4),
-                              Text(_plans[i].$3, style: AppText.caption(context, color: _plan == i ? AppColors.onAccent : AppColors.muted)),
+                              Text(_plans[i].$3.of(context), style: AppText.caption(context, color: _plan == i ? AppColors.onAccent : AppColors.muted)),
                             ],
                           ),
                         ),
@@ -86,7 +90,11 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 ),
               const Spacer(),
               PrimaryButton(
-                label: _busy ? Str.oneMoment.of(context) : _plan == 0 ? 'Keep it free' : 'Continue with ${_plans[_plan].$1}',
+                label: _busy
+                    ? Str.oneMoment.of(context)
+                    : _plan == 0
+                        ? Str.keepItFree.of(context)
+                        : Str.continueWith(_plans[_plan].$1.of(context)).of(context),
                 onPressed: _busy
                     ? null
                     : () async {

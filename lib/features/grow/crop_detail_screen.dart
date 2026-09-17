@@ -116,7 +116,9 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                     children: [
                       SectionHeader(Str.types.of(context)),
                       SizedBox(
-                        height: 84,
+                        // Three lines of Plus Jakarta plus the card's padding;
+                        // 84 clipped the supplier line.
+                        height: 104,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: [
@@ -132,7 +134,15 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                                     Text(v.names.of(context), style: AppText.label(context), maxLines: 1, overflow: TextOverflow.ellipsis),
                                     Text(v.traits.take(3).join(' · '), style: AppText.caption(context), maxLines: 1, overflow: TextOverflow.ellipsis),
                                     const Spacer(),
-                                    Text(v.suppliers.isEmpty ? '' : 'at ${v.suppliers.first}', style: AppText.caption(context, color: AppColors.sprout)),
+                                    Text(
+                                        v.suppliers.isEmpty
+                                            ? ''
+                                            : Str.atSupplier(v.suppliers.first)
+                                                .of(context),
+                                        style: AppText.caption(context,
+                                            color: AppColors.sprout),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
                               ),
@@ -143,16 +153,16 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                   ),
                 ),
               _NavChips(sections: _sections, onTap: _jump),
-              _section('Calendar', 'Planting calendar', _Calendar(crop: crop)),
-              _section('Timeline', 'Growth timeline', _Timeline(crop: crop)),
-              _section('Difficulty', 'Difficulty',
+              _section(context, 'Calendar', Str.plantingCalendar, _Calendar(crop: crop)),
+              _section(context, 'Timeline', Str.growthTimeline, _Timeline(crop: crop)),
+              _section(context, 'Difficulty', Str.cropSection('Difficulty'),
                   Center(child: DifficultyGauge(difficulty: difficultyOf(crop)))),
-              _section('Location', 'Suitable location', _Location(crop: crop)),
-              _section('Soil', 'Soil prep', const _ContentComing('Soil preparation')),
-              _section('How-tos', 'How-tos', _HowTos(crop: crop)),
-              _section('Neighbours', 'Neighbours', _Neighbours(slug: crop.slug)),
-              _section('Benefits', 'Why grow it', _GuideBenefits(slug: crop.slug)),
-              _section('FAQ', 'FAQ', _GuideFaq(slug: crop.slug)),
+              _section(context, 'Location', Str.suitableLocation, _Location(crop: crop)),
+              _section(context, 'Soil', Str.soilPrep, const _ContentComing(Str.comingSoil)),
+              _section(context, 'How-tos', Str.cropSection('How-tos'), _HowTos(crop: crop)),
+              _section(context, 'Neighbours', Str.cropSection('Neighbours'), _Neighbours(slug: crop.slug)),
+              _section(context, 'Benefits', Str.whyGrowIt, _GuideBenefits(slug: crop.slug)),
+              _section(context, 'FAQ', Str.cropSection('FAQ'), _GuideFaq(slug: crop.slug)),
               if (crop.sources.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
@@ -177,12 +187,18 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
     );
   }
 
-  Widget _section(String id, String title, Widget child) => Padding(
+  Widget _section(
+    BuildContext context,
+    String id,
+    LocalizedText title,
+    Widget child,
+  ) =>
+      Padding(
         key: _keys[id],
         padding: const EdgeInsets.fromLTRB(20, 18, 20, 6),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [SectionHeader(title), child],
+          children: [SectionHeader(title.of(context)), child],
         ),
       );
 }
@@ -211,7 +227,8 @@ class _NavChips extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.border, width: 1),
             ),
-            child: Text(sections[i], style: AppText.label(context)),
+            child: Text(Str.cropSection(sections[i]).of(context),
+                style: AppText.label(context)),
           ),
         ),
       ),
@@ -399,6 +416,16 @@ class _HowTos extends StatelessWidget {
   }
 }
 
+/// The guide's stage keys, said in the reader's language.
+LocalizedText _stageTitle(String key) => switch (key) {
+      'Starting' => Str.stageStarting,
+      'Seedling' => Str.stageSeedling,
+      'Vegetative' => Str.stageVegetative,
+      'Flowering' => Str.stageFlowering,
+      'Harvest' => Str.harvest,
+      _ => LocalizedText(nl: key, en: key),
+    };
+
 /// Editorial how-tos per stage from the content snapshot; placeholder until
 /// the crop has a guide. Drafts carry the concept badge (beta only).
 class _GuideStages extends StatelessWidget {
@@ -407,18 +434,27 @@ class _GuideStages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final g = RepositoryScope.of(context).content.guideFor(slug);
-    if (g == null) return const _ContentComing('Step-by-step how-tos per stage');
+    final g = RepositoryScope.of(context)
+        .content
+        .guideFor(slug, lang: AppLangScope.of(context).code);
+    if (g == null) return const _ContentComing(Str.comingHowTos);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (g.draft) const Padding(padding: EdgeInsets.only(bottom: 8), child: DraftBadge()),
+        if (g.lang != AppLangScope.of(context).code)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(Str.guideOnlyIn(g.lang).of(context),
+                style: AppText.caption(context)),
+          ),
         for (final st in g.stages)
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: AppCard(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(st.title, style: AppText.heading(context)),
+                Text(_stageTitle(st.title).of(context),
+                    style: AppText.heading(context)),
                 const SizedBox(height: 6),
                 Text(st.body, style: AppText.body(context)),
               ]),
@@ -435,8 +471,10 @@ class _GuideFaq extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final g = RepositoryScope.of(context).content.guideFor(slug);
-    if (g == null || g.faq.isEmpty) return const _ContentComing('Grower-reviewed FAQ');
+    final g = RepositoryScope.of(context)
+        .content
+        .guideFor(slug, lang: AppLangScope.of(context).code);
+    if (g == null || g.faq.isEmpty) return const _ContentComing(Str.comingFaq);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -461,8 +499,10 @@ class _GuideBenefits extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final g = RepositoryScope.of(context).content.guideFor(slug);
-    if (g == null) return const _ContentComing('Nutrition and benefits (NEVO)');
+    final g = RepositoryScope.of(context)
+        .content
+        .guideFor(slug, lang: AppLangScope.of(context).code);
+    if (g == null) return const _ContentComing(Str.comingBenefits);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -482,14 +522,14 @@ class _GuideBenefits extends StatelessWidget {
 /// showing generated filler as fact.
 class _ContentComing extends StatelessWidget {
   const _ContentComing(this.what);
-  final String what;
+  final LocalizedText what;
 
   @override
   Widget build(BuildContext context) => AppCard(
         child: MascotSays(
           pose: MascotPose.thinking,
           size: 40,
-          text: '$what: being written and checked for Dutch gardens. Coming in the content update.',
+          text: Str.contentComing(what).of(context),
         ),
       );
 }

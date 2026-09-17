@@ -6,6 +6,7 @@
 library;
 
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 import '../timing/types.dart';
 
@@ -19,6 +20,9 @@ class AppLang extends ChangeNotifier {
   set code(String value) {
     if (value == _code) return;
     _code = value;
+    // Every DateFormat in the app is built without an explicit locale, so this
+    // is the one switch that makes dates follow the language.
+    Intl.defaultLocale = value;
     notifyListeners();
   }
 }

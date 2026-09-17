@@ -71,7 +71,7 @@ class _HeroCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final parts = <String>[
       if (tally.kg > 0) '${_n(tally.kg)} kg',
-      if (tally.pcs > 0) '${_n(tally.pcs)} pieces',
+      if (tally.pcs > 0) '${_n(tally.pcs)} ${Str.pieces.of(context)}',
     ];
     return Container(
       decoration: Neo.box(color: AppColors.clay),
@@ -85,9 +85,10 @@ class _HeroCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             tally.euros > 0
-                ? '≈ €${tally.euros.toStringAsFixed(2)} saved at NL supermarket prices'
-                    '${tally.unpriced > 0 ? ' · ${tally.unpriced} unpriced' : ''}'
-                : '$count harvest${count == 1 ? '' : 's'} logged · price table coming with the content update',
+                ? '${Str.savedAtPrices(tally.euros.toStringAsFixed(2)).of(context)}'
+                    '${tally.unpriced > 0 ? ' · ${Str.unpricedCount(tally.unpriced).of(context)}' : ''}'
+                : '${Str.harvestsLogged(count).of(context)} · '
+                    '${Str.noPriceForUnit.of(context)}',
             style: AppText.body(context, color: AppColors.onInk),
           ),
         ],

@@ -488,7 +488,12 @@ class _HeaderItem implements _Item {
           centre: _monthCentre,
           radius: _monthDisc / 2 + 4,
         ),
-        child: Stack(
+        // The month says how many crops suit it, so it opens the same list the
+        // chest does.
+        child: GestureDetector(
+          onTap: () => _openMonth(context, repo, month),
+          behavior: HitTestBehavior.opaque,
+          child: Stack(
           children: [
             Align(
               alignment: Alignment.centerRight,
@@ -521,6 +526,7 @@ class _HeaderItem implements _Item {
               ),
             ),
           ],
+          ),
         ),
       ),
     );
@@ -1078,18 +1084,22 @@ class _SuggestionItem implements _Item {
         label: Str.cropsCanGoIn(count).of(context),
         caption: Str.nothingPlanned(Str.month(month)).of(context),
         badge: 'assets/nodes/chest.png',
-        onTap: () => showAppSheet<void>(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: AppColors.surface,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-          ),
-          builder: (context) =>
-              _MonthOptions(month: month, crops: repo.whatToGrowIn(month)),
-        ),
+        onTap: () => _openMonth(context, repo, month),
       );
 }
+
+/// What suits this month, from the month marker as well as from the chest.
+void _openMonth(BuildContext context, GardenRepository repo, int month) =>
+    showAppSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (context) =>
+          _MonthOptions(month: month, crops: repo.whatToGrowIn(month)),
+    );
 
 /// One stop on the path: the connector, the button, and its label.
 class _PathStop extends StatelessWidget {

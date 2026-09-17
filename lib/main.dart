@@ -8,6 +8,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 import 'db/connection.dart';
 import 'design/brutal.dart';
@@ -42,7 +44,11 @@ Future<void> main() async {
   final theme = AppTheme(
     initial: AppTheme.parse(await repo.meta(AppTheme.metaKey)),
   );
+  // Dates are read, not parsed: month and weekday names have to speak the
+  // reader's language too.
+  await initializeDateFormatting();
   final lang = AppLang((await repo.profile())?.lang ?? 'nl');
+  Intl.defaultLocale = lang.code;
 
   // Reminders follow the data: any change re-plans the week's notifications.
   Timer? debounce;
