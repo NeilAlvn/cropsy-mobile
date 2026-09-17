@@ -174,6 +174,175 @@ abstract final class Str {
     en: 'Sowing held until it warms',
   );
 
+
+  // ── browse: Explore and Grow ──────────────────────────────────────────────
+  static const explore = LocalizedText(nl: 'Ontdek', en: 'Explore');
+  static const findNextCrop = LocalizedText(
+    nl: 'Vind je volgende gewas',
+    en: 'Find your next crop',
+  );
+  static const identifyFromPhoto = LocalizedText(
+    nl: 'Herken een plant van een foto',
+    en: 'Identify a plant from a photo',
+  );
+  static const grow = LocalizedText(nl: 'Kweken', en: 'Grow');
+  static LocalizedText searchCropCount(int n) =>
+      LocalizedText(nl: 'Zoek in $n gewassen…', en: 'Search $n crops…');
+  static LocalizedText results(int n) =>
+      LocalizedText(nl: '$n resultaten', en: '$n results');
+  static const profile = LocalizedText(nl: 'Profiel', en: 'Profile');
+
+  // ── crop detail ───────────────────────────────────────────────────────────
+  static const planToGrow = LocalizedText(nl: 'Plan het', en: 'Plan to grow');
+  static const growingIt = LocalizedText(nl: 'Ik kweek het', en: 'Growing it');
+  static const goodNeighbours = LocalizedText(nl: 'Goede buren', en: 'Good neighbours');
+  static const badNeighbours = LocalizedText(nl: 'Slechte buren', en: 'Bad neighbours');
+  static const noCompanionData = LocalizedText(
+    nl: 'Nog geen buurgegevens.',
+    en: 'No companion data yet.',
+  );
+  static const draftMatrix = LocalizedText(
+    nl: 'Concept. De gecontroleerde matrix komt met de contentupdate',
+    en: 'Draft. The verified matrix lands in the content update',
+  );
+  static LocalizedText verifiedAgainst(int n) => LocalizedText(
+        nl: 'Gecontroleerd tegen $n NL-bronnen',
+        en: 'Verified against $n NL sources',
+      );
+  static LocalizedText basedOn(String region) =>
+      LocalizedText(nl: 'Op basis van: $region', en: 'Based on: $region');
+  static LocalizedText potLitres(int litres) =>
+      LocalizedText(nl: 'pot van $litres L', en: '$litres L pot');
+  static LocalizedText harvestDays(int min, int max) => LocalizedText(
+        nl: '$min–$max dagen',
+        en: '$min–$max days',
+      );
+
+  // ── settings ──────────────────────────────────────────────────────────────
+  static const settings = LocalizedText(nl: 'Instellingen', en: 'Settings');
+  static const account = LocalizedText(nl: 'Account', en: 'Account');
+  static const membership = LocalizedText(nl: 'Lidmaatschap', en: 'Membership');
+  static const yourData = LocalizedText(nl: 'Jouw gegevens', en: 'Your data');
+  static const appearance = LocalizedText(nl: 'Weergave', en: 'Appearance');
+  static const language = LocalizedText(nl: 'Taal', en: 'Language');
+  static const help = LocalizedText(nl: 'Help', en: 'Help');
+  static const themeSystem = LocalizedText(nl: 'Systeem', en: 'System');
+  static const themeLight = LocalizedText(nl: 'Licht', en: 'Light');
+  static const themeDark = LocalizedText(nl: 'Donker', en: 'Dark');
+  static const themeFollows = LocalizedText(
+    nl: 'Systeem volgt je telefoon.',
+    en: 'System follows your phone.',
+  );
+  static const langNote = LocalizedText(
+    nl: 'Gewasinformatie en de mascotte spreken beide talen. De rest van de '
+        'interface volgt met de contentupdate.',
+    en: 'Crop content and the mascot speak both languages. The rest of the '
+        'interface follows in the content update.',
+  );
+  static const signInBlurb = LocalizedText(
+    nl: 'Log in om je tuin te bewaren en te synchroniseren. Zonder account '
+        'werkt alles gewoon offline door.',
+    en: 'Sign in to back up and sync your garden. Everything keeps working '
+        'offline without it.',
+  );
+  static const email = LocalizedText(nl: 'E-mail', en: 'E-mail');
+  static const sendLink = LocalizedText(
+    nl: 'Stuur me een inloglink',
+    en: 'Send me a sign-in link',
+  );
+  static const checkYourMail = LocalizedText(
+    nl: 'Kijk in je mail. De link logt je in.',
+    en: 'Check your mail. The link signs you in.',
+  );
+  static const passwordOptional = LocalizedText(
+    nl: 'Wachtwoord (optioneel)',
+    en: 'Password (optional)',
+  );
+  static const signIn = LocalizedText(nl: 'Inloggen', en: 'Sign in');
+  static const createAccount = LocalizedText(nl: 'Account maken', en: 'Create account');
+  static const accountCreated = LocalizedText(
+    nl: 'Account aangemaakt. Bevestig via de mail die we stuurden.',
+    en: 'Account created. Confirm via the mail we sent.',
+  );
+  static const signedIn = LocalizedText(nl: 'Ingelogd', en: 'Signed in');
+  static const syncNow = LocalizedText(nl: 'Sync nu', en: 'Sync now');
+  static const signOut = LocalizedText(nl: 'Uitloggen', en: 'Sign out');
+  static const syncing = LocalizedText(nl: 'Synchroniseren…', en: 'Syncing…');
+  static const notSyncedYet = LocalizedText(
+    nl: 'Nog niet gesynchroniseerd.',
+    en: 'Not synced yet.',
+  );
+  static LocalizedText lastSync(String time) =>
+      LocalizedText(nl: 'Laatste sync $time', en: 'Last sync $time');
+  static const someTablesFailed = LocalizedText(
+    nl: ' · een deel is mislukt',
+    en: ' · some tables failed',
+  );
+  static const alreadyInStep = LocalizedText(
+    nl: 'Alles liep al gelijk.',
+    en: 'Everything was already in step.',
+  );
+  static const deleteAccount = LocalizedText(nl: 'Account verwijderen', en: 'Delete account');
+  static const deleteAccountAsk = LocalizedText(
+    nl: 'Account verwijderen?',
+    en: 'Delete account?',
+  );
+  static const deleteAccountBody = LocalizedText(
+    nl: 'Verwijdert je account en elke gesynchroniseerde tuin, plant en log. '
+        'Dit kan niet ongedaan worden gemaakt.',
+    en: 'Removes your account and every synced garden, plant and log. This '
+        'cannot be undone.',
+  );
+  static const deleted = LocalizedText(
+    nl: 'Account verwijderd. Je lokale gegevens blijven op deze telefoon.',
+    en: 'Account deleted. Your local data stays on this phone.',
+  );
+  static const cancel = LocalizedText(nl: 'Annuleren', en: 'Cancel');
+  static const delete = LocalizedText(nl: 'Verwijderen', en: 'Delete');
+  static const exportData = LocalizedText(
+    nl: 'Exporteer mijn data (JSON)',
+    en: 'Export my data (JSON)',
+  );
+  static const exportBlurb = LocalizedText(
+    nl: 'Kopieert alles naar het klembord.',
+    en: 'Copies everything to the clipboard.',
+  );
+  static const copied = LocalizedText(
+    nl: 'Gekopieerd naar het klembord.',
+    en: 'Copied to clipboard.',
+  );
+  static const seePlans = LocalizedText(nl: 'Bekijk plannen', en: 'See plans');
+  static const managePlan = LocalizedText(nl: 'Beheer plan', en: 'Manage plan');
+  static const restore = LocalizedText(nl: 'Herstellen', en: 'Restore');
+  static const checkedWithStore = LocalizedText(
+    nl: 'Gecontroleerd bij de store.',
+    en: 'Checked with the store.',
+  );
+  static const syncUnavailable = LocalizedText(
+    nl: 'Synchroniseren zit niet in deze build.',
+    en: 'Sync is not available in this build.',
+  );
+  static const planFree = LocalizedText(nl: 'Gratis', en: 'Free');
+  static const planLifetime = LocalizedText(nl: 'Lifetime', en: 'Lifetime');
+  static const planYearly = LocalizedText(nl: 'Jaarlijks', en: 'Yearly');
+  static const lifetimeNothingToCancel = LocalizedText(
+    nl: 'Lifetime. Niets op te zeggen.',
+    en: 'Lifetime. Nothing to cancel.',
+  );
+  static const freeTierBlurb = LocalizedText(
+    nl: '1 tuin · 6 groeiende planten · volledige tijdlijn, herinneringen en '
+        'elk gewas.',
+    en: '1 garden · 6 growing plants · full timeline, reminders and every crop.',
+  );
+  static LocalizedText cropDataVersion(String version) => LocalizedText(
+        nl: 'Cropsy · gewasdata $version',
+        en: 'Cropsy · crop data $version',
+      );
+  static LocalizedText frostDates(String region, String source) => LocalizedText(
+        nl: 'Vorstdatums: $region ($source)',
+        en: 'Frost dates: $region ($source)',
+      );
+
   // ── months, for every sentence that names one ─────────────────────────────
   static const months = <LocalizedText>[
     LocalizedText(nl: 'januari', en: 'January'),

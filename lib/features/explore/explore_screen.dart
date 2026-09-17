@@ -3,6 +3,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
@@ -32,7 +33,7 @@ class ExploreScreen extends StatelessWidget {
               Collection(
                 id: c.slug,
                 title: c.title.of(context),
-                subtitle: c.intro.en,
+                subtitle: c.intro.of(context),
                 crops: [for (final s in c.cropSlugs) ?repo.cropBySlug(s)],
                 draft: c.draft,
               ),
@@ -47,17 +48,9 @@ class ExploreScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Explore', style: AppText.kicker(context)),
+                Text(Str.explore.of(context), style: AppText.kicker(context)),
                 const SizedBox(height: 2),
-                Text.rich(TextSpan(
-                  style: AppText.display(context),
-                  children: [
-                    TextSpan(text: 'Find your next '),
-                    TextSpan(
-                        text: 'crop',
-                        style: TextStyle(color: AppColors.sprout)),
-                  ],
-                )),
+                Text(Str.findNextCrop.of(context), style: AppText.display(context)),
                 const SizedBox(height: 16),
                 // Identify used to hang off the tab bar's centre button. The
                 // intent is "what is this plant", which belongs next to search.
@@ -68,7 +61,7 @@ class ExploreScreen extends StatelessWidget {
                     Icon(PhosphorIcons.crosshairSimple, color: AppColors.accent),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: Text('Identify a plant from a photo',
+                      child: Text(Str.identifyFromPhoto.of(context),
                           style: AppText.label(context)),
                     ),
                     Icon(PhosphorIcons.caretRight, size: 16, color: AppColors.inkMuted),

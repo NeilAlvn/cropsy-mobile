@@ -8,6 +8,7 @@ import '../design/icons.dart';
 import '../db/database.dart' show GardenKind;
 import '../timing/weather_adjust.dart';
 import 'brutal.dart';
+import '../timing/types.dart';
 import 'colors.dart';
 import 'motion.dart';
 import 'typography.dart';
@@ -41,6 +42,17 @@ class KindMark extends StatelessWidget {
             fit: BoxFit.contain, excludeFromSemantics: true),
       );
 }
+
+/// The task kind in both languages, for anything the gardener reads.
+LocalizedText kindLine(TaskKind kind) => switch (kind) {
+      TaskKind.water => const LocalizedText(nl: 'Water geven', en: 'Water'),
+      TaskKind.sow => const LocalizedText(nl: 'Zaaien', en: 'Sow'),
+      TaskKind.transplant => const LocalizedText(nl: 'Uitplanten', en: 'Plant out'),
+      TaskKind.harvest => const LocalizedText(nl: 'Oogsten', en: 'Harvest'),
+      TaskKind.feed => const LocalizedText(nl: 'Bijmesten', en: 'Feed'),
+      TaskKind.potOn => const LocalizedText(nl: 'Verpotten', en: 'Pot on'),
+      TaskKind.thin => const LocalizedText(nl: 'Uitdunnen', en: 'Thin'),
+    };
 
 String kindLabel(TaskKind kind) => switch (kind) {
       TaskKind.water => 'Water',
@@ -82,7 +94,9 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final disabled = onPressed == null;
     // Base 8.1: disabled swaps tokens, it never fades the whole button.
-    final fill = disabled ? AppColors.tile : color;
+    // A null colour means "the accent", not "no fill": the tokens stopped being
+    // consts when they learned about dark mode, and the default went with them.
+    final fill = disabled ? AppColors.tile : (color ?? AppColors.accent);
     final fg = disabled ? AppColors.inkPlaceholder : AppColors.onAccent;
     return Pressable(
       onTap: onPressed,

@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import 'package:intl/intl.dart';
 
@@ -208,7 +209,7 @@ class _TaskTile extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(kindLabel(item.kind), style: AppText.heading(context)),
+                    Text(kindLine(item.kind).of(context), style: AppText.heading(context)),
                     const SizedBox(width: 6),
                     CategoryDot(item.category),
                   ],

@@ -3,6 +3,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
@@ -43,7 +44,7 @@ class _GrowScreenState extends State<GrowScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Grow', style: AppText.kicker(context)),
+                Text(Str.grow.of(context), style: AppText.kicker(context)),
                 const SizedBox(height: 2),
                 Text.rich(TextSpan(
                   style: AppText.display(context),
@@ -55,7 +56,9 @@ class _GrowScreenState extends State<GrowScreen> {
                   ],
                 )),
                 const SizedBox(height: 14),
-                _SearchField(onChanged: (q) => setState(() => _query = q)),
+                _SearchField(
+                    onChanged: (q) => setState(() => _query = q),
+                    cropCount: repo.crops.length),
               ],
             ),
           ),
@@ -79,8 +82,12 @@ class _GrowScreenState extends State<GrowScreen> {
 }
 
 class _SearchField extends StatelessWidget {
-  const _SearchField({required this.onChanged});
+  const _SearchField({required this.onChanged, required this.cropCount});
+
   final ValueChanged<String> onChanged;
+
+  /// Named in the placeholder, so the hint says how much there is to search.
+  final int cropCount;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +95,7 @@ class _SearchField extends StatelessWidget {
       onChanged: onChanged,
       style: AppText.body(context),
       decoration: InputDecoration(
-        hintText: 'Search 60 crops…',
+        hintText: Str.searchCropCount(cropCount).of(context),
         hintStyle: AppText.bodyMuted(context),
         prefixIcon: Icon(PhosphorIcons.magnifyingGlass, color: AppColors.muted),
         filled: true,

@@ -13,6 +13,13 @@ String difficultyLabel(Difficulty d) => switch (d) {
       Difficulty.hard => 'Hard',
     };
 
+/// The same, in both languages, for anything the gardener reads.
+LocalizedText difficultyLine(Difficulty d) => switch (d) {
+      Difficulty.easy => const LocalizedText(nl: 'Makkelijk', en: 'Easy'),
+      Difficulty.medium => const LocalizedText(nl: 'Gemiddeld', en: 'Medium'),
+      Difficulty.hard => const LocalizedText(nl: 'Lastig', en: 'Hard'),
+    };
+
 // Hand-set for the crops people actually start with, so those read right.
 const _overrides = <String, Difficulty>{
   'lettuce': Difficulty.easy,

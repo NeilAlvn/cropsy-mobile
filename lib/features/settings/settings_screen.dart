@@ -4,6 +4,8 @@
 library;
 
 import 'dart:convert';
+import '../../l10n/strings.dart';
+import '../../timing/types.dart';
 
 import 'package:flutter/material.dart';
 import '../../design/icons.dart';
@@ -63,14 +65,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         backgroundColor: AppColors.paper,
         surfaceTintColor: AppColors.paper,
         iconTheme: IconThemeData(color: AppColors.ink),
-        title: Text('Settings', style: AppText.heading(context)),
+        title: Text(Str.settings.of(context), style: AppText.heading(context)),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
         children: [
-          SectionHeader('Account'),
+          SectionHeader(Str.account.of(context)),
           if (auth == null)
-            Text('Sync is not available in this build.', style: AppText.bodyMuted(context))
+            Text(Str.syncUnavailable.of(context), style: AppText.bodyMuted(context))
           else if (auth.signedIn)
             _signedIn(context, auth, repo)
           else
@@ -80,17 +82,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Text(_status!, style: AppText.caption(context, color: AppColors.sprout)),
           ],
           const SizedBox(height: 24),
-          SectionHeader('Membership'),
+          SectionHeader(Str.membership.of(context)),
           Builder(builder: (context) {
             final p = PurchaseScope.maybeOf(context);
             final plan = p?.plan ?? Plan.free;
             return AppCard(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(switch (plan) { Plan.free => 'Free', Plan.lifetime => 'Lifetime', Plan.yearly => 'Yearly' }, style: AppText.label(context)),
+                Text(
+                    switch (plan) {
+                      Plan.free => Str.planFree,
+                      Plan.lifetime => Str.planLifetime,
+                      Plan.yearly => Str.planYearly,
+                    }.of(context),
+                    style: AppText.label(context)),
                 Text(
                   switch (plan) {
-                    Plan.free => '1 garden · 6 growing plants · full timeline, reminders and every crop.',
-                    Plan.lifetime => 'Lifetime. Nothing to cancel.',
+                    Plan.free => Str.freeTierBlurb.of(context),
+                    Plan.lifetime => Str.lifetimeNothingToCancel.of(context),
                     Plan.yearly => 'Renews yearly. Manage or cancel in the App Store / Play Store.',
                   },
                   style: AppText.caption(context),
@@ -100,50 +108,56 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   if (plan == Plan.free)
                     Expanded(
                       child: SecondaryButton(
-                        label: 'See plans',
+                        label: Str.seePlans.of(context),
                         onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PaywallScreen(), fullscreenDialog: true)),
                       ),
                     ),
                   if (plan == Plan.yearly)
                     Expanded(
                       child: SecondaryButton(
-                        label: 'Manage plan',
+                        label: Str.managePlan.of(context),
                         onPressed: () => launchUrl(Uri.parse('https://apps.apple.com/account/subscriptions'), mode: LaunchMode.externalApplication),
                       ),
                     ),
                   if (p?.configured == true) ...[
                     const SizedBox(width: 8),
-                    Expanded(child: SecondaryButton(label: 'Restore', onPressed: () => _run(() async => p!.restore(), done: 'Checked with the store.'))),
+                    Expanded(child: SecondaryButton(label: Str.restore.of(context), onPressed: () => _run(() async => p!.restore(), done: Str.checkedWithStore.of(context)))),
                   ],
                 ]),
               ]),
             );
           }),
           const SizedBox(height: 24),
-          SectionHeader('Your data'),
+          SectionHeader(Str.yourData.of(context)),
           AppCard(
             child: ListTile(
               contentPadding: EdgeInsets.zero,
               leading: Icon(PhosphorIcons.downloadSimple, color: AppColors.sprout),
-              title: Text('Export my data (JSON)', style: AppText.label(context)),
-              subtitle: Text('Copies everything to the clipboard.', style: AppText.caption(context)),
+              title: Text(Str.exportData.of(context), style: AppText.label(context)),
+              subtitle: Text(Str.exportBlurb.of(context), style: AppText.caption(context)),
               onTap: () => _run(() async {
                 await Clipboard.setData(ClipboardData(text: await _export(repo)));
-              }, done: 'Copied to clipboard.'),
+              }, done: Str.copied.of(context)),
             ),
           ),
-          const SizedBox(height: 24),
-          SectionHeader('Appearance'),
+          SizedBox(height: 24),
+          SectionHeader(Str.appearance.of(context)),
           Builder(builder: (context) {
             final theme = AppThemeScope.of(context);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SegmentedButton<AppThemeChoice>(
-                  segments: const [
-                    ButtonSegment(value: AppThemeChoice.system, label: Text('System')),
-                    ButtonSegment(value: AppThemeChoice.light, label: Text('Light')),
-                    ButtonSegment(value: AppThemeChoice.dark, label: Text('Dark')),
+                  segments: [
+                    ButtonSegment(
+                        value: AppThemeChoice.system,
+                        label: Text(Str.themeSystem.of(context))),
+                    ButtonSegment(
+                        value: AppThemeChoice.light,
+                        label: Text(Str.themeLight.of(context))),
+                    ButtonSegment(
+                        value: AppThemeChoice.dark,
+                        label: Text(Str.themeDark.of(context))),
                   ],
                   selected: {theme.choice},
                   onSelectionChanged: (v) async {
@@ -152,12 +166,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                 ),
                 const SizedBox(height: 4),
-                Text('System follows your phone.', style: AppText.caption(context)),
+                Text(Str.themeFollows.of(context), style: AppText.caption(context)),
               ],
             );
           }),
           const SizedBox(height: 24),
-          SectionHeader('Language'),
+          SectionHeader(Str.language.of(context)),
           FutureBuilder<ProfileRow?>(
             future: repo.profile(),
             builder: (context, snap) {
@@ -174,22 +188,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
           const SizedBox(height: 4),
-          Text(
-            'Crop content and the mascot speak both languages. The rest of the '
-            'interface follows in the content update.',
-            style: AppText.caption(context),
-          ),
+          Text(Str.langNote.of(context), style: AppText.caption(context)),
           const SizedBox(height: 24),
-          SectionHeader('Help'),
+          SectionHeader(Str.help.of(context)),
           for (final (q, a) in _faq)
             Theme(
               data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
               child: ExpansionTile(
                 tilePadding: EdgeInsets.zero,
-                title: Text(q, style: AppText.label(context)),
+                title: Text(q.of(context), style: AppText.label(context)),
                 iconColor: AppColors.sprout,
                 collapsedIconColor: AppColors.muted,
-                children: [Align(alignment: Alignment.centerLeft, child: Padding(padding: EdgeInsets.only(bottom: 10), child: Text(a, style: AppText.bodyMuted(context))))],
+                children: [Align(alignment: Alignment.centerLeft, child: Padding(padding: EdgeInsets.only(bottom: 10), child: Text(a.of(context), style: AppText.bodyMuted(context))))],
               ),
             ),
           SizedBox(height: 12),
@@ -207,8 +217,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           const SizedBox(height: 24),
           SectionHeader('About'),
-          Text('Cropsy · crop data ${repo.cropVersion}', style: AppText.caption(context)),
-          Text('Frost dates: ${repo.regionName} (${repo.frostSource})', style: AppText.caption(context)),
+          Text(Str.cropDataVersion(repo.cropVersion).of(context), style: AppText.caption(context)),
+          Text(Str.frostDates(repo.regionName, repo.frostSource).of(context), style: AppText.caption(context)),
         ],
       ),
     );
@@ -219,47 +229,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Sign in to back up and sync your garden. Everything keeps working offline without it.',
-              style: AppText.bodyMuted(context)),
+          Text(Str.signInBlurb.of(context), style: AppText.bodyMuted(context)),
           const SizedBox(height: 12),
           TextField(
             controller: _email,
             keyboardType: TextInputType.emailAddress,
             autocorrect: false,
             style: AppText.body(context),
-            decoration: const InputDecoration(labelText: 'E-mail'),
+            decoration: InputDecoration(labelText: Str.email.of(context)),
           ),
           const SizedBox(height: 10),
           PrimaryButton(
-            label: 'Send me a sign-in link',
+            label: Str.sendLink.of(context),
             onPressed: _busy
                 ? null
                 : () => _run(() => auth.sendMagicLink(_email.text.trim()),
-                    done: 'Check your mail. The link signs you in.'),
+                    done: Str.checkYourMail.of(context)),
           ),
           const SizedBox(height: 10),
           TextField(
             controller: _password,
             obscureText: true,
             style: AppText.body(context),
-            decoration: const InputDecoration(labelText: 'Password (optional)'),
+            decoration: InputDecoration(labelText: Str.passwordOptional.of(context)),
           ),
           const SizedBox(height: 8),
           Row(children: [
             Expanded(
               child: SecondaryButton(
-                label: 'Sign in',
+                label: Str.signIn.of(context),
                 onPressed: _busy ? null : () => _run(() => auth.signInWithPassword(_email.text.trim(), _password.text)),
               ),
             ),
             const SizedBox(width: 8),
             Expanded(
               child: SecondaryButton(
-                label: 'Create account',
+                label: Str.createAccount.of(context),
                 onPressed: _busy
                     ? null
                     : () => _run(() => auth.signUp(_email.text.trim(), _password.text),
-                        done: 'Account created. Confirm via the mail we sent.'),
+                        done: Str.accountCreated.of(context)),
               ),
             ),
           ]),
@@ -274,15 +283,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(auth.user?.email ?? 'Signed in', style: AppText.label(context)),
+          Text(auth.user?.email ?? Str.signedIn.of(context), style: AppText.label(context)),
           const SizedBox(height: 4),
           Text(
             auth.syncing
-                ? 'Syncing…'
+                ? Str.syncing.of(context)
                 : last == null
-                    ? 'Not synced yet.'
-                    : 'Last sync ${last.hour.toString().padLeft(2, '0')}:${last.minute.toString().padLeft(2, '0')}'
-                        '${auth.lastReport?.ok == false ? ' · some tables failed' : ''}',
+                    ? Str.notSyncedYet.of(context)
+                    : Str.lastSync(
+                            '${last.hour.toString().padLeft(2, '0')}:${last.minute.toString().padLeft(2, '0')}')
+                        .of(context) +
+                        (auth.lastReport?.ok == false
+                            ? Str.someTablesFailed.of(context)
+                            : ''),
             style: AppText.caption(context),
           ),
           if (auth.lastReport?.ok == false)
@@ -295,19 +308,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // pushed nothing looks exactly like one that worked.
           if (auth.lastReport != null && !auth.syncing) ...[
             const SizedBox(height: 8),
-            Text(_movement(auth.lastReport!), style: AppText.caption(context)),
+            Text(_movement(auth.lastReport!, context), style: AppText.caption(context)),
           ],
           const SizedBox(height: 12),
           Row(children: [
-            Expanded(child: PrimaryButton(label: 'Sync now', onPressed: auth.syncing ? null : () => _run(() async => auth.syncNow()))),
+            Expanded(child: PrimaryButton(label: Str.syncNow.of(context), onPressed: auth.syncing ? null : () => _run(() async => auth.syncNow()))),
             const SizedBox(width: 8),
-            Expanded(child: SecondaryButton(label: 'Sign out', onPressed: () => _run(auth.signOut))),
+            Expanded(child: SecondaryButton(label: Str.signOut.of(context), onPressed: () => _run(auth.signOut))),
           ]),
           const SizedBox(height: 16),
           TextButton(
             style: TextButton.styleFrom(foregroundColor: AppColors.warn),
             onPressed: _busy ? null : () => _deleteAccount(auth, repo),
-            child: const Text('Delete account'),
+            child: Text(Str.deleteAccount.of(context)),
           ),
         ],
       ),
@@ -315,7 +328,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   /// "12 rows up, 4 down" per table, or that nothing needed to move.
-  String _movement(SyncReport report) {
+  String _movement(SyncReport report, BuildContext context) {
     final parts = <String>[];
     for (final table in {...report.pushed.keys, ...report.pulled.keys}) {
       final up = report.pushed[table] ?? 0;
@@ -323,7 +336,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (up == 0 && down == 0) continue;
       parts.add('$table ${up > 0 ? '↑$up' : ''}${up > 0 && down > 0 ? ' ' : ''}${down > 0 ? '↓$down' : ''}');
     }
-    return parts.isEmpty ? 'Everything was already in step.' : parts.join(' · ');
+    return parts.isEmpty ? Str.alreadyInStep.of(context) : parts.join(' · ');
   }
 
   Future<void> _deleteAccount(AuthService auth, GardenRepository repo) async {
@@ -331,24 +344,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.surface,
-        title: Text('Delete account?', style: AppText.title(context)),
-        content: Text('Removes your account and every synced garden, plant and log. This cannot be undone.',
+        title: Text(Str.deleteAccountAsk.of(context), style: AppText.title(context)),
+        content: Text(Str.deleteAccountBody.of(context),
             style: AppText.bodyMuted(context)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(Str.cancel.of(context))),
           TextButton(
             style: TextButton.styleFrom(foregroundColor: AppColors.warn),
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
+            child: Text(Str.delete.of(context)),
           ),
         ],
       ),
     );
-    if (ok != true) return;
+    if (ok != true || !mounted) return;
+    // Read the line before the await, so the dialog's context is not used after it.
+    final done = Str.deleted.of(context);
     await _run(() async {
       final deleted = await auth.deleteAccount();
       if (!deleted) throw StateError('Could not delete the account. Try again later.');
-    }, done: 'Account deleted. Your local data stays on this phone.');
+    }, done: done);
   }
 
   Future<String> _export(GardenRepository repo) async {
@@ -365,11 +380,80 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 }
 
-const _faq = <(String, String)>[
-  ('Where do the planting dates come from?', 'From the frost dates for your location (KNMI / Open-Meteo climate normals, rounded to ~10 km) combined with crop rules cross-checked against at least two Dutch seed calendars.'),
-  ('I fell behind. Is my plan ruined?', 'No. Log what you actually did and when; every later step moves with it. Nothing is ever "overdue", it is "moved".'),
-  ('Why did a watering disappear?', 'It rained enough around that day, or rain is forecast. The weather line on Home says what changed.'),
-  ('Does it work offline?', 'Yes. Crops, dates, reminders and the timeline all run on the phone. Weather hints and sync need a connection.'),
-  ('What does the free tier include?', 'One garden, six growing plants, the full timeline, reminders and every crop, forever. Lifetime unlocks more room.'),
-  ('How do I delete my account?', 'Settings → Account → Delete account. It removes your account and every synced row; local data stays on this phone until you delete the app.'),
+/// The help section. Chrome, not content, so it lives here rather than in the
+/// snapshot, and it carries both languages like everything else the user reads.
+const _faq = <(LocalizedText, LocalizedText)>[
+  (
+    LocalizedText(
+      nl: 'Waar komen de plantdata vandaan?',
+      en: 'Where do the planting dates come from?',
+    ),
+    LocalizedText(
+      nl: 'Uit de vorstdatums voor jouw locatie (KNMI / Open-Meteo '
+          'klimaatnormalen, afgerond op ~10 km), gecombineerd met teeltregels '
+          'die tegen minstens twee Nederlandse zaaikalenders zijn gelegd.',
+      en: 'From the frost dates for your location (KNMI / Open-Meteo climate '
+          'normals, rounded to ~10 km) combined with crop rules cross-checked '
+          'against at least two Dutch seed calendars.',
+    ),
+  ),
+  (
+    LocalizedText(
+      nl: 'Ik loop achter. Is mijn plan verpest?',
+      en: 'I fell behind. Is my plan ruined?',
+    ),
+    LocalizedText(
+      nl: 'Nee. Log wat je echt hebt gedaan en wanneer; elke volgende stap '
+          'schuift mee. Niets is ooit "te laat", het is "verzet".',
+      en: 'No. Log what you actually did and when; every later step moves with '
+          'it. Nothing is ever "overdue", it is "moved".',
+    ),
+  ),
+  (
+    LocalizedText(
+      nl: 'Waarom is een waterbeurt verdwenen?',
+      en: 'Why did a watering disappear?',
+    ),
+    LocalizedText(
+      nl: 'Het heeft rond die dag genoeg geregend, of er is regen voorspeld. '
+          'De weerregel op Home vertelt wat er veranderde.',
+      en: 'It rained enough around that day, or rain is forecast. The weather '
+          'line on Home says what changed.',
+    ),
+  ),
+  (
+    LocalizedText(nl: 'Werkt het offline?', en: 'Does it work offline?'),
+    LocalizedText(
+      nl: 'Ja. Gewassen, data, herinneringen en de tijdlijn draaien op de '
+          'telefoon. Weerhints en synchroniseren hebben verbinding nodig.',
+      en: 'Yes. Crops, dates, reminders and the timeline all run on the phone. '
+          'Weather hints and sync need a connection.',
+    ),
+  ),
+  (
+    LocalizedText(
+      nl: 'Wat zit er in de gratis versie?',
+      en: 'What does the free tier include?',
+    ),
+    LocalizedText(
+      nl: 'Eén tuin, zes groeiende planten, de volledige tijdlijn, '
+          'herinneringen en elk gewas, voorgoed. Lifetime geeft meer ruimte.',
+      en: 'One garden, six growing plants, the full timeline, reminders and '
+          'every crop, forever. Lifetime unlocks more room.',
+    ),
+  ),
+  (
+    LocalizedText(
+      nl: 'Hoe verwijder ik mijn account?',
+      en: 'How do I delete my account?',
+    ),
+    LocalizedText(
+      nl: 'Instellingen → Account → Account verwijderen. Dat wist je account '
+          'en elke gesynchroniseerde rij; lokale gegevens blijven op deze '
+          'telefoon tot je de app verwijdert.',
+      en: 'Settings → Account → Delete account. It removes your account and '
+          'every synced row; local data stays on this phone until you delete '
+          'the app.',
+    ),
+  ),
 ];

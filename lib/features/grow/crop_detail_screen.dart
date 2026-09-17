@@ -6,6 +6,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import 'package:intl/intl.dart';
@@ -102,7 +103,7 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                       Pill(
                           label: '${crop.harvestDaysMin}–${crop.harvestDaysMax} days',
                           icon: PhosphorIcons.clock),
-                      Pill(label: difficultyLabel(difficultyOf(crop)), icon: PhosphorIcons.chartBar),
+                      Pill(label: difficultyLine(difficultyOf(crop)).of(context), icon: PhosphorIcons.chartBar),
                     ]),
                   ],
                 ),
@@ -238,12 +239,12 @@ class _Calendar extends StatelessWidget {
         const SizedBox(height: 8),
         // 3.3 "Calendar based on" row: frost cell + where the dates came from.
         Wrap(spacing: 8, runSpacing: 6, children: [
-          Pill(label: 'Based on: ${repo.regionName}', icon: PhosphorIcons.mapPin),
+          Pill(label: Str.basedOn(repo.regionName).of(context), icon: PhosphorIcons.mapPin),
           Pill(
             label: repo.frostSource == 'open-meteo' ? 'KNMI/Open-Meteo climate normals' : 'NL regional preset',
             icon: PhosphorIcons.thermometer,
           ),
-          Pill(label: 'Verified against ${crop.sources.length} NL sources', icon: PhosphorIcons.sealCheck),
+          Pill(label: Str.verifiedAgainst(crop.sources.length).of(context), icon: PhosphorIcons.sealCheck),
         ]),
       ],
     );
@@ -502,14 +503,14 @@ class _Neighbours extends StatelessWidget {
     final good = companionsOf(slug);
     final bad = antagonistsOf(slug);
     if (good.isEmpty && bad.isEmpty) {
-      return Text('No companion data yet.', style: AppText.bodyMuted(context));
+      return Text(Str.noCompanionData.of(context), style: AppText.bodyMuted(context));
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.only(bottom: 8),
-          child: Pill(label: 'Draft. The verified matrix lands in the content update', icon: PhosphorIcons.notePencil, color: AppColors.clay),
+          child: Pill(label: Str.draftMatrix.of(context), icon: PhosphorIcons.notePencil, color: AppColors.clay),
         ),
         _NeighboursBody(good: good, bad: bad),
       ],
@@ -529,11 +530,11 @@ class _NeighboursBody extends StatelessWidget {
       children: [
         if (good.isNotEmpty) ...[
           _NeighbourRow(
-              label: 'Good neighbours', slugs: good, color: AppColors.sprout),
+              label: Str.goodNeighbours.of(context), slugs: good, color: AppColors.sprout),
           const SizedBox(height: 14),
         ],
         if (bad.isNotEmpty)
-          _NeighbourRow(label: 'Bad neighbours', slugs: bad, color: AppColors.warn),
+          _NeighbourRow(label: Str.badNeighbours.of(context), slugs: bad, color: AppColors.warn),
       ],
     );
   }
@@ -661,11 +662,11 @@ class _Cta extends StatelessWidget {
       child: Row(children: [
         Expanded(
             child: SecondaryButton(
-                label: 'Plan to grow', onPressed: () => add(growing: false))),
+                label: Str.planToGrow.of(context), onPressed: () => add(growing: false))),
         const SizedBox(width: 10),
         Expanded(
             child: PrimaryButton(
-                label: 'Growing it', icon: PhosphorIcons.leaf, onPressed: () => add(growing: true))),
+                label: Str.growingIt.of(context), icon: PhosphorIcons.leaf, onPressed: () => add(growing: true))),
       ]),
     );
   }

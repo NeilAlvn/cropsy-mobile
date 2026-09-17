@@ -87,7 +87,7 @@ class PhotoCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      subtitle ?? _defaultSubtitle(crop),
+                      subtitle ?? _defaultSubtitle(crop, context),
                       style: AppText.caption(context),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -102,8 +102,8 @@ class PhotoCard extends StatelessWidget {
     );
   }
 
-  static String _defaultSubtitle(Crop crop) {
-    final diff = difficultyLabel(difficultyOf(crop));
+  static String _defaultSubtitle(Crop crop, BuildContext context) {
+    final diff = difficultyLine(difficultyOf(crop)).of(context);
     if (crop.containerOk && crop.minPotLitres != null) {
       return '${crop.minPotLitres}L pot · $diff';
     }

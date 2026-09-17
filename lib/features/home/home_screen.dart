@@ -5,6 +5,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/mascot_lines.dart';
+import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import 'package:flutter/services.dart';
@@ -113,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
-                child: Text('${crops.length} results',
+                child: Text(Str.results(crops.length).of(context),
                     style: AppText.kicker(context)),
               ),
             ),
@@ -276,11 +278,12 @@ class _Greeting extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(name == null ? 'Hey there' : 'Hey, $name',
+            Text(
+                (name == null ? Str.greeting : Str.greetingNamed(name)).of(context),
                 style: AppText.title(context),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis),
-            Text('Here is your garden this week.', style: AppText.caption(context)),
+            Text(Str.greetingSub.of(context), style: AppText.caption(context)),
           ],
         );
       },
@@ -341,7 +344,7 @@ class _ProfileButton extends StatelessWidget {
     final repo = RepositoryScope.of(context);
     return Semantics(
       button: true,
-      label: 'Profile',
+      label: Str.profile.of(context),
       child: GestureDetector(
         onTap: () => Navigator.of(context)
             .push(MaterialPageRoute(builder: (_) => const ProfileScreen())),
@@ -374,7 +377,7 @@ class _SearchField extends StatelessWidget {
         decoration: InputDecoration(
           isDense: true,
           contentPadding: const EdgeInsets.symmetric(vertical: 14),
-          hintText: 'Search vegetables',
+          hintText: Str.searchCrops.of(context),
           hintStyle: AppText.body(context, color: AppColors.inkPlaceholder),
           prefixIcon: Icon(PhosphorIcons.magnifyingGlass, size: 20, color: AppColors.inkMuted),
           filled: true,
@@ -433,7 +436,7 @@ class _LifetimeCardState extends State<_LifetimeCard> {
             Expanded(
               child: GestureDetector(
                 onTap: widget.onTap,
-                child: Text('Unlock lifetime, one price, forever',
+                child: Text(Str.unlockLifetime.of(context),
                     style: AppText.label(context, color: AppColors.onInk)),
               ),
             ),
@@ -478,7 +481,7 @@ class _WhatToGrowHeader extends StatelessWidget {
                   child: GestureDetector(
                     onTap: onMonth,
                     child: _MonthTitle(
-                        lead: 'What to grow in ', month: _months[month - 1]),
+                        line: Str.whatToGrow(Str.month(month))),
                   ),
                 ),
                 const Spacer(),
@@ -524,7 +527,7 @@ class _TodaysCare extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(children: [
-                Text("Today's care ($open)", style: AppText.title(context)),
+                Text(Str.todaysCare(open).of(context), style: AppText.title(context)),
                 const Spacer(),
                 const SectionFeedbackMenu(targetKind: 'section', targetId: 'home.todays_care'),
               ]),
@@ -554,7 +557,9 @@ class _TodaysCare extends StatelessWidget {
                       KindMark(item.kind, size: 32),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: Text('${kindLabel(item.kind)} · ${item.cropName}',
+                        child: Text(
+                            '${kindLine(item.kind).of(context)} · '
+                            '${repo.cropBySlug(item.cropSlug)?.names.of(context) ?? item.cropName}',
                             style: AppText.label(context,
                                 color: item.completed ? AppColors.inkMuted : AppColors.ink),
                             maxLines: 1,
@@ -589,7 +594,8 @@ class _UpcomingHarvest extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Upcoming harvest (${rows.length})', style: AppText.title(context)),
+              Text(Str.upcomingHarvest(rows.length).of(context),
+                  style: AppText.title(context)),
               const SizedBox(height: 10),
               SizedBox(
                 height: 150,
@@ -672,15 +678,25 @@ class _StreakCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      s.count == 0 ? 'Start a streak today' : '${s.count}-day streak${s.todayOpen ? ' · keep it going' : ''}',
+                      (s.count == 0
+                              ? Str.startStreak
+                              : Str.streakDays(s.count))
+                          .of(context),
                       style: AppText.label(context),
                     ),
                     Text(
                       s.count == 0
-                          ? 'Tick one task, or skip one with a reason. Rain counts.'
-                          : premium
-                              ? 'Unlimited freeze days.'
-                              : '$freezesLeft freeze day${freezesLeft == 1 ? '' : 's'} left this month.',
+                          ? MascotLines.streakStart.of(context)
+                          : (premium
+                                  ? const LocalizedText(
+                                      nl: 'Onbeperkt vriesdagen.',
+                                      en: 'Unlimited freeze days.')
+                                  : LocalizedText(
+                                      nl: 'Nog $freezesLeft '
+                                          '${freezesLeft == 1 ? 'vriesdag' : 'vriesdagen'} deze maand.',
+                                      en: '$freezesLeft freeze '
+                                          'day${freezesLeft == 1 ? '' : 's'} left this month.'))
+                              .of(context),
                       style: AppText.caption(context),
                     ),
                   ],
@@ -722,8 +738,7 @@ class _MonthChecklist extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: onMonth,
-                child: _MonthTitle(
-                    lead: 'Checklist for ', month: _months[month - 1]),
+                child: _MonthTitle(line: Str.checklistFor(Str.month(month))),
               ),
             ),
             const Spacer(),
@@ -762,20 +777,18 @@ class _MonthChecklist extends StatelessWidget {
 /// A section title that ends in the month picker. One text flow, so a long
 /// month wraps instead of eating the words before it.
 class _MonthTitle extends StatelessWidget {
-  const _MonthTitle({required this.lead, required this.month});
+  const _MonthTitle({required this.line});
 
-  final String lead;
-  final String month;
+  /// The whole heading, month included: Dutch and English put the month in
+  /// different places, so the sentence is composed in the string table.
+  final LocalizedText line;
 
   @override
   Widget build(BuildContext context) => Text.rich(
         TextSpan(
-          text: lead,
+          text: line.of(context),
           style: AppText.heading(context),
           children: [
-            TextSpan(
-                text: month,
-                style: AppText.heading(context, color: AppColors.accent)),
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
               child: Icon(PhosphorIcons.caretDown,
