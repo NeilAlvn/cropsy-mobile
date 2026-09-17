@@ -48,6 +48,13 @@ class LocalizedText {
 
   Map<String, dynamic> toJson() => {'nl': nl, 'en': en};
 
+  /// The side the reader is not reading, for a subtitle. Empty when both
+  /// languages say the same thing.
+  String other(bool dutch) {
+    final o = dutch ? en : nl;
+    return o == (dutch ? nl : en) ? '' : o;
+  }
+
   /// The side a caller with no `BuildContext` needs: notifications, logs,
   /// anything outside the widget tree. Screens use `.of(context)` instead.
   String pick(bool dutch) => dutch ? nl : en;

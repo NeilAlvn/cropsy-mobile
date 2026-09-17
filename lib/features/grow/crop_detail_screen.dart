@@ -94,7 +94,9 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                     const SizedBox(height: 6),
                     Text(crop.names.of(context), style: AppText.display(context)),
                     if (crop.draft) const Padding(padding: EdgeInsets.only(top: 4), child: DraftBadge()),
-                    Text(crop.names.nl, style: AppText.bodyMuted(context)),
+                    Text(
+                        crop.names.other(AppLangScope.of(context).isDutch),
+                        style: AppText.bodyMuted(context)),
                     const SizedBox(height: 14),
                     Wrap(spacing: 8, runSpacing: 8, children: [
                       if (crop.containerOk && crop.minPotLitres != null)
