@@ -5,6 +5,8 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../timing/types.dart';
+import '../../l10n/mascot_lines.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
@@ -16,13 +18,13 @@ import '../../timing/content_snapshot.dart';
 import '../repository_scope.dart';
 import '../scan/scan_screen.dart';
 
-const _parts = <(String, String, String)>[
-  ('whole', '🌿', 'Whole plant'),
-  ('leaves', '🍃', 'Leaves'),
-  ('stems', '🌱', 'Stems'),
-  ('flowers', '🌸', 'Flowers'),
-  ('fruits', '🍅', 'Fruits'),
-  ('roots', '🥕', 'Roots'),
+const _parts = <(String, String, LocalizedText)>[
+  ('whole', '🌿', Str.partWhole),
+  ('leaves', '🍃', Str.partLeaves),
+  ('stems', '🌱', Str.partStems),
+  ('flowers', '🌸', Str.partFlowers),
+  ('fruits', '🍅', Str.partFruits),
+  ('roots', '🥕', Str.partRoots),
 ];
 
 class DiagnoseScreen extends StatefulWidget {
@@ -74,14 +76,14 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
             children: [
               ChoiceChip(label: Text(Str.all.of(context)), selected: _part == null, onSelected: (_) => setState(() => _part = null)),
               for (final (key, emoji, label) in _parts)
-                ChoiceChip(label: Text('$emoji $label'), selected: _part == key, onSelected: (_) => setState(() => _part = key)),
+                ChoiceChip(label: Text('$emoji ${label.of(context)}'), selected: _part == key, onSelected: (_) => setState(() => _part = key)),
             ],
           ),
           const SizedBox(height: 16),
           if (all.isEmpty)
-            const MascotSays(
+            const MascotSays.say(
               pose: MascotPose.thinking,
-              text: 'The 25 problems common on Dutch balconies, slakken, luizen, meeldauw, neusrot, are being written and checked. They land with the content update.',
+              line: MascotLines.problemsComing,
             )
           else if (problems.isEmpty)
             Text(Str.nothingForThatPart.of(context), style: AppText.bodyMuted(context))
@@ -142,9 +144,10 @@ class ProblemScreen extends StatelessWidget {
           Text(problem.names.nl, style: AppText.bodyMuted(context)),
           if (problem.draft) const Padding(padding: EdgeInsets.only(top: 8), child: DraftBadge()),
           const SizedBox(height: 12),
-          section('Symptoms', problem.symptoms.of(context)),
-          section('Treatment (organic first)', problem.treatment.of(context)),
-          section('Prevention', problem.prevention.of(context)),
+          section(Str.symptoms.of(context), problem.symptoms.of(context)),
+          section(Str.treatmentOrganicFirst.of(context),
+              problem.treatment.of(context)),
+          section(Str.prevention.of(context), problem.prevention.of(context)),
           if (problem.affects.isNotEmpty) ...[
             SectionHeader(Str.oftenOn.of(context)),
             Wrap(spacing: 8, runSpacing: 8, children: [for (final s in problem.affects) Pill(label: repo.cropNames(s).of(context))]),

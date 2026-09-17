@@ -74,7 +74,7 @@ class ThisWeekScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 12, bottom: 8),
-                  child: Text(_dayLabel(day, repo.today),
+                  child: Text(_dayLabel(context, day, repo.today),
                       style: AppText.kicker(context)),
                 ),
                 for (final item in byDay[day]!)
@@ -89,10 +89,12 @@ class ThisWeekScreen extends StatelessWidget {
     ];
   }
 
-  static String _dayLabel(String iso, String today) {
+  static String _dayLabel(BuildContext context, String iso, String today) {
     final d = parseIso(iso);
-    if (iso == today) return 'TODAY';
-    if (iso == toIso(addDays(parseIso(today), 1))) return 'TOMORROW';
+    if (iso == today) return Str.today.of(context).toUpperCase();
+    if (iso == toIso(addDays(parseIso(today), 1))) {
+      return Str.tomorrow.of(context).toUpperCase();
+    }
     return DateFormat('EEEE d MMM').format(d).toUpperCase();
   }
 }
@@ -120,9 +122,9 @@ class _Header extends StatelessWidget {
                     TextSpan(
                       style: AppText.display(context),
                       children: [
-                        TextSpan(text: 'What to do '),
+                        TextSpan(text: Str.whatToDo.of(context)),
                         TextSpan(
-                          text: 'in your garden',
+                          text: Str.inYourGarden.of(context),
                           style: TextStyle(color: AppColors.sprout),
                         ),
                       ],
@@ -258,11 +260,12 @@ class _WeatherBanner extends StatelessWidget {
       recentRain += (byDate[toIso(addDays(parseIso(repo.today), -d))]?.precipMm ?? 0).toDouble();
     }
     final hotAhead = obs.where((o) => o.date.compareTo(repo.today) >= 0).any((o) => o.tempMaxC >= 30);
-    final text = recentRain >= 10
-        ? 'Rained ${recentRain.round()} mm in the last three days. Waterings around today are skipped.'
-        : hotAhead
-            ? 'Heat ahead (30°C+). Containers dry out in a day, so waterings move earlier.'
-            : 'Nothing dramatic in the forecast. The plan stands.';
+    final text = (recentRain >= 10
+            ? Str.rainSkipsWatering(recentRain.round())
+            : hotAhead
+                ? Str.heatAhead
+                : Str.forecastCalm)
+        .of(context);
     final wet = recentRain >= 10;
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),

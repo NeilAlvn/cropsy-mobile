@@ -74,6 +74,7 @@ class PurchaseService extends ChangeNotifier {
     final current = offerings?.current;
     final package = which == Plan.lifetime ? current?.lifetime : current?.annual;
     if (package == null) {
+      // ponytail: store errors arrive in the store's own language anyway.
       lastError = 'Product not available yet.';
       notifyListeners();
       return false;

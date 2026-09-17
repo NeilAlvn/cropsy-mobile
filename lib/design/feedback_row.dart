@@ -103,9 +103,10 @@ class SectionFeedbackMenu extends StatelessWidget {
             await RepositoryScope.of(context).addFeedback(targetKind: targetKind, targetId: targetId, sentiment: 'like');
             if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(Str.thanksNoted.of(context))));
           case 'error':
-            await _text(context, 'error', 'What is wrong here?');
+            await _text(context, 'error', Str.whatIsWrongHere.of(context));
           case 'suggestion':
-            await _text(context, 'suggestion', 'What would make this better?');
+            await _text(
+                context, 'suggestion', Str.whatWouldBeBetter.of(context));
         }
       },
       itemBuilder: (context) => [

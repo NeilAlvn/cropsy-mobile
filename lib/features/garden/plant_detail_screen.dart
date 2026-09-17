@@ -69,18 +69,20 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                       itemBuilder: (context) => [
                         PopupMenuItem(
                           value: 'edit',
-                          child: _menuRow(PhosphorIcons.slidersHorizontal, 'Edit plant'),
+                          child: _menuRow(PhosphorIcons.slidersHorizontal,
+                              Str.editPlant.of(context)),
                         ),
                         if (plant.plantedOn != null)
                           PopupMenuItem(
                             value: 'stop',
                             child: _menuRow(
-                                PhosphorIcons.arrowCounterClockwise, 'Move back to planning'),
+                                PhosphorIcons.arrowCounterClockwise,
+                                Str.moveBackToPlanning.of(context)),
                           ),
                         PopupMenuItem(
                           value: 'remove',
                           child: _menuRow(PhosphorIcons.trash,
-                              'Remove from garden',
+                              Str.removeFromGarden.of(context),
                               color: AppColors.warn),
                         ),
                       ],
@@ -246,8 +248,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
         backgroundColor: AppColors.surface,
         title: Text(Str.removeAsk(name).of(context), style: AppText.title(context)),
         content: Text(
-          'This takes $name out of your garden. Any harvests you already '
-          'logged stay in your season history.',
+          Str.removeKeepsYourHarvests(name).of(context),
           style: AppText.bodyMuted(context),
         ),
         actions: [

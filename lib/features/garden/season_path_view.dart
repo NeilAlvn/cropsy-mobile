@@ -11,6 +11,7 @@ import '../../design/icons.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/mascot.dart';
+import '../../l10n/mascot_lines.dart';
 import '../../design/typography.dart';
 import '../../timing/dates.dart';
 import '../../timing/season.dart';
@@ -82,7 +83,9 @@ class _SeasonPathViewState extends State<SeasonPathView> {
             const SizedBox(height: 18),
             SectionHeader(Str.yourSeason.of(context)),
             if (lanes.isEmpty)
-              const MascotSays(pose: MascotPose.idle, text: 'Add a plant and the season lays itself out here.')
+              const MascotSays.say(
+                  pose: MascotPose.idle,
+                  line: MascotLines.seasonLaysItselfOut)
             else
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,

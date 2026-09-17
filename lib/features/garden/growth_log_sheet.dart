@@ -28,10 +28,14 @@ class GrowthLog {
   final List<String> photoPaths;
 }
 
-const moods = <(int, String, String)>[(1, '😟', 'Bad'), (2, '😐', 'Okay'), (3, '🙂', 'Good'), (4, '🤩', 'Excellent')];
+const moods = <(int, String, LocalizedText)>[
+  (1, '😟', Str.moodBad),
+  (2, '😐', Str.moodOkay),
+  (3, '🙂', Str.moodGood),
+  (4, '🤩', Str.moodExcellent),
+];
 const growthStages = ['starting', 'seedling', 'vegetative', 'flowering', 'harvesting', 'harvested'];
 
-String stageLabel(String s) => s[0].toUpperCase() + s.substring(1);
 
 /// The growth stages, in both languages.
 LocalizedText stageLine(String stage) => switch (stage) {
@@ -110,7 +114,7 @@ class _SheetState extends State<_Sheet> {
                         ),
                         child: Column(children: [
                           Text(emoji, style: const TextStyle(fontSize: 24)),
-                          Text(label, style: AppText.caption(context, color: _mood == v ? AppColors.onAccent : AppColors.muted)),
+                          Text(label.of(context), style: AppText.caption(context, color: _mood == v ? AppColors.onAccent : AppColors.muted)),
                         ]),
                       ),
                     ),

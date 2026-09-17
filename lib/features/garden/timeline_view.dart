@@ -21,7 +21,6 @@ import 'log_node_flow.dart';
 
 MascotPose poseFor(NodeKind k) => poseForNode(k);
 
-String nodeTitle(NodeKind k) => nodeKindTitle(k);
 
 enum _NodeState { done, skipped, current, upcoming }
 

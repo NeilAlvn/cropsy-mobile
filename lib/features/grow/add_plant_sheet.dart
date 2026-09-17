@@ -31,18 +31,18 @@ class PlantDetails {
   final String? variety;
 }
 
-final places = <(String, String, IconData)>[
-  ('ground', 'In the ground', PhosphorIcons.flowerLotus),
-  ('raised_bed', 'Raised bed', PhosphorIcons.squaresFour),
-  ('outdoor_container', 'Pot outside', PhosphorIcons.buildings),
-  ('indoor_container', 'Pot inside', PhosphorIcons.browsers),
+final places = <(String, LocalizedText, IconData)>[
+  ('ground', Str.placeGround, PhosphorIcons.flowerLotus),
+  ('raised_bed', Str.placeRaisedBed, PhosphorIcons.squaresFour),
+  ('outdoor_container', Str.placePotOutside, PhosphorIcons.buildings),
+  ('indoor_container', Str.placePotInside, PhosphorIcons.browsers),
 ];
 
-String methodLabel(MethodType m) => switch (m) {
-      MethodType.sowIndoor => 'Sowed indoors',
-      MethodType.sowDirect => 'Sowed outside',
-      MethodType.transplant => 'Planted a seedling',
-      MethodType.plant => 'Planted (sets / tubers)',
+LocalizedText methodLabel(MethodType m) => switch (m) {
+      MethodType.sowIndoor => Str.methodSowedIndoors,
+      MethodType.sowDirect => Str.methodSowedOutside,
+      MethodType.transplant => Str.methodPlantedSeedling,
+      MethodType.plant => Str.methodPlantedSets,
     };
 
 Future<PlantDetails?> showAddPlantSheet(BuildContext context, {required Crop crop, required String today}) {
@@ -128,7 +128,7 @@ class _SheetState extends State<_Sheet> {
               runSpacing: 8,
               children: [
                 for (final m in _methods)
-                  ChoiceChip(label: Text(methodLabel(m)), selected: _method == m, onSelected: (_) => setState(() => _method = m)),
+                  ChoiceChip(label: Text(methodLabel(m).of(context)), selected: _method == m, onSelected: (_) => setState(() => _method = m)),
               ],
             ),
             const SizedBox(height: 14),
@@ -141,7 +141,7 @@ class _SheetState extends State<_Sheet> {
                 for (final (key, label, icon) in places)
                   ChoiceChip(
                     avatar: Icon(icon, size: 16),
-                    label: Text(label),
+                    label: Text(label.of(context)),
                     selected: _place == key,
                     onSelected: (_) => setState(() => _place = key),
                   ),

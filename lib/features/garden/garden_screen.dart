@@ -61,7 +61,7 @@ class _GardenScreenState extends State<GardenScreen> {
                               TextSpan(
                                   text: '${repo.regionName.split(' ').first} '),
                               TextSpan(
-                                  text: 'plot',
+                                  text: Str.plotWord.of(context),
                                   style: TextStyle(color: AppColors.sprout)),
                             ],
                           )),
@@ -70,7 +70,7 @@ class _GardenScreenState extends State<GardenScreen> {
                     ),
                     IconButton(
                       icon: Icon(PhosphorIcons.slidersHorizontal, color: AppColors.muted),
-                      tooltip: 'Edit garden',
+                      tooltip: Str.editGarden.of(context),
                       onPressed: () => _editGarden(context, repo),
                     ),
                   ],
@@ -232,8 +232,7 @@ Future<bool?> _confirmRemove(BuildContext context, String name) => showDialog<bo
         backgroundColor: AppColors.surface,
         title: Text(Str.removeAsk(name).of(context), style: AppText.title(context)),
         content: Text(
-          'This takes $name out of your garden. Logged harvests stay in your '
-          'season history.',
+          Str.removeKeepsHarvests(name).of(context),
           style: AppText.bodyMuted(context),
         ),
         actions: [
@@ -294,7 +293,8 @@ class _EditGardenSheetState extends State<_EditGardenSheet> {
             children: [
               for (final k in GardenKind.values)
                 ChoiceChip(
-                  label: Text('${gardenKindEmoji(k)}  ${gardenKindLabel(k)}'),
+                  label: Text(
+                      '${gardenKindEmoji(k)}  ${gardenKindLabel(k).of(context)}'),
                   selected: _kind == k,
                   selectedColor: AppColors.sprout.withValues(alpha: 0.18),
                   onSelected: (_) => setState(() => _kind = k),
@@ -351,9 +351,7 @@ class _Empty extends StatelessWidget {
                   style: AppText.heading(context)),
               const SizedBox(height: 6),
               Text(
-                planning
-                    ? 'Tap "Plan to grow" on any crop to add it here.'
-                    : 'Tap "Growing it" on a crop, or start a planned one.',
+                (planning ? Str.tapPlanToGrow : Str.tapGrowingIt).of(context),
                 style: AppText.bodyMuted(context),
                 textAlign: TextAlign.center,
               ),

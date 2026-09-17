@@ -220,10 +220,10 @@ class DifficultyGauge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (color, label) = switch (difficulty) {
-      Difficulty.easy => (AppColors.easy, 'Easy'),
-      Difficulty.medium => (AppColors.medium, 'Medium'),
-      Difficulty.hard => (AppColors.hard, 'Hard'),
+    final color = switch (difficulty) {
+      Difficulty.easy => AppColors.easy,
+      Difficulty.medium => AppColors.medium,
+      Difficulty.hard => AppColors.hard,
     };
     final value = switch (difficulty) {
       Difficulty.easy => 0.33,
@@ -238,7 +238,8 @@ class DifficultyGauge extends StatelessWidget {
           child: CustomPaint(painter: _GaugePainter(value, color)),
         ),
         const SizedBox(height: 4),
-        Text(label, style: AppText.title(context, color: color)),
+        Text(difficultyLine(difficulty).of(context),
+            style: AppText.title(context, color: color)),
         Text(Str.overallDifficulty.of(context), style: AppText.caption(context)),
       ],
     );

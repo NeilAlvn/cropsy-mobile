@@ -72,11 +72,12 @@ class _ScanScreenState extends State<ScanScreen> {
         if (bought == true && mounted) await _send();
         return;
       }
-      setState(() => _message = e.notConfigured
-          ? 'Photo scanning opens with the beta. The common-problems browser already works offline.'
-          : e.quota
-              ? 'Daily scan limit reached. Tomorrow again, or unlock lifetime for more.'
-              : 'Scan failed (${e.code}). Try again.');
+      setState(() => _message = (e.notConfigured
+              ? Str.scanOpensWithBeta
+              : e.quota
+                  ? Str.scanQuotaReached
+                  : Str.scanFailed(e.code))
+          .of(context));
     } catch (_) {
       if (mounted) setState(() => _message = Str.noConnectionScan.of(context));
     } finally {
@@ -130,8 +131,8 @@ class _ScanScreenState extends State<ScanScreen> {
           const SizedBox(height: 8),
           Text(
             identify
-                ? 'Snap tips: one plant, a leaf or flower filling the frame, daylight.'
-                : 'Snap tips: the damaged part sharp and close, plus one wider shot if unsure.',
+                ? Str.snapTipsIdentify.of(context)
+                : Str.snapTipsDiagnose.of(context),
             style: AppText.caption(context),
           ),
           const SizedBox(height: 20),
@@ -156,14 +157,22 @@ class _Results extends StatelessWidget {
       return const MascotSays.say(pose: MascotPose.shrug, line: MascotLines.scanNotAPlant);
     }
     if (result.suggestions.isEmpty) {
-      return MascotSays(pose: MascotPose.shrug, text: identify ? 'No match. Try a closer shot of a leaf or flower, or search by name.' : (result.healthy == true ? 'Looks healthy from here.' : 'Nothing recognisable. Browse the common problems below instead.'));
+      return MascotSays.say(
+          pose: MascotPose.shrug,
+          line: identify
+              ? MascotLines.scanNoMatch
+              : result.healthy == true
+                  ? MascotLines.scanHealthy
+                  : MascotLines.scanNothingRecognisable);
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MascotSays(
           pose: identify ? MascotPose.pointing : MascotPose.thinking,
-          text: identify ? 'Best guesses, most likely first. Not this plant? Pick another or search by name.' : (result.disclaimer ?? 'This is a guess from the photo, not a diagnosis.'),
+          text: identify
+              ? MascotLines.scanBestGuesses.of(context)
+              : (result.disclaimer ?? MascotLines.scanIsAGuess.of(context)),
         ),
         const SizedBox(height: 12),
         for (final s in result.suggestions)

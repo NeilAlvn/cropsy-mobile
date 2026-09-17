@@ -90,7 +90,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       region: _region,
       kind: _kind,
       sunHours: switch (_sun) { 'full' => 8, 'partial' => 5, _ => 3 },
-      name: gardenKindLabel(_kind),
+      name: gardenKindLabel(_kind).pick(AppLangScope.of(context).isDutch),
       sizeM2: _sizeBuckets[_sizeBucket].$2,
       postcode: _postcode,
       profile: _lookup?.profile,
@@ -141,12 +141,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         media: const HeroMedia.image('assets/onboarding/welcome.jpg'),
         kicker: 'CROPSY',
         title: [
-          TextSpan(text: 'Know what to do\n'),
-          TextSpan(text: 'this week', style: TextStyle(color: AppColors.sprout)),
-          TextSpan(text: ' in your garden.'),
+          TextSpan(text: Str.heroKnowWhatToDo.of(context)),
+          TextSpan(
+              text: Str.heroThisWeek.of(context),
+              style: TextStyle(color: AppColors.sprout)),
+          TextSpan(text: Str.heroInYourGarden.of(context)),
         ],
-        subtitle: 'Planting dates and reminders tuned to Dutch and EU weather, built for balconies and containers.',
-        buttonLabel: 'Get started',
+        subtitle: Str.heroSubtitle.of(context),
+        buttonLabel: Str.getStarted.of(context),
         onNext: _next,
         // Reinstall path: sign in, sync pulls the garden, the root re-gates.
         onSkip: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
@@ -155,9 +157,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         onNext: _next,
         child: _Copy(
           pose: MascotPose.pointing,
-          title: 'Every date checked against Dutch seed calendars',
-          body: 'Each crop is cross-checked against at least two NL sources, IVN, Tuinadvies, zaaitijden.nl and Groei & Bloei, before it reaches you. '
-              'And when life gets in the way, the plan moves with you. Nothing is ever "overdue".',
+          title: Str.datesCheckedTitle.of(context),
+          body: Str.datesCheckedBody.of(context),
         ),
       ),
       _Step(
@@ -166,10 +167,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
       _Step(
         onNext: _next,
-        child: const _Copy(
+        child: _Copy(
           pose: MascotPose.wave,
-          title: "Hi! Let's get to know each other",
-          body: 'A few quick questions about your space and what you like to eat. Two minutes, then your plan is ready.',
+          title: Str.getToKnowTitle.of(context),
+          body: Str.getToKnowBody.of(context),
         ),
       ),
       // ── Part 1 ─────────────────────────────────────────────────────
@@ -193,9 +194,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         enabled: _spaces.isNotEmpty,
         onNext: _next,
         child: _Choices(
-          title: 'Where do you grow?',
-          subtitle: 'Pick all that apply.',
-          options: [('backyard', 'Garden', PhosphorIcons.flowerLotus), ('balcony', 'Balcony', PhosphorIcons.buildings), ('indoor', 'Indoors', PhosphorIcons.browsers), ('farm', 'Allotment', PhosphorIcons.tractor), ('other', 'Somewhere else', PhosphorIcons.dotsThree)],
+          title: Str.whereDoYouGrow,
+          subtitle: Str.pickAllThatApply,
+          options: const [
+            ('backyard', Str.spaceBackyard, PhosphorIcons.flowerLotus),
+            ('balcony', Str.spaceBalcony, PhosphorIcons.buildings),
+            ('indoor', Str.spaceIndoor, PhosphorIcons.browsers),
+            ('farm', Str.spaceAllotment, PhosphorIcons.tractor),
+            ('other', Str.spaceOther, PhosphorIcons.dotsThree)
+          ],
           selected: _spaces,
           onToggle: (k) => setState(() => _spaces.contains(k) ? _spaces.remove(k) : _spaces.add(k)),
         ),
@@ -204,9 +211,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         enabled: _methods.isNotEmpty,
         onNext: _next,
         child: _Choices(
-          title: 'How do you grow?',
-          subtitle: 'Pick all that apply.',
-          options: [('ground', 'In the ground', PhosphorIcons.plant), ('raised_beds', 'Raised beds', PhosphorIcons.squaresFour), ('indoor_containers', 'Pots inside', PhosphorIcons.browsers), ('outdoor_containers', 'Pots outside', PhosphorIcons.buildings)],
+          title: Str.howDoYouGrow,
+          subtitle: Str.pickAllThatApply,
+          options: const [
+            ('ground', Str.methodGround, PhosphorIcons.plant),
+            ('raised_beds', Str.methodRaisedBeds, PhosphorIcons.squaresFour),
+            ('indoor_containers', Str.methodPotsInside, PhosphorIcons.browsers),
+            ('outdoor_containers', Str.methodPotsOutside, PhosphorIcons.buildings)
+          ],
           selected: _methods,
           onToggle: (k) => setState(() => _methods.contains(k) ? _methods.remove(k) : _methods.add(k)),
         ),
@@ -214,9 +226,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _Step(
         onNext: _next,
         child: _Choices(
-          title: 'How much space?',
-          subtitle: 'Roughly — it sets how many plants fit.',
-          options: [for (var i = 0; i < _sizeBuckets.length; i++) ('$i', _sizeBuckets[i].$1, PhosphorIcons.ruler)],
+          title: Str.howMuchSpace,
+          subtitle: Str.howMuchSpaceSub,
+          options: [
+            for (var i = 0; i < _sizeBuckets.length; i++)
+              (
+                '$i',
+                LocalizedText(nl: _sizeBuckets[i].$1, en: _sizeBuckets[i].$1),
+                PhosphorIcons.ruler
+              )
+          ],
           selected: {'$_sizeBucket'},
           onToggle: (k) => setState(() => _sizeBucket = int.parse(k)),
         ),
@@ -224,9 +243,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _Step(
         onNext: _next,
         child: _Choices(
-          title: 'How much sun?',
-          subtitle: 'On a clear day, how long is it in direct sun?',
-          options: [('full', 'Full sun (6h+)', PhosphorIcons.sun), ('partial', 'Partial (3–6h)', PhosphorIcons.cloud), ('shade', 'Shade (< 3h)', PhosphorIcons.umbrella)],
+          title: Str.howMuchSun,
+          subtitle: Str.howMuchSunSub,
+          options: const [
+            ('full', Str.sunFull, PhosphorIcons.sun),
+            ('partial', Str.sunPartial, PhosphorIcons.cloud),
+            ('shade', Str.sunShade, PhosphorIcons.umbrella)
+          ],
           selected: {_sun},
           onToggle: (k) => setState(() => _sun = k),
         ),
@@ -235,9 +258,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _Step(
         onNext: _next,
         child: _Choices(
-          title: 'Grown anything before?',
-          subtitle: 'So we pitch the advice right.',
-          options: [('never', 'Never', PhosphorIcons.leaf), ('some', 'A season or two', PhosphorIcons.leaf), ('extensive', 'Plenty', PhosphorIcons.tree)],
+          title: Str.grownBefore,
+          subtitle: Str.grownBeforeSub,
+          options: const [
+            ('never', Str.experienceNever, PhosphorIcons.leaf),
+            ('some', Str.experienceSome, PhosphorIcons.leaf),
+            ('extensive', Str.experiencePlenty, PhosphorIcons.tree)
+          ],
           selected: {_experience},
           onToggle: (k) => setState(() => _experience = k),
         ),
@@ -246,9 +273,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         enabled: _foods.isNotEmpty,
         onNext: _next,
         child: _Choices(
-          title: 'What do you like to eat?',
-          subtitle: 'Pick all that apply.',
-          options: [('vegetables', 'Vegetables', PhosphorIcons.forkKnife), ('herbs', 'Herbs', PhosphorIcons.flower), ('salad', 'Salad leaves', PhosphorIcons.leaf), ('fruit', 'Fruit', PhosphorIcons.appleLogo), ('roots', 'Root veg', PhosphorIcons.tree)],
+          title: Str.whatDoYouEat,
+          subtitle: Str.pickAllThatApply,
+          options: const [
+            ('vegetables', Str.foodVegetables, PhosphorIcons.forkKnife),
+            ('herbs', Str.foodHerbs, PhosphorIcons.flower),
+            ('salad', Str.foodSalad, PhosphorIcons.leaf),
+            ('fruit', Str.foodFruit, PhosphorIcons.appleLogo),
+            ('roots', Str.foodRoots, PhosphorIcons.tree)
+          ],
           selected: _foods,
           onToggle: (k) => setState(() => _foods.contains(k) ? _foods.remove(k) : _foods.add(k)),
         ),
@@ -256,9 +289,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _Step(
         onNext: _next,
         child: _Choices(
-          title: "What's most important?",
-          subtitle: 'Pick all that apply.',
-          options: [('easy', 'Easy to grow', PhosphorIcons.thumbsUp), ('fast', 'Fast harvest', PhosphorIcons.speedometer), ('yield', 'High yield', PhosphorIcons.basket), ('kids', 'Fun with kids', PhosphorIcons.baby), ('cost', 'Saves money', PhosphorIcons.piggyBank)],
+          title: Str.whatMattersMost,
+          subtitle: Str.pickAllThatApply,
+          options: const [
+            ('easy', Str.interestEasy, PhosphorIcons.thumbsUp),
+            ('fast', Str.interestFast, PhosphorIcons.speedometer),
+            ('yield', Str.interestYield, PhosphorIcons.basket),
+            ('kids', Str.interestKids, PhosphorIcons.baby),
+            ('cost', Str.interestCost, PhosphorIcons.piggyBank)
+          ],
           selected: _interests,
           onToggle: (k) => setState(() => _interests.contains(k) ? _interests.remove(k) : _interests.add(k)),
         ),
@@ -266,9 +305,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _Step(
         onNext: _next,
         child: _Choices(
-          title: 'Interested in companion planting?',
-          subtitle: 'We can warn when two plants dislike each other.',
-          options: [('yes', 'Yes, show me', PhosphorIcons.heartStraight), ('no', 'Not now', PhosphorIcons.heartStraight)],
+          title: Str.companionsAsk,
+          subtitle: Str.companionsAskSub,
+          options: const [
+            ('yes', Str.companionsYes, PhosphorIcons.heartStraight),
+            ('no', Str.companionsNo, PhosphorIcons.heartStraight)
+          ],
           selected: {_companions ? 'yes' : 'no'},
           onToggle: (k) => setState(() => _companions = k == 'yes'),
         ),
@@ -281,7 +323,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
       ),
       _Step(
-        buttonLabel: 'Build my plan',
+        buttonLabel: Str.buildMyPlan.of(context),
         enabled: _picked.isNotEmpty,
         onNext: () async {
           _next();
@@ -294,7 +336,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
       _PlanStep(
         ready: _firstTask != null || _matches > 0,
-        region: _lookup == null ? _region.name : (_postcode ?? 'your location'),
+        region: _lookup == null
+            ? _region.name
+            : (_postcode ?? Str.yourLocationWord.of(context)),
         frost: _lookup?.profile ?? _region.profile,
         matches: _matches,
         firstTask: _firstTask,
@@ -401,10 +445,10 @@ class _PathIntro extends StatelessWidget {
 class _MiniPath extends StatelessWidget {
   const _MiniPath();
 
-  static const _stops = <(String, String, String)>[
-    ('sow', 'Sow lettuce', '1 Apr'),
-    ('frost', 'IJsheiligen', '11 May'),
-    ('harvest', 'Harvest tomato', '24 Aug'),
+  static const _stops = <(String, LocalizedText, LocalizedText)>[
+    ('sow', Str.miniPathSow, Str.miniPathSowDay),
+    ('frost', Str.miniPathFrost, Str.miniPathFrostDay),
+    ('harvest', Str.miniPathHarvest, Str.miniPathHarvestDay),
   ];
 
   @override
@@ -444,8 +488,10 @@ class _MiniPath extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(_stops[i].$2, style: AppText.label(context)),
-                        Text(_stops[i].$3, style: AppText.caption(context)),
+                        Text(_stops[i].$2.of(context),
+                            style: AppText.label(context)),
+                        Text(_stops[i].$3.of(context),
+                            style: AppText.caption(context)),
                       ],
                     ),
                   ),
@@ -457,9 +503,9 @@ class _MiniPath extends StatelessWidget {
 }
 
 class _Step extends StatelessWidget {
-  const _Step({required this.child, required this.onNext, this.buttonLabel = 'Continue', this.enabled = true});
+  const _Step({required this.child, required this.onNext, this.buttonLabel, this.enabled = true});
   final Widget child;
-  final String buttonLabel;
+  final String? buttonLabel;
   final VoidCallback onNext;
   final bool enabled;
 
@@ -472,7 +518,10 @@ class _Step extends StatelessWidget {
           Expanded(child: child),
           Padding(
             padding: const EdgeInsets.all(20),
-            child: PrimaryButton(label: buttonLabel, icon: PhosphorIcons.arrowRight, onPressed: enabled ? onNext : null),
+            child: PrimaryButton(
+                label: buttonLabel ?? Str.continueLabel.of(context),
+                icon: PhosphorIcons.arrowRight,
+                onPressed: enabled ? onNext : null),
           ),
         ],
       ),
@@ -507,9 +556,9 @@ class _Copy extends StatelessWidget {
 
 class _Choices extends StatelessWidget {
   const _Choices({required this.title, required this.subtitle, required this.options, required this.selected, required this.onToggle});
-  final String title;
-  final String subtitle;
-  final List<(String, String, IconData)> options;
+  final LocalizedText title;
+  final LocalizedText subtitle;
+  final List<(String, LocalizedText, IconData)> options;
   final Set<String> selected;
   final ValueChanged<String> onToggle;
 
@@ -518,14 +567,14 @@ class _Choices extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
-        Text(title, style: AppText.title(context)),
+        Text(title.of(context), style: AppText.title(context)),
         const SizedBox(height: 6),
-        Text(subtitle, style: AppText.bodyMuted(context)),
+        Text(subtitle.of(context), style: AppText.bodyMuted(context)),
         const SizedBox(height: 14),
         for (final (key, label, icon) in options)
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
-            child: _SelectTile(icon: icon, label: label, selected: selected.contains(key), onTap: () => onToggle(key)),
+            child: _SelectTile(icon: icon, label: label.of(context), selected: selected.contains(key), onTap: () => onToggle(key)),
           ),
       ],
     );
@@ -557,7 +606,7 @@ class _LocationStepState extends State<_LocationStep> {
     if (!mounted) return;
     setState(() {
       _busy = false;
-      if (hit == null) _error = 'No location — enter a postcode or pick a region below.';
+      if (hit == null) _error = Str.noLocationPickRegion.of(context);
     });
     if (hit != null) widget.onLookup(hit, null);
   }
@@ -572,7 +621,7 @@ class _LocationStepState extends State<_LocationStep> {
     if (!mounted) return;
     setState(() {
       _busy = false;
-      if (hit == null) _error = 'Postcode not found (1234AB) — or you are offline. Pick a region below.';
+      if (hit == null) _error = Str.postcodeNotFoundPickRegion.of(context);
     });
     if (hit != null) widget.onLookup(hit, pc.toUpperCase());
   }
@@ -612,7 +661,9 @@ class _LocationStepState extends State<_LocationStep> {
           AppCard(
             child: MascotSays(
               pose: MascotPose.celebrating,
-              text: 'Found it. Last frost around ${l.profile.lastFrost.substring(5)}, first frost around ${l.profile.firstFrost.substring(5)}.',
+              text: Str.foundFrostDates(l.profile.lastFrost.substring(5),
+                      l.profile.firstFrost.substring(5))
+                  .of(context),
             ),
           ),
         ],
@@ -634,11 +685,11 @@ class _LocationStepState extends State<_LocationStep> {
   }
 }
 
-const _statementList = <(String, String)>[
-  ('behind', 'I often feel behind on garden jobs.'),
-  ('forget', 'I forget to water until something wilts.'),
-  ('dates', "I never know when it's safe to plant out."),
-  ('waste', "I buy seeds I never get round to sowing."),
+const _statementList = <(String, LocalizedText)>[
+  ('behind', Str.statementBehind),
+  ('forget', Str.statementForget),
+  ('dates', Str.statementDates),
+  ('waste', Str.statementWaste),
 ];
 
 class _Statements extends StatelessWidget {
@@ -660,7 +711,8 @@ class _Statements extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 10),
             child: AppCard(
               child: Row(children: [
-                Expanded(child: Text(text, style: AppText.body(context))),
+                Expanded(
+                    child: Text(text.of(context), style: AppText.body(context))),
                 const SizedBox(width: 8),
                 _YesNo(value: answers[key], onChanged: (v) => onAnswer(key, v)),
               ]),
@@ -785,11 +837,26 @@ class _PlanStep extends StatelessWidget {
             const SizedBox(height: 40),
             Mascot(ready ? MascotPose.celebrating : MascotPose.thinking, size: 96),
             const SizedBox(height: 24),
-            Text(ready ? 'Your plan is ready' : 'Creating your growing plan…', style: AppText.display(context)),
+            Text((ready ? Str.planReady : Str.planBuilding).of(context),
+                style: AppText.display(context)),
             const SizedBox(height: 16),
-            _Line(done: true, text: 'Frost dates for $region: last ${frost.lastFrost.substring(5)}, first ${frost.firstFrost.substring(5)}'),
-            _Line(done: ready, text: ready ? '$matches crops fit your space this month' : 'Matching crops to your space…'),
-            _Line(done: ready, text: ready ? (firstTask == null ? 'First task lands as soon as a window opens' : 'First task: $firstTask') : 'Finding your first task…'),
+            _Line(
+                done: true,
+                text: Str.planFrostLine(region, frost.lastFrost.substring(5),
+                        frost.firstFrost.substring(5))
+                    .of(context)),
+            _Line(
+                done: ready,
+                text: (ready ? Str.planMatches(matches) : Str.planMatching)
+                    .of(context)),
+            _Line(
+                done: ready,
+                text: (ready
+                        ? (firstTask == null
+                            ? Str.planFirstTaskWaits
+                            : Str.planFirstTask(firstTask!))
+                        : Str.planFindingFirstTask)
+                    .of(context)),
             const Spacer(),
             if (ready) ...[
               Text(Str.remindBlurb.of(context),

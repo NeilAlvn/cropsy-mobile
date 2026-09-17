@@ -9,6 +9,8 @@ import '../db/database.dart' show GardenKind;
 import '../timing/weather_adjust.dart';
 import 'brutal.dart';
 import '../timing/types.dart';
+import '../l10n/strings.dart';
+import '../l10n/app_lang.dart';
 import 'colors.dart';
 import 'motion.dart';
 import 'typography.dart';
@@ -54,26 +56,16 @@ LocalizedText kindLine(TaskKind kind) => switch (kind) {
       TaskKind.thin => const LocalizedText(nl: 'Uitdunnen', en: 'Thin'),
     };
 
-String kindLabel(TaskKind kind) => switch (kind) {
-      TaskKind.water => 'Water',
-      TaskKind.sow => 'Sow',
-      TaskKind.transplant => 'Plant out',
-      TaskKind.harvest => 'Harvest',
-      TaskKind.feed => 'Feed',
-      TaskKind.potOn => 'Pot on',
-      TaskKind.thin => 'Thin',
-    };
-
 String gardenKindEmoji(GardenKind k) => switch (k) {
       GardenKind.balcony => '🪟',
       GardenKind.garden => '🌳',
       GardenKind.allotment => '🚜',
     };
 
-String gardenKindLabel(GardenKind k) => switch (k) {
-      GardenKind.balcony => 'Balcony',
-      GardenKind.garden => 'Garden',
-      GardenKind.allotment => 'Allotment',
+LocalizedText gardenKindLabel(GardenKind k) => switch (k) {
+      GardenKind.balcony => Str.gardenKindBalcony,
+      GardenKind.garden => Str.gardenKindGarden,
+      GardenKind.allotment => Str.gardenKindAllotment,
     };
 
 class PrimaryButton extends StatelessWidget {
@@ -269,13 +261,13 @@ class WeatherHintBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (color, icon, text) = switch (adjustment.action) {
-      AdjustAction.skip => (AppColors.rain, PhosphorIcons.drop, 'Enough rain'),
-      AdjustAction.bringForward => (AppColors.heat, PhosphorIcons.sun, 'Heat coming'),
-      AdjustAction.defer => (AppColors.frost, PhosphorIcons.snowflake, 'Soil too cold'),
-      AdjustAction.none => (AppColors.muted, PhosphorIcons.info, ''),
+      AdjustAction.skip => (AppColors.rain, PhosphorIcons.drop, Str.enoughRainBadge),
+      AdjustAction.bringForward => (AppColors.heat, PhosphorIcons.sun, Str.heatComingBadge),
+      AdjustAction.defer => (AppColors.frost, PhosphorIcons.snowflake, Str.soilTooColdBadge),
+      AdjustAction.none => (AppColors.muted, PhosphorIcons.info, Str.empty),
     };
     return Pill(
-      label: text,
+      label: text.of(context),
       icon: icon,
       color: color,
       bg: color.withValues(alpha: 0.12),

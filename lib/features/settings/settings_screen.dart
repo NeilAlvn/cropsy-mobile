@@ -99,7 +99,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   switch (plan) {
                     Plan.free => Str.freeTierBlurb.of(context),
                     Plan.lifetime => Str.lifetimeNothingToCancel.of(context),
-                    Plan.yearly => 'Renews yearly. Manage or cancel in the App Store / Play Store.',
+                    Plan.yearly => Str.renewsYearly.of(context),
                   },
                   style: AppText.caption(context),
                 ),
@@ -204,14 +204,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           SizedBox(height: 12),
           for (final (label, icon, path) in [
-            ('Contact us', PhosphorIcons.envelope, '/support'),
-            ('Privacy', PhosphorIcons.lock, '/privacy'),
-            ('Terms', PhosphorIcons.fileText, '/terms'),
+            (Str.contactUs, PhosphorIcons.envelope, '/support'),
+            (Str.privacy, PhosphorIcons.lock, '/privacy'),
+            (Str.terms, PhosphorIcons.fileText, '/terms'),
           ])
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: Icon(icon, color: AppColors.sprout),
-              title: Text(label, style: AppText.label(context)),
+              title: Text(label.of(context), style: AppText.label(context)),
               trailing: Icon(PhosphorIcons.arrowSquareOut, size: 16, color: AppColors.muted),
               onTap: () => launchUrl(Uri.parse('$websiteUrl$path'), mode: LaunchMode.externalApplication),
             ),
@@ -360,9 +360,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (ok != true || !mounted) return;
     // Read the line before the await, so the dialog's context is not used after it.
     final done = Str.deleted.of(context);
+    final failed = Str.couldNotDeleteAccount.of(context);
     await _run(() async {
       final deleted = await auth.deleteAccount();
-      if (!deleted) throw StateError('Could not delete the account. Try again later.');
+      if (!deleted) throw Exception(failed);
     }, done: done);
   }
 

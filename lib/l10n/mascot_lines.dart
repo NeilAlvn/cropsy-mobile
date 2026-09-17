@@ -167,6 +167,38 @@ abstract final class MascotLines {
     en: 'Looks healthy from here.',
   );
 
+  static const scanNothingRecognisable = LocalizedText(
+    nl: 'Niets herkenbaars. Blader hieronder door de veelvoorkomende '
+        'problemen.',
+    en: 'Nothing recognisable. Browse the common problems below instead.',
+  );
+
+  static const scanBestGuesses = LocalizedText(
+    nl: 'Beste gokken, meest waarschijnlijke eerst. Niet deze plant? Kies een '
+        'andere of zoek op naam.',
+    en: 'Best guesses, most likely first. Not this plant? Pick another or '
+        'search by name.',
+  );
+
+  static const scanIsAGuess = LocalizedText(
+    nl: 'Dit is een gok op basis van de foto, geen diagnose.',
+    en: 'This is a guess from the photo, not a diagnosis.',
+  );
+
+  static const problemsComing = LocalizedText(
+    nl: 'De 25 problemen die op Nederlandse balkons spelen, slakken, luizen, '
+        'meeldauw, neusrot, worden geschreven en nagekeken. Ze komen met de '
+        'contentupdate.',
+    en: 'The 25 problems common on Dutch balconies, slakken, luizen, meeldauw, '
+        'neusrot, are being written and checked. They land with the content '
+        'update.',
+  );
+
+  static const seasonLaysItselfOut = LocalizedText(
+    nl: 'Zet een plant neer en het seizoen legt zichzelf hier uit.',
+    en: 'Add a plant and the season lays itself out here.',
+  );
+
   static const scanSignIn = LocalizedText(
     nl: 'Log eerst in bij Instellingen. Scans tellen per account.',
     en: 'Sign in first, under Settings. Scans are counted per account.',

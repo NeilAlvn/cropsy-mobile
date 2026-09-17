@@ -60,6 +60,464 @@ abstract final class Str {
   static LocalizedText yearInGarden(int year) =>
       LocalizedText(nl: '$year in jouw tuin', en: '$year in your garden');
   static const today = LocalizedText(nl: 'Vandaag', en: 'Today');
+  static const tomorrow = LocalizedText(nl: 'Morgen', en: 'Tomorrow');
+  static LocalizedText stepPlannedOn(LocalizedText step, String day) =>
+      LocalizedText(
+        nl: '${step.nl} · gepland $day',
+        en: '${step.en} · planned $day',
+      );
+  static const nothingToDoToday = LocalizedText(
+    nl: 'Niets te doen vandaag. Geniet ervan.',
+    en: 'Nothing to do today. Enjoy it.',
+  );
+  static LocalizedText thingsToDoToday(int n) => LocalizedText(
+        nl: n == 1 ? 'Eén ding te doen vandaag.' : '$n dingen te doen vandaag.',
+        en: n == 1 ? '1 thing to do today.' : '$n things to do today.',
+      );
+  static LocalizedText removeKeepsYourHarvests(String name) => LocalizedText(
+        nl: 'Dit haalt $name uit je tuin. Oogsten die je al logde blijven in '
+            'je seizoensgeschiedenis staan.',
+        en: 'This takes $name out of your garden. Any harvests you already '
+            'logged stay in your season history.',
+      );
+  static const symptoms = LocalizedText(nl: 'Symptomen', en: 'Symptoms');
+  static const pickSomething =
+      LocalizedText(nl: 'Kies iets ', en: 'Pick something ');
+  static const toGrow = LocalizedText(nl: 'om te telen', en: 'to grow');
+  static const minSoilTemp =
+      LocalizedText(nl: 'Min. bodemtemperatuur', en: 'Min soil temp');
+  static const minPotSize = LocalizedText(nl: 'Min. potmaat', en: 'Min pot size');
+  static const containerFriendly =
+      LocalizedText(nl: 'Geschikt voor potten', en: 'Container-friendly');
+  static const yes = LocalizedText(nl: 'Ja', en: 'Yes');
+  static const balconySuitability = LocalizedText(
+    nl: 'Geschikt voor NL-balkon',
+    en: 'NL balcony suitability',
+  );
+  static const balconyGreat = LocalizedText(nl: 'Prima', en: 'Great');
+  static const balconyAfterIjsheiligen = LocalizedText(
+    nl: 'Goed na de ijsheiligen',
+    en: 'Good after IJsheiligen',
+  );
+  static const balconyNeedsBed =
+      LocalizedText(nl: 'Heeft een bed nodig', en: 'Needs a bed');
+  static const moveBackToPlanning = LocalizedText(
+    nl: 'Terug naar gepland',
+    en: 'Move back to planning',
+  );
+  static const removeFromGarden = LocalizedText(
+    nl: 'Uit de tuin halen',
+    en: 'Remove from garden',
+  );
+  static LocalizedText removeKeepsHarvests(String name) => LocalizedText(
+        nl: 'Dit haalt $name uit je tuin. Gelogde oogsten blijven in je '
+            'seizoensgeschiedenis staan.',
+        en: 'This takes $name out of your garden. Logged harvests stay in your '
+            'season history.',
+      );
+  static const tapPlanToGrow = LocalizedText(
+    nl: 'Tik op "Wil ik telen" bij een gewas om het hier te zetten.',
+    en: 'Tap "Plan to grow" on any crop to add it here.',
+  );
+  static const tapGrowingIt = LocalizedText(
+    nl: 'Tik op "Staat er al" bij een gewas, of start een gepland gewas.',
+    en: 'Tap "Growing it" on a crop, or start a planned one.',
+  );
+  static const sowIndoors = LocalizedText(nl: 'Binnen zaaien', en: 'Sow indoors');
+  static const plantOut = LocalizedText(nl: 'Uitplanten', en: 'Plant out');
+  static const sowOutdoors = LocalizedText(nl: 'Buiten zaaien', en: 'Sow outdoors');
+  static const treatmentOrganicFirst = LocalizedText(
+    nl: 'Aanpak (biologisch eerst)',
+    en: 'Treatment (organic first)',
+  );
+  static const prevention = LocalizedText(nl: 'Voorkomen', en: 'Prevention');
+  static const lastFrostRow = LocalizedText(nl: 'Laatste vorst', en: 'Last frost');
+  static const firstFrostRow = LocalizedText(nl: 'Eerste vorst', en: 'First frost');
+  static const preferredSun = LocalizedText(nl: 'Voorkeur zon', en: 'Preferred sun');
+  static const frostTender = LocalizedText(nl: 'Vorstgevoelig', en: 'Frost tender');
+  static const yesWaitForLastFrost = LocalizedText(
+    nl: 'Ja, wacht op de laatste vorst',
+    en: 'Yes, wait for last frost',
+  );
+  static const no = LocalizedText(nl: 'Nee', en: 'No');
+
+  static const empty = LocalizedText(nl: '', en: '');
+  static const sow = LocalizedText(nl: 'Zaaien', en: 'Sow');
+  static const startIndoors =
+      LocalizedText(nl: 'Binnen starten', en: 'Start indoors');
+  static const plantOutside =
+      LocalizedText(nl: 'Buiten planten', en: 'Plant outside');
+  static const easyFilter = LocalizedText(nl: 'Makkelijk', en: 'Easy');
+  static const whatIsWrongHere =
+      LocalizedText(nl: 'Wat klopt hier niet?', en: 'What is wrong here?');
+  static const whatWouldBeBetter = LocalizedText(
+    nl: 'Wat zou dit beter maken?',
+    en: 'What would make this better?',
+  );
+  static const climateNormals = LocalizedText(
+    nl: 'KNMI/Open-Meteo klimaatnormalen',
+    en: 'KNMI/Open-Meteo climate normals',
+  );
+  static const regionalPreset = LocalizedText(
+    nl: 'NL regiovoorinstelling',
+    en: 'NL regional preset',
+  );
+  /// The crop data's own sun values, said in words.
+  static LocalizedText sunNeed(String value) => switch (value) {
+        'full' => const LocalizedText(nl: 'volle zon', en: 'full sun'),
+        'partial' => const LocalizedText(nl: 'halfschaduw', en: 'partial'),
+        'shade-tolerant' =>
+          const LocalizedText(nl: 'verdraagt schaduw', en: 'shade-tolerant'),
+        _ => LocalizedText(nl: value, en: value),
+      };
+  static LocalizedText daysToHarvest(num min, num max) => LocalizedText(
+        nl: '$min-$max dagen',
+        en: '$min-$max days',
+      );
+  static const stageSprout = LocalizedText(nl: 'Kiem', en: 'Sprout');
+  static const dayOne = LocalizedText(nl: 'Dag 1', en: 'Day 1');
+  static LocalizedText dayRange(num from, num to) =>
+      LocalizedText(nl: 'Dag $from-$to', en: 'Day $from-$to');
+  static const enoughRainBadge =
+      LocalizedText(nl: 'Genoeg regen', en: 'Enough rain');
+  static const heatComingBadge =
+      LocalizedText(nl: 'Hitte op komst', en: 'Heat coming');
+  static const soilTooColdBadge =
+      LocalizedText(nl: 'Grond te koud', en: 'Soil too cold');
+  static const gardenKindBalcony = LocalizedText(nl: 'Balkon', en: 'Balcony');
+  static const gardenKindGarden = LocalizedText(nl: 'Tuin', en: 'Garden');
+  static const gardenKindAllotment =
+      LocalizedText(nl: 'Volkstuin', en: 'Allotment');
+  static const contactUs = LocalizedText(nl: 'Contact', en: 'Contact us');
+  static const privacy = LocalizedText(nl: 'Privacy', en: 'Privacy');
+  static const terms = LocalizedText(nl: 'Voorwaarden', en: 'Terms');
+  static const yourHarvests =
+      LocalizedText(nl: 'Jouw oogsten', en: 'Your harvests');
+  static const placeGround =
+      LocalizedText(nl: 'In de volle grond', en: 'In the ground');
+  static const placeRaisedBed =
+      LocalizedText(nl: 'Verhoogde bak', en: 'Raised bed');
+  static const placePotOutside =
+      LocalizedText(nl: 'Pot buiten', en: 'Pot outside');
+  static const placePotInside =
+      LocalizedText(nl: 'Pot binnen', en: 'Pot inside');
+  static const methodSowedIndoors =
+      LocalizedText(nl: 'Binnen gezaaid', en: 'Sowed indoors');
+  static const methodSowedOutside =
+      LocalizedText(nl: 'Buiten gezaaid', en: 'Sowed outside');
+  static const methodPlantedSeedling =
+      LocalizedText(nl: 'Zaailing geplant', en: 'Planted a seedling');
+  static const methodPlantedSets = LocalizedText(
+    nl: 'Geplant (bollen / knollen)',
+    en: 'Planted (sets / tubers)',
+  );
+  // ── the how-tos table ─────────────────────────────────────────────────────
+  static const sowDepth = LocalizedText(nl: 'Zaaidiepte', en: 'Sow depth');
+  static const germination = LocalizedText(nl: 'Kieming', en: 'Germination');
+  static const plantOutAfter =
+      LocalizedText(nl: 'Uitplanten na', en: 'Plant out after');
+  static const spacing = LocalizedText(nl: 'Plantafstand', en: 'Spacing');
+  static const perSquare =
+      LocalizedText(nl: 'Per vak van 30 cm', en: 'Per 30 cm square');
+  static const care = LocalizedText(nl: 'Verzorging', en: 'Care');
+  static const waterSmallPot =
+      LocalizedText(nl: 'Water (kleine pot)', en: 'Water (small pot)');
+  static const waterInGround =
+      LocalizedText(nl: 'Water (volle grond)', en: 'Water (in ground)');
+  static const feed = LocalizedText(nl: 'Bijmesten', en: 'Feed');
+  static const perennial = LocalizedText(nl: 'Meerjarig', en: 'Perennial');
+  static const firstHarvest =
+      LocalizedText(nl: 'Eerste oogst', en: 'First harvest');
+  static LocalizedText aboutDays(int n) =>
+      LocalizedText(nl: '~$n dagen', en: '~$n days');
+  static LocalizedText daysIndoors(int n) => LocalizedText(
+        nl: '~$n dagen binnen',
+        en: '~$n days indoors',
+      );
+  static LocalizedText everyDays(int n) => LocalizedText(
+        nl: n == 1 ? 'elke dag' : 'elke $n dagen',
+        en: n == 1 ? 'every 1 day' : 'every $n days',
+      );
+  static LocalizedText everyDaysEstablished(int n) => LocalizedText(
+        nl: 'elke $n dagen zodra hij aanslaat',
+        en: 'every $n days once established',
+      );
+  static const comesBackNextYear = LocalizedText(
+    nl: 'komt volgend jaar terug',
+    en: 'comes back next year',
+  );
+  static LocalizedText daysAfterPlantOut(num min, num max) => LocalizedText(
+        nl: '$min-$max dagen na het uitplanten',
+        en: '$min-$max days after planting out',
+      );
+
+  // ── onboarding chrome ─────────────────────────────────────────────────────
+  static const heroKnowWhatToDo =
+      LocalizedText(nl: 'Weet wat je\n', en: 'Know what to do\n');
+  static const heroThisWeek = LocalizedText(nl: 'deze week', en: 'this week');
+  static const heroInYourGarden =
+      LocalizedText(nl: ' moet doen in je tuin.', en: ' in your garden.');
+  static const heroSubtitle = LocalizedText(
+    nl: 'Plantdata en herinneringen afgestemd op het Nederlandse en Europese '
+        'weer, gemaakt voor balkons en potten.',
+    en: 'Planting dates and reminders tuned to Dutch and EU weather, built for '
+        'balconies and containers.',
+  );
+  static const getStarted = LocalizedText(nl: 'Beginnen', en: 'Get started');
+  static const continueLabel = LocalizedText(nl: 'Verder', en: 'Continue');
+  static const datesCheckedTitle = LocalizedText(
+    nl: 'Elke datum gelegd naast Nederlandse zaaikalenders',
+    en: 'Every date checked against Dutch seed calendars',
+  );
+  static const datesCheckedBody = LocalizedText(
+    nl: 'Elk gewas is gelegd naast minstens twee NL-bronnen, IVN, Tuinadvies, '
+        'zaaitijden.nl en Groei & Bloei, voordat het bij jou komt. En als het '
+        'leven ertussen komt, schuift het plan met je mee. Niets is ooit "te '
+        'laat".',
+    en: 'Each crop is cross-checked against at least two NL sources, IVN, '
+        'Tuinadvies, zaaitijden.nl and Groei & Bloei, before it reaches you. '
+        'And when life gets in the way, the plan moves with you. Nothing is '
+        'ever "overdue".',
+  );
+  static const getToKnowTitle = LocalizedText(
+    nl: 'Hoi! Even kennismaken',
+    en: "Hi! Let's get to know each other",
+  );
+  static const getToKnowBody = LocalizedText(
+    nl: 'Een paar korte vragen over je ruimte en wat je graag eet. Twee '
+        'minuten, dan staat je plan klaar.',
+    en: 'A few quick questions about your space and what you like to eat. Two '
+        'minutes, then your plan is ready.',
+  );
+  static const pickAllThatApply =
+      LocalizedText(nl: 'Kies alles wat past.', en: 'Pick all that apply.');
+  static const spaceBackyard = LocalizedText(nl: 'Tuin', en: 'Garden');
+  static const spaceBalcony = LocalizedText(nl: 'Balkon', en: 'Balcony');
+  static const spaceIndoor = LocalizedText(nl: 'Binnen', en: 'Indoors');
+  static const spaceAllotment =
+      LocalizedText(nl: 'Volkstuin', en: 'Allotment');
+  static const spaceOther =
+      LocalizedText(nl: 'Ergens anders', en: 'Somewhere else');
+  static const howDoYouGrow =
+      LocalizedText(nl: 'Hoe teel je?', en: 'How do you grow?');
+  static const methodGround =
+      LocalizedText(nl: 'In de volle grond', en: 'In the ground');
+  static const methodRaisedBeds =
+      LocalizedText(nl: 'Verhoogde bakken', en: 'Raised beds');
+  static const methodPotsInside =
+      LocalizedText(nl: 'Potten binnen', en: 'Pots inside');
+  static const methodPotsOutside =
+      LocalizedText(nl: 'Potten buiten', en: 'Pots outside');
+  static const howMuchSpace =
+      LocalizedText(nl: 'Hoeveel ruimte?', en: 'How much space?');
+  static const howMuchSpaceSub = LocalizedText(
+    nl: 'Ongeveer, het bepaalt hoeveel planten passen.',
+    en: 'Roughly, it sets how many plants fit.',
+  );
+  static const howMuchSun =
+      LocalizedText(nl: 'Hoeveel zon?', en: 'How much sun?');
+  static const howMuchSunSub = LocalizedText(
+    nl: 'Op een heldere dag, hoe lang staat het in de volle zon?',
+    en: 'On a clear day, how long is it in direct sun?',
+  );
+  static const sunFull =
+      LocalizedText(nl: 'Volle zon (6u+)', en: 'Full sun (6h+)');
+  static const sunPartial =
+      LocalizedText(nl: 'Halfschaduw (3-6u)', en: 'Partial (3-6h)');
+  static const sunShade =
+      LocalizedText(nl: 'Schaduw (< 3u)', en: 'Shade (< 3h)');
+  static const grownBefore = LocalizedText(
+    nl: 'Eerder iets geteeld?',
+    en: 'Grown anything before?',
+  );
+  static const grownBeforeSub = LocalizedText(
+    nl: 'Zo stemmen we het advies af.',
+    en: 'So we pitch the advice right.',
+  );
+  static const experienceNever = LocalizedText(nl: 'Nooit', en: 'Never');
+  static const experienceSome =
+      LocalizedText(nl: 'Een seizoen of twee', en: 'A season or two');
+  static const experiencePlenty = LocalizedText(nl: 'Genoeg', en: 'Plenty');
+  static const whatDoYouEat = LocalizedText(
+    nl: 'Wat eet je graag?',
+    en: 'What do you like to eat?',
+  );
+  static const foodVegetables = LocalizedText(nl: 'Groente', en: 'Vegetables');
+  static const foodHerbs = LocalizedText(nl: 'Kruiden', en: 'Herbs');
+  static const foodSalad = LocalizedText(nl: 'Slablad', en: 'Salad leaves');
+  static const foodFruit = LocalizedText(nl: 'Fruit', en: 'Fruit');
+  static const foodRoots = LocalizedText(nl: 'Wortelgroente', en: 'Root veg');
+  static const whatMattersMost = LocalizedText(
+    nl: 'Wat is het belangrijkst?',
+    en: "What's most important?",
+  );
+  static const interestEasy =
+      LocalizedText(nl: 'Makkelijk te telen', en: 'Easy to grow');
+  static const interestFast =
+      LocalizedText(nl: 'Snel oogsten', en: 'Fast harvest');
+  static const interestYield =
+      LocalizedText(nl: 'Veel opbrengst', en: 'High yield');
+  static const interestKids =
+      LocalizedText(nl: 'Leuk met kinderen', en: 'Fun with kids');
+  static const interestCost =
+      LocalizedText(nl: 'Scheelt geld', en: 'Saves money');
+  static const companionsAsk = LocalizedText(
+    nl: 'Interesse in buurplanten?',
+    en: 'Interested in companion planting?',
+  );
+  static const companionsAskSub = LocalizedText(
+    nl: 'We waarschuwen als twee planten elkaar niet liggen.',
+    en: 'We can warn when two plants dislike each other.',
+  );
+  static const companionsYes =
+      LocalizedText(nl: 'Ja, laat maar zien', en: 'Yes, show me');
+  static const companionsNo = LocalizedText(nl: 'Nu niet', en: 'Not now');
+  static const statementBehind = LocalizedText(
+    nl: 'Ik loop vaak achter op klusjes in de tuin.',
+    en: 'I often feel behind on garden jobs.',
+  );
+  static const statementForget = LocalizedText(
+    nl: 'Ik vergeet water te geven tot er iets slap hangt.',
+    en: 'I forget to water until something wilts.',
+  );
+  static const statementDates = LocalizedText(
+    nl: 'Ik weet nooit wanneer het veilig is om uit te planten.',
+    en: "I never know when it's safe to plant out.",
+  );
+  static const statementWaste = LocalizedText(
+    nl: 'Ik koop zaad dat ik nooit zaai.',
+    en: 'I buy seeds I never get round to sowing.',
+  );
+  static const buildMyPlan =
+      LocalizedText(nl: 'Bouw mijn plan', en: 'Build my plan');
+  static const yourLocationWord =
+      LocalizedText(nl: 'jouw locatie', en: 'your location');
+  static const planReady =
+      LocalizedText(nl: 'Je plan staat klaar', en: 'Your plan is ready');
+  static const planBuilding = LocalizedText(
+    nl: 'Je teeltplan wordt gemaakt…',
+    en: 'Creating your growing plan…',
+  );
+  static LocalizedText planFrostLine(String region, String last, String first) =>
+      LocalizedText(
+        nl: 'Vorstdatums voor $region: laatste $last, eerste $first',
+        en: 'Frost dates for $region: last $last, first $first',
+      );
+  static LocalizedText planMatches(int n) => LocalizedText(
+        nl: n == 1
+            ? '1 gewas past deze maand in je ruimte'
+            : '$n gewassen passen deze maand in je ruimte',
+        en: n == 1
+            ? '1 crop fits your space this month'
+            : '$n crops fit your space this month',
+      );
+  static const planMatching = LocalizedText(
+    nl: 'Gewassen zoeken die in je ruimte passen…',
+    en: 'Matching crops to your space…',
+  );
+  static const planFirstTaskWaits = LocalizedText(
+    nl: 'De eerste taak komt zodra er een venster opengaat',
+    en: 'First task lands as soon as a window opens',
+  );
+  static LocalizedText planFirstTask(String task) => LocalizedText(
+        nl: 'Eerste taak: $task',
+        en: 'First task: $task',
+      );
+  static const planFindingFirstTask = LocalizedText(
+    nl: 'Je eerste taak zoeken…',
+    en: 'Finding your first task…',
+  );
+  static const miniPathSow =
+      LocalizedText(nl: 'Sla zaaien', en: 'Sow lettuce');
+  static const miniPathFrost =
+      LocalizedText(nl: 'IJsheiligen', en: 'IJsheiligen');
+  static const miniPathHarvest =
+      LocalizedText(nl: 'Tomaat oogsten', en: 'Harvest tomato');
+  static const miniPathSowDay = LocalizedText(nl: '1 apr', en: '1 Apr');
+  static const miniPathFrostDay = LocalizedText(nl: '11 mei', en: '11 May');
+  static const miniPathHarvestDay = LocalizedText(nl: '24 aug', en: '24 Aug');
+  static const noLocationPickRegion = LocalizedText(
+    nl: 'Geen locatie, vul een postcode in of kies hieronder een regio.',
+    en: 'No location, enter a postcode or pick a region below.',
+  );
+  static const postcodeNotFoundPickRegion = LocalizedText(
+    nl: 'Postcode niet gevonden (1234AB), of je bent offline. Kies hieronder '
+        'een regio.',
+    en: 'Postcode not found (1234AB), or you are offline. Pick a region below.',
+  );
+  static LocalizedText foundFrostDates(String last, String first) =>
+      LocalizedText(
+        nl: 'Gevonden. Laatste vorst rond $last, eerste vorst rond $first.',
+        en: 'Found it. Last frost around $last, first frost around $first.',
+      );
+  static const whatToDo = LocalizedText(nl: 'Wat te doen ', en: 'What to do ');
+  static const inYourGarden =
+      LocalizedText(nl: 'in je tuin', en: 'in your garden');
+  static const plotWord = LocalizedText(nl: 'tuin', en: 'plot');
+  static const yourLocation =
+      LocalizedText(nl: 'Jouw locatie', en: 'Your location');
+  static LocalizedText noLocationMatch(String query) => LocalizedText(
+        nl: 'Geen match voor "$query". Probeer een stad in de buurt, een '
+            'postcode (1234AB), of kies een regio.',
+        en: 'No match for "$query". Try a nearby city, a postcode (1234AB), or '
+            'pick a region.',
+      );
+  static const useCurrentLocation = LocalizedText(
+    nl: 'Gebruik mijn huidige locatie',
+    en: 'Use my current location',
+  );
+  static const detectingLocation =
+      LocalizedText(nl: 'Locatie bepalen…', en: 'Detecting your location…');
+  static const renewsYearly = LocalizedText(
+    nl: 'Verlengt jaarlijks. Beheren of opzeggen doe je in de App Store / Play '
+        'Store.',
+    en: 'Renews yearly. Manage or cancel in the App Store / Play Store.',
+  );
+  static const couldNotDeleteAccount = LocalizedText(
+    nl: 'Account verwijderen lukte niet. Probeer het later opnieuw.',
+    en: 'Could not delete the account. Try again later.',
+  );
+  static const scanOpensWithBeta = LocalizedText(
+    nl: 'Fotoscannen komt met de beta. De probleemgids werkt nu al offline.',
+    en: 'Photo scanning opens with the beta. The common-problems browser '
+        'already works offline.',
+  );
+  static const scanQuotaReached = LocalizedText(
+    nl: 'Dagelijkse scanlimiet bereikt. Morgen weer, of ontgrendel levenslang '
+        'voor meer.',
+    en: 'Daily scan limit reached. Tomorrow again, or unlock lifetime for '
+        'more.',
+  );
+  static LocalizedText scanFailed(String code) => LocalizedText(
+        nl: 'Scannen mislukt ($code). Probeer opnieuw.',
+        en: 'Scan failed ($code). Try again.',
+      );
+  static const snapTipsIdentify = LocalizedText(
+    nl: 'Fototips: één plant, een blad of bloem vult het beeld, daglicht.',
+    en: 'Snap tips: one plant, a leaf or flower filling the frame, daylight.',
+  );
+  static const snapTipsDiagnose = LocalizedText(
+    nl: 'Fototips: het aangetaste deel scherp en dichtbij, plus één wijdere '
+        'foto als je twijfelt.',
+    en: 'Snap tips: the damaged part sharp and close, plus one wider shot if '
+        'unsure.',
+  );
+  static LocalizedText rainSkipsWatering(int mm) => LocalizedText(
+        nl: 'Er viel $mm mm in de laatste drie dagen. Water geven rond vandaag '
+            'wordt overgeslagen.',
+        en: 'Rained $mm mm in the last three days. Waterings around today are '
+            'skipped.',
+      );
+  static const heatAhead = LocalizedText(
+    nl: 'Hitte op komst (30°C+). Potten drogen in een dag uit, dus water geven '
+        'schuift naar voren.',
+    en: 'Heat ahead (30°C+). Containers dry out in a day, so waterings move '
+        'earlier.',
+  );
+  static const forecastCalm = LocalizedText(
+    nl: 'Niets bijzonders in de verwachting. Het plan blijft staan.',
+    en: 'Nothing dramatic in the forecast. The plan stands.',
+  );
   static const youAreHere = LocalizedText(nl: 'Hier ben je', en: 'You are here');
   static LocalizedText cropsSuitMonth(int n) =>
       LocalizedText(nl: '$n gewassen passen', en: '$n crops suit it');

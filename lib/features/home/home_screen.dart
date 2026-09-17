@@ -37,11 +37,6 @@ import '../paywall/paywall_screen.dart';
 import '../profile/profile_screen.dart';
 import '../repository_scope.dart';
 
-const _months = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-];
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -184,7 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, i) {
                   final m = i + 1;
                   return ListTile(
-                    title: Text(_months[i], style: AppText.body(context)),
+                    title: Text(Str.monthTitle(i + 1).of(context),
+                        style: AppText.body(context)),
                     trailing: m == _month
                         ? Icon(PhosphorIcons.check, color: AppColors.sprout)
                         : null,
@@ -351,7 +347,7 @@ class _ProfileButton extends StatelessWidget {
         child: FutureBuilder<ProfileRow?>(
           future: repo.profile(),
           builder: (context, snap) => ProfileAvatar(
-            name: snap.data?.displayName ?? 'Gardener',
+            name: snap.data?.displayName ?? Str.gardener.of(context),
             size: 40,
           ),
         ),
@@ -491,11 +487,11 @@ class _WhatToGrowHeader extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           FilterChipsRow(
-            options: const [
-              ('all', 'All'),
-              ('indoors', 'Start indoors'),
-              ('outside', 'Plant outside'),
-              ('easy', 'Easy'),
+            options: [
+              ('all', Str.all.of(context)),
+              ('indoors', Str.startIndoors.of(context)),
+              ('outside', Str.plantOutside.of(context)),
+              ('easy', Str.easyFilter.of(context)),
             ],
             selected: filter,
             onSelect: onFilter,
@@ -538,9 +534,10 @@ class _TodaysCare extends StatelessWidget {
                   size: 44,
                   text: skipped.isNotEmpty
                       ? skipped.first.hint!.reason.of(context)
-                      : open == 0
-                          ? 'Nothing to do today. Enjoy it.'
-                          : '$open thing${open == 1 ? '' : 's'} to do today.',
+                      : (open == 0
+                              ? Str.nothingToDoToday
+                              : Str.thingsToDoToday(open))
+                          .of(context),
                 ),
               ),
               const SizedBox(height: 8),

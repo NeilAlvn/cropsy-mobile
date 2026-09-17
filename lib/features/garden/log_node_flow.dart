@@ -45,17 +45,6 @@ LocalizedText nodeKindLine(NodeKind k) => switch (k) {
       NodeKind.harvested => const LocalizedText(nl: 'Geoogst', en: 'Harvested'),
     };
 
-String nodeKindTitle(NodeKind k) => switch (k) {
-      NodeKind.sow => 'Sow',
-      NodeKind.potOn => 'Pot on',
-      NodeKind.transplant => 'Plant out',
-      NodeKind.thin => 'Thin seedlings',
-      NodeKind.feed => 'Feed',
-      NodeKind.water => 'Water',
-      NodeKind.harvest => 'Harvest window',
-      NodeKind.harvested => 'Harvested',
-    };
-
 String formatDay(String iso) => DateFormat('d MMM').format(parseIso(iso));
 
 /// Opens the log sheet for [node] and applies what the gardener chose.
@@ -132,7 +121,9 @@ class _LogSheet extends StatelessWidget {
             children: [
               MascotSays(
                 pose: poseForNode(node.kind),
-                text: '${nodeKindTitle(node.kind)} · planned ${formatDay(node.plannedDue)}',
+                text: Str.stepPlannedOn(
+                        nodeKindLine(node.kind), formatDay(node.plannedDue))
+                    .of(context),
               ),
               const SizedBox(height: 16),
               PrimaryButton(

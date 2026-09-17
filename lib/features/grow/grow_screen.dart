@@ -49,9 +49,9 @@ class _GrowScreenState extends State<GrowScreen> {
                 Text.rich(TextSpan(
                   style: AppText.display(context),
                   children: [
-                    TextSpan(text: 'Pick something '),
+                    TextSpan(text: Str.pickSomething.of(context)),
                     TextSpan(
-                        text: 'to grow',
+                        text: Str.toGrow.of(context),
                         style: TextStyle(color: AppColors.sprout)),
                   ],
                 )),
@@ -142,8 +142,8 @@ class _CropCard extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             crop.containerOk && crop.minPotLitres != null
-                ? '${crop.minPotLitres}L pot · ${crop.sun}'
-                : crop.sun,
+                ? '${crop.minPotLitres}L pot · ${Str.sunNeed(crop.sun).of(context)}'
+                : Str.sunNeed(crop.sun).of(context),
             style: AppText.caption(context),
           ),
         ],

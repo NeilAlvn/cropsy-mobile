@@ -42,7 +42,7 @@ class HarvestScreen extends StatelessWidget {
               if (rows.isEmpty)
                 const MascotSays.say(pose: MascotPose.holdingSeedling, line: MascotLines.harvestEmpty)
               else ...[
-                SectionHeader('Your harvests'),
+                SectionHeader(Str.yourHarvests.of(context)),
                 for (final r in rows)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),

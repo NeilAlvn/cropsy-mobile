@@ -8,6 +8,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
+import '../../l10n/app_lang.dart';
 
 import '../../design/colors.dart';
 import '../../design/typography.dart';
@@ -89,10 +91,11 @@ class PlantingCalendarBar extends StatelessWidget {
         for (final lane in _Lane.values) ...[
           _LaneRow(
             label: switch (lane) {
-              _Lane.sow => 'Sow',
-              _Lane.plantOut => 'Plant out',
-              _Lane.harvest => 'Harvest',
-            },
+              _Lane.sow => Str.sow,
+              _Lane.plantOut => Str.plantOut,
+              _Lane.harvest => Str.harvest,
+            }
+                .of(context),
             bands: bands.where((b) => b.lane == lane).toList(),
             todayFrac: todayFrac,
           ),
@@ -215,10 +218,10 @@ class _Legend extends StatelessWidget {
       spacing: 14,
       runSpacing: 6,
       children: [
-        dot(AppColors.bandSowIndoor, 'Sow indoors'),
-        dot(AppColors.bandSowOutdoor, 'Sow outdoors'),
-        dot(AppColors.bandPlantOut, 'Plant out'),
-        dot(AppColors.bandHarvest, 'Harvest'),
+        dot(AppColors.bandSowIndoor, Str.sowIndoors.of(context)),
+        dot(AppColors.bandSowOutdoor, Str.sowOutdoors.of(context)),
+        dot(AppColors.bandPlantOut, Str.plantOut.of(context)),
+        dot(AppColors.bandHarvest, Str.harvest.of(context)),
       ],
     );
   }

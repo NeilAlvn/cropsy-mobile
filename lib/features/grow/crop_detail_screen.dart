@@ -99,9 +99,13 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                     Wrap(spacing: 8, runSpacing: 8, children: [
                       if (crop.containerOk && crop.minPotLitres != null)
                         Pill(label: Str.potLitres(crop.minPotLitres!).of(context), icon: PhosphorIcons.square),
-                      Pill(label: crop.sun, icon: PhosphorIcons.sun),
                       Pill(
-                          label: '${crop.harvestDaysMin}–${crop.harvestDaysMax} days',
+                          label: Str.sunNeed(crop.sun).of(context),
+                          icon: PhosphorIcons.sun),
+                      Pill(
+                          label: Str.daysToHarvest(
+                                  crop.harvestDaysMin, crop.harvestDaysMax)
+                              .of(context),
                           icon: PhosphorIcons.clock),
                       Pill(label: difficultyLine(difficultyOf(crop)).of(context), icon: PhosphorIcons.chartBar),
                     ]),
@@ -257,7 +261,10 @@ class _Calendar extends StatelessWidget {
         Wrap(spacing: 8, runSpacing: 6, children: [
           Pill(label: Str.basedOn(repo.regionName).of(context), icon: PhosphorIcons.mapPin),
           Pill(
-            label: repo.frostSource == 'open-meteo' ? 'KNMI/Open-Meteo climate normals' : 'NL regional preset',
+            label: (repo.frostSource == 'open-meteo'
+                    ? Str.climateNormals
+                    : Str.regionalPreset)
+                .of(context),
             icon: PhosphorIcons.thermometer,
           ),
           Pill(label: Str.verifiedAgainst(crop.sources.length).of(context), icon: PhosphorIcons.sealCheck),
@@ -275,9 +282,8 @@ class _Timeline extends StatelessWidget {
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
     final stages = timelineStages(crop);
-    final dated = growthTimeline(crop, repo.frost);
     final fmt = DateFormat('d MMM');
-    final harvestDate = dated.isNotEmpty ? dated.last.date : null;
+    final harvestDate = firstHarvestDate(crop, repo.frost);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -288,7 +294,8 @@ class _Timeline extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    Text(stages[i].dayRange, style: AppText.caption(context)),
+                    Text(stages[i].dayRange.of(context),
+                        style: AppText.caption(context)),
                     const SizedBox(height: 6),
                     Container(
                       height: 2,
@@ -297,7 +304,8 @@ class _Timeline extends StatelessWidget {
                     ),
                     Text(stages[i].emoji, style: const TextStyle(fontSize: 24)),
                     const SizedBox(height: 4),
-                    Text(stages[i].label, style: AppText.label(context)),
+                    Text(stages[i].label.of(context),
+                        style: AppText.label(context)),
                   ],
                 ),
               ),
@@ -338,18 +346,34 @@ class _Location extends StatelessWidget {
           ]),
         );
     return Column(children: [
-      row(PhosphorIcons.mapPin, 'Region', repo.regionName),
-      row(PhosphorIcons.snowflake, 'Last frost', fmt.format(parseIso(repo.frost.lastFrost))),
-      row(PhosphorIcons.fire, 'First frost',
+      row(PhosphorIcons.mapPin, Str.region.of(context), repo.regionName),
+      row(PhosphorIcons.snowflake, Str.lastFrostRow.of(context),
+          fmt.format(parseIso(repo.frost.lastFrost))),
+      row(PhosphorIcons.fire, Str.firstFrostRow.of(context),
           fmt.format(parseIso(repo.frost.firstFrost))),
-      row(PhosphorIcons.sun, 'Preferred sun', crop.sun),
-      row(PhosphorIcons.snowflake, 'Frost tender', crop.frostTender ? 'Yes, wait for last frost' : 'No'),
-      if (minSoil != null) row(PhosphorIcons.thermometer, 'Min soil temp', '$minSoil °C'),
+      row(PhosphorIcons.sun, Str.preferredSun.of(context),
+          Str.sunNeed(crop.sun).of(context)),
+      row(
+          PhosphorIcons.snowflake,
+          Str.frostTender.of(context),
+          (crop.frostTender ? Str.yesWaitForLastFrost : Str.no).of(context)),
+      if (minSoil != null)
+        row(PhosphorIcons.thermometer, Str.minSoilTemp.of(context),
+            '$minSoil °C'),
       if (crop.minPotLitres != null)
-        row(PhosphorIcons.square, 'Min pot size', '${crop.minPotLitres} L'),
-      row(PhosphorIcons.checkCircle, 'Container-friendly',
-          crop.containerOk ? 'Yes' : 'No'),
-      row(PhosphorIcons.globe, 'NL balcony suitability', crop.containerOk && !crop.frostTender ? 'Great' : crop.containerOk ? 'Good after IJsheiligen' : 'Needs a bed'),
+        row(PhosphorIcons.square, Str.minPotSize.of(context),
+            '${crop.minPotLitres} L'),
+      row(PhosphorIcons.checkCircle, Str.containerFriendly.of(context),
+          (crop.containerOk ? Str.yes : Str.no).of(context)),
+      row(
+          PhosphorIcons.globe,
+          Str.balconySuitability.of(context),
+          (crop.containerOk && !crop.frostTender
+                  ? Str.balconyGreat
+                  : crop.containerOk
+                      ? Str.balconyAfterIjsheiligen
+                      : Str.balconyNeedsBed)
+              .of(context)),
     ]);
   }
 }
@@ -361,22 +385,30 @@ class _HowTos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final water = crop.waterCadenceDays;
-    final stages = <(String, String, List<(String, String)>)>[
-      ('🌱', 'Starting', [
-        if (crop.depthMm != null) ('Sow depth', '${crop.depthMm} mm'),
-        if (crop.germinationDays != null) ('Germination', '~${crop.germinationDays} days'),
-        if (crop.daysToTransplant != null) ('Plant out after', '~${crop.daysToTransplant} days indoors'),
-        ('Spacing', '${crop.spacingCm} cm'),
-        if (crop.vakPerM2 != null) ('Per 30 cm square', '${crop.vakPerM2}'),
+    final stages = <(String, LocalizedText, List<(LocalizedText, LocalizedText)>)>[
+      ('🌱', Str.stageStarting, [
+        if (crop.depthMm != null)
+          (Str.sowDepth, LocalizedText(nl: '${crop.depthMm} mm', en: '${crop.depthMm} mm')),
+        if (crop.germinationDays != null)
+          (Str.germination, Str.aboutDays(crop.germinationDays!)),
+        if (crop.daysToTransplant != null)
+          (Str.plantOutAfter, Str.daysIndoors(crop.daysToTransplant!)),
+        (Str.spacing, LocalizedText(nl: '${crop.spacingCm} cm', en: '${crop.spacingCm} cm')),
+        if (crop.vakPerM2 != null)
+          (Str.perSquare, LocalizedText(nl: '${crop.vakPerM2}', en: '${crop.vakPerM2}')),
       ]),
-      ('💧', 'Care', [
-        ('Water (small pot)', 'every ${water?.small ?? 1} day${(water?.small ?? 1) == 1 ? '' : 's'}'),
-        ('Water (in ground)', 'every ${water?.ground ?? 4} days'),
-        if (crop.feedCadenceDays != null) ('Feed', 'every ${crop.feedCadenceDays} days once established'),
-        if (crop.perennial) ('Perennial', 'comes back next year'),
+      ('💧', Str.care, [
+        (Str.waterSmallPot, Str.everyDays(water?.small ?? 1)),
+        (Str.waterInGround, Str.everyDays(water?.ground ?? 4)),
+        if (crop.feedCadenceDays != null)
+          (Str.feed, Str.everyDaysEstablished(crop.feedCadenceDays!)),
+        if (crop.perennial) (Str.perennial, Str.comesBackNextYear),
       ]),
-      ('🧺', 'Harvest', [
-        ('First harvest', '${crop.harvestDaysMin}–${crop.harvestDaysMax} days after planting out'),
+      ('🧺', Str.harvest, [
+        (
+          Str.firstHarvest,
+          Str.daysAfterPlantOut(crop.harvestDaysMin, crop.harvestDaysMax)
+        ),
       ]),
     ];
     return Column(
@@ -391,7 +423,7 @@ class _HowTos extends StatelessWidget {
                   Row(children: [
                     Text(emoji, style: const TextStyle(fontSize: 20)),
                     const SizedBox(width: 8),
-                    Text(title, style: AppText.heading(context)),
+                    Text(title.of(context), style: AppText.heading(context)),
                   ]),
                   const SizedBox(height: 8),
                   for (final (label, value) in rows)
@@ -400,9 +432,14 @@ class _HowTos extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(width: 128, child: Text(label, style: AppText.bodyMuted(context))),
+                          SizedBox(
+                              width: 128,
+                              child: Text(label.of(context),
+                                  style: AppText.bodyMuted(context))),
                           const SizedBox(width: 8),
-                          Expanded(child: Text(value, style: AppText.label(context))),
+                          Expanded(
+                              child: Text(value.of(context),
+                                  style: AppText.label(context))),
                         ],
                       ),
                     ),

@@ -55,11 +55,13 @@ class _LocationSheetState extends State<_LocationSheet> {
   Future<void> _detect() async {
     setState(() => _detecting = true);
     final repo = RepositoryScope.of(context);
+    // Read before the await: the context is gone by the time this lands.
+    final here = Str.yourLocation.of(context);
     // GPS → GET /api/frost. Offline or denied: snap to the nearest preset.
     final hit = await frostForDevice();
     if (!mounted) return;
     if (hit != null) {
-      await repo.setLocation(name: 'Your location', profile: hit.profile, lat: hit.lat, lon: hit.lon);
+      await repo.setLocation(name: here, profile: hit.profile, lat: hit.lat, lon: hit.lon);
       if (mounted) Navigator.pop(context);
       return;
     }
@@ -170,7 +172,7 @@ class _LocationSheetState extends State<_LocationSheet> {
                       : Padding(
                           padding: const EdgeInsets.all(24),
                           child: Text(
-                            'No match for "$_query". Try a nearby city, a postcode (1234AB), or pick a region.',
+                            Str.noLocationMatch(_query).of(context),
                             style: AppText.bodyMuted(context),
                           ),
                         )
@@ -225,7 +227,8 @@ class _UseLocationTile extends StatelessWidget {
             )
           : Icon(PhosphorIcons.crosshair, color: AppColors.sprout),
       title: Text(
-        detecting ? 'Detecting your location…' : 'Use my current location',
+        (detecting ? Str.detectingLocation : Str.useCurrentLocation)
+            .of(context),
         style: AppText.label(context, color: AppColors.sprout),
       ),
       subtitle: detecting
