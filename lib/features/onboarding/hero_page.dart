@@ -4,6 +4,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import 'package:video_player/video_player.dart';
 
@@ -151,7 +153,7 @@ class _HeroPageState extends State<HeroPage> {
                     Center(
                       child: TextButton(
                         onPressed: widget.onSkip,
-                        child: Text('Already have an account? Sign in',
+                        child: Text(Str.alreadyHaveAccount.of(context),
                             style: AppText.label(context,
                                 color: AppColors.muted)),
                       ),

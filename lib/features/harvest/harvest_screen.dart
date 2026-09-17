@@ -4,6 +4,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
+import '../../l10n/app_lang.dart';
 import '../../l10n/mascot_lines.dart';
 import 'package:intl/intl.dart';
 
@@ -33,7 +35,7 @@ class HarvestScreen extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
             children: [
-              Text('Harvest', style: AppText.kicker(context)),
+              Text(Str.harvest.of(context), style: AppText.kicker(context)),
               const SizedBox(height: 10),
               if (tally != null) _HeroCard(tally: tally, count: rows.length),
               const SizedBox(height: 24),
@@ -77,9 +79,9 @@ class _HeroCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('THIS SEASON', style: AppText.kicker(context, color: AppColors.onInk.withValues(alpha: 0.7))),
+          Text(Str.thisSeason.of(context), style: AppText.kicker(context, color: AppColors.onInk.withValues(alpha: 0.7))),
           const SizedBox(height: 6),
-          Text(parts.isEmpty ? 'Nothing yet' : parts.join(' · '), style: AppText.display(context, color: AppColors.onInk)),
+          Text(parts.isEmpty ? Str.nothingYet.of(context) : parts.join(' · '), style: AppText.display(context, color: AppColors.onInk)),
           const SizedBox(height: 4),
           Text(
             tally.euros > 0

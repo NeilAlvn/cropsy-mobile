@@ -173,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Text('What to grow in…', style: AppText.title(context)),
+              child: Text(Str.whatToGrowShort.of(context), style: AppText.title(context)),
             ),
             Flexible(
               child: ListView.builder(

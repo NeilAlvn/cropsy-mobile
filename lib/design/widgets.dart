@@ -3,6 +3,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../l10n/strings.dart';
 import '../l10n/app_lang.dart';
 import '../design/icons.dart';
 
@@ -105,7 +106,7 @@ class PhotoCard extends StatelessWidget {
   static String _defaultSubtitle(Crop crop, BuildContext context) {
     final diff = difficultyLine(difficultyOf(crop)).of(context);
     if (crop.containerOk && crop.minPotLitres != null) {
-      return '${crop.minPotLitres}L pot · $diff';
+      return '${Str.potLitres(crop.minPotLitres!).of(context)} · $diff';
     }
     return diff;
   }
@@ -238,7 +239,7 @@ class DifficultyGauge extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(label, style: AppText.title(context, color: color)),
-        Text('Overall difficulty', style: AppText.caption(context)),
+        Text(Str.overallDifficulty.of(context), style: AppText.caption(context)),
       ],
     );
   }

@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
@@ -44,7 +45,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
         children: [
-          Text('Diagnose', style: AppText.kicker(context)),
+          Text(Str.diagnose.of(context), style: AppText.kicker(context)),
           const SizedBox(height: 10),
           AppCard(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ScanScreen(mode: ScanMode.diagnose))),
@@ -55,8 +56,8 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Auto diagnose from a photo', style: AppText.label(context)),
-                    Text('Always a guess, never a verdict. Premium.', style: AppText.caption(context)),
+                    Text(Str.autoDiagnose.of(context), style: AppText.label(context)),
+                    Text(Str.autoDiagnoseSub.of(context), style: AppText.caption(context)),
                   ],
                 ),
               ),
@@ -64,14 +65,14 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
             ]),
           ),
           const SizedBox(height: 24),
-          SectionHeader('Common problems'),
-          Text('By plant part', style: AppText.caption(context)),
+          SectionHeader(Str.commonProblems.of(context)),
+          Text(Str.byPlantPart.of(context), style: AppText.caption(context)),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
             runSpacing: 8,
             children: [
-              ChoiceChip(label: const Text('All'), selected: _part == null, onSelected: (_) => setState(() => _part = null)),
+              ChoiceChip(label: Text(Str.all.of(context)), selected: _part == null, onSelected: (_) => setState(() => _part = null)),
               for (final (key, emoji, label) in _parts)
                 ChoiceChip(label: Text('$emoji $label'), selected: _part == key, onSelected: (_) => setState(() => _part = key)),
             ],
@@ -83,7 +84,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
               text: 'The 25 problems common on Dutch balconies, slakken, luizen, meeldauw, neusrot, are being written and checked. They land with the content update.',
             )
           else if (problems.isEmpty)
-            Text('Nothing listed for that part yet.', style: AppText.bodyMuted(context))
+            Text(Str.nothingForThatPart.of(context), style: AppText.bodyMuted(context))
           else
             for (final p in problems)
               Padding(

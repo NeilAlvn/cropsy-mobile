@@ -996,7 +996,7 @@ class _MarkerItem implements _Item {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Which plant?', style: AppText.heading(context)),
+                Text(Str.whichPlant.of(context), style: AppText.heading(context)),
                 const SizedBox(height: 12),
                 for (final p in growing)
                   Padding(
@@ -1030,7 +1030,8 @@ class _MarkerItem implements _Item {
 
     final log = await showGrowthLogSheet(
       context,
-      cropName: repo.cropName(plant.cropSlug),
+      cropName: repo.cropBySlug(plant.cropSlug)?.names ??
+          LocalizedText(nl: plant.cropSlug, en: plant.cropSlug),
       currentStage: plant.stage,
     );
     if (log == null) return;

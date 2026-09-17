@@ -4,6 +4,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
 import '../../design/colors.dart';
@@ -70,8 +72,8 @@ class _SeasonPathViewState extends State<SeasonPathView> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text('Garden planner', style: AppText.label(context)),
-                    Text('Lay out your bed in 30 cm squares.', style: AppText.caption(context)),
+                    Text(Str.gardenPlanner.of(context), style: AppText.label(context)),
+                    Text(Str.plannerBlurb.of(context), style: AppText.caption(context)),
                   ]),
                 ),
                 Icon(PhosphorIcons.caretRight, color: AppColors.muted),
@@ -124,11 +126,11 @@ class _SeasonPathViewState extends State<SeasonPathView> {
                           final crop = repo.cropBySlug(p.cropSlug);
                           await repo.addPlant(gardenId: gardens.first.id, cropSlug: p.cropSlug, potLitres: crop?.minPotLitres?.toInt());
                           if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${repo.cropName(p.cropSlug)} added to Planning')));
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(Str.addedToPlanning(repo.cropBySlug(p.cropSlug)?.names.of(context) ?? p.cropSlug).of(context))));
                             setState(() {});
                           }
                         },
-                        child: Text('Plan it', style: AppText.label(context, color: AppColors.sprout)),
+                        child: Text(Str.planIt.of(context), style: AppText.label(context, color: AppColors.sprout)),
                       ),
                     ]),
                   ),

@@ -6,6 +6,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
 import '../../db/database.dart';
@@ -63,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: AppColors.canvas,
         surfaceTintColor: AppColors.canvas,
         iconTheme: IconThemeData(color: AppColors.ink),
-        title: Text('Profile', style: AppText.subheading(context)),
+        title: Text(Str.profile.of(context), style: AppText.subheading(context)),
         centerTitle: true,
       ),
       body: FutureBuilder<_ProfileData>(
@@ -78,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
             children: [
               _Identity(
-                name: d.displayName ?? 'Gardener',
+                name: d.displayName ?? Str.gardener.of(context),
                 email: auth?.user?.email,
                 premium: d.premium,
                 onEditName: () => _editName(repo, d.displayName),
@@ -86,42 +88,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Expanded(child: _Stat(figure: '${d.streak.count}', label: 'Day streak')),
+                  Expanded(child: _Stat(figure: '${d.streak.count}', label: Str.dayStreak.of(context))),
                   const SizedBox(width: 12),
-                  Expanded(child: _Stat(figure: '$growing', label: 'Growing now')),
+                  Expanded(child: _Stat(figure: '$growing', label: Str.growingNow.of(context))),
                   const SizedBox(width: 12),
                   Expanded(
                     child: _Stat(
                       figure: '€${d.harvestEuros.round()}',
-                      label: 'Harvested',
+                      label: Str.harvested.of(context),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 24),
-              SectionHeader('Your garden'),
+              SectionHeader(Str.yourGarden.of(context)),
               _Group(rows: [
                 _Row(
                   icon: PhosphorIcons.mapPin,
-                  title: 'Region',
+                  title: Str.region.of(context),
                   value: repo.regionName,
                   onTap: () => showLocationPicker(context),
                 ),
                 _Row(
                   icon: PhosphorIcons.medal,
-                  title: 'Membership',
-                  value: d.premium ? 'Lifetime' : 'Free',
+                  title: Str.membership.of(context),
+                  value: (d.premium ? Str.planLifetime : Str.planFree).of(context),
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const PaywallScreen()),
                   ),
                 ),
               ]),
               const SizedBox(height: 24),
-              SectionHeader('Account'),
+              SectionHeader(Str.account.of(context)),
               _Group(rows: [
                 _Row(
                   icon: PhosphorIcons.gear,
-                  title: auth?.signedIn == true ? 'Settings and sync' : 'Sign in to sync',
+                  title: (auth?.signedIn == true ? Str.settingsAndSync : Str.signInToSync).of(context),
                   onTap: () => Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => const SettingsScreen()))
                       .then((_) => setState(() => _data = _load())),
@@ -141,21 +143,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Neo.radius)),
-        title: Text('Your name', style: AppText.heading(context)),
+        title: Text(Str.yourName.of(context), style: AppText.heading(context)),
         content: TextField(
           controller: controller,
           autofocus: true,
           style: AppText.body(context),
-          decoration: const InputDecoration(hintText: 'Gardener'),
+          decoration: InputDecoration(hintText: Str.gardener.of(context)),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel', style: AppText.label(context, color: AppColors.ink)),
+            child: Text(Str.cancel.of(context), style: AppText.label(context, color: AppColors.ink)),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(controller.text.trim()),
-            child: Text('Save', style: AppText.label(context, color: AppColors.accent)),
+            child: Text(Str.save.of(context), style: AppText.label(context, color: AppColors.accent)),
           ),
         ],
       ),
@@ -210,7 +212,7 @@ class _Identity extends StatelessWidget {
                   Text(name, style: AppText.heading(context)),
                   const SizedBox(height: 2),
                   Text(
-                    email ?? 'On this device only',
+                    email ?? Str.onThisDeviceOnly.of(context),
                     style: AppText.caption(context),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -220,7 +222,7 @@ class _Identity extends StatelessWidget {
             ),
             if (premium)
               Pill(
-                label: 'Lifetime',
+                label: Str.planLifetime.of(context),
                 icon: PhosphorIcons.medal,
                 color: AppColors.onAccentSoft,
                 bg: AppColors.accentSoft,

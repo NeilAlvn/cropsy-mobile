@@ -4,6 +4,9 @@
 library;
 
 import 'dart:io';
+import '../../timing/types.dart';
+import '../../l10n/strings.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/motion.dart';
 
 import 'package:flutter/material.dart';
@@ -111,7 +114,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                         if (repo.cropBySlug(plant.cropSlug) case final crop?)
                           TextButton(
                             onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => CropDetailScreen(crop: crop))),
-                            child: Text('Growing guide →', style: AppText.label(context, color: AppColors.sprout)),
+                            child: Text(Str.growingGuide.of(context), style: AppText.label(context, color: AppColors.sprout)),
                           ),
                       ],
                     ),
@@ -120,14 +123,14 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                       children: [
                         Expanded(
                           child: SecondaryButton(
-                            label: '＋ Growth log',
+                            label: '＋ ${Str.growthLog.of(context)}',
                             onPressed: () => _addJournal(repo),
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: PrimaryButton(
-                            label: 'Log harvest',
+                            label: Str.logHarvest.of(context),
                             color: AppColors.clay,
                             onPressed: () => _logHarvest(repo, plant),
                           ),
@@ -171,7 +174,10 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
   Future<void> _addJournal(GardenRepository repo) async {
     final plant = await repo.plantById(widget.plantId);
     if (!mounted || plant == null) return;
-    final log = await showGrowthLogSheet(context, cropName: repo.cropName(plant.cropSlug), currentStage: plant.stage);
+    final log = await showGrowthLogSheet(context,
+        cropName: repo.cropBySlug(plant.cropSlug)?.names ??
+            LocalizedText(nl: plant.cropSlug, en: plant.cropSlug),
+        currentStage: plant.stage);
     if (log == null) return;
     await repo.addJournalEntry(
       plantId: widget.plantId,
@@ -205,7 +211,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
       if (mounted) {
         setState(() {});
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Harvest logged 🧺')),
+          SnackBar(content: Text(Str.harvestLogged.of(context))),
         );
       }
     }
@@ -227,7 +233,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
     if (mounted) {
       setState(() {});
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${repo.cropName(plant.cropSlug)} moved to planning')),
+        SnackBar(content: Text(Str.movedToPlanning(repo.cropBySlug(plant.cropSlug)?.names.of(context) ?? plant.cropSlug).of(context))),
       );
     }
   }
@@ -238,7 +244,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.surface,
-        title: Text('Remove $name?', style: AppText.title(context)),
+        title: Text(Str.removeAsk(name).of(context), style: AppText.title(context)),
         content: Text(
           'This takes $name out of your garden. Any harvests you already '
           'logged stay in your season history.',
@@ -247,12 +253,12 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(Str.cancel.of(context)),
           ),
           TextButton(
             style: TextButton.styleFrom(foregroundColor: AppColors.warn),
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Remove'),
+            child: Text(Str.remove.of(context)),
           ),
         ],
       ),
@@ -262,7 +268,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
       if (mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$name removed from your garden')),
+          SnackBar(content: Text(Str.removedFromGarden(name).of(context))),
         );
       }
     }
@@ -288,7 +294,7 @@ class _Journal extends StatelessWidget {
       builder: (context, snap) {
         final entries = snap.data ?? const [];
         if (entries.isEmpty) {
-          return Text('No entries yet. Add one to start the timeline.',
+          return Text(Str.noEntriesYet.of(context),
               style: AppText.bodyMuted(context));
         }
         return Column(
@@ -378,7 +384,7 @@ class _HarvestSheetState extends State<_HarvestSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Log harvest', style: AppText.title(context)),
+          Text(Str.logHarvest.of(context), style: AppText.title(context)),
           Text(widget.cropName, style: AppText.bodyMuted(context)),
           const SizedBox(height: 16),
           Row(children: [
@@ -388,12 +394,12 @@ class _HarvestSheetState extends State<_HarvestSheet> {
                 autofocus: true,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 style: AppText.body(context),
-                decoration: const InputDecoration(labelText: 'How much?', hintText: 'e.g. 6 or 0.4'),
+                decoration: InputDecoration(labelText: Str.howMuch.of(context), hintText: Str.howMuchHint.of(context)),
               ),
             ),
             const SizedBox(width: 10),
             SegmentedButton<String>(
-              segments: const [ButtonSegment(value: 'pcs', label: Text('pieces')), ButtonSegment(value: 'kg', label: Text('kg'))],
+              segments: [ButtonSegment(value: 'pcs', label: Text(Str.pieces.of(context))), ButtonSegment(value: 'kg', label: Text('kg'))],
               selected: {_unit},
               onSelectionChanged: (v) => setState(() => _unit = v.first),
             ),
@@ -401,19 +407,17 @@ class _HarvestSheetState extends State<_HarvestSheet> {
           const SizedBox(height: 8),
           Text(
             switch (widget.pricedUnit) {
-              null => 'This crop has no shop price yet, so it counts towards the '
-                  'yield but not towards money saved.',
+              null => Str.noShopPrice.of(context),
               final priced when priced == _unit =>
-                'Counts towards your season tally.',
-              final priced =>
-                'Your tally prices this crop per $priced, so this adds to the '
-                'yield but not to money saved.',
+                Str.countsTowardsTally.of(context),
+              final priced => Str.pricedPerUnit(
+                  priced == 'kg' ? Str.unitKg : Str.pieces).of(context),
             },
             style: AppText.caption(context),
           ),
           const SizedBox(height: 20),
           PrimaryButton(
-            label: 'Save harvest',
+            label: Str.saveHarvest.of(context),
             color: AppColors.clay,
             onPressed: () {
               final q = double.tryParse(_qty.text.replaceAll(',', '.'));
@@ -473,7 +477,7 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Edit plant', style: AppText.title(context)),
+          Text(Str.editPlant.of(context), style: AppText.title(context)),
           Text(repo.cropName(widget.plant.cropSlug),
               style: AppText.bodyMuted(context)),
           const SizedBox(height: 16),
@@ -481,9 +485,9 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
             controller: _pot,
             keyboardType: TextInputType.number,
             style: AppText.body(context),
-            decoration: const InputDecoration(
-                labelText: 'Pot size (litres)',
-                hintText: 'leave blank for in-ground'),
+            decoration: InputDecoration(
+                labelText: Str.potSizeLitres.of(context),
+                hintText: Str.leaveBlankInGround.of(context)),
           ),
           if (_plantedOn != null) ...[
             const SizedBox(height: 12),
@@ -496,7 +500,7 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
                   children: [
                     Icon(PhosphorIcons.calendarBlank, size: 20, color: AppColors.sprout),
                     const SizedBox(width: 12),
-                    Text('Planted', style: AppText.bodyMuted(context)),
+                    Text(Str.planted.of(context), style: AppText.bodyMuted(context)),
                     const Spacer(),
                     Text(DateFormat('d MMM yyyy').format(parseIso(_plantedOn!)),
                         style: AppText.label(context)),
@@ -509,7 +513,7 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
           ],
           const SizedBox(height: 20),
           PrimaryButton(
-            label: 'Save changes',
+            label: Str.saveChanges.of(context),
             onPressed: () async {
               final pot = int.tryParse(_pot.text.trim());
               await repo.updatePlant(widget.plant.id,
@@ -538,7 +542,7 @@ class _StageRow extends StatelessWidget {
     return AppCard(
       child: Row(
         children: [
-          Text('Growth stage', style: AppText.bodyMuted(context)),
+          Text(Str.growthStage.of(context), style: AppText.bodyMuted(context)),
           const Spacer(),
           DropdownButton<String>(
             value: stage,

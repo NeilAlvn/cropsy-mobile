@@ -11,6 +11,9 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/mascot_lines.dart';
+import '../../l10n/strings.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import '../../design/motion.dart';
 
@@ -62,7 +65,7 @@ class _LocationSheetState extends State<_LocationSheet> {
     }
     setState(() => _detecting = false);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Could not get a location. Pick a region or enter a postcode.')),
+      SnackBar(content: Text(Str.noLocation.of(context))),
     );
   }
 
@@ -78,7 +81,7 @@ class _LocationSheetState extends State<_LocationSheet> {
     }
     setState(() => _detecting = false);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Postcode not found (expected 1234AB), or you are offline.')),
+      SnackBar(content: Text(Str.postcodeNotFound.of(context))),
     );
   }
 
@@ -111,18 +114,18 @@ class _LocationSheetState extends State<_LocationSheet> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 14, 20, 4),
+              padding: EdgeInsets.fromLTRB(20, 14, 20, 4),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Where do you grow?', style: AppText.title(context)),
+                child: Text(Str.whereDoYouGrow.of(context), style: AppText.title(context)),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 2, 20, 8),
+              padding: EdgeInsets.fromLTRB(20, 2, 20, 8),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'This sets your frost dates, the backbone of every planting date.',
+                  MascotLines.lastFrost.of(context),
                   style: AppText.bodyMuted(context),
                 ),
               ),
@@ -135,7 +138,7 @@ class _LocationSheetState extends State<_LocationSheet> {
                 style: AppText.body(context),
                 decoration: InputDecoration(
                   isDense: true,
-                  hintText: 'Town, region or postcode',
+                  hintText: Str.townOrPostcode.of(context),
                   hintStyle: AppText.bodyMuted(context),
                   prefixIcon: Icon(PhosphorIcons.magnifyingGlass, color: AppColors.muted),
                   filled: true,
@@ -160,8 +163,8 @@ class _LocationSheetState extends State<_LocationSheet> {
                   ? _pcPattern.hasMatch(_query.trim())
                       ? ListTile(
                           leading: Icon(PhosphorIcons.envelopeSimple, color: AppColors.sprout),
-                          title: Text('Use postcode ${_query.trim().toUpperCase()}', style: AppText.body(context)),
-                          subtitle: Text('Looks up the frost dates for that cell.', style: AppText.caption(context)),
+                          title: Text(Str.usePostcode(_query.trim().toUpperCase()).of(context), style: AppText.body(context)),
+                          subtitle: Text(Str.looksUpFrost.of(context), style: AppText.caption(context)),
                           onTap: _detecting ? null : () => _postcode(_query.trim()),
                         )
                       : Padding(
@@ -227,7 +230,7 @@ class _UseLocationTile extends StatelessWidget {
       ),
       subtitle: detecting
           ? null
-          : Text('Snap to the nearest growing region',
+          : Text(Str.snapToRegion.of(context),
               style: AppText.caption(context)),
     );
   }

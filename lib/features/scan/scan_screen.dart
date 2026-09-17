@@ -5,6 +5,7 @@
 library;
 
 import 'dart:io';
+import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/mascot_lines.dart';
 
@@ -77,7 +78,7 @@ class _ScanScreenState extends State<ScanScreen> {
               ? 'Daily scan limit reached. Tomorrow again, or unlock lifetime for more.'
               : 'Scan failed (${e.code}). Try again.');
     } catch (_) {
-      if (mounted) setState(() => _message = 'No connection. Scans need the network; everything else works offline.');
+      if (mounted) setState(() => _message = Str.noConnectionScan.of(context));
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -92,15 +93,15 @@ class _ScanScreenState extends State<ScanScreen> {
         backgroundColor: AppColors.paper,
         surfaceTintColor: AppColors.paper,
         iconTheme: IconThemeData(color: AppColors.ink),
-        title: Text(identify ? 'Identify a plant' : 'Diagnose a plant', style: AppText.heading(context)),
+        title: Text((identify ? Str.identifyAPlant : Str.diagnoseAPlant).of(context), style: AppText.heading(context)),
       ),
       body: ListView(
         padding: EdgeInsets.fromLTRB(20, 8, 20, 40),
         children: [
           SegmentedButton<ScanMode>(
             segments: [
-              ButtonSegment(value: ScanMode.identify, label: Text('What is it?'), icon: Icon(PhosphorIcons.magnifyingGlass)),
-              ButtonSegment(value: ScanMode.diagnose, label: Text('Is it OK?'), icon: Icon(PhosphorIcons.bandaids)),
+              ButtonSegment(value: ScanMode.identify, label: Text(Str.whatIsIt.of(context)), icon: Icon(PhosphorIcons.magnifyingGlass)),
+              ButtonSegment(value: ScanMode.diagnose, label: Text(Str.isItOk.of(context)), icon: Icon(PhosphorIcons.bandaids)),
             ],
             selected: {_mode},
             onSelectionChanged: (s) => setState(() {
@@ -122,9 +123,9 @@ class _ScanScreenState extends State<ScanScreen> {
           ),
           const SizedBox(height: 12),
           Row(children: [
-            Expanded(child: PrimaryButton(label: 'Take photo', icon: PhosphorIcons.camera, onPressed: _busy ? null : () => _pick(ImageSource.camera))),
+            Expanded(child: PrimaryButton(label: Str.takePhoto.of(context), icon: PhosphorIcons.camera, onPressed: _busy ? null : () => _pick(ImageSource.camera))),
             const SizedBox(width: 10),
-            Expanded(child: SecondaryButton(label: 'From photos', onPressed: _busy ? null : () => _pick(ImageSource.gallery))),
+            Expanded(child: SecondaryButton(label: Str.fromPhotos.of(context), onPressed: _busy ? null : () => _pick(ImageSource.gallery))),
           ]),
           const SizedBox(height: 8),
           Text(
@@ -186,8 +187,8 @@ class _Results extends StatelessWidget {
                       style: AppText.label(context),
                     ),
                     if (s.latin != null) Text(s.latin!, style: AppText.caption(context)),
-                    if (identify && s.cropSlug == null) Text('Not one of our crops yet', style: AppText.caption(context, color: AppColors.muted)),
-                    if (!identify && s.problemSlug == null) Text('No guide for this one yet', style: AppText.caption(context, color: AppColors.muted)),
+                    if (identify && s.cropSlug == null) Text(Str.notOneOfOurCrops.of(context), style: AppText.caption(context, color: AppColors.muted)),
+                    if (!identify && s.problemSlug == null) Text(Str.noGuideYet.of(context), style: AppText.caption(context, color: AppColors.muted)),
                   ]),
                 ),
                 Pill(label: '${(s.score * 100).round()}%', color: s.score >= 0.5 ? AppColors.sprout : AppColors.muted),
@@ -197,8 +198,8 @@ class _Results extends StatelessWidget {
           ),
         if (result.used != null && result.limit != null)
           Padding(
-            padding: const EdgeInsets.only(top: 6),
-            child: Text('${result.used} of ${result.limit} scans used today', style: AppText.caption(context)),
+            padding: EdgeInsets.only(top: 6),
+            child: Text(Str.scansUsed(result.used ?? 0, result.limit ?? 0).of(context), style: AppText.caption(context)),
           ),
       ],
     );

@@ -4,6 +4,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../l10n/strings.dart';
+import '../l10n/app_lang.dart';
 import '../design/icons.dart';
 
 import '../features/repository_scope.dart';
@@ -38,11 +40,11 @@ class _FeedbackRowState extends State<FeedbackRow> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.surface,
-        title: Text('What is wrong?', style: AppText.title(context)),
-        content: TextField(controller: c, autofocus: true, maxLines: 3, decoration: const InputDecoration(hintText: 'e.g. sowing window is too early for Groningen')),
+        title: Text(Str.whatIsWrong.of(context), style: AppText.title(context)),
+        content: TextField(controller: c, autofocus: true, maxLines: 3, decoration: InputDecoration(hintText: Str.whatIsWrongHint.of(context))),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-          TextButton(onPressed: () => Navigator.pop(context, c.text), child: const Text('Send')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(Str.cancel.of(context))),
+          TextButton(onPressed: () => Navigator.pop(context, c.text), child: Text(Str.send.of(context))),
         ],
       ),
     );
@@ -52,14 +54,14 @@ class _FeedbackRowState extends State<FeedbackRow> {
   @override
   Widget build(BuildContext context) {
     if (_sent != null) {
-      return Text(_sent == 'error' ? 'Thanks. We check every report within a week.' : 'Thanks for the feedback.', style: AppText.caption(context, color: AppColors.sprout));
+      return Text((_sent == 'error' ? Str.thanksChecked : Str.thanksFeedback).of(context), style: AppText.caption(context, color: AppColors.sprout));
     }
     return Row(children: [
-      Text('Is this information useful?', style: AppText.caption(context)),
+      Text(Str.isThisUseful.of(context), style: AppText.caption(context)),
       const Spacer(),
       IconButton(icon: Icon(PhosphorIcons.thumbsUp, size: 20, color: AppColors.muted), onPressed: () => _send('like')),
       IconButton(icon: Icon(PhosphorIcons.thumbsDown, size: 20, color: AppColors.muted), onPressed: () => _send('dislike')),
-      TextButton(onPressed: _report, child: Text('Report error', style: AppText.caption(context, color: AppColors.clay))),
+      TextButton(onPressed: _report, child: Text(Str.reportError.of(context), style: AppText.caption(context, color: AppColors.clay))),
     ]);
   }
 }
@@ -80,14 +82,14 @@ class SectionFeedbackMenu extends StatelessWidget {
         title: Text(title, style: AppText.title(context)),
         content: TextField(controller: c, autofocus: true, maxLines: 3),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-          TextButton(onPressed: () => Navigator.pop(context, c.text), child: const Text('Send')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(Str.cancel.of(context))),
+          TextButton(onPressed: () => Navigator.pop(context, c.text), child: Text(Str.send.of(context))),
         ],
       ),
     );
     if (text == null || text.trim().isEmpty || !context.mounted) return;
     await RepositoryScope.of(context).addFeedback(targetKind: targetKind, targetId: targetId, sentiment: sentiment, body: text.trim());
-    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Thanks, noted.')));
+    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(Str.thanksNoted.of(context))));
   }
 
   @override
@@ -99,17 +101,17 @@ class SectionFeedbackMenu extends StatelessWidget {
         switch (v) {
           case 'like':
             await RepositoryScope.of(context).addFeedback(targetKind: targetKind, targetId: targetId, sentiment: 'like');
-            if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Thanks!')));
+            if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(Str.thanksNoted.of(context))));
           case 'error':
             await _text(context, 'error', 'What is wrong here?');
           case 'suggestion':
             await _text(context, 'suggestion', 'What would make this better?');
         }
       },
-      itemBuilder: (context) => const [
-        PopupMenuItem(value: 'like', child: Text('I like this')),
-        PopupMenuItem(value: 'error', child: Text('Error in content')),
-        PopupMenuItem(value: 'suggestion', child: Text('Suggestion')),
+      itemBuilder: (context) => [
+        PopupMenuItem(value: 'like', child: Text(Str.likeThis.of(context))),
+        PopupMenuItem(value: 'error', child: Text(Str.errorInContent.of(context))),
+        PopupMenuItem(value: 'suggestion', child: Text(Str.suggestion.of(context))),
       ],
     );
   }

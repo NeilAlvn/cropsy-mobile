@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import 'package:intl/intl.dart';
@@ -113,7 +114,7 @@ class _Header extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('This week', style: AppText.kicker(context)),
+                  Text(Str.thisWeek.of(context), style: AppText.kicker(context)),
                   const SizedBox(height: 2),
                   Text.rich(
                     TextSpan(
@@ -299,9 +300,9 @@ class _Empty extends StatelessWidget {
           children: [
             const Text('🌿', style: TextStyle(fontSize: 44)),
             const SizedBox(height: 12),
-            Text('Nothing due this week', style: AppText.title(context)),
+            Text(Str.nothingDueThisWeek.of(context), style: AppText.title(context)),
             const SizedBox(height: 6),
-            Text('Add plants in Grow to see what to do.',
+            Text(Str.addPlantsToSee.of(context),
                 style: AppText.bodyMuted(context), textAlign: TextAlign.center),
           ],
         ),

@@ -5,6 +5,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/mascot_lines.dart';
 import '../../design/icons.dart';
@@ -130,17 +131,17 @@ class _NodeTile extends StatelessWidget {
                           style: AppText.heading(context, color: dim ? AppColors.muted : AppColors.ink)),
                       const Spacer(),
                       if (state == _NodeState.done)
-                        Pill(label: 'Done ${_fmt(node.loggedOn!)}', color: AppColors.done, icon: PhosphorIcons.check)
+                        Pill(label: Str.doneOn(_fmt(node.loggedOn!)).of(context), color: AppColors.done, icon: PhosphorIcons.check)
                       else if (state == _NodeState.current)
-                        Pill(label: 'Now', color: AppColors.clay, icon: PhosphorIcons.play)
+                        Pill(label: Str.now.of(context), color: AppColors.clay, icon: PhosphorIcons.play)
                       else if (state == _NodeState.skipped)
-                        Pill(label: 'Skipped', icon: PhosphorIcons.arrowClockwise),
+                        Pill(label: Str.skipped.of(context), icon: PhosphorIcons.arrowClockwise),
                     ]),
                     const SizedBox(height: 2),
                     Text(when, style: AppText.bodyMuted(context)),
                     if (node.movedReason != null && !node.skipped) ...[
                       const SizedBox(height: 4),
-                      Text('Moved from ${_fmt(node.plannedDue)} · ${node.movedReason!.of(context)}',
+                      Text(Str.movedFrom(_fmt(node.plannedDue), node.movedReason!).of(context),
                           style: AppText.caption(context, color: AppColors.sky)),
                     ],
                     if (node.skipped && node.movedReason != null)

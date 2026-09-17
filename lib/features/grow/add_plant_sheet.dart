@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import '../../design/motion.dart';
@@ -100,10 +101,10 @@ class _SheetState extends State<_Sheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Set plant details', style: AppText.title(context)),
+            Text(Str.setPlantDetails.of(context), style: AppText.title(context)),
             Text(widget.crop.names.of(context), style: AppText.bodyMuted(context)),
             const SizedBox(height: 4),
-            Text('Your input sets the harvest timing and care reminders.', style: AppText.caption(context)),
+            Text(Str.plantDetailsSub.of(context), style: AppText.caption(context)),
             const SizedBox(height: 16),
             InkWell(
               onTap: _pickDate,
@@ -112,7 +113,7 @@ class _SheetState extends State<_Sheet> {
                 child: Row(children: [
                   Icon(PhosphorIcons.calendarBlank, size: 20, color: AppColors.sprout),
                   const SizedBox(width: 12),
-                  Text('Planting date', style: AppText.bodyMuted(context)),
+                  Text(Str.plantingDate.of(context), style: AppText.bodyMuted(context)),
                   const Spacer(),
                   Text(DateFormat('d MMM yyyy').format(parseIso(_on)), style: AppText.label(context)),
                   Icon(PhosphorIcons.caretRight, color: AppColors.muted),
@@ -120,7 +121,7 @@ class _SheetState extends State<_Sheet> {
               ),
             ),
             const SizedBox(height: 8),
-            Text('How did it start?', style: AppText.label(context)),
+            Text(Str.howDidItStart.of(context), style: AppText.label(context)),
             const SizedBox(height: 6),
             Wrap(
               spacing: 8,
@@ -131,7 +132,7 @@ class _SheetState extends State<_Sheet> {
               ],
             ),
             const SizedBox(height: 14),
-            Text('Where does it live?', style: AppText.label(context)),
+            Text(Str.whereDoesItLive.of(context), style: AppText.label(context)),
             const SizedBox(height: 6),
             Wrap(
               spacing: 8,
@@ -153,8 +154,8 @@ class _SheetState extends State<_Sheet> {
                 keyboardType: TextInputType.number,
                 style: AppText.body(context),
                 decoration: InputDecoration(
-                  labelText: 'Pot size (litres)',
-                  helperText: widget.crop.minPotLitres == null ? null : 'At least ${widget.crop.minPotLitres} L for this crop',
+                  labelText: Str.potSizeLitres.of(context),
+                  helperText: widget.crop.minPotLitres == null ? null : Str.atLeastLitres(widget.crop.minPotLitres!.toInt()).of(context),
                 ),
               ),
             ],
@@ -162,11 +163,11 @@ class _SheetState extends State<_Sheet> {
             TextField(
               controller: _variety,
               style: AppText.body(context),
-              decoration: const InputDecoration(labelText: 'Variety (optional)', hintText: 'e.g. Moneymaker'),
+              decoration: InputDecoration(labelText: Str.varietyOptional.of(context), hintText: Str.varietyHint.of(context)),
             ),
             const SizedBox(height: 20),
             PrimaryButton(
-              label: 'Growing it',
+              label: Str.growingIt.of(context),
               icon: PhosphorIcons.leaf,
               onPressed: () => Navigator.pop(
                 context,

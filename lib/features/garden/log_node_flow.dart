@@ -7,6 +7,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import 'package:intl/intl.dart';
 
@@ -135,12 +136,12 @@ class _LogSheet extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               PrimaryButton(
-                label: 'Did it today',
+                label: Str.didItToday.of(context),
                 onPressed: () => Navigator.pop(context, _LogDone(today)),
               ),
               const SizedBox(height: 8),
               SecondaryButton(
-                label: 'I did this on…',
+                label: Str.didItOn.of(context),
                 onPressed: () async {
                   final picked = await showDatePicker(
                     context: context,
@@ -157,14 +158,14 @@ class _LogSheet extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 16),
-              Text('Skip this one', style: AppText.label(context, color: AppColors.inkMuted)),
+              Text(Str.skipThisOne.of(context), style: AppText.label(context, color: AppColors.inkMuted)),
               const SizedBox(height: 6),
               Wrap(
                 spacing: 8,
                 children: [
                   for (final r in _skipReasons)
                     ActionChip(
-                      label: Text(r.en),
+                      label: Text(r.of(context)),
                       onPressed: () => Navigator.pop(context, _LogSkip(r)),
                     ),
                 ],
@@ -209,7 +210,7 @@ class _NotBehindSheet extends StatelessWidget {
               AppCard(child: Text(w.reason.of(context), style: AppText.body(context))),
             ],
             const SizedBox(height: 16),
-            PrimaryButton(label: 'Got it', onPressed: () => Navigator.pop(context)),
+            PrimaryButton(label: Str.gotIt.of(context), onPressed: () => Navigator.pop(context)),
           ],
         ),
       ),

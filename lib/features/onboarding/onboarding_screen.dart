@@ -7,6 +7,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
 import '../../data/frost_presets.dart';
@@ -350,7 +352,7 @@ class _FloatingHeader extends StatelessWidget {
           GestureDetector(
             onTap: first ? onSkip : onBack,
             child: first
-                ? Text('Skip', style: AppText.label(context))
+                ? Text(Str.skip.of(context), style: AppText.label(context))
                 : Icon(PhosphorIcons.caretLeft, size: 18, color: AppColors.ink),
           ),
           const SizedBox(width: 14),
@@ -380,13 +382,11 @@ class _PathIntro extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Your season, as one path',
+          Text(Str.seasonAsOnePath.of(context),
               style: AppText.title(context)),
           const SizedBox(height: 8),
           Text(
-            'Sowing, potting on, harvest, the frost dates that govern them, and the '
-            'months when nothing is planned yet. Tick a step off and everything after '
-            'it moves with you.',
+            Str.seasonAsOnePathBody.of(context),
             style: AppText.bodyMuted(context),
           ),
           const SizedBox(height: 24),
@@ -581,12 +581,12 @@ class _LocationStepState extends State<_LocationStep> {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
-        Text('Where do you grow?', style: AppText.title(context)),
+        Text(Str.whereDoYouGrow.of(context), style: AppText.title(context)),
         const SizedBox(height: 6),
-        Text('Sets your frost dates, the backbone of every planting date. Rounded to ~10 km, never tracked.',
+        Text(Str.frostBackbone.of(context),
             style: AppText.bodyMuted(context)),
         const SizedBox(height: 14),
-        PrimaryButton(label: _busy ? 'Looking up…' : 'Use my location', icon: PhosphorIcons.crosshair, onPressed: _busy ? null : _gps),
+        PrimaryButton(label: (_busy ? Str.lookingUp : Str.useMyLocation).of(context), icon: PhosphorIcons.crosshair, onPressed: _busy ? null : _gps),
         const SizedBox(height: 10),
         Row(children: [
           Expanded(
@@ -594,12 +594,12 @@ class _LocationStepState extends State<_LocationStep> {
               controller: _pc,
               textCapitalization: TextCapitalization.characters,
               style: AppText.body(context),
-              decoration: const InputDecoration(isDense: true, hintText: 'Postcode, e.g. 1012AB'),
+              decoration: InputDecoration(isDense: true, hintText: Str.postcodeHint.of(context)),
               onSubmitted: (_) => _postcode(),
             ),
           ),
           const SizedBox(width: 8),
-          SecondaryButton(label: 'Look up', onPressed: _busy ? null : _postcode),
+          SecondaryButton(label: Str.lookUp.of(context), onPressed: _busy ? null : _postcode),
         ]),
         if (_error != null) ...[
           const SizedBox(height: 8),
@@ -615,7 +615,7 @@ class _LocationStepState extends State<_LocationStep> {
           ),
         ],
         const SizedBox(height: 18),
-        Text('Or pick a region', style: AppText.label(context, color: AppColors.muted)),
+        Text(Str.orPickRegion.of(context), style: AppText.label(context, color: AppColors.muted)),
         const SizedBox(height: 8),
         for (final r in frostRegions)
           Padding(
@@ -649,9 +649,9 @@ class _Statements extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
-        Text('Do you relate?', style: AppText.title(context)),
+        Text(Str.doYouRelate.of(context), style: AppText.title(context)),
         const SizedBox(height: 6),
-        Text('Tap what sounds like you. Skip the rest.', style: AppText.bodyMuted(context)),
+        Text(Str.doYouRelateSub.of(context), style: AppText.bodyMuted(context)),
         const SizedBox(height: 14),
         for (final (key, text) in _statementList)
           Padding(
@@ -731,9 +731,9 @@ class _PlantsStep extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
-        Text('What will you grow?', style: AppText.title(context)),
+        Text(Str.whatWillYouGrow.of(context), style: AppText.title(context)),
         const SizedBox(height: 6),
-        Text('Pick a few to start. Add more anytime.', style: AppText.bodyMuted(context)),
+        Text(Str.pickAFewToStart.of(context), style: AppText.bodyMuted(context)),
         const SizedBox(height: 14),
         GridView.count(
           crossAxisCount: 2,
@@ -790,12 +790,12 @@ class _PlanStep extends StatelessWidget {
             _Line(done: ready, text: ready ? (firstTask == null ? 'First task lands as soon as a window opens' : 'First task: $firstTask') : 'Finding your first task…'),
             const Spacer(),
             if (ready) ...[
-              Text('Want a nudge on the day? One reminder a morning, only when there is something to do, and it stays quiet when it rained.',
+              Text(Str.remindBlurb.of(context),
                   style: AppText.bodyMuted(context)),
               const SizedBox(height: 12),
-              PrimaryButton(label: 'Remind me', icon: PhosphorIcons.bell, onPressed: onDone),
+              PrimaryButton(label: Str.remindMe.of(context), icon: PhosphorIcons.bell, onPressed: onDone),
               const SizedBox(height: 8),
-              SecondaryButton(label: 'Maybe later', onPressed: onLater),
+              SecondaryButton(label: Str.maybeLater.of(context), onPressed: onLater),
             ] else
               Center(child: CircularProgressIndicator(color: AppColors.sprout)),
           ],

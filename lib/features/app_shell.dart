@@ -9,6 +9,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../l10n/strings.dart';
+import '../l10n/app_lang.dart';
 import '../design/icons.dart';
 import 'package:flutter/rendering.dart';
 
@@ -121,14 +123,14 @@ class _TabPill extends StatelessWidget {
             _Tab(
                 icon: PhosphorIcons.house,
                 activeIcon: PhosphorFill.house,
-                label: 'Home',
+                label: Str.tabHome.of(context),
                 index: 0,
                 current: index,
                 onTap: onSelect),
             _Tab(
                 icon: PhosphorIcons.plant,
                 activeIcon: PhosphorFill.plant,
-                label: 'My garden',
+                label: Str.tabGarden.of(context),
                 index: 1,
                 current: index,
                 onTap: onSelect),
@@ -136,14 +138,14 @@ class _TabPill extends StatelessWidget {
             _Tab(
                 icon: PhosphorIcons.leaf,
                 activeIcon: PhosphorFill.leaf,
-                label: 'Explore',
+                label: Str.tabExplore.of(context),
                 index: 3,
                 current: index,
                 onTap: onSelect),
             _Tab(
                 icon: PhosphorIcons.bandaids,
                 activeIcon: PhosphorFill.bandaids,
-                label: 'Diagnose',
+                label: Str.tabDiagnose.of(context),
                 index: 4,
                 current: index,
                 onTap: onSelect),
@@ -209,7 +211,7 @@ class _SeasonTab extends StatelessWidget {
   Widget build(BuildContext context) => Semantics(
         button: true,
         selected: active,
-        label: 'Season path',
+        label: Str.tabSeason.of(context),
         child: Pressable(
           onTap: onTap,
           haptic: Haptics.press,

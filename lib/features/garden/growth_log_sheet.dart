@@ -4,6 +4,9 @@
 library;
 
 import 'dart:io';
+import '../../timing/types.dart';
+import '../../l10n/strings.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/motion.dart';
 
 import 'package:flutter/material.dart';
@@ -30,7 +33,8 @@ const growthStages = ['starting', 'seedling', 'vegetative', 'flowering', 'harves
 
 String stageLabel(String s) => s[0].toUpperCase() + s.substring(1);
 
-Future<GrowthLog?> showGrowthLogSheet(BuildContext context, {required String cropName, String? currentStage}) {
+Future<GrowthLog?> showGrowthLogSheet(BuildContext context,
+    {required LocalizedText cropName, String? currentStage}) {
   return showAppSheet<GrowthLog>(
     context: context,
     isScrollControlled: true,
@@ -41,7 +45,9 @@ Future<GrowthLog?> showGrowthLogSheet(BuildContext context, {required String cro
 
 class _Sheet extends StatefulWidget {
   const _Sheet({required this.cropName, required this.currentStage});
-  final String cropName;
+
+  /// The crop's own name, which the snapshot carries in both languages.
+  final LocalizedText cropName;
   final String? currentStage;
 
   @override
@@ -75,7 +81,7 @@ class _SheetState extends State<_Sheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('How is your ${widget.cropName} doing?', style: AppText.title(context)),
+            Text(Str.howIsItDoing(widget.cropName).of(context), style: AppText.title(context)),
             const SizedBox(height: 12),
             Row(
               children: [
@@ -101,7 +107,7 @@ class _SheetState extends State<_Sheet> {
               ],
             ),
             const SizedBox(height: 14),
-            Text('Growth stage', style: AppText.label(context)),
+            Text(Str.growthStage.of(context), style: AppText.label(context)),
             const SizedBox(height: 6),
             Wrap(
               spacing: 8,
@@ -112,7 +118,7 @@ class _SheetState extends State<_Sheet> {
               ],
             ),
             const SizedBox(height: 14),
-            Text('Photos (${_photos.length}/9)', style: AppText.label(context)),
+            Text(Str.photosCount(_photos.length).of(context), style: AppText.label(context)),
             const SizedBox(height: 6),
             SizedBox(
               height: 72,
@@ -137,11 +143,11 @@ class _SheetState extends State<_Sheet> {
               controller: _note,
               maxLines: 3,
               style: AppText.body(context),
-              decoration: const InputDecoration(labelText: 'Note (optional)', hintText: 'First flowers, aphids on the tips…'),
+              decoration: InputDecoration(labelText: Str.noteOptional.of(context), hintText: Str.noteHint.of(context)),
             ),
             const SizedBox(height: 20),
             PrimaryButton(
-              label: 'Save log',
+              label: Str.saveLog.of(context),
               onPressed: () => Navigator.pop(context, GrowthLog(mood: _mood, note: _note.text.trim(), stage: _stage, photoPaths: List.of(_photos))),
             ),
           ],

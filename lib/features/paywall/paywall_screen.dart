@@ -5,6 +5,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
 import '../../design/brutal.dart';
@@ -47,9 +49,9 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 alignment: Alignment.centerRight,
                 child: IconButton(icon: Icon(PhosphorIcons.x, color: AppColors.ink), onPressed: () => Navigator.of(context).pop()),
               ),
-              Text('One free garden,\nfree forever.', style: AppText.display(context)),
+              Text(Str.oneFreeGarden.of(context), style: AppText.display(context)),
               const SizedBox(height: 8),
-              Text('Pay once for more room. No trial, no card, no auto-renew surprise.', style: AppText.bodyMuted(context)),
+              Text(Str.payOnce.of(context), style: AppText.bodyMuted(context)),
               const SizedBox(height: 20),
               for (var i = 0; i < _plans.length; i++)
                 Padding(
@@ -84,7 +86,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 ),
               const Spacer(),
               PrimaryButton(
-                label: _busy ? 'One moment…' : _plan == 0 ? 'Keep it free' : 'Continue with ${_plans[_plan].$1}',
+                label: _busy ? Str.oneMoment.of(context) : _plan == 0 ? 'Keep it free' : 'Continue with ${_plans[_plan].$1}',
                 onPressed: _busy
                     ? null
                     : () async {
@@ -94,7 +96,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         }
                         if (purchases == null || !purchases.configured) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Purchases open with the beta. Nothing is charged yet.')),
+                            SnackBar(content: Text(Str.purchasesOpenLater.of(context))),
                           );
                           return;
                         }
@@ -113,10 +115,10 @@ class _PaywallScreenState extends State<PaywallScreen> {
               Center(
                 child: TextButton(
                   onPressed: purchases?.configured == true ? () => purchases!.restore() : null,
-                  child: Text('Restore purchases', style: AppText.caption(context)),
+                  child: Text(Str.restorePurchases.of(context), style: AppText.caption(context)),
                 ),
               ),
-              Center(child: Text('Lifetime: nothing to cancel, ever.', style: AppText.caption(context))),
+              Center(child: Text(Str.lifetimeNothingEver.of(context), style: AppText.caption(context))),
             ],
           ),
         ),

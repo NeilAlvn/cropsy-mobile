@@ -6,6 +6,9 @@
 library;
 
 import 'dart:convert';
+import '../../timing/types.dart';
+import '../../l10n/strings.dart';
+import '../../l10n/app_lang.dart';
 
 import 'package:flutter/material.dart';
 import '../../design/icons.dart';
@@ -43,7 +46,7 @@ class _PlannerGridScreenState extends State<PlannerGridScreen> {
 
   Future<void> _save() async {
     await RepositoryScope.of(context).saveLayout(widget.garden.id, {'cols': _cols, 'rows': _rows, 'cells': _cells});
-    if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Layout saved')));
+    if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(Str.layoutSaved.of(context))));
   }
 
   List<String> _neighbours(int r, int c) => [
@@ -67,8 +70,8 @@ class _PlannerGridScreenState extends State<PlannerGridScreen> {
         backgroundColor: AppColors.paper,
         surfaceTintColor: AppColors.paper,
         iconTheme: IconThemeData(color: AppColors.ink),
-        title: Text('Garden planner', style: AppText.heading(context)),
-        actions: [TextButton(onPressed: _save, child: const Text('Save'))],
+        title: Text(Str.gardenPlanner.of(context), style: AppText.heading(context)),
+        actions: [TextButton(onPressed: _save, child: Text(Str.save.of(context)))],
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
@@ -81,7 +84,11 @@ class _PlannerGridScreenState extends State<PlannerGridScreen> {
             _Stepper(label: 'rows', value: _rows, onChanged: (v) => setState(() => _rows = v)),
           ]),
           const SizedBox(height: 12),
-          Text(_brush == null ? 'Pick a crop below, then tap cells.' : 'Painting ${repo.cropName(_brush!)} . Tap a filled cell to clear it.',
+          Text(_brush == null
+              ? Str.pickACrop.of(context)
+              : Str.painting(repo.cropBySlug(_brush!)?.names ??
+                      LocalizedText(nl: _brush!, en: _brush!))
+                  .of(context),
               style: AppText.caption(context)),
           const SizedBox(height: 8),
           AspectRatio(
@@ -128,7 +135,7 @@ class _PlannerGridScreenState extends State<PlannerGridScreen> {
           ),
           if (warnings.isNotEmpty) ...[
             const SizedBox(height: 8),
-            Text('Red cells sit next to a crop they dislike.', style: AppText.caption(context, color: AppColors.warn)),
+            Text(Str.redCells.of(context), style: AppText.caption(context, color: AppColors.warn)),
           ],
           const SizedBox(height: 18),
           SectionHeader('Your crops'),

@@ -5,6 +5,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/strings.dart';
+import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import '../../design/motion.dart';
 
@@ -51,7 +53,7 @@ class _GardenScreenState extends State<GardenScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('My garden', style: AppText.kicker(context)),
+                          Text(Str.myGarden.of(context), style: AppText.kicker(context)),
                           const SizedBox(height: 2),
                           Text.rich(TextSpan(
                             style: AppText.display(context),
@@ -75,7 +77,12 @@ class _GardenScreenState extends State<GardenScreen> {
                 ),
                 const SizedBox(height: 14),
                 SegmentedTabs(
-                  labels: const ['Planning', 'Growing', 'Reminders', 'Harvest'],
+                  labels: [
+                Str.planning.of(context),
+                Str.growing.of(context),
+                Str.reminders.of(context),
+                Str.harvest.of(context),
+              ],
                   index: _tab,
                   onChanged: (i) => setState(() => _tab = i),
                 ),
@@ -169,7 +176,7 @@ class _PlantList extends StatelessWidget {
                                 style: AppText.heading(context)),
                             Text(
                               p.potLitres != null
-                                  ? '${p.potLitres} L pot'
+                                  ? Str.potLitres(p.potLitres!).of(context)
                                   : 'in ground',
                               style: AppText.caption(context),
                             ),
@@ -185,7 +192,7 @@ class _PlantList extends StatelessWidget {
                             onPressed: () => repo.startGrowing(p.id),
                             style: TextButton.styleFrom(
                                 foregroundColor: AppColors.sprout),
-                            child: Text('Start', style: AppText.label(context, color: AppColors.sprout)),
+                            child: Text(Str.start.of(context), style: AppText.label(context, color: AppColors.sprout)),
                           ),
                         )
                       else
@@ -214,7 +221,7 @@ Widget _swipeToRemoveBackground(BuildContext context) => Container(
         children: [
           Icon(PhosphorIcons.trash, color: AppColors.warn),
           const SizedBox(width: 6),
-          Text('Remove', style: AppText.label(context, color: AppColors.warn)),
+          Text(Str.remove.of(context), style: AppText.label(context, color: AppColors.warn)),
         ],
       ),
     );
@@ -223,7 +230,7 @@ Future<bool?> _confirmRemove(BuildContext context, String name) => showDialog<bo
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.surface,
-        title: Text('Remove $name?', style: AppText.title(context)),
+        title: Text(Str.removeAsk(name).of(context), style: AppText.title(context)),
         content: Text(
           'This takes $name out of your garden. Logged harvests stay in your '
           'season history.',
@@ -232,12 +239,12 @@ Future<bool?> _confirmRemove(BuildContext context, String name) => showDialog<bo
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(Str.cancel.of(context)),
           ),
           TextButton(
             style: TextButton.styleFrom(foregroundColor: AppColors.warn),
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Remove'),
+            child: Text(Str.remove.of(context)),
           ),
         ],
       ),
@@ -272,15 +279,15 @@ class _EditGardenSheetState extends State<_EditGardenSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Edit garden', style: AppText.title(context)),
+          Text(Str.editGarden.of(context), style: AppText.title(context)),
           const SizedBox(height: 16),
           TextField(
             controller: _name,
             style: AppText.body(context),
-            decoration: const InputDecoration(labelText: 'Garden name'),
+            decoration: InputDecoration(labelText: Str.gardenName.of(context)),
           ),
           const SizedBox(height: 16),
-          Text('Growing situation', style: AppText.label(context)),
+          Text(Str.growingSituation.of(context), style: AppText.label(context)),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
@@ -295,7 +302,7 @@ class _EditGardenSheetState extends State<_EditGardenSheet> {
             ],
           ),
           const SizedBox(height: 16),
-          Text('Hours of sun a day: ${_sun.round()}h',
+          Text(Str.sunHours(_sun.round()).of(context),
               style: AppText.label(context)),
           Slider(
             value: _sun,
@@ -308,7 +315,7 @@ class _EditGardenSheetState extends State<_EditGardenSheet> {
           ),
           const SizedBox(height: 12),
           PrimaryButton(
-            label: 'Save changes',
+            label: Str.saveChanges.of(context),
             onPressed: () async {
               await repo.updateGarden(
                 widget.garden.id,
@@ -340,7 +347,7 @@ class _Empty extends StatelessWidget {
               Mascot(planning ? MascotPose.thinking : MascotPose.holdingSeedling,
                   size: 96),
               const SizedBox(height: 16),
-              Text(planning ? 'Nothing planned yet' : 'Nothing growing yet',
+              Text((planning ? Str.nothingPlannedYet : Str.nothingGrowingYet).of(context),
                   style: AppText.heading(context)),
               const SizedBox(height: 6),
               Text(
@@ -374,7 +381,7 @@ class _HarvestCountdown extends StatelessWidget {
             Icon(PhosphorIcons.leaf, size: 13, color: AppColors.clay),
             const SizedBox(width: 4),
             Text(
-              days > 0 ? 'Harvest in $days days' : 'Ready to harvest',
+              (days > 0 ? Str.harvestInDays(days) : Str.readyToHarvest).of(context),
               style: AppText.caption(context, color: AppColors.clay),
             ),
           ]),
@@ -400,7 +407,7 @@ class _PlantIn extends StatelessWidget {
     if (months.isEmpty) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.only(top: 4),
-      child: Text('Plant in: ${months.map((m) => _monthAbbr[m - 1]).join(', ')}',
+      child: Text(Str.plantIn(months.map((m) => _monthAbbr[m - 1]).join(', ')).of(context),
           style: AppText.caption(context, color: AppColors.sprout)),
     );
   }

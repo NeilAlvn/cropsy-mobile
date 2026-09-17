@@ -98,7 +98,7 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                     const SizedBox(height: 14),
                     Wrap(spacing: 8, runSpacing: 8, children: [
                       if (crop.containerOk && crop.minPotLitres != null)
-                        Pill(label: '${crop.minPotLitres} L pot', icon: PhosphorIcons.square),
+                        Pill(label: Str.potLitres(crop.minPotLitres!).of(context), icon: PhosphorIcons.square),
                       Pill(label: crop.sun, icon: PhosphorIcons.sun),
                       Pill(
                           label: '${crop.harvestDaysMin}–${crop.harvestDaysMax} days',
@@ -156,7 +156,7 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
               if (crop.sources.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-                  child: Text('Sources: ${crop.sources.join(' · ')}',
+                  child: Text(Str.sources(crop.sources.join(' · ')).of(context),
                       style: AppText.caption(context)),
                 ),
               Padding(
@@ -233,8 +233,7 @@ class _Calendar extends StatelessWidget {
       children: [
         PlantingCalendarBar(crop: crop, frost: repo.frost, today: repo.today),
         const SizedBox(height: 12),
-        Text('These dates are frost-relative (anchored to $anchor for '
-            '${repo.regionName}) . They shift with your region, not a fixed calendar.',
+        Text(Str.frostRelative(anchor, repo.regionName).of(context),
             style: AppText.bodyMuted(context)),
         const SizedBox(height: 8),
         // 3.3 "Calendar based on" row: frost cell + where the dates came from.
@@ -290,9 +289,10 @@ class _Timeline extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         if (harvestDate != null)
-          Text('At ${repo.regionName}, your first harvest lands around '
-              '${fmt.format(parseIso(harvestDate))} , computed from the region\'s '
-              'frost dates, not a fixed calendar.',
+          Text(
+              Str.firstHarvestAround(
+                      repo.regionName, fmt.format(parseIso(harvestDate)))
+                  .of(context),
               style: AppText.bodyMuted(context)),
       ],
     );
@@ -471,7 +471,7 @@ class _GuideBenefits extends StatelessWidget {
         if (g.sources.isNotEmpty) ...[
           const SizedBox(height: 8),
           // Domains only: 18 full URLs are review data, not reading matter.
-          Text('Sources: ${g.sources.map((u) => Uri.tryParse(u)?.host.replaceFirst('www.', '') ?? u).toSet().join(' · ')}', style: AppText.caption(context)),
+          Text(Str.sources(g.sources.map((u) => Uri.tryParse(u)?.host.replaceFirst('www.', '') ?? u).toSet().join(' · ')).of(context), style: AppText.caption(context)),
         ],
       ],
     );
