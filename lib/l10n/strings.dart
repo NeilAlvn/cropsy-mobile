@@ -769,6 +769,19 @@ abstract final class Str {
     nl: 'Exporteer mijn data (JSON)',
     en: 'Export my data (JSON)',
   );
+  static const seasonMailTitle = LocalizedText(
+    nl: 'Seizoensmail',
+    en: 'Seasonal email',
+  );
+  static const seasonMailBlurb = LocalizedText(
+    nl: 'Twee mails per jaar: in februari als het zaaiseizoen begint, in oktober je oogstoverzicht. Verder niets, en uitschrijven kan met één klik.',
+    en: 'Two emails a year: in February when the sowing season starts, in October your harvest summary. Nothing else, and one click unsubscribes.',
+  );
+  static const seasonMailNeedsAccount = LocalizedText(
+    nl: 'Log in met een e-mailadres om dit aan te zetten.',
+    en: 'Sign in with an email address to turn this on.',
+  );
+
   static const forgotPassword = LocalizedText(
     nl: 'Wachtwoord vergeten?',
     en: 'Forgot your password?',

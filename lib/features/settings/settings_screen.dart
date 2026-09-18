@@ -141,6 +141,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
               }, done: Str.copied.of(context)),
             ),
           ),
+          // Seasonal mail rides on the account, not on the device: the address
+          // is the account's, so the toggle only means something once signed
+          // in. Consent lives in profile preferences, which already syncs.
+          AppCard(
+            child: FutureBuilder<ProfileRow?>(
+              future: repo.profile(),
+              builder: (context, snap) {
+                final prefs = snap.data == null
+                    ? const <String, dynamic>{}
+                    : jsonDecode(snap.data!.preferences) as Map<String, dynamic>;
+                final on = prefs['mail_optin'] != null;
+                final signedIn = auth?.signedIn ?? false;
+                return SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  value: on && signedIn,
+                  title: Text(Str.seasonMailTitle.of(context), style: AppText.label(context)),
+                  subtitle: Text(
+                    signedIn ? Str.seasonMailBlurb.of(context) : Str.seasonMailNeedsAccount.of(context),
+                    style: AppText.caption(context),
+                  ),
+                  activeThumbColor: AppColors.sprout,
+                  onChanged: signedIn
+                      ? (want) async {
+                          await repo.saveProfile(preferences: {
+                            'mail_optin': want ? DateTime.now().toUtc().toIso8601String() : null,
+                          });
+                          if (context.mounted) setState(() {});
+                        }
+                      : null,
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 12),
           AppCard(
             child: FutureBuilder<String?>(
               future: repo.meta(Analytics.metaKey),
