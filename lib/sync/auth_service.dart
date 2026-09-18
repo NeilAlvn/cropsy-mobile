@@ -22,6 +22,10 @@ class AuthService extends ChangeNotifier {
         final uid = s.session?.user.id;
         if (uid != null) await _adopt(uid);
       }
+      // A recovery link opens the app with a real session, which is exactly
+      // what a stolen link would do too: the session is only good for setting
+      // a new password, so the shell asks for one immediately.
+      if (s.event == AuthChangeEvent.passwordRecovery) recoveryPending = true;
       notifyListeners();
     });
   }
@@ -29,6 +33,10 @@ class AuthService extends ChangeNotifier {
   final GardenRepository repo;
   SupabaseClient get _client => Supabase.instance.client;
   late final StreamSubscription<AuthState> _sub;
+
+  /// Set when the app was opened by a password-recovery link; the shell reads
+  /// it, asks for the new password, and clears it.
+  bool recoveryPending = false;
 
   bool syncing = false;
   SyncReport? lastReport;
@@ -50,6 +58,27 @@ class AuthService extends ChangeNotifier {
 
   Future<void> signUp(String email, String password) =>
       _client.auth.signUp(email: email, password: password, emailRedirectTo: authRedirect);
+
+  /// Forgot password. Supabase mails the recovery template; the link opens the
+  /// app, which then asks for a new one.
+  Future<void> sendPasswordReset(String email) =>
+      _client.auth.resetPasswordForEmail(email, redirectTo: authRedirect);
+
+  /// Set a new password on the current session — used both from Settings and
+  /// as the tail of the recovery link.
+  Future<void> changePassword(String password) async {
+    await _client.auth.updateUser(UserAttributes(password: password));
+    recoveryPending = false;
+    notifyListeners();
+  }
+
+  /// Move the account to another address. `double_confirm_changes` is on
+  /// server-side, so both the old and the new address have to confirm before
+  /// anything moves — losing a mailbox must not mean losing the garden.
+  Future<void> changeEmail(String email) => _client.auth.updateUser(
+        UserAttributes(email: email),
+        emailRedirectTo: authRedirect,
+      );
 
   Future<void> signOut() async {
     await _client.auth.signOut();

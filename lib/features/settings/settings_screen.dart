@@ -292,6 +292,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
           ]),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              style: TextButton.styleFrom(padding: EdgeInsets.zero),
+              onPressed: _busy
+                  ? null
+                  : () => _run(() => auth.sendPasswordReset(_email.text.trim()),
+                      done: Str.resetMailSent.of(context)),
+              child: Text(Str.forgotPassword.of(context), style: AppText.caption(context)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// One sheet for both "new password" and "new address": same shape, same
+  /// single field, so neither needs a screen of its own.
+  Future<String?> _ask(BuildContext context, LocalizedText title, LocalizedText label, {bool obscure = false}) {
+    final field = TextEditingController();
+    return showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title.of(context)),
+        content: TextField(
+          controller: field,
+          obscureText: obscure,
+          autofocus: true,
+          autocorrect: false,
+          keyboardType: obscure ? TextInputType.text : TextInputType.emailAddress,
+          decoration: InputDecoration(labelText: label.of(context)),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(Str.cancel.of(context))),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(field.text.trim()),
+            child: Text(Str.save.of(context)),
+          ),
         ],
       ),
     );
@@ -336,6 +374,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(width: 8),
             Expanded(child: SecondaryButton(label: Str.signOut.of(context), onPressed: () => _run(auth.signOut))),
           ]),
+          const SizedBox(height: 8),
+          Row(children: [
+            Expanded(
+              child: SecondaryButton(
+                label: Str.changePassword.of(context),
+                onPressed: _busy
+                    ? null
+                    : () async {
+                        final next = await _ask(context, Str.changePassword, Str.newPassword, obscure: true);
+                        if (next == null || next.isEmpty || !context.mounted) return;
+                        final done = Str.passwordChanged.of(context);
+                        await _run(() => auth.changePassword(next), done: done);
+                      },
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: SecondaryButton(
+                label: Str.changeEmail.of(context),
+                onPressed: _busy
+                    ? null
+                    : () async {
+                        final next = await _ask(context, Str.changeEmail, Str.newEmail);
+                        if (next == null || next.isEmpty || !context.mounted) return;
+                        final done = Str.emailChangeSent.of(context);
+                        await _run(() => auth.changeEmail(next), done: done);
+                      },
+              ),
+            ),
+          ]),
+          const SizedBox(height: 4),
+          Text(Str.emailChangeBlurb.of(context), style: AppText.caption(context)),
           const SizedBox(height: 16),
           TextButton(
             style: TextButton.styleFrom(foregroundColor: AppColors.warn),

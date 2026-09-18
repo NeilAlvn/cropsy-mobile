@@ -769,6 +769,45 @@ abstract final class Str {
     nl: 'Exporteer mijn data (JSON)',
     en: 'Export my data (JSON)',
   );
+  static const forgotPassword = LocalizedText(
+    nl: 'Wachtwoord vergeten?',
+    en: 'Forgot your password?',
+  );
+  static const resetMailSent = LocalizedText(
+    nl: 'Check je mail voor een link om een nieuw wachtwoord te kiezen.',
+    en: 'Check your mail for a link to choose a new password.',
+  );
+  static const changePassword = LocalizedText(
+    nl: 'Wachtwoord wijzigen',
+    en: 'Change password',
+  );
+  static const changeEmail = LocalizedText(
+    nl: 'E-mailadres wijzigen',
+    en: 'Change email address',
+  );
+  static const newPassword = LocalizedText(nl: 'Nieuw wachtwoord', en: 'New password');
+  static const newEmail = LocalizedText(nl: 'Nieuw e-mailadres', en: 'New email address');
+  static const passwordChanged = LocalizedText(
+    nl: 'Je wachtwoord is gewijzigd.',
+    en: 'Your password has been changed.',
+  );
+  static const emailChangeSent = LocalizedText(
+    nl: 'Check allebei je mailboxen: het oude en het nieuwe adres moeten bevestigen.',
+    en: 'Check both mailboxes: the old and the new address each have to confirm.',
+  );
+  static const emailChangeBlurb = LocalizedText(
+    nl: 'Je tuin, logboek en oogsten verhuizen mee.',
+    en: 'Your garden, journal and harvests come along.',
+  );
+  static const recoveryTitle = LocalizedText(
+    nl: 'Kies een nieuw wachtwoord',
+    en: 'Choose a new password',
+  );
+  static const recoveryBody = LocalizedText(
+    nl: 'Je bent binnen via de herstellink. Kies nu een nieuw wachtwoord, dan ben je weer de enige met de sleutel.',
+    en: 'You came in through the recovery link. Pick a new password now, so you are the only one with the key again.',
+  );
+
   static const analyticsTitle = LocalizedText(
     nl: 'Anonieme gebruiksgegevens delen',
     en: 'Share anonymous usage data',

@@ -22,6 +22,7 @@ import 'diagnose/diagnose_screen.dart';
 import 'explore/explore_screen.dart';
 import 'garden/garden_screen.dart';
 import 'home/home_screen.dart';
+import '../sync/auth_service.dart';
 import 'repository_scope.dart';
 import 'season/season_screen.dart';
 
@@ -47,6 +48,55 @@ class _AppShellState extends State<AppShell> {
     // consent question means analytics stays off, so silence costs the person
     // nothing. Settings can change the answer later either way.
     WidgetsBinding.instance.addPostFrameCallback((_) => _askConsentOnce());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // A recovery link opens the app anywhere, not on Settings, so the prompt
+    // lives in the shell. The session it opened can only set a password.
+    final auth = AuthScope.maybeOf(context);
+    if (auth != null && auth.recoveryPending && !_askingRecovery) {
+      _askingRecovery = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) => _askNewPassword(auth));
+    }
+  }
+
+  bool _askingRecovery = false;
+
+  Future<void> _askNewPassword(AuthService auth) async {
+    final field = TextEditingController();
+    final next = await showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text(Str.recoveryTitle.of(context)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(Str.recoveryBody.of(context)),
+            const SizedBox(height: 12),
+            TextField(
+              controller: field,
+              obscureText: true,
+              autofocus: true,
+              decoration: InputDecoration(labelText: Str.newPassword.of(context)),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(Str.cancel.of(context))),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(field.text.trim()),
+            child: Text(Str.save.of(context)),
+          ),
+        ],
+      ),
+    );
+    _askingRecovery = false;
+    if (next == null || next.isEmpty) return;
+    await auth.changePassword(next);
   }
 
   Future<void> _askConsentOnce() async {
