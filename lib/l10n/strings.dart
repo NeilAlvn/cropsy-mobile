@@ -769,6 +769,25 @@ abstract final class Str {
     nl: 'Exporteer mijn data (JSON)',
     en: 'Export my data (JSON)',
   );
+  static const analyticsTitle = LocalizedText(
+    nl: 'Anonieme gebruiksgegevens delen',
+    en: 'Share anonymous usage data',
+  );
+  static const analyticsBlurb = LocalizedText(
+    nl: 'Welke schermen je opent en wanneer je een plant toevoegt — nooit je notities, foto\'s of locatie. Uit laten mag; de app werkt hetzelfde.',
+    en: 'Which screens you open and when you add a plant — never your notes, photos or location. Leaving it off is fine; the app works the same.',
+  );
+  static const analyticsAskTitle = LocalizedText(
+    nl: 'Help Cropsy beter te maken?',
+    en: 'Help make Cropsy better?',
+  );
+  static const analyticsAskBody = LocalizedText(
+    nl: 'We kijken graag welke schermen gebruikt worden en waar mensen vastlopen. Anoniem, in de EU verwerkt, en nooit je notities, foto\'s of locatie. Je kunt dit altijd wijzigen in Instellingen.',
+    en: 'We would like to see which screens get used and where people get stuck. Anonymous, processed in the EU, and never your notes, photos or location. You can change this any time in Settings.',
+  );
+  static const analyticsAskYes = LocalizedText(nl: 'Prima', en: 'Sure');
+  static const analyticsAskNo = LocalizedText(nl: 'Liever niet', en: 'No thanks');
+
   static const exportBlurb = LocalizedText(
     nl: 'Kopieert alles naar het klembord.',
     en: 'Copies everything to the clipboard.',

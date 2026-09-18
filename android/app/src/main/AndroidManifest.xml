@@ -34,6 +34,12 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- Analytics is opt-in (PRD amendment 2026-09-18): the SDK must not
+             start itself at launch. lib/analytics/analytics.dart calls setup()
+             only after the person has said yes. -->
+        <meta-data
+            android:name="com.posthog.posthog.AUTO_INIT"
+            android:value="false" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

@@ -7,6 +7,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../analytics/analytics.dart';
 import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
@@ -344,6 +345,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         firstTask: _firstTask,
         onDone: () async {
           await Reminders.requestPermission();
+          Analytics.capture('onboarding_completed', properties: {'plants_picked': _picked.length});
           widget.onDone();
         },
         onLater: widget.onDone,

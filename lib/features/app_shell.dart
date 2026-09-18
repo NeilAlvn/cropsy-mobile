@@ -14,6 +14,7 @@ import '../l10n/app_lang.dart';
 import '../design/icons.dart';
 import 'package:flutter/rendering.dart';
 
+import '../analytics/analytics.dart';
 import '../design/colors.dart';
 import '../design/glass.dart';
 import '../design/motion.dart';
@@ -21,6 +22,7 @@ import 'diagnose/diagnose_screen.dart';
 import 'explore/explore_screen.dart';
 import 'garden/garden_screen.dart';
 import 'home/home_screen.dart';
+import 'repository_scope.dart';
 import 'season/season_screen.dart';
 
 /// Pill height plus the gap the base asks for above the home indicator.
@@ -37,6 +39,41 @@ class AppShell extends StatefulWidget {
 class _AppShellState extends State<AppShell> {
   int _index = 0;
   bool _barHidden = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Asked once, after onboarding is behind us, never again: an unanswered
+    // consent question means analytics stays off, so silence costs the person
+    // nothing. Settings can change the answer later either way.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _askConsentOnce());
+  }
+
+  Future<void> _askConsentOnce() async {
+    final repo = RepositoryScope.of(context);
+    if (await repo.meta(Analytics.metaKey) != null) return;
+    if (!mounted) return;
+    final yes = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(Str.analyticsAskTitle.of(context)),
+            content: Text(Str.analyticsAskBody.of(context)),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(Str.analyticsAskNo.of(context)),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(Str.analyticsAskYes.of(context)),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+    await repo.setMeta(Analytics.metaKey, yes ? 'yes' : 'no');
+    await Analytics.setConsent(yes);
+  }
 
   // Not const: a const child is not rebuilt when its parent is, and these
   // screens read colour tokens at build time.

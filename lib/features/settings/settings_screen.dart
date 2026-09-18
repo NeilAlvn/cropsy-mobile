@@ -15,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../config.dart';
 
 import '../../db/database.dart';
+import '../../analytics/analytics.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/theme_mode.dart';
@@ -140,6 +141,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
               }, done: Str.copied.of(context)),
             ),
           ),
+          AppCard(
+            child: FutureBuilder<String?>(
+              future: repo.meta(Analytics.metaKey),
+              builder: (context, snap) => SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                value: snap.data == 'yes',
+                title: Text(Str.analyticsTitle.of(context), style: AppText.label(context)),
+                subtitle: Text(Str.analyticsBlurb.of(context), style: AppText.caption(context)),
+                activeThumbColor: AppColors.sprout,
+                onChanged: (on) async {
+                  await repo.setMeta(Analytics.metaKey, on ? 'yes' : 'no');
+                  await Analytics.setConsent(on);
+                  if (context.mounted) setState(() {});
+                },
+              ),
+            ),
+          ),
           SizedBox(height: 24),
           SectionHeader(Str.appearance.of(context)),
           Builder(builder: (context) {
@@ -213,7 +231,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               leading: Icon(icon, color: AppColors.sprout),
               title: Text(label.of(context), style: AppText.label(context)),
               trailing: Icon(PhosphorIcons.arrowSquareOut, size: 16, color: AppColors.muted),
-              onTap: () => launchUrl(Uri.parse('$websiteUrl$path'), mode: LaunchMode.externalApplication),
+              // Locale-prefixed: the site serves /nl/... and /en/..., and a bare
+              // path only 307s to Dutch.
+              onTap: () => launchUrl(Uri.parse('$websiteUrl/${AppLangScope.of(context).code}$path'), mode: LaunchMode.externalApplication),
             ),
           const SizedBox(height: 24),
           SectionHeader(Str.about.of(context)),

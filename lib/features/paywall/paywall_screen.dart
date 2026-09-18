@@ -10,6 +10,7 @@ import '../../timing/types.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
+import '../../analytics/analytics.dart';
 import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
@@ -26,6 +27,13 @@ class PaywallScreen extends StatefulWidget {
 
 class _PaywallScreenState extends State<PaywallScreen> {
   int _plan = 0; // 0 free · 1 lifetime · 2 yearly
+
+  @override
+  void initState() {
+    super.initState();
+    // Top of the paid funnel; RevenueCat owns the bottom of it.
+    Analytics.capture('paywall_shown');
+  }
 
   static const _plans = <(LocalizedText, LocalizedText, LocalizedText)>[
     (Str.planFree, Str.planFreePrice, Str.planFreeBlurb),

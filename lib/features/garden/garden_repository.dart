@@ -16,6 +16,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:drift/drift.dart';
 import '../../timing/replan.dart' as engine show logNode;
 
+import '../../analytics/analytics.dart';
 import '../../data/collections.dart';
 import '../../data/crop_derived.dart';
 import '../../data/frost_presets.dart';
@@ -558,6 +559,11 @@ class GardenRepository extends ChangeNotifier {
           dirty: const Value(true),
         ));
     if (plantedOn != null) await startGrowing(id, method: method, on: plantedOn);
+    // The one funnel step PRD §3 hangs a retention number on ("D7 for users
+    // who add ≥ 1 plant"). Every add path lands here, so this is the only
+    // place it has to be counted. The crop slug is reference data, not
+    // personal data.
+    Analytics.capture('plant_added', properties: {'crop': cropSlug});
     notifyListeners();
     return id;
   }
@@ -665,6 +671,9 @@ class GardenRepository extends ChangeNotifier {
     });
     if (nodeId.endsWith('-harvest')) await _setStage(plantId, 'harvesting', loggedOn);
     if (nodeId.endsWith('-transplant')) await _setStage(plantId, 'vegetative', loggedOn);
+    // The core loop. `moved` says the re-derivation actually shifted the path,
+    // which is the number that tells us whether §7.2 is doing its job.
+    Analytics.capture('task_logged', properties: {'shift_days': result.shiftDays});
     notifyListeners();
     return result;
   }

@@ -6,11 +6,15 @@
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
+import 'config.dart';
+import 'analytics/analytics.dart';
 import 'db/connection.dart';
 import 'design/brutal.dart';
 import 'design/colors.dart';
@@ -24,21 +28,47 @@ import 'notifications/reminders.dart';
 import 'purchases/purchase_service.dart';
 import 'sync/auth_service.dart';
 
+/// Boot, wrapped in crash reporting when a DSN is configured (PRD §5.9).
+///
+/// Sentry starts before the app does so a failure during boot — a corrupt
+/// database, a missing migration — is reported like any other crash. With no
+/// DSN the app runs exactly as before and nothing leaves the device.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (sentryDsn.isEmpty) return _boot();
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = sentryDsn;
+      options.environment = kReleaseMode ? 'production' : 'development';
+      // A crash reporter, not an analytics SDK: no screenshots of someone's
+      // garden, no IP address, no request bodies. (The view hierarchy and
+      // session replay are off by default and stay off.)
+      options.sendDefaultPii = false;
+      options.attachScreenshot = false;
+    },
+    appRunner: _boot,
+  );
+}
+
+Future<void> _boot() async {
   final repo = await GardenRepository.create(db: openAppDatabase());
   await AuthService.init();
   await Reminders.init();
   final auth = AuthService(repo);
   final purchases = PurchaseService();
   await purchases.init();
-  // Purchases follow the account: log the RevenueCat user in/out with Supabase.
+  // No-op unless the person opted in; see analytics/analytics.dart.
+  await Analytics.init(await repo.meta(Analytics.metaKey));
+  // Purchases and analytics follow the account: log the RevenueCat user and
+  // the PostHog person in/out with Supabase.
   auth.addListener(() {
     final uid = auth.user?.id;
     if (uid != null) {
       purchases.logIn(uid);
+      Analytics.identify(uid);
     } else {
       purchases.logOut();
+      Analytics.signedOut();
     }
   });
   final theme = AppTheme(

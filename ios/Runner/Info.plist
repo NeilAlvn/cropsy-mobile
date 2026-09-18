@@ -81,5 +81,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!-- Analytics is opt-in (PRD amendment 2026-09-18): the SDK must not start
+	     itself at launch. lib/analytics/analytics.dart calls setup() only after
+	     the person has said yes. -->
+	<key>com.posthog.posthog.AUTO_INIT</key>
+	<false/>
 </dict>
 </plist>
