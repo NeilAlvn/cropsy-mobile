@@ -1,5 +1,5 @@
 /// Purchases (PRD §9) via RevenueCat. Three tiers: free (default), lifetime
-/// €49.99 once, yearly €19.99. No trial, no card. With no SDK key configured
+/// €49.99 once, yearly €29.99. No trial, no card. With no SDK key configured
 /// the service reports "not configured" and the free tier applies.
 library;
 

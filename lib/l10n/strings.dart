@@ -912,7 +912,7 @@ abstract final class Str {
   static const planLifetimePrice =
       LocalizedText(nl: '€49,99 eenmalig', en: '€49.99 once');
   static const planYearlyPrice =
-      LocalizedText(nl: '€19,99 / jaar', en: '€19.99 / year');
+      LocalizedText(nl: '€29,99 / jaar', en: '€29.99 / year');
   static const planFreeBlurb = LocalizedText(
     nl: '1 tuin · 6 planten in de grond · volledige tijdlijn, herinneringen en '
         'alle gewassen · 20 fotos · 2 streakbevriezingen per maand',
