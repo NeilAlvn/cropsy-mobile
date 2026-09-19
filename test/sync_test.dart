@@ -88,6 +88,21 @@ void main() {
     report = await engine.sync(uid);
     expect(report.pushed['gardens'], 1);
 
+    // Sign out, then a *different* account signs in on the same phone: the
+    // first account's rows must not be re-keyed (the server owns them and
+    // would answer 42501), and the pull cursor must start over.
+    await repo.detachOwner();
+    expect(await repo.gardens(), isEmpty);
+    const other = '33333333-3333-4333-8333-333333333333';
+    await repo.adoptOwner(other);
+    expect(await repo.gardens(), isEmpty);
+    expect(transport.store['gardens']![gardenId]!['owner'], uid);
+    // ...and the first account gets everything back from the server.
+    await repo.adoptOwner(uid);
+    expect(await repo.gardens(), isEmpty);
+    await engine.sync(uid);
+    expect((await repo.gardens()).single.owner, uid);
+
     repo.dispose();
   });
 

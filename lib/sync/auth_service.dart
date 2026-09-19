@@ -81,7 +81,10 @@ class AuthService extends ChangeNotifier {
       );
 
   Future<void> signOut() async {
+    // Best effort: get the last edits up before the local copy goes.
+    try { await syncNow(); } catch (_) {}
     await _client.auth.signOut();
+    await repo.detachOwner();
     notifyListeners();
   }
 

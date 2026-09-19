@@ -86,31 +86,72 @@ class GardenRepository extends ChangeNotifier {
   /// Owner uuid on every row: anonymous until sign-in (PRD Phase 1 auth).
   String owner;
 
-  /// Sign-in: re-label every local row with the auth uid so it syncs under
-  /// RLS, and remember the uid as the owner from now on.
+  /// Sign-in. Rows made while anonymous are re-labelled with the auth uid so
+  /// they sync under RLS. Rows that still belong to another *account* (the
+  /// session ended without a sign-out) are dropped instead: the server owns
+  /// them, re-keying would make every push a 42501, and the queries here are
+  /// single-tenant, so leaving them would show one account the other's garden.
   Future<void> adoptOwner(String uid) async {
     final old = owner;
+    final oldWasAccount = await meta(ownerKindKey) == 'account';
     await db.transaction(() async {
-      for (final t in ['gardens', 'garden_plants', 'tasks', 'journal_entries', 'harvests', 'feedback']) {
+      if (oldWasAccount) {
+        await _wipeRows();
+      } else {
+        for (final t in ['gardens', 'garden_plants', 'tasks', 'journal_entries', 'harvests', 'feedback']) {
+          await db.customUpdate(
+            'UPDATE $t SET owner = ?, dirty = 1 WHERE owner = ?',
+            variables: [Variable.withString(uid), Variable.withString(old)],
+            updateKind: UpdateKind.update,
+          );
+        }
+        // profiles.id must equal the uid on the server: re-key the anonymous row.
         await db.customUpdate(
-          'UPDATE $t SET owner = ?, dirty = 1 WHERE owner = ?',
-          variables: [Variable.withString(uid), Variable.withString(old)],
+          'UPDATE profiles SET id = ?, owner = ?, dirty = 1 WHERE owner = ?',
+          variables: [Variable.withString(uid), Variable.withString(uid), Variable.withString(old)],
           updateKind: UpdateKind.update,
         );
       }
-      // profiles.id must equal the uid on the server: re-key the anonymous row.
-      await db.customUpdate(
-        'UPDATE profiles SET id = ?, owner = ?, dirty = 1 WHERE owner = ?',
-        variables: [Variable.withString(uid), Variable.withString(uid), Variable.withString(old)],
-        updateKind: UpdateKind.update,
-      );
-      await db.into(db.appMeta).insert(
-            AppMetaCompanion.insert(key: AppDatabase.ownerKey, value: uid),
-            mode: InsertMode.insertOrReplace,
-          );
+      await _switchOwner(uid, 'account');
     });
     owner = uid;
     notifyListeners();
+  }
+
+  /// Sign-out: the account's rows live on the server, so the phone drops its
+  /// copy and continues as a fresh anonymous owner. Nothing of one account can
+  /// then be adopted into the next. AuthService syncs first, so only edits
+  /// made offline right before signing out are lost.
+  Future<void> detachOwner() async {
+    final fresh = newUuid();
+    await db.transaction(() async {
+      await _wipeRows();
+      await _switchOwner(fresh, 'anon');
+    });
+    owner = fresh;
+    notifyListeners();
+  }
+
+  static const ownerKindKey = 'owner_kind';
+
+  Future<void> _wipeRows() async {
+    for (final t in ['gardens', 'garden_plants', 'tasks', 'journal_entries', 'harvests', 'feedback', 'profiles']) {
+      await db.customUpdate('DELETE FROM $t', updateKind: UpdateKind.delete);
+    }
+  }
+
+  Future<void> _switchOwner(String uid, String kind) async {
+    await db.into(db.appMeta).insert(
+          AppMetaCompanion.insert(key: AppDatabase.ownerKey, value: uid),
+          mode: InsertMode.insertOrReplace,
+        );
+    await db.into(db.appMeta).insert(
+          AppMetaCompanion.insert(key: ownerKindKey, value: kind),
+          mode: InsertMode.insertOrReplace,
+        );
+    // Pull cursors are per table, not per owner: a new owner starts from zero
+    // or its first pull would skip everything older than the last owner's.
+    await db.delete(db.syncCursors).go();
   }
 
   // ── Small local key/value state (AppMeta) ───────────────────────────────
