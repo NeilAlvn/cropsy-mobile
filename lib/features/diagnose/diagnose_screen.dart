@@ -94,7 +94,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                 child: AppCard(
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ProblemScreen(problem: p))),
                   child: Row(children: [
-                    Pill(label: p.kind, color: p.kind == 'pest' ? AppColors.clay : AppColors.sky),
+                    Pill(label: Str.problemKind(p.kind).of(context), color: p.kind == 'pest' ? AppColors.clay : AppColors.sky),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Column(

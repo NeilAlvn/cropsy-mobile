@@ -43,7 +43,7 @@ abstract final class Str {
         en: 'Checklist for ${month.en}',
       );
   static const unlockLifetime = LocalizedText(
-    nl: 'Lifetime, één prijs, voorgoed',
+    nl: 'Levenslang, één prijs, voorgoed',
     en: 'Unlock lifetime, one price, forever',
   );
   static const startStreak = LocalizedText(
@@ -860,10 +860,10 @@ abstract final class Str {
     en: 'Sync is not available in this build.',
   );
   static const planFree = LocalizedText(nl: 'Gratis', en: 'Free');
-  static const planLifetime = LocalizedText(nl: 'Lifetime', en: 'Lifetime');
+  static const planLifetime = LocalizedText(nl: 'Levenslang', en: 'Lifetime');
   static const planYearly = LocalizedText(nl: 'Jaarlijks', en: 'Yearly');
   static const lifetimeNothingToCancel = LocalizedText(
-    nl: 'Lifetime. Niets op te zeggen.',
+    nl: 'Levenslang. Niets op te zeggen.',
     en: 'Lifetime. Nothing to cancel.',
   );
   static const freeTierBlurb = LocalizedText(
@@ -1289,7 +1289,7 @@ abstract final class Str {
     en: 'Restore purchases',
   );
   static const lifetimeNothingEver = LocalizedText(
-    nl: 'Lifetime: nooit iets op te zeggen.',
+    nl: 'Levenslang: nooit iets op te zeggen.',
     en: 'Lifetime: nothing to cancel, ever.',
   );
 
@@ -1367,6 +1367,14 @@ abstract final class Str {
     nl: 'Moeilijkheid',
     en: 'Overall difficulty',
   );
+  /// Problem kind pills on the Diagnose tab (data carries the English key).
+  static LocalizedText problemKind(String kind) => switch (kind) {
+        'pest' => const LocalizedText(nl: 'plaag', en: 'pest'),
+        'disease' => const LocalizedText(nl: 'ziekte', en: 'disease'),
+        'disorder' => const LocalizedText(nl: 'stoornis', en: 'disorder'),
+        _ => LocalizedText(nl: kind, en: kind),
+      };
+
   static const draftBadge = LocalizedText(nl: 'Concept', en: 'Draft');
   static const draftBadgeLong = LocalizedText(
     nl: 'Concept, nog niet gecontroleerd',
