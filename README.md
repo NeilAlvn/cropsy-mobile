@@ -8,11 +8,7 @@ Companion to the backend repo `NeilAlvn/cropsy` (Next.js on Vercel + Supabase).
 The seam between them is `docs/API-CONTRACT.md` in that repo; the product spec
 and phased build plan is `docs/PRD.md` there (locked v1.0, 2026-09-13).
 
-> **Status: pre-UX shell.** Product screens are intentionally **not** built yet —
-> the design direction is still being decided, so this repo currently holds only
-> the *design-independent* core: the offline timing engine, the bundled crop
-> data, and the project scaffold. `flutter run` shows a developer harness, not
-> product UI.
+> **Status (2026-09-19):** feature-complete for the free tier and premium (PRD Phases 0–3 done, Phase 4 launch tail open). `flutter run` shows the product. The sections below describe the engine core and are still accurate; the screens live in `lib/features/`.
 
 ## What's here now
 
@@ -52,28 +48,20 @@ Run: `flutter test` and `flutter analyze` (both green).
 - **Watering is client-generated** (recurring, pot-size + weather driven, not
   frost-relative); the server adjuster only ever *moves or skips* tasks it's given.
 
-## Bundle ID is provisional
+## Bundle ID
 
-`applicationId` / bundle id is `com.cropsyapp.app` (VisionTech B.V. is the
-stable legal entity). The `cropsy` segment is **not yet final**:
+`applicationId` / bundle id is **`com.cropsyapp.app`**, frozen 2026-09-13 (App Store Connect app 6811652686). History:
 
 - an **EUIPO trademark check** on "Cropsy" is outstanding — *Cropsy Technologies
   Ltd* (NZ agritech) already trades under the name;
 - the product name may become **"Pluk"**.
 
-No App Store / Play record exists yet, so changing it is still free. **Finalize
-the bundle id before creating any store record** — that's the expensive-to-change
-moment.
+The name stayed Cropsy; the ASC record exists, so the id no longer changes.
 
-## Next (not started — most gated on design or an account decision)
+## Next
 
-- Drift schema for the syncable tables (`gardens`, `garden_plants`, `tasks`,
-  `journal_entries`) mirroring API-contract section 6, plus the outbox/delta-sync
-  layer. **Gated on** the Supabase auth handshake (provider choice still open).
-- RevenueCat (`purchases_flutter`), local notifications, Supabase client wiring —
-  reused patterns from Farmsy.
-- Product screens (F1–F7) once Luuk greenlights a design direction.
+See `docs/PRD.md` §11 Phase 4 in the backend repo.
 
 ## Toolchain
 
-Flutter 3.44.8 (stable) · Dart 3.12.2.
+Flutter 3.47.4 (stable) · Dart 3.12.
