@@ -12,6 +12,10 @@
 	<string>Cropsy adds photos you pick to a plant's growth log.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Cropsy uses your location once to find the frost dates for your garden. It is rounded to about 10 km and never tracked.</string>
+	<!-- Cropsy never asks for "Always". geolocator links the API, so Apple's
+	     upload check (ITMS-90683) wants a purpose string for it anyway. -->
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Cropsy uses your location once to find the frost dates for your garden. It is rounded to about 10 km and never tracked.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
