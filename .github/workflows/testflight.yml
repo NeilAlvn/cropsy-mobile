@@ -4,7 +4,8 @@ name: Build Archive (Flutter · Xcode 26)
 # UNSIGNED .xcarchive as a downloadable artifact. No signing key ever touches
 # CI — the archive is signed and uploaded to TestFlight locally, where Luuk's
 # App Store Connect .p8 stays. Apple requires the iOS 26 SDK (Xcode 26) for
-# uploads. Luuk's Mac has Xcode 26 too, so this is the fallback when a local
+# uploads. Luuk's Mac has Xcode 26 too and ships builds with an API key (see
+# docs/STORE-SUBMISSION.md in the backend repo), so this is the fallback when a local
 # archive is not possible.
 on:
   workflow_dispatch:
