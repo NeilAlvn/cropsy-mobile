@@ -61,7 +61,7 @@ class _FeedbackRowState extends State<FeedbackRow> {
       const Spacer(),
       IconButton(icon: Icon(PhosphorIcons.thumbsUp, size: 20, color: AppColors.muted), onPressed: () => _send('like')),
       IconButton(icon: Icon(PhosphorIcons.thumbsDown, size: 20, color: AppColors.muted), onPressed: () => _send('dislike')),
-      TextButton(onPressed: _report, child: Text(Str.reportError.of(context), style: AppText.caption(context, color: AppColors.clay))),
+      TextButton(onPressed: _report, child: Text(Str.reportError.of(context), style: AppText.caption(context, color: AppColors.isDark ? AppColors.amber : AppColors.clay))),
     ]);
   }
 }
