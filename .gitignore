@@ -48,3 +48,6 @@ app.*.map.json
 graphify-out/
 tool/shots/
 tool/out/
+tool/store/out/
+tool/store/upload/
+__pycache__/
