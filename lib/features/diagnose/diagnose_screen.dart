@@ -10,6 +10,7 @@ import '../../l10n/mascot_lines.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
+import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/mascot.dart';
@@ -27,6 +28,36 @@ const _parts = <(String, String, LocalizedText)>[
   ('roots', '🥕', Str.partRoots),
 ];
 
+/// The list the gardener actually sees: the part chip and the search box
+/// composed, never one replacing the other — searching inside "Bladeren"
+/// keeps you inside "Bladeren".
+///
+/// Both sides of every LocalizedText are matched, because the reader's
+/// language is not the language they think of the pest in: a Dutch gardener
+/// who knows it as "aphid" should still find "bladluis". [cropNames] resolves
+/// a slug from `affects`, so "tomaat" finds the problems that hit tomatoes.
+///
+/// Pure on purpose: the screen holds the state, this holds the rule.
+List<Problem> filterProblems(
+  List<Problem> all, {
+  String? part,
+  String query = '',
+  required LocalizedText Function(String slug) cropNames,
+}) {
+  final q = query.trim().toLowerCase();
+  return all.where((p) {
+    if (part != null && !p.parts.contains(part)) return false;
+    if (q.isEmpty) return true;
+    return _matches(p.names, q) ||
+        _matches(p.symptoms, q) ||
+        p.affects.any((slug) => _matches(cropNames(slug), q));
+  }).toList();
+}
+
+bool _matches(LocalizedText text, String query) =>
+    text.nl.toLowerCase().contains(query) ||
+    text.en.toLowerCase().contains(query);
+
 class DiagnoseScreen extends StatefulWidget {
   const DiagnoseScreen({super.key});
 
@@ -36,12 +67,15 @@ class DiagnoseScreen extends StatefulWidget {
 
 class _DiagnoseScreenState extends State<DiagnoseScreen> {
   String? _part;
+  String _query = '';
 
   @override
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
     final all = repo.content.problems;
-    final problems = _part == null ? all : all.where((p) => p.parts.contains(_part)).toList();
+    final searching = _query.trim().isNotEmpty;
+    final problems = filterProblems(all,
+        part: _part, query: _query, cropNames: repo.cropNames);
     return SafeArea(
       bottom: false,
       child: ListView(
@@ -68,6 +102,8 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
           ),
           const SizedBox(height: 24),
           SectionHeader(Str.commonProblems.of(context)),
+          _SearchField(onChanged: (q) => setState(() => _query = q)),
+          const SizedBox(height: 14),
           Text(Str.byPlantPart.of(context), style: AppText.caption(context)),
           const SizedBox(height: 8),
           Wrap(
@@ -80,13 +116,25 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
             ],
           ),
           const SizedBox(height: 16),
+          // The count only earns its line while a query is on: without one the
+          // list is the whole catalogue and needs no tally.
+          if (searching && problems.isNotEmpty) ...[
+            Text(Str.problemsFound(problems.length).of(context),
+                style: AppText.caption(context)),
+            const SizedBox(height: 8),
+          ],
           if (all.isEmpty)
             const MascotSays.say(
               pose: MascotPose.thinking,
               line: MascotLines.problemsComing,
             )
           else if (problems.isEmpty)
-            Text(Str.nothingForThatPart.of(context), style: AppText.bodyMuted(context))
+            // Two different dead ends: a word that found nothing, and a part
+            // that simply has no problems listed yet.
+            Text(
+                (searching ? Str.noProblemsFound : Str.nothingForThatPart)
+                    .of(context),
+                style: AppText.bodyMuted(context))
           else
             for (final p in problems)
               Padding(
@@ -111,6 +159,43 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                 ),
               ),
         ],
+      ),
+    );
+  }
+}
+
+/// Base 8.10: pill, 48 tall, tile fill — the same control Home searches crops
+/// with, so the two searches read as one app. Duplicated rather than shared:
+/// it is twenty lines, and Home's copy is owned by another hand this week.
+class _SearchField extends StatelessWidget {
+  const _SearchField({required this.onChanged});
+
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 48,
+      child: TextField(
+        onChanged: onChanged,
+        style: AppText.body(context),
+        decoration: InputDecoration(
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(vertical: 14),
+          hintText: Str.searchProblems.of(context),
+          hintStyle: AppText.body(context, color: AppColors.inkPlaceholder),
+          prefixIcon: Icon(PhosphorIcons.magnifyingGlass, size: 20, color: AppColors.inkMuted),
+          filled: true,
+          fillColor: AppColors.surface,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(Neo.radiusPill),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(Neo.radiusPill),
+            borderSide: BorderSide(color: AppColors.accent, width: 2),
+          ),
+        ),
       ),
     );
   }
