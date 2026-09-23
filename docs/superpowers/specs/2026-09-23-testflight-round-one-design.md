@@ -72,9 +72,16 @@ Phase 1, from content the snapshot already carries:
 - **Collection spotlight.** `ContentCollection` carries a title, an intro and a
   crop list. One stop per quiet month pointing at a collection that suits it.
 
-Phase 2, from the gardener's own history — first sow of the year, tenth
-harvest, streak milestones, a photo against last month's. Deferred; it needs
-repository queries that do not exist yet.
+Phase 2, from the gardener's own history — the first sowing of the year, the
+harvest milestones at 1/10/25/50/100, the longest streak run reached, and a
+plant with a photo this month and an older one to set it beside. Shipped after
+phase 1. Capped at five milestone stops in a whole year, and a first-time
+gardener with no history gets none of them.
+
+Streak milestones are dated by reusing `computeStreak` for each candidate day
+rather than re-deriving the runs, so freeze days are honoured and a milestone
+can never disagree with the streak count on Home. That is O(days²) over a year,
+which is nothing, and it carries a `ponytail:` comment saying so.
 
 `seasonMarkers` stays a pure function over `MarkerFacts`, so the new kinds are
 tested the way the existing ones are, in `test/season_markers_test.dart`.
