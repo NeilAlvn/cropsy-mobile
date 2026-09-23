@@ -11,10 +11,13 @@
 /// draws it.
 library;
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import '../../l10n/mascot_lines.dart';
 import '../../design/icons.dart';
 
+import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../db/database.dart';
 import '../../design/components.dart';
@@ -63,23 +66,22 @@ const double _badgeCentre = _badgeTop + _badge / 2;
 /// This is an alignment, not a translation. A `Transform` would move the paint
 /// and leave the hit box behind, so a swung node would be tappable nowhere.
 double _swing(int i) => switch (i % 4) {
-      0 => 0,
-      1 => 0.5,
-      2 => 0,
-      _ => -0.5,
-    };
+  0 => 0,
+  1 => 0.5,
+  2 => 0,
+  _ => -0.5,
+};
 
 /// Where a stop's centre lands, given the row's width and the stop's size.
-double _centreX(double width, double swing, double stop) =>
-    width / 2 + swing * (width - stop) / 2;
+double _centreX(double width, double swing, double stop) => width / 2 + swing * (width - stop) / 2;
 
 /// Which landscape sits behind a month.
 String _landscapeFor(int month) => switch (month) {
-      3 || 4 || 5 => 'spring',
-      6 || 7 || 8 => 'summer',
-      9 || 10 || 11 => 'autumn',
-      _ => 'winter',
-    };
+  3 || 4 || 5 => 'spring',
+  6 || 7 || 8 => 'summer',
+  9 || 10 || 11 => 'autumn',
+  _ => 'winter',
+};
 
 class SeasonScreen extends StatefulWidget {
   const SeasonScreen({super.key});
@@ -91,13 +93,15 @@ class SeasonScreen extends StatefulWidget {
 class _SeasonScreenState extends State<SeasonScreen> {
   final _scroll = ScrollController();
   Future<
-      ({
-        List<SeasonNode> nodes,
-        List<SeasonMarker> markers,
-        List<SeasonTask> tasks,
-        Set<String> logged,
-        int streak
-      })>? _data;
+    ({
+      List<SeasonNode> nodes,
+      List<SeasonMarker> markers,
+      List<SeasonTask> tasks,
+      Set<String> logged,
+      int streak,
+    })
+  >?
+  _data;
   bool _jumped = false;
 
   @override
@@ -110,13 +114,15 @@ class _SeasonScreenState extends State<SeasonScreen> {
   /// on it: frost dates, the seed order, the photo, the payoff, the recap and
   /// whatever the weather changed today.
   Future<
-      ({
-        List<SeasonNode> nodes,
-        List<SeasonMarker> markers,
-        List<SeasonTask> tasks,
-        Set<String> logged,
-        int streak
-      })> _load() async {
+    ({
+      List<SeasonNode> nodes,
+      List<SeasonMarker> markers,
+      List<SeasonTask> tasks,
+      Set<String> logged,
+      int streak,
+    })
+  >
+  _load() async {
     final repo = RepositoryScope.of(context);
     final premium = PurchaseScope.maybeOf(context)?.premium ?? false;
     final today = parseIso(repo.today);
@@ -158,7 +164,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
       if (!live.contains(entry.key)) continue;
       final days = [
         for (final d in entry.value)
-          if (d.startsWith(year)) d
+          if (d.startsWith(year)) d,
       ];
       if (days.isEmpty) continue;
       if (days.any((d) => d.startsWith(stamp))) photoThisMonth = true;
@@ -196,8 +202,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
           due: t.node.due,
           title: Str.stepOnCrop(
             nodeKindLine(t.node.kind),
-            repo.cropBySlug(t.cropSlug)?.names ??
-                LocalizedText(nl: t.cropSlug, en: t.cropSlug),
+            repo.cropBySlug(t.cropSlug)?.names ?? LocalizedText(nl: t.cropSlug, en: t.cropSlug),
           ),
         ),
     ];
@@ -227,46 +232,36 @@ class _SeasonScreenState extends State<SeasonScreen> {
                 draft: c.draft,
               ),
           ]
-        : [
-            for (final c in fromContent)
-              (slug: c.slug, title: c.title, draft: c.draft),
-          ];
+        : [for (final c in fromContent) (slug: c.slug, title: c.title, draft: c.draft)];
 
-    final markers = seasonMarkers(MarkerFacts(
-      today: today,
-      frost: repo.frost,
-      plantCount: plants.length,
-      photoThisMonth: photoThisMonth,
-      euros: tally.euros,
-      kilos: tally.kg,
-      weatherTitle: weatherTitle,
-      weatherCaption: weatherCaption,
-      checklist: repo.content.checklist,
-      grown: [for (final e in grown.entries) (slug: e.key, on: e.value)],
-      collections: collections,
-      busyMonths: {
-        for (final n in nodes) parseIso(n.start).month,
-        for (final t in tasks) parseIso(t.due).month,
-      },
-      nameOf: (slug) => repo.cropBySlug(slug)?.names,
-      firstSow: firstSow,
-      harvests: [
-        for (final h in await repo.harvests())
-          (slug: h.cropSlug, on: h.harvestedOn),
-      ],
-      streaks: await repo.streakMilestonesReached(premium: premium),
-      photos: photos,
-    ));
+    final markers = seasonMarkers(
+      MarkerFacts(
+        today: today,
+        frost: repo.frost,
+        plantCount: plants.length,
+        photoThisMonth: photoThisMonth,
+        euros: tally.euros,
+        kilos: tally.kg,
+        weatherTitle: weatherTitle,
+        weatherCaption: weatherCaption,
+        checklist: repo.content.checklist,
+        grown: [for (final e in grown.entries) (slug: e.key, on: e.value)],
+        collections: collections,
+        busyMonths: {
+          for (final n in nodes) parseIso(n.start).month,
+          for (final t in tasks) parseIso(t.due).month,
+        },
+        nameOf: (slug) => repo.cropBySlug(slug)?.names,
+        firstSow: firstSow,
+        harvests: [for (final h in await repo.harvests()) (slug: h.cropSlug, on: h.harvestedOn)],
+        streaks: await repo.streakMilestonesReached(premium: premium),
+        photos: photos,
+      ),
+    );
 
     final streak = await repo.streak(premium: premium);
 
-    return (
-      nodes: nodes,
-      markers: markers,
-      tasks: tasks,
-      logged: logged,
-      streak: streak.count,
-    );
+    return (nodes: nodes, markers: markers, tasks: tasks, logged: logged, streak: streak.count);
   }
 
   @override
@@ -318,48 +313,62 @@ class _SeasonScreenState extends State<SeasonScreen> {
         ),
         SafeArea(
           bottom: false,
-          child: FutureBuilder<
-              ({
-                List<SeasonNode> nodes,
-                List<SeasonMarker> markers,
-                List<SeasonTask> tasks,
-                Set<String> logged,
-                int streak
-              })>(
-            future: _data,
-            builder: (context, snap) {
-              final data = snap.data;
-              if (data == null) return const SizedBox.shrink();
-              final rows =
-                  _build(data.nodes, data.markers, data.tasks, data.logged, today, repo);
-              if (data.nodes.isEmpty) {
-                return const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(40),
-                    child: MascotSays.say(
-                      pose: MascotPose.idle,
-                      size: 96,
-                      line: MascotLines.seasonEmpty,
-                    ),
-                  ),
-                );
-              }
-              _jumpToToday(rows);
-              return CustomScrollView(
-                controller: _scroll,
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: _Crest(today: today, rows: rows, streak: data.streak),
-                  ),
-                  SliverList.builder(
-                    itemCount: rows.length,
-                    itemBuilder: (context, i) => rows[i].build(context),
-                  ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 140)),
-                ],
-              );
-            },
-          ),
+          child:
+              FutureBuilder<
+                ({
+                  List<SeasonNode> nodes,
+                  List<SeasonMarker> markers,
+                  List<SeasonTask> tasks,
+                  Set<String> logged,
+                  int streak,
+                })
+              >(
+                future: _data,
+                builder: (context, snap) {
+                  final data = snap.data;
+                  if (data == null) return const SizedBox.shrink();
+                  final rows = _build(
+                    data.nodes,
+                    data.markers,
+                    data.tasks,
+                    data.logged,
+                    today,
+                    repo,
+                  );
+                  if (data.nodes.isEmpty) {
+                    return const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(40),
+                        child: MascotSays.say(
+                          pose: MascotPose.idle,
+                          size: 96,
+                          line: MascotLines.seasonEmpty,
+                        ),
+                      ),
+                    );
+                  }
+                  _jumpToToday(rows);
+                  return CustomScrollView(
+                    controller: _scroll,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: _Crest(today: today, rows: rows, streak: data.streak),
+                      ),
+                      SliverList.builder(
+                        itemCount: rows.length,
+                        itemBuilder: (context, i) => rows[i].build(context),
+                      ),
+                      const SliverToBoxAdapter(child: SizedBox(height: 140)),
+                    ],
+                  );
+                },
+              ),
+        ),
+        const Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: SafeArea(bottom: false, child: _SeasonIntro()),
         ),
       ],
     );
@@ -367,8 +376,14 @@ class _SeasonScreenState extends State<SeasonScreen> {
 
   /// Turns the path's shape into the rows that draw it. Each node is told where
   /// its neighbours sit so the connector between them joins up.
-  List<_Item> _build(List<SeasonNode> nodes, List<SeasonMarker> markers,
-      List<SeasonTask> tasks, Set<String> logged, DateTime today, GardenRepository repo) {
+  List<_Item> _build(
+    List<SeasonNode> nodes,
+    List<SeasonMarker> markers,
+    List<SeasonTask> tasks,
+    Set<String> logged,
+    DateTime today,
+    GardenRepository repo,
+  ) {
     final shape = seasonRows(
       nodes: nodes,
       today: today,
@@ -408,55 +423,65 @@ class _SeasonScreenState extends State<SeasonScreen> {
       final row = shape[i];
       switch (row.kind) {
         case SeasonRowKind.month:
-          rows.add(_HeaderItem(
-            month: row.month,
-            current: row.current,
-            repo: repo,
-            above: neighbour(i, -1),
-            below: neighbour(i, 1),
-          ));
+          rows.add(
+            _HeaderItem(
+              month: row.month,
+              current: row.current,
+              repo: repo,
+              above: neighbour(i, -1),
+              below: neighbour(i, 1),
+            ),
+          );
         case SeasonRowKind.today:
           rows.add(const _TodayItem());
         case SeasonRowKind.node:
-          rows.add(_NodeItem(
-            node: row.node!,
-            today: today,
-            repo: repo,
-            logged: logged,
-            onChanged: _reload,
-            swing: swings[i]!,
-            above: neighbour(i, -1),
-            below: neighbour(i, 1),
-          ));
+          rows.add(
+            _NodeItem(
+              node: row.node!,
+              today: today,
+              repo: repo,
+              logged: logged,
+              onChanged: _reload,
+              swing: swings[i]!,
+              above: neighbour(i, -1),
+              below: neighbour(i, 1),
+            ),
+          );
         case SeasonRowKind.task:
-          rows.add(_TaskItem(
-            task: row.task!,
-            today: today,
-            repo: repo,
-            onChanged: _reload,
-            swing: swings[i]!,
-            above: neighbour(i, -1),
-            below: neighbour(i, 1),
-          ));
+          rows.add(
+            _TaskItem(
+              task: row.task!,
+              today: today,
+              repo: repo,
+              onChanged: _reload,
+              swing: swings[i]!,
+              above: neighbour(i, -1),
+              below: neighbour(i, 1),
+            ),
+          );
         case SeasonRowKind.marker:
-          rows.add(_MarkerItem(
-            marker: row.marker!,
-            today: today,
-            repo: repo,
-            onChanged: _reload,
-            swing: swings[i]!,
-            above: neighbour(i, -1),
-            below: neighbour(i, 1),
-          ));
+          rows.add(
+            _MarkerItem(
+              marker: row.marker!,
+              today: today,
+              repo: repo,
+              onChanged: _reload,
+              swing: swings[i]!,
+              above: neighbour(i, -1),
+              below: neighbour(i, 1),
+            ),
+          );
         case SeasonRowKind.suggestion:
-          rows.add(_SuggestionItem(
-            month: row.month,
-            count: row.count,
-            repo: repo,
-            swing: swings[i]!,
-            above: neighbour(i, -1),
-            below: neighbour(i, 1),
-          ));
+          rows.add(
+            _SuggestionItem(
+              month: row.month,
+              count: row.count,
+              repo: repo,
+              swing: swings[i]!,
+              above: neighbour(i, -1),
+              below: neighbour(i, 1),
+            ),
+          );
       }
     }
     return rows;
@@ -501,15 +526,15 @@ class _Sky extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [AppColors.skyTop, AppColors.skyMid, AppColors.canvas],
-            stops: [0, 0.45, 1],
-          ),
-        ),
-      );
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [AppColors.skyTop, AppColors.skyMid, AppColors.canvas],
+        stops: [0, 0.45, 1],
+      ),
+    ),
+  );
 }
 
 // ── rows ────────────────────────────────────────────────────────────────────
@@ -559,38 +584,41 @@ class _HeaderItem implements _Item {
           onTap: () => _openMonth(context, repo, month),
           behavior: HitTestBehavior.opaque,
           child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: FractionallySizedBox(
-                widthFactor: 0.4,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(Str.monthTitle(month).of(context),
+            children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: FractionallySizedBox(
+                  widthFactor: 0.4,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          Str.monthTitle(month).of(context),
                           style: AppText.subheading(context),
-                          textAlign: TextAlign.right),
-                      Text(
+                          textAlign: TextAlign.right,
+                        ),
+                        Text(
                           (current ? Str.youAreHere : Str.cropsSuitMonth(count)).of(context),
                           style: AppText.caption(context),
                           textAlign: TextAlign.right,
-                          maxLines: 2),
-                    ],
+                          maxLines: 2,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: const Alignment(0, -1),
-              child: Padding(
-                padding: const EdgeInsets.only(top: _monthTop),
-                child: _MonthDisc(month: month, current: current),
+              Align(
+                alignment: const Alignment(0, -1),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: _monthTop),
+                  child: _MonthDisc(month: month, current: current),
+                ),
               ),
-            ),
-          ],
+            ],
           ),
         ),
       ),
@@ -619,14 +647,11 @@ class _MonthDisc extends StatelessWidget {
         color: face,
         // The raised rim the node buttons have, drawn rather than rendered.
         border: Border.all(color: rim, width: 3),
-        boxShadow: [
-          BoxShadow(color: rim, offset: const Offset(0, 4), blurRadius: 0),
-        ],
+        boxShadow: [BoxShadow(color: rim, offset: const Offset(0, 4), blurRadius: 0)],
       ),
       child: Text(
         Str.monthShort(month).of(context),
-        style: AppText.kicker(context,
-            color: current ? AppColors.onAmber : AppColors.amberDeep),
+        style: AppText.kicker(context, color: current ? AppColors.onAmber : AppColors.amberDeep),
       ),
     );
   }
@@ -640,31 +665,30 @@ class _TodayItem implements _Item {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        height: _todayRow,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Row(
-            children: [
-              Expanded(child: Divider(color: AppColors.hairline, thickness: 2)),
-              const SizedBox(width: 12),
-              Text(Str.today.of(context),
-                  style: AppText.kicker(context, color: AppColors.inkMuted)),
-              const SizedBox(width: 12),
-              Expanded(child: Divider(color: AppColors.hairline, thickness: 2)),
-            ],
-          ),
-        ),
-      );
+    height: _todayRow,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Row(
+        children: [
+          Expanded(child: Divider(color: AppColors.hairline, thickness: 2)),
+          const SizedBox(width: 12),
+          Text(Str.today.of(context), style: AppText.kicker(context, color: AppColors.inkMuted)),
+          const SizedBox(width: 12),
+          Expanded(child: Divider(color: AppColors.hairline, thickness: 2)),
+        ],
+      ),
+    ),
+  );
 }
 
 enum _State { done, now, ahead }
 
 /// Badge art per node kind, for the kinds the season path shows.
 String _badgeFor(SeasonNode node) => switch (node.kind) {
-      SeasonNodeKind.sowWindow => 'sow',
-      SeasonNodeKind.harvestWindow => 'harvest',
-      SeasonNodeKind.succession => 'transplant',
-    };
+  SeasonNodeKind.sowWindow => 'sow',
+  SeasonNodeKind.harvestWindow => 'harvest',
+  SeasonNodeKind.succession => 'transplant',
+};
 
 class _NodeItem implements _Item {
   const _NodeItem({
@@ -708,38 +732,34 @@ class _NodeItem implements _Item {
     if (plantId == null) return false;
     return switch (node.kind) {
       SeasonNodeKind.sowWindow => logged.contains('$plantId:sow'),
-      SeasonNodeKind.harvestWindow => logged.contains('$plantId:harvest') ||
-          logged.contains('$plantId:harvested'),
+      SeasonNodeKind.harvestWindow =>
+        logged.contains('$plantId:harvest') || logged.contains('$plantId:harvested'),
       SeasonNodeKind.succession => false,
     };
   }
 
   LocalizedText _label(BuildContext context) => switch (node.kind) {
-        SeasonNodeKind.sowWindow => Str.sowCrop(_crop(context)),
-        SeasonNodeKind.harvestWindow => Str.harvestCrop(_crop(context)),
-        SeasonNodeKind.succession => Str.followOn(_crop(context)),
-      };
+    SeasonNodeKind.sowWindow => Str.sowCrop(_crop(context)),
+    SeasonNodeKind.harvestWindow => Str.harvestCrop(_crop(context)),
+    SeasonNodeKind.succession => Str.followOn(_crop(context)),
+  };
 
   /// The crop's own name, which the snapshot carries in both languages.
   LocalizedText _crop(BuildContext context) =>
-      repo.cropBySlug(node.cropSlug)?.names ??
-      LocalizedText(nl: node.cropSlug, en: node.cropSlug);
+      repo.cropBySlug(node.cropSlug)?.names ?? LocalizedText(nl: node.cropSlug, en: node.cropSlug);
 
   @override
   Widget build(BuildContext context) => _PathStop(
-        swing: swing,
-        above: above,
-        below: below,
-        state: state,
-        label: _label(context).of(context),
-        caption: _window(node.start, node.end, context),
-        badge: 'assets/nodes/${_badgeFor(node)}.png',
-        corner: CropImage(
-          slug: node.cropSlug,
-          category: repo.cropCategory(node.cropSlug),
-        ),
-        onTap: () => _open(context),
-      );
+    swing: swing,
+    above: above,
+    below: below,
+    state: state,
+    label: _label(context).of(context),
+    caption: _window(node.start, node.end, context),
+    badge: 'assets/nodes/${_badgeFor(node)}.png',
+    corner: CropImage(slug: node.cropSlug, category: repo.cropCategory(node.cropSlug)),
+    onTap: () => _open(context),
+  );
 }
 
 extension on _NodeItem {
@@ -752,8 +772,9 @@ extension on _NodeItem {
     if (plantId == null) {
       final crop = repo.cropBySlug(node.cropSlug);
       if (crop != null && context.mounted) {
-        await Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => CropDetailScreen(crop: crop)));
+        await Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => CropDetailScreen(crop: crop)));
       }
       return;
     }
@@ -763,8 +784,9 @@ extension on _NodeItem {
     if (task == null) {
       // Nothing loggable: the plant is still being planned, so its own screen
       // is the right place to start it.
-      await Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: plantId)));
+      await Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: plantId)));
       onChanged();
       return;
     }
@@ -780,9 +802,7 @@ extension on _NodeItem {
     };
     if (wanted.isEmpty) return null;
     for (final candidate in await repo.pathFor(plantId)) {
-      if (wanted.contains(candidate.kind) &&
-          candidate.loggedOn == null &&
-          !candidate.skipped) {
+      if (wanted.contains(candidate.kind) && candidate.loggedOn == null && !candidate.skipped) {
         return candidate;
       }
     }
@@ -802,9 +822,11 @@ extension on _NodeItem {
     );
     if (!context.mounted) return;
     Haptics.complete();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(Str.addedToPlanning(repo.cropNames(node.cropSlug).of(context)).of(context)),
-    ));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(Str.addedToPlanning(repo.cropNames(node.cropSlug).of(context)).of(context)),
+      ),
+    );
   }
 }
 
@@ -840,24 +862,19 @@ class _TaskItem implements _Item {
 
   @override
   Widget build(BuildContext context) => _PathStop(
-        swing: swing,
-        above: above,
-        below: below,
-        state: state,
-        label: task.title.of(context),
-        caption: _day(task.due, context),
-        badge: 'assets/nodes/${task.kind}.png',
-        corner: CropImage(
-          slug: task.cropSlug,
-          category: repo.cropCategory(task.cropSlug),
-        ),
-        onTap: () => _open(context),
-      );
+    swing: swing,
+    above: above,
+    below: below,
+    state: state,
+    label: task.title.of(context),
+    caption: _day(task.due, context),
+    badge: 'assets/nodes/${task.kind}.png',
+    corner: CropImage(slug: task.cropSlug, category: repo.cropCategory(task.cropSlug)),
+    onTap: () => _open(context),
+  );
 
   Future<void> _open(BuildContext context) async {
-    final node = (await repo.pathFor(task.plantId))
-        .where((n) => n.id == task.nodeId)
-        .firstOrNull;
+    final node = (await repo.pathFor(task.plantId)).where((n) => n.id == task.nodeId).firstOrNull;
     if (node == null || !context.mounted) return;
     if (await openNodeLog(context, repo, task.plantId, node)) onChanged();
   }
@@ -901,53 +918,52 @@ class _MarkerItem implements _Item {
   /// The stops that record something the gardener already did, rather than
   /// something the season or the app has to say.
   bool get _isMilestone => switch (marker.kind) {
-        SeasonMarkerKind.firstSow ||
-        SeasonMarkerKind.harvest ||
-        SeasonMarkerKind.streak ||
-        SeasonMarkerKind.photoCompare =>
-          true,
-        _ => false,
-      };
+    SeasonMarkerKind.firstSow ||
+    SeasonMarkerKind.harvest ||
+    SeasonMarkerKind.streak ||
+    SeasonMarkerKind.photoCompare => true,
+    _ => false,
+  };
 
   String get _badgeAsset => switch (marker.kind) {
-        SeasonMarkerKind.ijsheiligen => 'frost',
-        SeasonMarkerKind.lastFrost => 'frost',
-        SeasonMarkerKind.firstFrost => 'frost',
-        SeasonMarkerKind.orderSeeds => 'seeds',
-        SeasonMarkerKind.photo => 'photo',
-        SeasonMarkerKind.payoff => 'tally',
-        SeasonMarkerKind.recap => 'recap',
-        SeasonMarkerKind.weather => 'rain',
-        // A job for the month, a crop to put in beside another, a list to pick
-        // from: the watering can, the seedling and the chest already say
-        // exactly those three things elsewhere on the path.
-        SeasonMarkerKind.checklist => 'water',
-        SeasonMarkerKind.companion => 'sow',
-        SeasonMarkerKind.collection => 'chest',
-        // The milestones borrow the art of the thing they are about: the seed
-        // that went in, the basket it came back in, the running total, the
-        // camera. Nothing new to draw, and each one already reads right.
-        SeasonMarkerKind.firstSow => 'sow',
-        SeasonMarkerKind.harvest => 'harvest',
-        SeasonMarkerKind.streak => 'tally',
-        SeasonMarkerKind.photoCompare => 'photo',
-      };
+    SeasonMarkerKind.ijsheiligen => 'frost',
+    SeasonMarkerKind.lastFrost => 'frost',
+    SeasonMarkerKind.firstFrost => 'frost',
+    SeasonMarkerKind.orderSeeds => 'seeds',
+    SeasonMarkerKind.photo => 'photo',
+    SeasonMarkerKind.payoff => 'tally',
+    SeasonMarkerKind.recap => 'recap',
+    SeasonMarkerKind.weather => 'rain',
+    // A job for the month, a crop to put in beside another, a list to pick
+    // from: the watering can, the seedling and the chest already say
+    // exactly those three things elsewhere on the path.
+    SeasonMarkerKind.checklist => 'water',
+    SeasonMarkerKind.companion => 'sow',
+    SeasonMarkerKind.collection => 'chest',
+    // The milestones borrow the art of the thing they are about: the seed
+    // that went in, the basket it came back in, the running total, the
+    // camera. Nothing new to draw, and each one already reads right.
+    SeasonMarkerKind.firstSow => 'sow',
+    SeasonMarkerKind.harvest => 'harvest',
+    SeasonMarkerKind.streak => 'tally',
+    SeasonMarkerKind.photoCompare => 'photo',
+  };
 
   @override
   Widget build(BuildContext context) => _PathStop(
-        swing: swing,
-        above: above,
-        below: below,
-        // A frost date is never "done" the way a task is: it is a fact about
-        // the year, so it never carries a tick. A milestone is the opposite —
-        // it is something the gardener finished, and the tick is the whole
-        // point of putting it on the path.
-        state: state == _State.done && !_isMilestone ? _State.ahead : state,
-        label: marker.title.of(context),
-        caption: marker.caption.of(context),
-        badge: 'assets/nodes/$_badgeAsset.png',
-        onTap: () => _open(context),
-      );
+    swing: swing,
+    above: above,
+    below: below,
+    // A frost date is never "done" the way a task is: it is a fact about
+    // the year, so it never carries a tick. A milestone is the opposite —
+    // it is something the gardener finished, and the tick is the whole
+    // point of putting it on the path.
+    state: state == _State.done && !_isMilestone ? _State.ahead : state,
+    label: marker.title.of(context),
+    caption: marker.caption.of(context),
+    badge: 'assets/nodes/$_badgeAsset.png',
+    onTap: () => _open(context),
+  );
 
   void _open(BuildContext context) {
     switch (marker.kind) {
@@ -957,17 +973,16 @@ class _MarkerItem implements _Item {
       // where it goes — the same place the payoff lands.
       case SeasonMarkerKind.payoff:
       case SeasonMarkerKind.harvest:
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => const HarvestScreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => const HarvestScreen()));
       // The pictures live on the plant, so the stop opens the plant.
       case SeasonMarkerKind.photoCompare:
         final plantId = marker.slug;
         if (plantId == null) {
           _tell(context);
         } else {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: plantId)),
-          );
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: plantId)));
         }
       case SeasonMarkerKind.orderSeeds:
         showAppSheet<void>(
@@ -977,7 +992,8 @@ class _MarkerItem implements _Item {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
           ),
-          builder: (context) => _CropOptions(title: Str.stillSowable(Str.month(3)), crops: repo.whatToGrowIn(3)),
+          builder: (context) =>
+              _CropOptions(title: Str.stillSowable(Str.month(3)), crops: repo.whatToGrowIn(3)),
         );
       case SeasonMarkerKind.recap:
         _recap(context);
@@ -992,9 +1008,9 @@ class _MarkerItem implements _Item {
         if (crop == null) {
           _tell(context);
         } else {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => CropDetailScreen(crop: crop)),
-          );
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (_) => CropDetailScreen(crop: crop)));
         }
       case SeasonMarkerKind.collection:
         _openCollection(context);
@@ -1028,36 +1044,40 @@ class _MarkerItem implements _Item {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(children: [
-                const Mascot(MascotPose.celebrating, size: 64),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(Str.recapTitle(today.year).of(context),
-                      style: AppText.heading(context)),
-                ),
-              ]),
-              const SizedBox(height: 16),
-              Row(children: [
-                Expanded(
-                    child: _Figure(
-                        value: '${plants.length}',
-                        label: Str.plantsGrown.of(context))),
-                const SizedBox(width: 12),
-                Expanded(
-                    child: _Figure(
-                        value: '$harvested', label: Str.picked.of(context))),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _Figure(
-                    value: '€${tally.euros.round()}',
-                    label: Str.saved.of(context),
+              Row(
+                children: [
+                  const Mascot(MascotPose.celebrating, size: 64),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      Str.recapTitle(today.year).of(context),
+                      style: AppText.heading(context),
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: _Figure(value: '${plants.length}', label: Str.plantsGrown.of(context)),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _Figure(value: '$harvested', label: Str.picked.of(context)),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _Figure(value: '€${tally.euros.round()}', label: Str.saved.of(context)),
+                  ),
+                ],
+              ),
               if (tally.unpriced > 0) ...[
                 const SizedBox(height: 10),
-                Text('${tally.unpriced} harvests have no price yet, so they are not counted.',
-                    style: AppText.caption(context)),
+                Text(
+                  '${tally.unpriced} harvests have no price yet, so they are not counted.',
+                  style: AppText.caption(context),
+                ),
               ],
             ],
           ),
@@ -1071,12 +1091,10 @@ class _MarkerItem implements _Item {
   /// theirs already, so both end up as the same list of crops.
   void _openCollection(BuildContext context) {
     final slug = marker.slug;
-    final fromContent =
-        repo.content.collections.where((c) => c.slug == slug).firstOrNull;
+    final fromContent = repo.content.collections.where((c) => c.slug == slug).firstOrNull;
     final crops = fromContent != null
         ? [for (final s in fromContent.cropSlugs) ?repo.cropBySlug(s)]
-        : repo.collections.where((c) => c.id == slug).firstOrNull?.crops ??
-            const <Crop>[];
+        : repo.collections.where((c) => c.id == slug).firstOrNull?.crops ?? const <Crop>[];
     if (crops.isEmpty) return _tell(context);
     showAppSheet<void>(
       context: context,
@@ -1091,54 +1109,52 @@ class _MarkerItem implements _Item {
 
   /// The mascot explains the marker. Base 8.13: a sheet, not a dialog.
   void _tell(BuildContext context) => showAppSheet<void>(
-        context: context,
-        backgroundColor: AppColors.surface,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-        ),
-        builder: (context) => Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 36),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(marker.title.of(context), style: AppText.heading(context)),
-              const SizedBox(height: 12),
-              MascotSays.say(
-                pose: switch (marker.kind) {
-                  SeasonMarkerKind.recap => MascotPose.celebrating,
-                  SeasonMarkerKind.weather => MascotPose.rain,
-                  // The new stops are advice, not weather: the frost pose would
-                  // read as a warning the checklist never meant.
-                  SeasonMarkerKind.checklist ||
-                  SeasonMarkerKind.companion ||
-                  SeasonMarkerKind.collection ||
-                  SeasonMarkerKind.photoCompare =>
-                    MascotPose.pointing,
-                  // A milestone is the gardener's, and the mascot says so.
-                  SeasonMarkerKind.firstSow ||
-                  SeasonMarkerKind.harvest ||
-                  SeasonMarkerKind.streak =>
-                    MascotPose.celebrating,
-                  _ => MascotPose.frost,
-                },
-                size: 72,
-                line: _explain(),
-              ),
-            ],
+    context: context,
+    backgroundColor: AppColors.surface,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+    ),
+    builder: (context) => Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 36),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(marker.title.of(context), style: AppText.heading(context)),
+          const SizedBox(height: 12),
+          MascotSays.say(
+            pose: switch (marker.kind) {
+              SeasonMarkerKind.recap => MascotPose.celebrating,
+              SeasonMarkerKind.weather => MascotPose.rain,
+              // The new stops are advice, not weather: the frost pose would
+              // read as a warning the checklist never meant.
+              SeasonMarkerKind.checklist ||
+              SeasonMarkerKind.companion ||
+              SeasonMarkerKind.collection ||
+              SeasonMarkerKind.photoCompare => MascotPose.pointing,
+              // A milestone is the gardener's, and the mascot says so.
+              SeasonMarkerKind.firstSow ||
+              SeasonMarkerKind.harvest ||
+              SeasonMarkerKind.streak => MascotPose.celebrating,
+              _ => MascotPose.frost,
+            },
+            size: 72,
+            line: _explain(),
           ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 
   /// The mascot's own explanation of the marker, from the deck.
   LocalizedText _explain() => switch (marker.kind) {
-        SeasonMarkerKind.ijsheiligen => MascotLines.ijsheiligen,
-        SeasonMarkerKind.lastFrost => MascotLines.lastFrost,
-        SeasonMarkerKind.firstFrost => MascotLines.firstFrost,
-        SeasonMarkerKind.recap => MascotLines.recap,
-        SeasonMarkerKind.orderSeeds => MascotLines.seedOrder,
-        _ => marker.caption,
-      };
+    SeasonMarkerKind.ijsheiligen => MascotLines.ijsheiligen,
+    SeasonMarkerKind.lastFrost => MascotLines.lastFrost,
+    SeasonMarkerKind.firstFrost => MascotLines.firstFrost,
+    SeasonMarkerKind.recap => MascotLines.recap,
+    SeasonMarkerKind.orderSeeds => MascotLines.seedOrder,
+    _ => marker.caption,
+  };
 
   /// The month's photo, taken from the path: pick the plant if there is more
   /// than one, then the same growth log the plant screen uses.
@@ -1168,20 +1184,25 @@ class _MarkerItem implements _Item {
                     padding: const EdgeInsets.only(bottom: 8),
                     child: AppCard(
                       onTap: () => Navigator.pop(context, p),
-                      child: Row(children: [
-                        SizedBox(
-                          width: 44,
-                          height: 44,
-                          child: ClipOval(
-                            child: CropImage(
-                              slug: p.cropSlug,
-                              category: repo.cropCategory(p.cropSlug),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 44,
+                            height: 44,
+                            child: ClipOval(
+                              child: CropImage(
+                                slug: p.cropSlug,
+                                category: repo.cropCategory(p.cropSlug),
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        Text(repo.cropNames(p.cropSlug).of(context), style: AppText.subheading(context)),
-                      ]),
+                          const SizedBox(width: 12),
+                          Text(
+                            repo.cropNames(p.cropSlug).of(context),
+                            style: AppText.subheading(context),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
               ],
@@ -1235,30 +1256,29 @@ class _SuggestionItem implements _Item {
 
   @override
   Widget build(BuildContext context) => _PathStop(
-        swing: swing,
-        above: above,
-        below: below,
-        state: _State.ahead,
-        chest: true,
-        label: Str.cropsCanGoIn(count).of(context),
-        caption: Str.nothingPlanned(Str.month(month)).of(context),
-        badge: 'assets/nodes/chest.png',
-        onTap: () => _openMonth(context, repo, month),
-      );
+    swing: swing,
+    above: above,
+    below: below,
+    state: _State.ahead,
+    chest: true,
+    label: Str.cropsCanGoIn(count).of(context),
+    caption: Str.nothingPlanned(Str.month(month)).of(context),
+    badge: 'assets/nodes/chest.png',
+    onTap: () => _openMonth(context, repo, month),
+  );
 }
 
 /// What suits this month, from the month marker as well as from the chest.
-void _openMonth(BuildContext context, GardenRepository repo, int month) =>
-    showAppSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: AppColors.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-      ),
-      builder: (context) =>
-          _CropOptions(title: Str.stillSowable(Str.month(month)), crops: repo.whatToGrowIn(month)),
-    );
+void _openMonth(BuildContext context, GardenRepository repo, int month) => showAppSheet<void>(
+  context: context,
+  isScrollControlled: true,
+  backgroundColor: AppColors.surface,
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+  ),
+  builder: (context) =>
+      _CropOptions(title: Str.stillSowable(Str.month(month)), crops: repo.whatToGrowIn(month)),
+);
 
 /// One stop on the path: the connector, the button, and its label.
 class _PathStop extends StatelessWidget {
@@ -1312,8 +1332,9 @@ class _PathStop extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment:
-                        labelLeft ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                    crossAxisAlignment: labelLeft
+                        ? CrossAxisAlignment.start
+                        : CrossAxisAlignment.end,
                     children: [
                       if (state == _State.now) ...[
                         _NowBubble(label: label),
@@ -1322,10 +1343,10 @@ class _PathStop extends StatelessWidget {
                         Text(
                           label,
                           textAlign: labelLeft ? TextAlign.left : TextAlign.right,
-                          style: AppText.label(context,
-                              color: state == _State.done
-                                  ? AppColors.inkMuted
-                                  : AppColors.ink),
+                          style: AppText.label(
+                            context,
+                            color: state == _State.done ? AppColors.inkMuted : AppColors.ink,
+                          ),
                           maxLines: 2,
                         ),
                       Text(
@@ -1362,8 +1383,7 @@ class _PathStop extends StatelessWidget {
                               color: AppColors.positive,
                               shape: BoxShape.circle,
                             ),
-                            child: Icon(PhosphorIcons.check,
-                                size: 18, color: AppColors.onSemantic),
+                            child: Icon(PhosphorIcons.check, size: 18, color: AppColors.onSemantic),
                           ),
                         ),
                       if (corner != null)
@@ -1401,21 +1421,19 @@ class _NowBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(999),
-              border: Border.all(color: AppColors.accent, width: 2),
-            ),
-            child: Text(label,
-                style: AppText.label(context, color: AppColors.accent),
-                maxLines: 2),
-          ),
-        ],
-      );
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(color: AppColors.accent, width: 2),
+        ),
+        child: Text(label, style: AppText.label(context, color: AppColors.accent), maxLines: 2),
+      ),
+    ],
+  );
 }
 
 /// The trail between stops: half a segment up to the previous node, half down
@@ -1452,12 +1470,20 @@ class _TrailPainter extends CustomPainter {
     // The neighbours' badges sit at the same height inside their own rows, so
     // the trail leaves this row's top and bottom edges aimed straight at them.
     if (above != null) {
-      _segment(canvas, paint, Offset(_centreX(size.width, above!, radius * 2), centre - _nodeRow),
-          Offset(stop.dx, stop.dy - radius));
+      _segment(
+        canvas,
+        paint,
+        Offset(_centreX(size.width, above!, radius * 2), centre - _nodeRow),
+        Offset(stop.dx, stop.dy - radius),
+      );
     }
     if (below != null) {
-      _segment(canvas, paint, Offset(stop.dx, stop.dy + radius),
-          Offset(_centreX(size.width, below!, radius * 2), centre + _nodeRow));
+      _segment(
+        canvas,
+        paint,
+        Offset(stop.dx, stop.dy + radius),
+        Offset(_centreX(size.width, below!, radius * 2), centre + _nodeRow),
+      );
     }
   }
 
@@ -1496,21 +1522,20 @@ class _Figure extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AppCard(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
-        child: Column(
-          children: [
-            Text(value,
-                style: AppText.title(context).copyWith(
-                  fontFeatures: const [FontFeature.tabularFigures()],
-                ),
-                maxLines: 1),
-            Text(label,
-                style: AppText.caption(context),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis),
-          ],
+    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
+    child: Column(
+      children: [
+        Text(
+          value,
+          style: AppText.title(
+            context,
+          ).copyWith(fontFeatures: const [FontFeature.tabularFigures()]),
+          maxLines: 1,
         ),
-      );
+        Text(label, style: AppText.caption(context), maxLines: 1, overflow: TextOverflow.ellipsis),
+      ],
+    ),
+  );
 }
 
 /// The season's header: where the year stands, above the first stop.
@@ -1536,22 +1561,23 @@ class _Crest extends StatelessWidget {
           Text(Str.season.of(context), style: AppText.kicker(context)),
           Text(Str.yearInGarden(today.year).of(context), style: AppText.title(context)),
           const SizedBox(height: 4),
-          Row(children: [
-            Expanded(
-              child: Text(
-                (open > 0 ? Str.openAndDone(open, done) : Str.doneNothingOpen(done))
-                    .of(context),
-                style: AppText.bodyMuted(context),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  (open > 0 ? Str.openAndDone(open, done) : Str.doneNothingOpen(done)).of(context),
+                  style: AppText.bodyMuted(context),
+                ),
               ),
-            ),
-            if (streak > 0)
-              Pill(
-                label: '$streak day${streak == 1 ? '' : 's'}',
-                icon: PhosphorIcons.fire,
-                color: AppColors.onAccentSoft,
-                bg: AppColors.accentSoft,
-              ),
-          ]),
+              if (streak > 0)
+                Pill(
+                  label: '$streak day${streak == 1 ? '' : 's'}',
+                  icon: PhosphorIcons.fire,
+                  color: AppColors.onAccentSoft,
+                  bg: AppColors.accentSoft,
+                ),
+            ],
+          ),
         ],
       ),
     );
@@ -1570,51 +1596,51 @@ class _CropOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => DraggableScrollableSheet(
-        expand: false,
-        initialChildSize: 0.7,
-        maxChildSize: 0.92,
-        builder: (context, controller) => Padding(
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 36,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: AppColors.hairline,
-                    borderRadius: BorderRadius.all(Radius.circular(999)),
-                  ),
-                ),
+    expand: false,
+    initialChildSize: 0.7,
+    maxChildSize: 0.92,
+    builder: (context, controller) => Padding(
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Container(
+              width: 36,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppColors.hairline,
+                borderRadius: BorderRadius.all(Radius.circular(999)),
               ),
-              const SizedBox(height: 16),
-              Text(title.of(context), style: AppText.heading(context)),
-              const SizedBox(height: 4),
-              Text('${crops.length} crops for your region.',
-                  style: AppText.bodyMuted(context)),
-              const SizedBox(height: 16),
-              Expanded(
-                child: GridView.builder(
-                  controller: controller,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 14,
-                    crossAxisSpacing: 14,
-                    childAspectRatio: 0.82,
-                  ),
-                  itemCount: crops.length,
-                  itemBuilder: (context, i) => PhotoCard(
-                    crop: crops[i],
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => CropDetailScreen(crop: crops[i]))),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      );
+          const SizedBox(height: 16),
+          Text(title.of(context), style: AppText.heading(context)),
+          const SizedBox(height: 4),
+          Text('${crops.length} crops for your region.', style: AppText.bodyMuted(context)),
+          const SizedBox(height: 16),
+          Expanded(
+            child: GridView.builder(
+              controller: controller,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 14,
+                crossAxisSpacing: 14,
+                childAspectRatio: 0.82,
+              ),
+              itemCount: crops.length,
+              itemBuilder: (context, i) => PhotoCard(
+                crop: crops[i],
+                onTap: () => Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => CropDetailScreen(crop: crops[i]))),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 String _day(String iso, BuildContext context) {
@@ -1627,4 +1653,90 @@ String _window(String start, String end, BuildContext context) {
   final s = parseIso(start);
   final e = parseIso(end);
   return start == end ? fmt(s) : '${fmt(s)} – ${fmt(e)}';
+}
+
+/// What the path is, said once, the first time someone opens this tab.
+///
+/// Onboarding used to explain it on a page of its own, before the gardener had
+/// a path to look at. Explaining it here costs no step and lands next to the
+/// thing it describes. Dismissing it writes to `profiles.preferences`, which
+/// already syncs, so a second device does not ask again.
+class _SeasonIntro extends StatefulWidget {
+  const _SeasonIntro();
+
+  @override
+  State<_SeasonIntro> createState() => _SeasonIntroState();
+}
+
+class _SeasonIntroState extends State<_SeasonIntro> {
+  static const _key = 'season_intro_seen';
+
+  /// Null while we do not know yet — which renders nothing, so the card never
+  /// flashes in and out on a gardener who has already dismissed it.
+  bool? _seen;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_seen == null) _read();
+  }
+
+  Future<void> _read() async {
+    final profile = await RepositoryScope.of(context).profile();
+    final prefs = profile == null
+        ? const <String, dynamic>{}
+        : jsonDecode(profile.preferences) as Map<String, dynamic>;
+    if (mounted) setState(() => _seen = prefs[_key] as bool? ?? false);
+  }
+
+  Future<void> _dismiss() async {
+    setState(() => _seen = true);
+    await RepositoryScope.of(context).saveProfile(preferences: {_key: true});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_seen != false) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+      // It floats over the path, and base 6 says only floating things cast a
+      // shadow — without one it reads as a hole punched in the landscape.
+      child: DecoratedBox(
+        decoration: Neo.box(shadowed: true),
+        child: AppCard(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Mascot(MascotPose.pointing, size: 64),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(Str.seasonAsOnePath.of(context), style: AppText.label(context)),
+                    const SizedBox(height: 4),
+                    Text(
+                      Str.seasonAsOnePathBody.of(context),
+                      style: AppText.caption(context, color: AppColors.inkMuted),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 4),
+              // 44 points square: the glyph is 18, and a tap target the size
+              // of the glyph is one nobody can hit.
+              Pressable(
+                onTap: _dismiss,
+                child: SizedBox(
+                  width: 44,
+                  height: 44,
+                  child: Icon(PhosphorIcons.x, size: 18, color: AppColors.inkMuted),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

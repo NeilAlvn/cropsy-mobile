@@ -289,6 +289,16 @@ abstract final class Str {
     en: 'A few quick questions about your space and what you like to eat. Two '
         'minutes, then your plan is ready.',
   );
+  static const whatSpace = LocalizedText(
+    nl: 'Welke ruimte heb je om te telen?',
+    en: 'What space do you have to grow in?',
+  );
+  static const experienceReassure = LocalizedText(
+    nl: 'Mooi, dan beginnen we bij het begin. Je krijgt per stap te zien wat je '
+        'moet doen, en waarom.',
+    en: "Good — then we start at the beginning. You'll get every step as it "
+        'comes, and the reason behind it.',
+  );
   static const pickAllThatApply =
       LocalizedText(nl: 'Kies alles wat past.', en: 'Pick all that apply.');
   static const spaceBackyard = LocalizedText(nl: 'Tuin', en: 'Garden');
@@ -298,16 +308,6 @@ abstract final class Str {
       LocalizedText(nl: 'Volkstuin', en: 'Allotment');
   static const spaceOther =
       LocalizedText(nl: 'Ergens anders', en: 'Somewhere else');
-  static const howDoYouGrow =
-      LocalizedText(nl: 'Hoe teel je?', en: 'How do you grow?');
-  static const methodGround =
-      LocalizedText(nl: 'In de volle grond', en: 'In the ground');
-  static const methodRaisedBeds =
-      LocalizedText(nl: 'Verhoogde bakken', en: 'Raised beds');
-  static const methodPotsInside =
-      LocalizedText(nl: 'Potten binnen', en: 'Pots inside');
-  static const methodPotsOutside =
-      LocalizedText(nl: 'Potten buiten', en: 'Pots outside');
   static const howMuchSpace =
       LocalizedText(nl: 'Hoeveel ruimte?', en: 'How much space?');
   static const howMuchSpaceSub = LocalizedText(
@@ -361,33 +361,6 @@ abstract final class Str {
       LocalizedText(nl: 'Leuk met kinderen', en: 'Fun with kids');
   static const interestCost =
       LocalizedText(nl: 'Scheelt geld', en: 'Saves money');
-  static const companionsAsk = LocalizedText(
-    nl: 'Interesse in buurplanten?',
-    en: 'Interested in companion planting?',
-  );
-  static const companionsAskSub = LocalizedText(
-    nl: 'We waarschuwen als twee planten elkaar niet liggen.',
-    en: 'We can warn when two plants dislike each other.',
-  );
-  static const companionsYes =
-      LocalizedText(nl: 'Ja, laat maar zien', en: 'Yes, show me');
-  static const companionsNo = LocalizedText(nl: 'Nu niet', en: 'Not now');
-  static const statementBehind = LocalizedText(
-    nl: 'Ik loop vaak achter op klusjes in de tuin.',
-    en: 'I often feel behind on garden jobs.',
-  );
-  static const statementForget = LocalizedText(
-    nl: 'Ik vergeet water te geven tot er iets slap hangt.',
-    en: 'I forget to water until something wilts.',
-  );
-  static const statementDates = LocalizedText(
-    nl: 'Ik weet nooit wanneer het veilig is om uit te planten.',
-    en: "I never know when it's safe to plant out.",
-  );
-  static const statementWaste = LocalizedText(
-    nl: 'Ik koop zaad dat ik nooit zaai.',
-    en: 'I buy seeds I never get round to sowing.',
-  );
   static const buildMyPlan =
       LocalizedText(nl: 'Bouw mijn plan', en: 'Build my plan');
   static const yourLocationWord =
@@ -427,15 +400,6 @@ abstract final class Str {
     nl: 'Je eerste taak zoeken…',
     en: 'Finding your first task…',
   );
-  static const miniPathSow =
-      LocalizedText(nl: 'Sla zaaien', en: 'Sow lettuce');
-  static const miniPathFrost =
-      LocalizedText(nl: 'IJsheiligen', en: 'IJsheiligen');
-  static const miniPathHarvest =
-      LocalizedText(nl: 'Tomaat oogsten', en: 'Harvest tomato');
-  static const miniPathSowDay = LocalizedText(nl: '1 apr', en: '1 Apr');
-  static const miniPathFrostDay = LocalizedText(nl: '11 mei', en: '11 May');
-  static const miniPathHarvestDay = LocalizedText(nl: '24 aug', en: '24 Aug');
   static const noLocationPickRegion = LocalizedText(
     nl: 'Geen locatie, vul een postcode in of kies hieronder een regio.',
     en: 'No location, enter a postcode or pick a region below.',
@@ -1405,11 +1369,6 @@ abstract final class Str {
         '~10 km, nooit gevolgd.',
     en: 'Sets your frost dates, the backbone of every planting date. Rounded '
         'to ~10 km, never tracked.',
-  );
-  static const doYouRelate = LocalizedText(nl: 'Herken je dit?', en: 'Do you relate?');
-  static const doYouRelateSub = LocalizedText(
-    nl: 'Tik aan wat op jou slaat. Sla de rest over.',
-    en: 'Tap what sounds like you. Skip the rest.',
   );
   static const whatWillYouGrow = LocalizedText(
     nl: 'Wat ga je kweken?',

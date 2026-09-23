@@ -1,6 +1,7 @@
 /// A full-bleed onboarding hero: a natural photo or looping muted video up top,
-/// with a brutalist content card (bordered, hard shadow) rising from the bottom
-/// — the naturalism × brutalism mix. Used by the value-intro pages.
+/// with a content card rising from the bottom over it. The card is a sheet, so
+/// it takes the sheet radius and the plain surface — the photograph behind it
+/// is the contrast, and a border on top of that is one edge too many.
 library;
 
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:video_player/video_player.dart';
 import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
+import '../../design/motion.dart';
 import '../../design/typography.dart';
 
 /// Background media for a hero — an asset image, optionally upgraded to a
@@ -59,16 +61,19 @@ class _HeroPageState extends State<HeroPage> {
     if (path != null) {
       final c = VideoPlayerController.asset(path);
       _video = c;
-      c.initialize().then((_) {
-        c
-          ..setLooping(true)
-          ..setVolume(0)
-          ..play();
-        if (mounted) setState(() {});
-      }).catchError((_) {
-        // Fall back to the still poster if the clip can't load.
-        if (mounted) setState(() => _video = null);
-      });
+      c
+          .initialize()
+          .then((_) {
+            c
+              ..setLooping(true)
+              ..setVolume(0)
+              ..play();
+            if (mounted) setState(() {});
+          })
+          .catchError((_) {
+            // Fall back to the still poster if the clip can't load.
+            if (mounted) setState(() => _video = null);
+          });
     }
   }
 
@@ -83,88 +88,93 @@ class _HeroPageState extends State<HeroPage> {
     final v = _video;
     final videoReady = v != null && v.value.isInitialized;
 
-    return Column(
-      children: [
-        // ── Full-bleed natural hero (photo, or looping video once ready) ──
-        Expanded(
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              if (videoReady)
-                FittedBox(
-                  fit: BoxFit.cover,
-                  clipBehavior: Clip.hardEdge,
-                  child: SizedBox(
-                    width: v.value.size.width,
-                    height: v.value.size.height,
-                    child: VideoPlayer(v),
-                  ),
-                )
-              else
-                Image.asset(widget.media.image, fit: BoxFit.cover),
-              // Top scrim so the status bar / header stays legible over the photo.
-              const DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.center,
-                    colors: [Color(0x40000000), Color(0x00000000)],
+    // Its own Scaffold: each onboarding page carries one now that the flow is
+    // a bare PageView, and without a Material ancestor every line of text picks
+    // up the framework's yellow "unstyled text" underline.
+    return Scaffold(
+      backgroundColor: AppColors.canvas,
+      body: Column(
+        children: [
+          // ── Full-bleed natural hero (photo, or looping video once ready) ──
+          Expanded(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                if (videoReady)
+                  FittedBox(
+                    fit: BoxFit.cover,
+                    clipBehavior: Clip.hardEdge,
+                    child: SizedBox(
+                      width: v.value.size.width,
+                      height: v.value.size.height,
+                      child: VideoPlayer(v),
+                    ),
+                  )
+                else
+                  SlowPan(child: Image.asset(widget.media.image, fit: BoxFit.cover)),
+                // Top scrim so the status bar / header stays legible over the photo.
+                const DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.center,
+                      colors: [Color(0x40000000), Color(0x00000000)],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        // ── Brutalist content card rising from the bottom ──
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: AppColors.paper,
-            border: Border(
-              top: BorderSide(color: AppColors.border, width: Neo.borderWidth),
+              ],
             ),
           ),
-          child: SafeArea(
-            top: false,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(24, 22, 24, 18),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(widget.kicker, style: AppText.kicker(context)),
-                  const SizedBox(height: 10),
-                  Text.rich(
-                    TextSpan(
-                      style: AppText.display(context).copyWith(fontSize: 30),
-                      children: widget.title,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(widget.subtitle, style: AppText.bodyMuted(context)),
-                  const SizedBox(height: 20),
-                  PrimaryButton(
-                    label: widget.buttonLabel,
-                    icon: PhosphorIcons.arrowRight,
-                    onPressed: widget.onNext,
-                  ),
-                  if (widget.onSkip != null) ...[
-                    const SizedBox(height: 6),
-                    Center(
-                      child: TextButton(
-                        onPressed: widget.onSkip,
-                        child: Text(Str.alreadyHaveAccount.of(context),
-                            style: AppText.label(context,
-                                color: AppColors.muted)),
+          // ── Content card rising from the bottom ──
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(Neo.radiusSheet)),
+            ),
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 22, 24, 18),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(widget.kicker, style: AppText.kicker(context)),
+                    const SizedBox(height: 10),
+                    Text.rich(
+                      TextSpan(
+                        style: AppText.display(context).copyWith(fontSize: 30),
+                        children: widget.title,
                       ),
                     ),
+                    const SizedBox(height: 10),
+                    Text(widget.subtitle, style: AppText.bodyMuted(context)),
+                    const SizedBox(height: 20),
+                    PrimaryButton(
+                      label: widget.buttonLabel,
+                      icon: PhosphorIcons.arrowRight,
+                      onPressed: widget.onNext,
+                    ),
+                    if (widget.onSkip != null) ...[
+                      const SizedBox(height: 6),
+                      Center(
+                        child: TextButton(
+                          onPressed: widget.onSkip,
+                          child: Text(
+                            Str.alreadyHaveAccount.of(context),
+                            style: AppText.label(context, color: AppColors.inkMuted),
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

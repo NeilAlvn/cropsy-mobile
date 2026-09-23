@@ -38,18 +38,15 @@ import 'sync/auth_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (sentryDsn.isEmpty) return _boot();
-  await SentryFlutter.init(
-    (options) {
-      options.dsn = sentryDsn;
-      options.environment = kReleaseMode ? 'production' : 'development';
-      // A crash reporter, not an analytics SDK: no screenshots of someone's
-      // garden, no IP address, no request bodies. (The view hierarchy and
-      // session replay are off by default and stay off.)
-      options.sendDefaultPii = false;
-      options.attachScreenshot = false;
-    },
-    appRunner: _boot,
-  );
+  await SentryFlutter.init((options) {
+    options.dsn = sentryDsn;
+    options.environment = kReleaseMode ? 'production' : 'development';
+    // A crash reporter, not an analytics SDK: no screenshots of someone's
+    // garden, no IP address, no request bodies. (The view hierarchy and
+    // session replay are off by default and stay off.)
+    options.sendDefaultPii = false;
+    options.attachScreenshot = false;
+  }, appRunner: _boot);
 }
 
 Future<void> _boot() async {
@@ -73,9 +70,7 @@ Future<void> _boot() async {
       Analytics.signedOut();
     }
   });
-  final theme = AppTheme(
-    initial: AppTheme.parse(await repo.meta(AppTheme.metaKey)),
-  );
+  final theme = AppTheme(initial: AppTheme.parse(await repo.meta(AppTheme.metaKey)));
   // Dates are read, not parsed: month and weekday names have to speak the
   // reader's language too.
   await initializeDateFormatting();
@@ -84,29 +79,17 @@ Future<void> _boot() async {
   Intl.defaultLocale = lang.code;
   // Haptics and reduced motion are read at paint time, with no context and no
   // await to spare, so they are pulled out of the profile once, here.
-  AccessPrefs.load(
-    jsonDecode(profile?.preferences ?? '{}') as Map<String, dynamic>,
-  );
+  AccessPrefs.load(jsonDecode(profile?.preferences ?? '{}') as Map<String, dynamic>);
 
   // Reminders follow the data: any change re-plans the week's notifications.
   Timer? debounce;
   repo.addListener(() {
     debounce?.cancel();
     debounce = Timer(const Duration(seconds: 2), () async {
-      await Reminders.schedule(
-        await repo.thisWeek(),
-        today: repo.today,
-        dutch: lang.isDutch,
-      );
+      await Reminders.schedule(await repo.thisWeek(), today: repo.today, dutch: lang.isDutch);
     });
   });
-  runApp(CropsyApp(
-    repository: repo,
-    auth: auth,
-    purchases: purchases,
-    theme: theme,
-    lang: lang,
-  ));
+  runApp(CropsyApp(repository: repo, auth: auth, purchases: purchases, theme: theme, lang: lang));
 }
 
 class CropsyApp extends StatelessWidget {
@@ -139,34 +122,34 @@ class CropsyApp extends StatelessWidget {
           child: AppLangScope(
             notifier: lang,
             child: AppThemeScope(
-            notifier: theme,
-            // The colour tokens are getters over the live scheme, so a scheme
-            // change is answered by rebuilding the app, not by threading a
-            // palette through every widget.
-            child: ValueListenableBuilder<AppPalette>(
-              valueListenable: AppColors.scheme,
-              builder: (context, palette, _) => MaterialApp(
-                // Colour tokens are read during build, and a const widget that
-                // was already built will not rebuild just because its ancestor
-                // did, so a scheme change has to rebuild the app rather than
-                // notify it. Keying the app on the scheme does that.
-                key: ValueKey(palette.brightness),
-                // That key would also throw away the navigation stack, which is
-                // how changing the theme from a pushed screen used to dump you
-                // back on Home. A global key re-parents the navigator into the
-                // new tree instead: the routes survive, and being reactivated
-                // is a dependency change, so each one rebuilds its page in the
-                // scheme that just won.
-                navigatorKey: _navigator,
-                title: 'Cropsy',
-                debugShowCheckedModeBanner: false,
-                themeMode: theme.materialMode,
-                theme: _themeData(Brightness.light),
-                darkTheme: _themeData(Brightness.dark),
-                home: _Root(),
+              notifier: theme,
+              // The colour tokens are getters over the live scheme, so a scheme
+              // change is answered by rebuilding the app, not by threading a
+              // palette through every widget.
+              child: ValueListenableBuilder<AppPalette>(
+                valueListenable: AppColors.scheme,
+                builder: (context, palette, _) => MaterialApp(
+                  // Colour tokens are read during build, and a const widget that
+                  // was already built will not rebuild just because its ancestor
+                  // did, so a scheme change has to rebuild the app rather than
+                  // notify it. Keying the app on the scheme does that.
+                  key: ValueKey(palette.brightness),
+                  // That key would also throw away the navigation stack, which is
+                  // how changing the theme from a pushed screen used to dump you
+                  // back on Home. A global key re-parents the navigator into the
+                  // new tree instead: the routes survive, and being reactivated
+                  // is a dependency change, so each one rebuilds its page in the
+                  // scheme that just won.
+                  navigatorKey: _navigator,
+                  title: 'Cropsy',
+                  debugShowCheckedModeBanner: false,
+                  themeMode: theme.materialMode,
+                  theme: _themeData(Brightness.light),
+                  darkTheme: _themeData(Brightness.dark),
+                  home: _Root(),
+                ),
               ),
             ),
-          ),
           ),
         ),
       ),
@@ -216,14 +199,23 @@ class _Root extends StatefulWidget {
 class _RootState extends State<_Root> {
   bool? _hasGarden;
 
+  /// Onboarding has created the garden and is showing the plan it built.
+  ///
+  /// Without this the gate would fire the moment that garden lands and swap
+  /// onboarding for the app mid-flow, so the payoff screen and the paywall
+  /// after it never appear. From here on onboarding owns its own exit.
+  bool _onboardingFinishing = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Runs on every repository change too: after a sign-in sync pulls a
     // garden, onboarding gives way to the app without a restart.
-    if (_hasGarden != true) {
+    if (_hasGarden != true && !_onboardingFinishing) {
       RepositoryScope.of(context).hasGarden().then((v) {
-        if (mounted && v != _hasGarden) setState(() => _hasGarden = v);
+        if (mounted && v != _hasGarden && !_onboardingFinishing) {
+          setState(() => _hasGarden = v);
+        }
       });
     }
   }
@@ -231,9 +223,15 @@ class _RootState extends State<_Root> {
   @override
   Widget build(BuildContext context) {
     return switch (_hasGarden) {
-      null => Scaffold(backgroundColor: AppColors.paper),
+      null => Scaffold(backgroundColor: AppColors.canvas),
       true => AppShell(),
-      false => OnboardingScreen(onDone: () => setState(() => _hasGarden = true)),
+      false => OnboardingScreen(
+        onBuildingPlan: () => _onboardingFinishing = true,
+        onDone: () => setState(() {
+          _onboardingFinishing = false;
+          _hasGarden = true;
+        }),
+      ),
     };
   }
 }
