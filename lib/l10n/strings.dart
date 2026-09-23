@@ -1559,6 +1559,33 @@ abstract final class Str {
     en: 'Nothing found. Try another word.',
   );
 
+  // ── the path's milestone stops (what the gardener already did) ────────────
+  static const pathFirstSow =
+      LocalizedText(nl: 'Je eerste zaaisel', en: 'Your first sowing');
+  static LocalizedText pathFirstSowCaption(LocalizedText crop) => LocalizedText(
+        nl: 'Het seizoen begon met ${crop.nl}',
+        en: 'The season began with ${crop.en}',
+      );
+  static LocalizedText pathHarvest(int n) =>
+      LocalizedText(nl: 'Oogst nummer $n', en: 'Harvest number $n');
+  static LocalizedText pathHarvestCaption(LocalizedText crop) => LocalizedText(
+        nl: 'Geplukt en gelogd: ${crop.nl}',
+        en: 'Picked and logged: ${crop.en}',
+      );
+  static LocalizedText pathStreak(int days) => LocalizedText(
+        nl: '$days dagen op rij',
+        en: '$days days in a row',
+      );
+  static const pathStreakCaption =
+      LocalizedText(nl: 'Je hield het vol', en: 'You kept it going');
+  static const pathPhotoCompare =
+      LocalizedText(nl: 'Kijk hoe ver het is', en: 'See how far it has come');
+  static LocalizedText pathPhotoCompareCaption(LocalizedText month) =>
+      LocalizedText(
+        nl: 'Naast je foto van ${month.nl}',
+        en: 'Next to your photo from ${month.en}',
+      );
+
   // ── months, for every sentence that names one ─────────────────────────────
   static const months = <LocalizedText>[
     LocalizedText(nl: 'januari', en: 'January'),
