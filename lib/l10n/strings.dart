@@ -1569,8 +1569,8 @@ abstract final class Str {
   static LocalizedText pathHarvest(int n) =>
       LocalizedText(nl: 'Oogst nummer $n', en: 'Harvest number $n');
   static LocalizedText pathHarvestCaption(LocalizedText crop) => LocalizedText(
-        nl: 'Geplukt en gelogd: ${crop.nl}',
-        en: 'Picked and logged: ${crop.en}',
+        nl: 'Geplukt: ${crop.nl}',
+        en: 'Picked: ${crop.en}',
       );
   static LocalizedText pathStreak(int days) => LocalizedText(
         nl: '$days dagen op rij',

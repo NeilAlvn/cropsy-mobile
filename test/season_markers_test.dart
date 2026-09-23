@@ -18,6 +18,10 @@ MarkerFacts _facts({
   List<({String slug, LocalizedText title, bool draft})> collections = const [],
   Set<int> busy = const {},
   LocalizedText? Function(String slug) nameOf = _anyName,
+  ({String slug, String on})? firstSow,
+  List<({String slug, String on})> harvests = const [],
+  List<({int days, String on})> streaks = const [],
+  List<({String plantId, String firstOn, String lastOn})> photos = const [],
 }) =>
     MarkerFacts(
       today: DateTime.utc(2026, 9, 16),
@@ -34,7 +38,17 @@ MarkerFacts _facts({
       collections: collections,
       busyMonths: busy,
       nameOf: nameOf,
+      firstSow: firstSow,
+      harvests: harvests,
+      streaks: streaks,
+      photos: photos,
     );
+
+/// [n] harvests of the same crop, one a day through June (at most 30).
+List<({String slug, String on})> _picked(int n) => [
+      for (var i = 0; i < n; i++)
+        (slug: 'tomato', on: '2026-06-${(i + 1).toString().padLeft(2, '0')}'),
+    ];
 
 ChecklistItem _job(int month, String title, {String? link, bool draft = false}) =>
     ChecklistItem(
@@ -218,6 +232,127 @@ void main() {
   test('draft collections are not pointed at', () {
     final marks = seasonMarkers(_facts(collections: [_list('beta', draft: true)]));
     expect(_of(marks, SeasonMarkerKind.collection), isEmpty);
+  });
+
+  // ── the milestone stops ───────────────────────────────────────────────────
+
+  test('a new gardener with no history gets no milestones at all', () {
+    final marks = seasonMarkers(_facts(plants: 0));
+    for (final kind in [
+      SeasonMarkerKind.firstSow,
+      SeasonMarkerKind.harvest,
+      SeasonMarkerKind.streak,
+      SeasonMarkerKind.photoCompare,
+    ]) {
+      expect(_of(marks, kind), isEmpty, reason: '$kind');
+    }
+  });
+
+  test('the first sowing sits on the day it was logged and names its crop', () {
+    final marks = seasonMarkers(
+        _facts(firstSow: (slug: 'tomato', on: '2026-03-04')));
+    final sow = _of(marks, SeasonMarkerKind.firstSow).single;
+    expect(sow.on, '2026-03-04');
+    expect(sow.slug, 'tomato');
+    expect(sow.caption.en, contains('tomato'));
+    expect(sow.caption.nl, contains('tomato'));
+  });
+
+  test('last season\'s first sowing belongs to last season', () {
+    final marks = seasonMarkers(
+        _facts(firstSow: (slug: 'tomato', on: '2025-03-04')));
+    expect(_of(marks, SeasonMarkerKind.firstSow), isEmpty);
+  });
+
+  test('the first harvest is a milestone on its own', () {
+    final marks = seasonMarkers(_facts(harvests: _picked(3)));
+    final first = _of(marks, SeasonMarkerKind.harvest).single;
+    expect(first.title.en, contains('1'));
+    expect(first.on, '2026-06-01');
+    expect(first.caption.en, contains('tomato'));
+  });
+
+  test('a good year shows the two most recent harvest milestones, not five',
+      () {
+    final marks = seasonMarkers(_facts(harvests: _picked(25)));
+    final trophies = _of(marks, SeasonMarkerKind.harvest);
+    // 1, 10 and 25 were all reached; the first is the one they have moved past.
+    expect(trophies, hasLength(2));
+    expect(trophies.map((m) => m.on), ['2026-06-10', '2026-06-25']);
+    expect(trophies.last.title.en, contains('25'));
+  });
+
+  test('harvests count in the order they happened, whatever order they arrive',
+      () {
+    final marks = seasonMarkers(_facts(harvests: [
+      (slug: 'bean', on: '2026-08-01'),
+      (slug: 'tomato', on: '2026-06-01'),
+    ]));
+    final first = _of(marks, SeasonMarkerKind.harvest).single;
+    expect(first.on, '2026-06-01');
+    expect(first.caption.en, contains('tomato'));
+  });
+
+  test('only this year\'s harvests are counted', () {
+    final marks = seasonMarkers(_facts(harvests: [
+      (slug: 'tomato', on: '2025-06-01'),
+      (slug: 'bean', on: '2026-08-01'),
+    ]));
+    final first = _of(marks, SeasonMarkerKind.harvest).single;
+    // Last year's row neither numbers this year's first harvest nor shows up.
+    expect(first.on, '2026-08-01');
+    expect(first.title.en, contains('1'));
+  });
+
+  test('only the longest run reached stands on the path', () {
+    final marks = seasonMarkers(_facts(streaks: [
+      (days: 7, on: '2026-02-10'),
+      (days: 30, on: '2026-03-05'),
+    ]));
+    final run = _of(marks, SeasonMarkerKind.streak).single;
+    expect(run.on, '2026-03-05');
+    expect(run.title.en, contains('30'));
+    expect(run.title.nl, contains('30'));
+  });
+
+  test('the photo comparison picks the widest gap and names the older month',
+      () {
+    final marks = seasonMarkers(_facts(photos: [
+      (plantId: 'p1', firstOn: '2026-08-02', lastOn: '2026-09-10'),
+      (plantId: 'p2', firstOn: '2026-04-02', lastOn: '2026-09-12'),
+    ]));
+    final look = _of(marks, SeasonMarkerKind.photoCompare).single;
+    expect(look.slug, 'p2');
+    // It sits on this month's picture, captioned with the older one's month.
+    expect(look.on, '2026-09-12');
+    expect(look.caption.en, contains('April'));
+    expect(look.caption.nl, contains('april'));
+  });
+
+  test('a photo needs an older month to stand beside', () {
+    final marks = seasonMarkers(_facts(photos: [
+      // Both this month: nothing has changed worth looking at.
+      (plantId: 'p1', firstOn: '2026-09-02', lastOn: '2026-09-14'),
+      // Nothing this month: the plant was last photographed in August.
+      (plantId: 'p2', firstOn: '2026-05-02', lastOn: '2026-08-14'),
+    ]));
+    expect(_of(marks, SeasonMarkerKind.photoCompare), isEmpty);
+  });
+
+  test('a full year of history still adds only five stops', () {
+    final marks = seasonMarkers(_facts(
+      firstSow: (slug: 'tomato', on: '2026-03-04'),
+      harvests: _picked(25),
+      streaks: [(days: 7, on: '2026-02-10'), (days: 30, on: '2026-03-05')],
+      photos: [(plantId: 'p1', firstOn: '2026-04-02', lastOn: '2026-09-12')],
+    ));
+    final milestones = marks.where((m) => const {
+          SeasonMarkerKind.firstSow,
+          SeasonMarkerKind.harvest,
+          SeasonMarkerKind.streak,
+          SeasonMarkerKind.photoCompare,
+        }.contains(m.kind));
+    expect(milestones, hasLength(5));
   });
 
   test('markers and nodes share one timeline inside a month', () {

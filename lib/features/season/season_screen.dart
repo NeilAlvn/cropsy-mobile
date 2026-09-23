@@ -125,25 +125,44 @@ class _SeasonScreenState extends State<SeasonScreen> {
     final tally = await repo.seasonTally();
 
     // A node is done when the gardener logged it, not when its date passed.
+    // The same walk finds the year's first logged sowing: every path is already
+    // in hand here, so asking the database a second question would be work for
+    // its own sake.
+    final year = repo.today.substring(0, 4);
     final logged = <String>{};
+    ({String slug, String on})? firstSow;
     for (final plant in plants) {
       for (final node in await repo.pathFor(plant.id)) {
-        if (node.loggedOn != null) logged.add('${plant.id}:${node.kind.name}');
+        final on = node.loggedOn;
+        if (on == null) continue;
+        logged.add('${plant.id}:${node.kind.name}');
+        if (node.kind != NodeKind.sow || !on.startsWith(year)) continue;
+        if (firstSow == null || on.compareTo(firstSow.on) < 0) {
+          firstSow = (slug: plant.cropSlug, on: on);
+        }
       }
     }
 
-    // One photo a month is the ask, so the marker only appears when this month
-    // has none yet.
+    // Every photographed day in the garden, in one query. Two stops read it:
+    // "one photo a month is the ask", which only appears when this month has
+    // none, and the comparison, which wants this month's picture next to the
+    // oldest one of the same plant.
     final stamp = repo.today.substring(0, 7);
+    final photoDays = await repo.photoDays();
     var photoThisMonth = false;
-    for (final plant in plants) {
-      for (final entry in await repo.journal(plant.id)) {
-        if (entry.photoPath != null && entry.entryOn.startsWith(stamp)) {
-          photoThisMonth = true;
-          break;
-        }
-      }
-      if (photoThisMonth) break;
+    final photos = <({String plantId, String firstOn, String lastOn})>[];
+    final live = {for (final p in plants) p.id};
+    for (final entry in photoDays.entries) {
+      // A removed plant keeps its journal rows, and its pictures are not a stop
+      // on this year's path — there is no plant left to open.
+      if (!live.contains(entry.key)) continue;
+      final days = [
+        for (final d in entry.value)
+          if (d.startsWith(year)) d
+      ];
+      if (days.isEmpty) continue;
+      if (days.any((d) => d.startsWith(stamp))) photoThisMonth = true;
+      photos.add((plantId: entry.key, firstOn: days.first, lastOn: days.last));
     }
 
     // The weather overlay already runs for This Week; the path shows the same
@@ -230,6 +249,13 @@ class _SeasonScreenState extends State<SeasonScreen> {
         for (final t in tasks) parseIso(t.due).month,
       },
       nameOf: (slug) => repo.cropBySlug(slug)?.names,
+      firstSow: firstSow,
+      harvests: [
+        for (final h in await repo.harvests())
+          (slug: h.cropSlug, on: h.harvestedOn),
+      ],
+      streaks: await repo.streakMilestonesReached(premium: premium),
+      photos: photos,
     ));
 
     final streak = await repo.streak(premium: premium);
@@ -872,6 +898,17 @@ class _MarkerItem implements _Item {
     return _State.ahead;
   }
 
+  /// The stops that record something the gardener already did, rather than
+  /// something the season or the app has to say.
+  bool get _isMilestone => switch (marker.kind) {
+        SeasonMarkerKind.firstSow ||
+        SeasonMarkerKind.harvest ||
+        SeasonMarkerKind.streak ||
+        SeasonMarkerKind.photoCompare =>
+          true,
+        _ => false,
+      };
+
   String get _badgeAsset => switch (marker.kind) {
         SeasonMarkerKind.ijsheiligen => 'frost',
         SeasonMarkerKind.lastFrost => 'frost',
@@ -887,6 +924,13 @@ class _MarkerItem implements _Item {
         SeasonMarkerKind.checklist => 'water',
         SeasonMarkerKind.companion => 'sow',
         SeasonMarkerKind.collection => 'chest',
+        // The milestones borrow the art of the thing they are about: the seed
+        // that went in, the basket it came back in, the running total, the
+        // camera. Nothing new to draw, and each one already reads right.
+        SeasonMarkerKind.firstSow => 'sow',
+        SeasonMarkerKind.harvest => 'harvest',
+        SeasonMarkerKind.streak => 'tally',
+        SeasonMarkerKind.photoCompare => 'photo',
       };
 
   @override
@@ -895,8 +939,10 @@ class _MarkerItem implements _Item {
         above: above,
         below: below,
         // A frost date is never "done" the way a task is: it is a fact about
-        // the year, so it never carries a tick.
-        state: state == _State.done ? _State.ahead : state,
+        // the year, so it never carries a tick. A milestone is the opposite —
+        // it is something the gardener finished, and the tick is the whole
+        // point of putting it on the path.
+        state: state == _State.done && !_isMilestone ? _State.ahead : state,
         label: marker.title.of(context),
         caption: marker.caption.of(context),
         badge: 'assets/nodes/$_badgeAsset.png',
@@ -907,9 +953,22 @@ class _MarkerItem implements _Item {
     switch (marker.kind) {
       case SeasonMarkerKind.photo:
         _openPhoto(context);
+      // The harvest milestone is a number off the harvest log, so the log is
+      // where it goes — the same place the payoff lands.
       case SeasonMarkerKind.payoff:
+      case SeasonMarkerKind.harvest:
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (_) => const HarvestScreen()));
+      // The pictures live on the plant, so the stop opens the plant.
+      case SeasonMarkerKind.photoCompare:
+        final plantId = marker.slug;
+        if (plantId == null) {
+          _tell(context);
+        } else {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: plantId)),
+          );
+        }
       case SeasonMarkerKind.orderSeeds:
         showAppSheet<void>(
           context: context,
@@ -926,6 +985,9 @@ class _MarkerItem implements _Item {
       // the Home card does; without a link there is only the job to explain.
       case SeasonMarkerKind.checklist:
       case SeasonMarkerKind.companion:
+      // The first sowing names a crop; its own page is where the rest of that
+      // crop's year is.
+      case SeasonMarkerKind.firstSow:
         final crop = marker.slug == null ? null : repo.cropBySlug(marker.slug!);
         if (crop == null) {
           _tell(context);
@@ -940,6 +1002,9 @@ class _MarkerItem implements _Item {
       case SeasonMarkerKind.lastFrost:
       case SeasonMarkerKind.firstFrost:
       case SeasonMarkerKind.weather:
+      // A run of days has no screen of its own — the count is already in the
+      // crest above the path — so the mascot simply says well done.
+      case SeasonMarkerKind.streak:
         _tell(context);
     }
   }
@@ -1047,8 +1112,14 @@ class _MarkerItem implements _Item {
                   // read as a warning the checklist never meant.
                   SeasonMarkerKind.checklist ||
                   SeasonMarkerKind.companion ||
-                  SeasonMarkerKind.collection =>
+                  SeasonMarkerKind.collection ||
+                  SeasonMarkerKind.photoCompare =>
                     MascotPose.pointing,
+                  // A milestone is the gardener's, and the mascot says so.
+                  SeasonMarkerKind.firstSow ||
+                  SeasonMarkerKind.harvest ||
+                  SeasonMarkerKind.streak =>
+                    MascotPose.celebrating,
                   _ => MascotPose.frost,
                 },
                 size: 72,

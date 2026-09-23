@@ -65,3 +65,39 @@ StreakResult computeStreak(Iterable<String> activeDays, String today, {StreakPar
   }
   return StreakResult(count: count, freezesUsed: freezesUsed, todayOpen: todayOpen);
 }
+
+/// The runs worth marking on the season path: a week, a month, a hundred days.
+const streakMilestoneDays = [7, 30, 100];
+
+/// The day each milestone in [streakMilestoneDays] was reached, oldest first.
+///
+/// The dating has to agree with the number on Home to the day, freeze days and
+/// winter pause included, so it asks [computeStreak] rather than re-deriving
+/// runs of its own: for every active day, the run ending there, and the first
+/// day that run is long enough is the milestone. Only active days are
+/// candidates — a freeze bridges a gap, it is not a day the gardener showed up,
+/// so it can carry a run over a threshold but never be the day it happened.
+///
+/// ponytail: O(days²) — a year of daily gardening is ~365 runs of ~365 steps,
+/// microseconds, and it is recomputed once per path build. If this ever spans
+/// many years, walk the days once and carry the run forward instead.
+List<({int days, String on})> streakMilestones(
+  Iterable<String> activeDays,
+  String today, {
+  StreakParams params = defaultStreak,
+}) {
+  final days = activeDays.where((d) => d.compareTo(today) <= 0).toList()..sort();
+  final out = <({int days, String on})>[];
+  var next = 0;
+  for (final day in days) {
+    if (next >= streakMilestoneDays.length) break;
+    final run = computeStreak(activeDays, day, params: params).count;
+    // One active day can clear more than one threshold only if the thresholds
+    // were miles apart; the while keeps that honest rather than assuming.
+    while (next < streakMilestoneDays.length && run >= streakMilestoneDays[next]) {
+      out.add((days: streakMilestoneDays[next], on: day));
+      next++;
+    }
+  }
+  return out;
+}

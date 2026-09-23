@@ -922,12 +922,41 @@ class GardenRepository extends ChangeNotifier {
     return result;
   }
 
+  /// The streak milestones the gardener has reached, dated. Same freeze policy
+  /// as [streak], because a stop on the path that disagrees with the number on
+  /// Home is worse than no stop at all.
+  Future<List<({int days, String on})>> streakMilestonesReached({bool premium = false}) async =>
+      streakMilestones(
+        await activeDays(),
+        today,
+        params: StreakParams(freezesPerMonth: premium ? null : 2),
+      );
+
   // ── Journal (F5) ───────────────────────────────────────────────────────
   Future<List<JournalEntryRow>> journal(String plantId) =>
       (db.select(db.journalEntries)
             ..where((t) => t.gardenPlantId.equals(plantId) & t.deletedAt.isNull())
             ..orderBy([(t) => OrderingTerm.desc(t.entryOn)]))
           .get();
+
+  /// The days a photo was logged, per plant, oldest first — the whole garden in
+  /// one query. [journal] answers for one plant, which is the wrong shape for
+  /// the season path: it asks "has anything been photographed this month, and
+  /// does anything have an older picture to put beside it?" of every plant at
+  /// once, and would otherwise walk the journal once per plant to find out.
+  Future<Map<String, List<String>>> photoDays() async {
+    final rows = await (db.select(db.journalEntries)
+          ..where((t) => t.deletedAt.isNull() & t.photoPath.isNotNull())
+          ..orderBy([(t) => OrderingTerm.asc(t.entryOn)]))
+        .get();
+    final out = <String, List<String>>{};
+    for (final r in rows) {
+      final plantId = r.gardenPlantId;
+      if (plantId == null) continue;
+      (out[plantId] ??= []).add(r.entryOn);
+    }
+    return out;
+  }
 
   /// Growth log (PRD 5.5): mood 1 (bad) … 4 (excellent), up to 9 photos
   /// (local paths; uploaded to Storage once the bucket is live), a note, and

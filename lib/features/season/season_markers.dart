@@ -33,6 +33,18 @@ enum SeasonMarkerKind {
 
   /// A themed list of crops, parked in a month that has little else.
   collection,
+
+  /// The first thing the gardener actually put in the ground this year.
+  firstSow,
+
+  /// The 1st, 10th, 25th, 50th or 100th harvest they logged this year.
+  harvest,
+
+  /// A run of days kept going: a week, a month, a hundred days.
+  streak,
+
+  /// A plant photographed this month that also has an older picture.
+  photoCompare,
 }
 
 class SeasonMarker {
@@ -52,8 +64,10 @@ class SeasonMarker {
   final LocalizedText caption;
 
   /// What the stop is about, when it is about something the app can open: a
-  /// crop slug for the checklist and companion stops, a collection slug for the
-  /// collection stop. Null on the markers that only have a story to tell.
+  /// crop slug for the checklist, companion, first-sowing and harvest stops, a
+  /// collection slug for the collection stop, a plant id for the photo stop —
+  /// its two pictures live on that plant, not on the crop. Null on the markers
+  /// that only have a story to tell.
   final String? slug;
 }
 
@@ -65,8 +79,23 @@ class SeasonMarker {
 /// kind has a hard ceiling: at most two checklist stops in any one month, two
 /// companion stops in the whole year, and exactly one collection stop. An empty
 /// month that gains six stops is worse than the dead end it replaced.
+///
+/// The milestone stops — what the gardener actually did — are capped the same
+/// way, and harder, because a good year produces them by the dozen: the first
+/// sowing happens once, the two most recent harvest milestones stand for all of
+/// them, the newest streak run stands for the ones before it, and one plant is
+/// worth photographing beside its younger self. Five stops in a whole year, and
+/// a first-time gardener with no history gets none of them. A trophy that is
+/// always there is wallpaper; the year should read as a story with a handful of
+/// good days in it, not as a cabinet.
 const _checklistPerMonth = 2;
 const _companionsPerSeason = 2;
+const _harvestMilestonesPerSeason = 2;
+const _streakMilestonesPerSeason = 1;
+
+/// Where the harvest count earns a stop. Early enough that a first harvest is
+/// celebrated, spaced widely enough that a productive July is not a parade.
+const _harvestMilestones = [1, 10, 25, 50, 100];
 
 /// The default name lookup: knows nothing, so the companion stops stay away.
 LocalizedText? _noName(String _) => null;
@@ -88,6 +117,10 @@ class MarkerFacts {
     this.collections = const [],
     this.busyMonths = const {},
     this.nameOf = _noName,
+    this.firstSow,
+    this.harvests = const [],
+    this.streaks = const [],
+    this.photos = const [],
   });
 
   final DateTime today;
@@ -126,7 +159,46 @@ class MarkerFacts {
   /// which partner slugs it will end up asking about — and `seasonRows` already
   /// takes its month counts the same way.
   final LocalizedText? Function(String slug) nameOf;
+
+  // ── what the gardener has already done ───────────────────────────────────
+  //
+  // All four are history, handed over as plain dated records. The builder never
+  // asks the database anything; it only decides which of these are worth a stop
+  // and where they sit.
+
+  /// The earliest sow the gardener logged, and the crop it was. Null until the
+  /// first one goes in — which is most of January.
+  final ({String slug, String on})? firstSow;
+
+  /// Every harvest logged, with the day it was logged on. The builder counts
+  /// them in date order itself, so the caller may hand them over in any.
+  final List<({String slug, String on})> harvests;
+
+  /// Streak runs that reached a milestone, with the day they reached it. Dated
+  /// by `streakMilestones` in timing/streak.dart, so a stop here and the count
+  /// on Home come from the same freeze rules.
+  final List<({int days, String on})> streaks;
+
+  /// Per plant, the first and last day it was photographed this year. Two dates
+  /// are all a "look how far it has come" needs: the gap between them is the
+  /// story, and the plant id is what opens the pictures.
+  final List<({String plantId, String firstOn, String lastOn})> photos;
 }
+
+/// A crop's name, falling back to its slug.
+///
+/// The companion stop drops a crop the catalogue does not know, because it is
+/// suggesting something new and there is nothing to suggest. A milestone is the
+/// gardener's own record: a harvest they logged does not stop having happened
+/// because the catalogue lost the slug, so it prints the slug the way every
+/// other screen does rather than vanishing.
+LocalizedText _name(MarkerFacts facts, String slug) =>
+    facts.nameOf(slug) ?? LocalizedText(nl: slug, en: slug);
+
+/// The last [n] of a list, or all of it. Both milestone caps are "the most
+/// recent ones", and the list is already in date order by the time they apply.
+List<T> _lastOf<T>(List<T> xs, int n) =>
+    xs.length <= n ? xs : xs.sublist(xs.length - n);
 
 String _iso(int year, int month, int day) =>
     '$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
@@ -264,6 +336,90 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
       ));
       break;
     }
+  }
+
+  // ── what the gardener has already done ─────────────────────────────────────
+  //
+  // History, and history starts on New Year's Day: the path tells one year's
+  // story, so last season's first sowing and last season's streak belong to
+  // last season's path.
+  bool thisYear(String iso) => iso.startsWith('$year-');
+
+  // Where the season actually began. The date is the day it was logged rather
+  // than the day it was planned for, because that is the day it happened.
+  final sow = facts.firstSow;
+  if (sow != null && thisYear(sow.on)) {
+    out.add(SeasonMarker(
+      kind: SeasonMarkerKind.firstSow,
+      on: sow.on,
+      title: Str.pathFirstSow,
+      caption: Str.pathFirstSowCaption(_name(facts, sow.slug)),
+      slug: sow.slug,
+    ));
+  }
+
+  // Harvests, numbered in the order they were picked. Only the two most recent
+  // milestones stand: a hundred-harvest year would otherwise hang five trophies
+  // on the path, and the early ones are the ones the gardener has moved past.
+  final picked = [
+    for (final h in facts.harvests)
+      if (thisYear(h.on)) h
+  ]..sort((a, b) => a.on.compareTo(b.on));
+  final trophies = <SeasonMarker>[];
+  for (var i = 0; i < picked.length; i++) {
+    final n = i + 1;
+    if (!_harvestMilestones.contains(n)) continue;
+    trophies.add(SeasonMarker(
+      kind: SeasonMarkerKind.harvest,
+      on: picked[i].on,
+      title: Str.pathHarvest(n),
+      caption: Str.pathHarvestCaption(_name(facts, picked[i].slug)),
+      slug: picked[i].slug,
+    ));
+  }
+  out.addAll(_lastOf(trophies, _harvestMilestonesPerSeason));
+
+  // The run they are proudest of is the longest one they reached, and it says
+  // everything the shorter ones did. Seven, thirty and a hundred days all on
+  // the path is the same sentence three times.
+  final runs = [
+    for (final s in facts.streaks)
+      if (thisYear(s.on)) s
+  ];
+  for (final run in _lastOf(runs, _streakMilestonesPerSeason)) {
+    out.add(SeasonMarker(
+      kind: SeasonMarkerKind.streak,
+      on: run.on,
+      title: Str.pathStreak(run.days),
+      caption: Str.pathStreakCaption,
+    ));
+  }
+
+  // One plant photographed this month that also has an older picture of itself.
+  // The widest gap wins: the plant that changed most is the one worth opening,
+  // and a second invitation to look at pictures is not a second story.
+  ({String plantId, String firstOn, String lastOn})? best;
+  var widest = 0;
+  for (final plant in facts.photos) {
+    if (!thisYear(plant.firstOn) || !thisYear(plant.lastOn)) continue;
+    final first = parseIso(plant.firstOn);
+    final last = parseIso(plant.lastOn);
+    // "This month" and "an earlier month", both of this year — two pictures
+    // from the same month are the same plant on the same day, near enough.
+    if (last.month != facts.today.month || first.month >= last.month) continue;
+    final gap = last.difference(first).inDays;
+    if (gap <= widest) continue;
+    widest = gap;
+    best = plant;
+  }
+  if (best != null) {
+    out.add(SeasonMarker(
+      kind: SeasonMarkerKind.photoCompare,
+      on: best.lastOn,
+      title: Str.pathPhotoCompare,
+      caption: Str.pathPhotoCompareCaption(Str.month(parseIso(best.firstOn).month)),
+      slug: best.plantId,
+    ));
   }
 
   final weather = facts.weatherTitle;
