@@ -1,5 +1,6 @@
 import 'package:cropsy/design/motion.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Widget _app({required bool reduced, required Widget child}) => MediaQuery(
@@ -69,5 +70,63 @@ void main() {
 
   test('exits run shorter than enters', () {
     expect(Motion.exit.inMilliseconds, lessThan(Motion.standard.inMilliseconds));
+  });
+
+  testWidgets('the app preference only ever adds to the phone setting',
+      (tester) async {
+    addTearDown(() => AccessPrefs.reduceMotion.value = false);
+    late BuildContext captured;
+
+    Future<bool> reducedWith({required bool app, required bool platform}) async {
+      AccessPrefs.reduceMotion.value = app;
+      await tester.pumpWidget(_app(
+        reduced: platform,
+        child: Builder(builder: (context) {
+          captured = context;
+          return target;
+        }),
+      ));
+      return Motion.of(captured).reduced;
+    }
+
+    expect(await reducedWith(app: false, platform: false), isFalse);
+    // Either side asking for less motion is enough, and the phone's answer
+    // cannot be overridden by the app's.
+    expect(await reducedWith(app: true, platform: false), isTrue);
+    expect(await reducedWith(app: false, platform: true), isTrue);
+    expect(await reducedWith(app: true, platform: true), isTrue);
+  });
+
+  testWidgets('haptics go quiet when the preference is off', (tester) async {
+    final buzzes = <MethodCall>[];
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      SystemChannels.platform,
+      (call) async {
+        if (call.method == 'HapticFeedback.vibrate') buzzes.add(call);
+        return null;
+      },
+    );
+    addTearDown(() {
+      tester.binding.defaultBinaryMessenger
+          .setMockMethodCallHandler(SystemChannels.platform, null);
+      AccessPrefs.haptics.value = true;
+    });
+
+    void fireAll() {
+      Haptics.selection();
+      Haptics.press();
+      Haptics.complete();
+    }
+
+    AccessPrefs.haptics.value = true;
+    fireAll();
+    await tester.pump();
+    expect(buzzes, hasLength(3));
+
+    buzzes.clear();
+    AccessPrefs.haptics.value = false;
+    fireAll();
+    await tester.pump();
+    expect(buzzes, isEmpty);
   });
 }

@@ -485,18 +485,22 @@ class GardenRepository extends ChangeNotifier {
   }
 
   /// Personalize the garden itself: rename it, change the growing situation, or
-  /// adjust sun hours after onboarding.
+  /// adjust size and sun hours after onboarding. All four were asked once during
+  /// setup and are the first things to go stale when someone moves or clears
+  /// another bed.
   Future<void> updateGarden(
     String gardenId, {
     String? name,
     GardenKind? kind,
     int? sunHours,
+    int? sizeM2,
   }) async {
     await (db.update(db.gardens)..where((t) => t.id.equals(gardenId))).write(
       GardensCompanion(
         name: name == null ? const Value.absent() : Value(name),
         kind: kind == null ? const Value.absent() : Value(kind),
         sunHours: sunHours == null ? const Value.absent() : Value(sunHours),
+        sizeM2: sizeM2 == null ? const Value.absent() : Value(sizeM2),
         dirty: const Value(true),
       ),
     );

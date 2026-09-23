@@ -1,31 +1,24 @@
-/// Settings (PRD 8.2, Phase 1 slice): account (magic link / password), sync
-/// status, export my data, delete account. Membership, help, contact, language
-/// switch follow in Phase 2/3. Never a rate prompt.
+/// Sign in and sync (PRD 8.2): the magic link, the password, what moved last
+/// time, and the two account changes that need a server.
+///
+/// This screen used to be all of settings — six unrelated jobs, 584 lines, and
+/// one row on the profile as its only way in, which is why nobody found the
+/// theme switch or the FAQ. Everything that was not a form about the account
+/// now lives in its own file next to this one and is reached directly from the
+/// profile. What is left is the part that genuinely needs a keyboard and a
+/// network. Never a rate prompt.
 library;
 
-import 'dart:convert';
-import '../../l10n/strings.dart';
-import '../../timing/types.dart';
-
 import 'package:flutter/material.dart';
-import '../../design/icons.dart';
-import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import '../../config.dart';
-
-import '../../db/database.dart';
-import '../../analytics/analytics.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
-import '../../design/theme_mode.dart';
-import '../../l10n/app_lang.dart';
 import '../../design/typography.dart';
-import '../../purchases/purchase_service.dart';
+import '../../l10n/app_lang.dart';
+import '../../l10n/strings.dart';
 import '../../sync/auth_service.dart';
 import '../../sync/sync_engine.dart';
-import '../paywall/paywall_screen.dart';
-import '../garden/garden_repository.dart';
+import '../../timing/types.dart';
 import '../repository_scope.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -58,15 +51,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final repo = RepositoryScope.of(context);
     final auth = AuthScope.maybeOf(context);
     return Scaffold(
-      backgroundColor: AppColors.paper,
+      backgroundColor: AppColors.canvas,
       appBar: AppBar(
-        backgroundColor: AppColors.paper,
-        surfaceTintColor: AppColors.paper,
+        backgroundColor: AppColors.canvas,
+        surfaceTintColor: AppColors.canvas,
         iconTheme: IconThemeData(color: AppColors.ink),
-        title: Text(Str.settings.of(context), style: AppText.heading(context)),
+        title: Text(Str.settingsAndSync.of(context), style: AppText.subheading(context)),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
@@ -75,204 +67,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           if (auth == null)
             Text(Str.syncUnavailable.of(context), style: AppText.bodyMuted(context))
           else if (auth.signedIn)
-            _signedIn(context, auth, repo)
+            _signedIn(context, auth)
           else
             _signIn(context, auth),
           if (_status != null) ...[
             const SizedBox(height: 10),
-            Text(_status!, style: AppText.caption(context, color: AppColors.sprout)),
+            Text(_status!, style: AppText.caption(context, color: AppColors.accent)),
           ],
-          const SizedBox(height: 24),
-          SectionHeader(Str.membership.of(context)),
-          Builder(builder: (context) {
-            final p = PurchaseScope.maybeOf(context);
-            final plan = p?.plan ?? Plan.free;
-            return AppCard(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(
-                    switch (plan) {
-                      Plan.free => Str.planFree,
-                      Plan.lifetime => Str.planLifetime,
-                      Plan.yearly => Str.planYearly,
-                    }.of(context),
-                    style: AppText.label(context)),
-                Text(
-                  switch (plan) {
-                    Plan.free => Str.freeTierBlurb.of(context),
-                    Plan.lifetime => Str.lifetimeNothingToCancel.of(context),
-                    Plan.yearly => Str.renewsYearly.of(context),
-                  },
-                  style: AppText.caption(context),
-                ),
-                const SizedBox(height: 10),
-                Row(children: [
-                  if (plan == Plan.free)
-                    Expanded(
-                      child: SecondaryButton(
-                        label: Str.seePlans.of(context),
-                        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PaywallScreen(), fullscreenDialog: true)),
-                      ),
-                    ),
-                  if (plan == Plan.yearly)
-                    Expanded(
-                      child: SecondaryButton(
-                        label: Str.managePlan.of(context),
-                        onPressed: () => launchUrl(Uri.parse('https://apps.apple.com/account/subscriptions'), mode: LaunchMode.externalApplication),
-                      ),
-                    ),
-                  if (p?.configured == true) ...[
-                    const SizedBox(width: 8),
-                    Expanded(child: SecondaryButton(label: Str.restore.of(context), onPressed: () => _run(() async => p!.restore(), done: Str.checkedWithStore.of(context)))),
-                  ],
-                ]),
-              ]),
-            );
-          }),
-          const SizedBox(height: 24),
-          SectionHeader(Str.yourData.of(context)),
-          AppCard(
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Icon(PhosphorIcons.downloadSimple, color: AppColors.sprout),
-              title: Text(Str.exportData.of(context), style: AppText.label(context)),
-              subtitle: Text(Str.exportBlurb.of(context), style: AppText.caption(context)),
-              onTap: () => _run(() async {
-                await Clipboard.setData(ClipboardData(text: await _export(repo)));
-              }, done: Str.copied.of(context)),
-            ),
-          ),
-          // Seasonal mail rides on the account, not on the device: the address
-          // is the account's, so the toggle only means something once signed
-          // in. Consent lives in profile preferences, which already syncs.
-          AppCard(
-            child: FutureBuilder<ProfileRow?>(
-              future: repo.profile(),
-              builder: (context, snap) {
-                final prefs = snap.data == null
-                    ? const <String, dynamic>{}
-                    : jsonDecode(snap.data!.preferences) as Map<String, dynamic>;
-                final on = prefs['mail_optin'] != null;
-                final signedIn = auth?.signedIn ?? false;
-                return SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  value: on && signedIn,
-                  title: Text(Str.seasonMailTitle.of(context), style: AppText.label(context)),
-                  subtitle: Text(
-                    signedIn ? Str.seasonMailBlurb.of(context) : Str.seasonMailNeedsAccount.of(context),
-                    style: AppText.caption(context),
-                  ),
-                  activeThumbColor: AppColors.sprout,
-                  onChanged: signedIn
-                      ? (want) async {
-                          await repo.saveProfile(preferences: {
-                            'mail_optin': want ? DateTime.now().toUtc().toIso8601String() : null,
-                          });
-                          if (context.mounted) setState(() {});
-                        }
-                      : null,
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 12),
-          AppCard(
-            child: FutureBuilder<String?>(
-              future: repo.meta(Analytics.metaKey),
-              builder: (context, snap) => SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                value: snap.data == 'yes',
-                title: Text(Str.analyticsTitle.of(context), style: AppText.label(context)),
-                subtitle: Text(Str.analyticsBlurb.of(context), style: AppText.caption(context)),
-                activeThumbColor: AppColors.sprout,
-                onChanged: (on) async {
-                  await repo.setMeta(Analytics.metaKey, on ? 'yes' : 'no');
-                  await Analytics.setConsent(on);
-                  if (context.mounted) setState(() {});
-                },
-              ),
-            ),
-          ),
-          SizedBox(height: 24),
-          SectionHeader(Str.appearance.of(context)),
-          Builder(builder: (context) {
-            final theme = AppThemeScope.of(context);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SegmentedButton<AppThemeChoice>(
-                  segments: [
-                    ButtonSegment(
-                        value: AppThemeChoice.system,
-                        label: Text(Str.themeSystem.of(context))),
-                    ButtonSegment(
-                        value: AppThemeChoice.light,
-                        label: Text(Str.themeLight.of(context))),
-                    ButtonSegment(
-                        value: AppThemeChoice.dark,
-                        label: Text(Str.themeDark.of(context))),
-                  ],
-                  selected: {theme.choice},
-                  onSelectionChanged: (v) async {
-                    theme.choice = v.first;
-                    await repo.setMeta(AppTheme.metaKey, AppTheme.wire(v.first));
-                  },
-                ),
-                const SizedBox(height: 4),
-                Text(Str.themeFollows.of(context), style: AppText.caption(context)),
-              ],
-            );
-          }),
-          const SizedBox(height: 24),
-          SectionHeader(Str.language.of(context)),
-          FutureBuilder<ProfileRow?>(
-            future: repo.profile(),
-            builder: (context, snap) {
-              final lang = snap.data?.lang ?? 'nl';
-              return SegmentedButton<String>(
-                segments: const [ButtonSegment(value: 'nl', label: Text('Nederlands')), ButtonSegment(value: 'en', label: Text('English'))],
-                selected: {lang},
-                onSelectionChanged: (v) async {
-                  AppLangScope.of(context).code = v.first;
-                  await repo.saveProfile(lang: v.first);
-                  if (context.mounted) setState(() {});
-                },
-              );
-            },
-          ),
-          const SizedBox(height: 4),
-          Text(Str.langNote.of(context), style: AppText.caption(context)),
-          const SizedBox(height: 24),
-          SectionHeader(Str.help.of(context)),
-          for (final (q, a) in _faq)
-            Theme(
-              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-              child: ExpansionTile(
-                tilePadding: EdgeInsets.zero,
-                title: Text(q.of(context), style: AppText.label(context)),
-                iconColor: AppColors.sprout,
-                collapsedIconColor: AppColors.muted,
-                children: [Align(alignment: Alignment.centerLeft, child: Padding(padding: EdgeInsets.only(bottom: 10), child: Text(a.of(context), style: AppText.bodyMuted(context))))],
-              ),
-            ),
-          SizedBox(height: 12),
-          for (final (label, icon, path) in [
-            (Str.contactUs, PhosphorIcons.envelope, '/support'),
-            (Str.privacy, PhosphorIcons.lock, '/privacy'),
-            (Str.terms, PhosphorIcons.fileText, '/terms'),
-          ])
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Icon(icon, color: AppColors.sprout),
-              title: Text(label.of(context), style: AppText.label(context)),
-              trailing: Icon(PhosphorIcons.arrowSquareOut, size: 16, color: AppColors.muted),
-              // Locale-prefixed: the site serves /nl/... and /en/..., and a bare
-              // path only 307s to Dutch.
-              onTap: () => launchUrl(Uri.parse('$websiteUrl/${AppLangScope.of(context).code}$path'), mode: LaunchMode.externalApplication),
-            ),
-          const SizedBox(height: 24),
-          SectionHeader(Str.about.of(context)),
-          Text(Str.cropDataVersion(repo.cropVersion).of(context), style: AppText.caption(context)),
-          Text(Str.frostDates(repo.regionName, repo.frostSource).of(context), style: AppText.caption(context)),
         ],
       ),
     );
@@ -369,7 +170,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _signedIn(BuildContext context, AuthService auth, GardenRepository repo) {
+  Widget _signedIn(BuildContext context, AuthService auth) {
     final last = auth.lastSyncAt;
     return AppCard(
       child: Column(
@@ -440,12 +241,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ]),
           const SizedBox(height: 4),
           Text(Str.emailChangeBlurb.of(context), style: AppText.caption(context)),
-          const SizedBox(height: 16),
-          TextButton(
-            style: TextButton.styleFrom(foregroundColor: AppColors.warn),
-            onPressed: _busy ? null : () => _deleteAccount(auth, repo),
-            child: Text(Str.deleteAccount.of(context)),
-          ),
         ],
       ),
     );
@@ -462,123 +257,4 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
     return parts.isEmpty ? Str.alreadyInStep.of(context) : parts.join(' · ');
   }
-
-  Future<void> _deleteAccount(AuthService auth, GardenRepository repo) async {
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.surface,
-        title: Text(Str.deleteAccountAsk.of(context), style: AppText.title(context)),
-        content: Text(Str.deleteAccountBody.of(context),
-            style: AppText.bodyMuted(context)),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(Str.cancel.of(context))),
-          TextButton(
-            style: TextButton.styleFrom(foregroundColor: AppColors.warn),
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(Str.delete.of(context)),
-          ),
-        ],
-      ),
-    );
-    if (ok != true || !mounted) return;
-    // Read the line before the await, so the dialog's context is not used after it.
-    final done = Str.deleted.of(context);
-    final failed = Str.couldNotDeleteAccount.of(context);
-    await _run(() async {
-      final deleted = await auth.deleteAccount();
-      if (!deleted) throw Exception(failed);
-    }, done: done);
-  }
-
-  Future<String> _export(GardenRepository repo) async {
-    final db = repo.db;
-    return const JsonEncoder.withIndent('  ').convert({
-      'exported_at': DateTime.now().toUtc().toIso8601String(),
-      'profile': (await repo.profile())?.toJson(),
-      'gardens': [for (final r in await db.select(db.gardens).get()) r.toJson()],
-      'garden_plants': [for (final r in await db.select(db.gardenPlants).get()) r.toJson()],
-      'tasks': [for (final r in await db.select(db.tasks).get()) r.toJson()],
-      'journal_entries': [for (final r in await db.select(db.journalEntries).get()) r.toJson()],
-      'harvests': [for (final r in await db.select(db.harvests).get()) r.toJson()],
-    });
-  }
 }
-
-/// The help section. Chrome, not content, so it lives here rather than in the
-/// snapshot, and it carries both languages like everything else the user reads.
-const _faq = <(LocalizedText, LocalizedText)>[
-  (
-    LocalizedText(
-      nl: 'Waar komen de plantdata vandaan?',
-      en: 'Where do the planting dates come from?',
-    ),
-    LocalizedText(
-      nl: 'Uit de vorstdatums voor jouw locatie (KNMI / Open-Meteo '
-          'klimaatnormalen, afgerond op ~10 km), gecombineerd met teeltregels '
-          'die tegen minstens twee Nederlandse zaaikalenders zijn gelegd.',
-      en: 'From the frost dates for your location (KNMI / Open-Meteo climate '
-          'normals, rounded to ~10 km) combined with crop rules cross-checked '
-          'against at least two Dutch seed calendars.',
-    ),
-  ),
-  (
-    LocalizedText(
-      nl: 'Ik loop achter. Is mijn plan verpest?',
-      en: 'I fell behind. Is my plan ruined?',
-    ),
-    LocalizedText(
-      nl: 'Nee. Log wat je echt hebt gedaan en wanneer; elke volgende stap '
-          'schuift mee. Niets is ooit "te laat", het is "verzet".',
-      en: 'No. Log what you actually did and when; every later step moves with '
-          'it. Nothing is ever "overdue", it is "moved".',
-    ),
-  ),
-  (
-    LocalizedText(
-      nl: 'Waarom is een waterbeurt verdwenen?',
-      en: 'Why did a watering disappear?',
-    ),
-    LocalizedText(
-      nl: 'Het heeft rond die dag genoeg geregend, of er is regen voorspeld. '
-          'De weerregel op Home vertelt wat er veranderde.',
-      en: 'It rained enough around that day, or rain is forecast. The weather '
-          'line on Home says what changed.',
-    ),
-  ),
-  (
-    LocalizedText(nl: 'Werkt het offline?', en: 'Does it work offline?'),
-    LocalizedText(
-      nl: 'Ja. Gewassen, data, herinneringen en de tijdlijn draaien op de '
-          'telefoon. Weerhints en synchroniseren hebben verbinding nodig.',
-      en: 'Yes. Crops, dates, reminders and the timeline all run on the phone. '
-          'Weather hints and sync need a connection.',
-    ),
-  ),
-  (
-    LocalizedText(
-      nl: 'Wat zit er in de gratis versie?',
-      en: 'What does the free tier include?',
-    ),
-    LocalizedText(
-      nl: 'Eén tuin, zes groeiende planten, de volledige tijdlijn, '
-          'herinneringen en elk gewas, voorgoed. Lifetime geeft meer ruimte.',
-      en: 'One garden, six growing plants, the full timeline, reminders and '
-          'every crop, forever. Lifetime unlocks more room.',
-    ),
-  ),
-  (
-    LocalizedText(
-      nl: 'Hoe verwijder ik mijn account?',
-      en: 'How do I delete my account?',
-    ),
-    LocalizedText(
-      nl: 'Instellingen → Account → Account verwijderen. Dat wist je account '
-          'en elke gesynchroniseerde rij; lokale gegevens blijven op deze '
-          'telefoon tot je de app verwijdert.',
-      en: 'Settings → Account → Delete account. It removes your account and '
-          'every synced row; local data stays on this phone until you delete '
-          'the app.',
-    ),
-  ),
-];

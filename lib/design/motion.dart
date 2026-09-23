@@ -10,13 +10,52 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:flutter/services.dart';
 
+/// The two accessibility preferences the app offers on top of the phone's own.
+///
+/// [ValueNotifier]s rather than the [InheritedNotifier] the theme uses, because
+/// both values have to be readable where there is no [BuildContext] to look a
+/// scope up from: [Haptics] is a static class whose methods are passed around as
+/// bare function references (`haptic: Haptics.selection`), and [Motion.of] runs
+/// in widget tests that mount a `MediaQuery` and nothing else. Same reasoning as
+/// `AppColors.scheme`: a value the paint path needs, held where the paint path
+/// can reach it.
+///
+/// Both live in `Profiles.preferences`, which already syncs, so a phone that
+/// signs in keeps the person's answer. (The theme deliberately does not: that
+/// one describes the device.)
+///
+/// Nothing listens to these by default — a toggle takes effect on the next
+/// build, which is the next animation or the next buzz, not the current frame.
+/// The screen that flips them rebuilds itself so its own switch is honest.
+abstract final class AccessPrefs {
+  static const hapticsKey = 'haptics';
+  static const reduceMotionKey = 'reduce_motion';
+
+  /// Haptics on unless the person turned them off; motion full unless they
+  /// asked for less. Both defaults match what the app did before it asked.
+  static final ValueNotifier<bool> haptics = ValueNotifier(true);
+  static final ValueNotifier<bool> reduceMotion = ValueNotifier(false);
+
+  /// Boot: the decoded `preferences` map from the profile row.
+  static void load(Map<String, dynamic> preferences) {
+    haptics.value = preferences[hapticsKey] as bool? ?? true;
+    reduceMotion.value = preferences[reduceMotionKey] as bool? ?? false;
+  }
+}
+
 class Motion {
   const Motion._(this.reduced);
 
-  /// Reads the platform's reduce-motion setting. Screens call this instead of
-  /// touching the constants, so honouring the setting is the default path.
-  factory Motion.of(BuildContext context) =>
-      Motion._(MediaQuery.disableAnimationsOf(context));
+  /// Reads the platform's reduce-motion setting, and the app's own on top of
+  /// it. Screens call this instead of touching the constants, so honouring the
+  /// setting is the default path.
+  ///
+  /// The app preference only ever adds: a phone that asks for reduced motion
+  /// gets it whatever the app setting says, because the phone's answer is the
+  /// one the person gave their operating system.
+  factory Motion.of(BuildContext context) => Motion._(
+        MediaQuery.disableAnimationsOf(context) || AccessPrefs.reduceMotion.value,
+      );
 
   final bool reduced;
 
@@ -47,10 +86,22 @@ class Motion {
 
 /// Haptics, base 9. Light on selection, medium on a primary action, heavy on a
 /// completion. Never on scroll or a passive update.
+///
+/// Silent when [AccessPrefs.haptics] is off: the gate sits here rather than at
+/// the call sites, because every buzz in the app already routes through these
+/// three methods.
 abstract final class Haptics {
-  static void selection() => HapticFeedback.selectionClick();
-  static void press() => HapticFeedback.mediumImpact();
-  static void complete() => HapticFeedback.heavyImpact();
+  static void selection() {
+    if (AccessPrefs.haptics.value) HapticFeedback.selectionClick();
+  }
+
+  static void press() {
+    if (AccessPrefs.haptics.value) HapticFeedback.mediumImpact();
+  }
+
+  static void complete() {
+    if (AccessPrefs.haptics.value) HapticFeedback.heavyImpact();
+  }
 }
 
 /// A bottom sheet on the base's own timing: 380 ms in on the enter curve, and

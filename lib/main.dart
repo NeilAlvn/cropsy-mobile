@@ -5,6 +5,7 @@
 // tabbed app takes over. Offline is the default state (PRD §4).
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import 'analytics/analytics.dart';
 import 'db/connection.dart';
 import 'design/brutal.dart';
 import 'design/colors.dart';
+import 'design/motion.dart';
 import 'design/theme_mode.dart';
 import 'l10n/app_lang.dart';
 import 'features/app_shell.dart';
@@ -77,8 +79,14 @@ Future<void> _boot() async {
   // Dates are read, not parsed: month and weekday names have to speak the
   // reader's language too.
   await initializeDateFormatting();
-  final lang = AppLang((await repo.profile())?.lang ?? 'nl');
+  final profile = await repo.profile();
+  final lang = AppLang(profile?.lang ?? 'nl');
   Intl.defaultLocale = lang.code;
+  // Haptics and reduced motion are read at paint time, with no context and no
+  // await to spare, so they are pulled out of the profile once, here.
+  AccessPrefs.load(
+    jsonDecode(profile?.preferences ?? '{}') as Map<String, dynamic>,
+  );
 
   // Reminders follow the data: any change re-plans the week's notifications.
   Timer? debounce;

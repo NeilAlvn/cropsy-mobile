@@ -1,8 +1,14 @@
-/// Profile — who the gardener is, what their season looks like, and the way in
-/// to everything about the account.
+/// Profile — who the gardener is, what their season looks like, and everything
+/// the app can be told about itself.
 ///
 /// Base 8.9 detail header, base 8.18 stat figures, base 8.7 grouped rows.
-/// Settings keeps the account forms; this screen is the front door to them.
+///
+/// This used to be two groups and a row called "Settings & Sync", behind which
+/// sat the theme switch, the language switch, the FAQ and account deletion —
+/// all present, none findable. So the settings came out to meet the gardener:
+/// each group builds itself from its own file under features/settings, and the
+/// only thing left behind a push is the sign-in form, because that one really
+/// is a page of typing.
 library;
 
 import 'package:flutter/material.dart';
@@ -17,10 +23,13 @@ import '../../design/components.dart';
 import '../../design/typography.dart';
 import '../../timing/streak.dart';
 import '../garden/garden_repository.dart';
-import '../location/location_sheet.dart';
-import '../paywall/paywall_screen.dart';
 import '../repository_scope.dart';
-import '../settings/settings_screen.dart';
+import '../settings/accessibility_group.dart';
+import '../settings/account_group.dart';
+import '../settings/appearance_group.dart';
+import '../settings/garden_group.dart';
+import '../settings/help_group.dart';
+import '../settings/notifications_group.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -52,6 +61,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       harvestEuros: tally.euros,
       premium: premium,
     );
+  }
+
+  void _reload() {
+    if (mounted) setState(() => _data = _load());
   }
 
   @override
@@ -100,35 +113,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
               ),
+              // The order is the order someone looks for things in: their own
+              // garden first, then how the app looks and speaks, then what it
+              // sends, then what it can tone down, then the account, then help.
+              const SizedBox(height: 16),
+              GardenGroup(onChanged: _reload),
+              const SizedBox(height: 16),
+              const AppearanceGroup(),
+              const SizedBox(height: 16),
+              const NotificationsGroup(),
+              const SizedBox(height: 16),
+              const AccessibilityGroup(),
+              const SizedBox(height: 16),
+              AccountGroup(onChanged: _reload),
+              const SizedBox(height: 16),
+              const HelpGroup(),
+              // Which crop data and which frost dates this plan was built from.
+              // Two lines nobody needs until the day a date looks wrong.
               const SizedBox(height: 24),
-              SectionHeader(Str.yourGarden.of(context)),
-              _Group(rows: [
-                _Row(
-                  icon: PhosphorIcons.mapPin,
-                  title: Str.region.of(context),
-                  value: repo.regionName,
-                  onTap: () => showLocationPicker(context),
-                ),
-                _Row(
-                  icon: PhosphorIcons.medal,
-                  title: Str.membership.of(context),
-                  value: (d.premium ? Str.planLifetime : Str.planFree).of(context),
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const PaywallScreen()),
-                  ),
-                ),
-              ]),
-              const SizedBox(height: 24),
-              SectionHeader(Str.account.of(context)),
-              _Group(rows: [
-                _Row(
-                  icon: PhosphorIcons.gear,
-                  title: (auth?.signedIn == true ? Str.settingsAndSync : Str.signInToSync).of(context),
-                  onTap: () => Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => const SettingsScreen()))
-                      .then((_) => setState(() => _data = _load())),
-                ),
-              ]),
+              Text(Str.cropDataVersion(repo.cropVersion).of(context),
+                  style: AppText.caption(context)),
+              Text(Str.frostDates(repo.regionName, repo.frostSource).of(context),
+                  style: AppText.caption(context)),
             ],
           );
         },
@@ -164,7 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
     if (name == null) return;
     await repo.saveProfile(displayName: name.isEmpty ? null : name);
-    if (mounted) setState(() => _data = _load());
+    _reload();
   }
 }
 
@@ -258,75 +264,6 @@ class _Stat extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis),
           ],
-        ),
-      );
-}
-
-/// Base 8.7: one white container, rows divided by an inset hairline.
-class _Group extends StatelessWidget {
-  const _Group({required this.rows});
-
-  final List<_Row> rows;
-
-  @override
-  Widget build(BuildContext context) => Container(
-        decoration: Neo.box(),
-        child: Column(
-          children: [
-            for (var i = 0; i < rows.length; i++) ...[
-              if (i > 0)
-                Padding(
-                  padding: EdgeInsets.only(left: 56),
-                  child: Divider(height: 1, thickness: 1, color: AppColors.hairline),
-                ),
-              rows[i],
-            ],
-          ],
-        ),
-      );
-}
-
-class _Row extends StatelessWidget {
-  const _Row({
-    required this.icon,
-    required this.title,
-    required this.onTap,
-    this.value,
-  });
-
-  final IconData icon;
-  final String title;
-  final String? value;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(Neo.radius),
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 56),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            children: [
-              Icon(icon, size: 24, color: AppColors.ink),
-              const SizedBox(width: 16),
-              Text(title, style: AppText.body(context)),
-              const SizedBox(width: 12),
-              // The value yields to the title and ellipsises; a long region
-              // name must not push the row title into a second line.
-              Expanded(
-                child: Text(
-                  value ?? '',
-                  style: AppText.body(context, color: AppColors.inkMuted),
-                  textAlign: TextAlign.right,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              const SizedBox(width: 4),
-              Icon(PhosphorIcons.caretRight, size: 16, color: AppColors.inkMuted),
-            ],
-          ),
         ),
       );
 }
