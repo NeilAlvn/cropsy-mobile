@@ -37,7 +37,7 @@ class WeatherService {
       final uri = Uri.https('api.open-meteo.com', '/v1/forecast', {
         'latitude': lat.toStringAsFixed(2),
         'longitude': lon.toStringAsFixed(2),
-        'daily': 'precipitation_sum,temperature_2m_min,temperature_2m_max',
+        'daily': 'precipitation_sum,temperature_2m_min,temperature_2m_max,weathercode',
         'past_days': '7',
         'forecast_days': '7',
         'timezone': 'auto',
@@ -50,6 +50,10 @@ class WeatherService {
       final rain = (d['precipitation_sum'] as List);
       final tmin = (d['temperature_2m_min'] as List);
       final tmax = (d['temperature_2m_max'] as List);
+      // Open-Meteo answers `weathercode` under the name it was asked for, but
+      // also serves the newer `weather_code` spelling; accept either, and a
+      // response with neither simply has no condition to show.
+      final code = (d['weathercode'] ?? d['weather_code']) as List?;
       return [
         for (var i = 0; i < time.length; i++)
           if (tmin[i] != null && tmax[i] != null)
@@ -58,6 +62,7 @@ class WeatherService {
               precipMm: (rain[i] as num?) ?? 0,
               tempMinC: tmin[i] as num,
               tempMaxC: tmax[i] as num,
+              weatherCode: (code?[i] as num?)?.toInt(),
             ),
       ];
     } catch (_) {
@@ -73,14 +78,12 @@ class WeatherService {
     final j = jsonDecode(row.value) as Map<String, dynamic>;
     if ((j['lat'] as num).toDouble() != lat || (j['lon'] as num).toDouble() != lon) return null;
     final at = DateTime.parse(j['at'] as String);
+    // `weather_code` arrived after the first shipped cache, so it is read as
+    // optional rather than behind a new key: a row written by the previous
+    // build still parses, just without a condition, and the next refresh fills
+    // it in. Bumping the key would have thrown away a usable offline forecast.
     final days = [
-      for (final o in j['days'] as List)
-        DayObservation(
-          date: o['date'] as String,
-          precipMm: o['precip_mm'] as num,
-          tempMinC: o['temp_min_c'] as num,
-          tempMaxC: o['temp_max_c'] as num,
-        ),
+      for (final o in j['days'] as List) DayObservation.fromJson(o as Map<String, dynamic>),
     ];
     return (days: days, fresh: DateTime.now().difference(at) < _ttl);
   }
@@ -95,7 +98,13 @@ class WeatherService {
                 'at': DateTime.now().toIso8601String(),
                 'days': [
                   for (final o in days)
-                    {'date': o.date, 'precip_mm': o.precipMm, 'temp_min_c': o.tempMinC, 'temp_max_c': o.tempMaxC},
+                    {
+                      'date': o.date,
+                      'precip_mm': o.precipMm,
+                      'temp_min_c': o.tempMinC,
+                      'temp_max_c': o.tempMaxC,
+                      if (o.weatherCode != null) 'weather_code': o.weatherCode,
+                    },
                 ],
               }),
             ),

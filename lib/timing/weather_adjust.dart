@@ -92,6 +92,7 @@ class DayObservation {
     required this.precipMm,
     required this.tempMinC,
     required this.tempMaxC,
+    this.weatherCode,
   });
 
   final String date;
@@ -99,14 +100,48 @@ class DayObservation {
   final num tempMinC;
   final num tempMaxC;
 
+  /// WMO code for the day, for the Home card to show a condition. The
+  /// adjustment rules never read it — they run on rain and temperature alone —
+  /// and it is nullable so a cache written before it existed, and the backend
+  /// fixture, both still parse.
+  final int? weatherCode;
+
   factory DayObservation.fromJson(Map<String, dynamic> j) => DayObservation(
         date: j['date'] as String,
         precipMm: j['precip_mm'] as num,
         tempMinC: j['temp_min_c'] as num,
         tempMaxC: j['temp_max_c'] as num,
+        weatherCode: (j['weather_code'] as num?)?.toInt(),
       );
 
   num get meanTemp => (tempMinC + tempMaxC) / 2;
+}
+
+/// The eight condition groups the app names. WMO publishes far more codes than
+/// a gardener needs, so they collapse to the groups the string table has words
+/// for — anything finer would be a distinction nobody acts on.
+enum WeatherCondition { clear, partlyCloudy, overcast, fog, drizzle, rain, snow, thunder }
+
+/// Group a WMO code. Returns null for "we do not know" — a missing code from an
+/// old cache, or one outside the published table — so the caller can say
+/// nothing rather than guess a condition, the same way the overlay refuses to
+/// invent a forecast.
+WeatherCondition? weatherConditionFor(int? code) {
+  if (code == null) return null;
+  return switch (code) {
+    0 => WeatherCondition.clear,
+    // 1 is "mainly clear", 2 "partly cloudy" — one word covers both.
+    1 || 2 => WeatherCondition.partlyCloudy,
+    3 => WeatherCondition.overcast,
+    45 || 48 => WeatherCondition.fog,
+    // 56/57 are freezing drizzle, 66/67 freezing rain: still drizzle and rain
+    // to anyone deciding whether to water.
+    >= 51 && <= 57 => WeatherCondition.drizzle,
+    (>= 61 && <= 67) || (>= 80 && <= 82) => WeatherCondition.rain,
+    (>= 71 && <= 77) || 85 || 86 => WeatherCondition.snow,
+    95 || 96 || 99 => WeatherCondition.thunder,
+    _ => null,
+  };
 }
 
 enum AdjustAction { skip, defer, bringForward, none }

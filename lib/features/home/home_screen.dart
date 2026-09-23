@@ -88,11 +88,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           if (_query.isEmpty) ...[
             const SliverToBoxAdapter(child: ArriveIn(index: 1, child: _StreakCard())),
-            const SliverToBoxAdapter(child: ArriveIn(index: 2, child: _TodaysCare())),
-            const SliverToBoxAdapter(child: ArriveIn(index: 3, child: _UpcomingHarvest())),
+            const SliverToBoxAdapter(child: ArriveIn(index: 2, child: _TodayWeather())),
+            const SliverToBoxAdapter(child: ArriveIn(index: 3, child: _TodaysCare())),
+            const SliverToBoxAdapter(child: ArriveIn(index: 4, child: _UpcomingHarvest())),
             SliverToBoxAdapter(
               child: ArriveIn(
-                index: 4,
+                index: 5,
                 child: _MonthChecklist(month: _month!, onMonth: _pickMonth),
               ),
             ),
@@ -210,9 +211,11 @@ class _HomeBand extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final top = MediaQuery.paddingOf(context).top;
-    // The band is light, so the status bar runs dark.
+    // The status bar sits on the band, so its glyphs run opposite the scheme:
+    // dark glyphs on the light band, light glyphs on the dark one. Hardcoding
+    // either one paints the status bar invisible in the other scheme.
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
+      value: AppColors.isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       child: Container(
       padding: EdgeInsets.fromLTRB(20, top + 12, 20, 20),
       decoration: BoxDecoration(
@@ -501,6 +504,183 @@ class _WhatToGrowHeader extends StatelessWidget {
     );
   }
 }
+
+/// 2.3 — the weather the overlay actually read: today's high and low, what
+/// fell, the week ahead, and one line of what it moved.
+///
+/// It fetches nothing. `thisWeek()` already pulls the observations and leaves
+/// them on the repository, so this card awaits that same call (the one
+/// [_TodaysCare] below makes) and reads `lastObservations` once it lands. No
+/// observations means no card copy beyond "the base schedule stands" — the app
+/// never invents a forecast.
+class _TodayWeather extends StatelessWidget {
+  const _TodayWeather();
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    return FutureBuilder<List<ThisWeekItem>>(
+      future: repo.thisWeek(),
+      builder: (context, snap) {
+        if (!snap.hasData) return const SizedBox.shrink();
+        final obs = repo.lastObservations;
+        final byDate = {for (final o in obs ?? const <DayObservation>[]) o.date: o};
+        final today = byDate[repo.today];
+
+        // What the overlay moved today. [_TodaysCare] speaks only for skips, so
+        // this line carries defers and brought-forward waterings too.
+        final moved = snap.data!
+            .where((i) => i.due.compareTo(repo.today) <= 0 && i.hint != null)
+            .toList();
+        final line = today == null
+            ? Str.weatherUnavailable
+            : moved.isEmpty
+                ? Str.weatherNothingMoved
+                : moved.first.hint!.reason;
+
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+          child: AppCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (today != null) ...[
+                  _TodayWeatherHead(today: today),
+                  const SizedBox(height: 14),
+                  _ForecastStrip(
+                    days: (obs ?? const <DayObservation>[])
+                        .where((o) => o.date.compareTo(repo.today) >= 0)
+                        .take(7)
+                        .toList(),
+                  ),
+                  const SizedBox(height: 12),
+                ],
+                Text(line.of(context), style: AppText.caption(context)),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Today's line: condition on the left, the day's range on the right.
+class _TodayWeatherHead extends StatelessWidget {
+  const _TodayWeatherHead({required this.today});
+
+  final DayObservation today;
+
+  @override
+  Widget build(BuildContext context) {
+    final face = _conditionFace(today.weatherCode);
+    // Below a tenth of a millimetre nothing reached the soil; call it dry
+    // rather than print "0.0 mm rain".
+    final wet = today.precipMm >= 0.1;
+    return Row(
+      children: [
+        if (face != null) ...[
+          Icon(face.icon, size: 30, color: face.color),
+          const SizedBox(width: 12),
+        ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(Str.weatherToday.of(context), style: AppText.label(context)),
+              Text(
+                [
+                  if (face != null) face.name.of(context),
+                  (wet
+                          ? Str.weatherRain(today.precipMm.toStringAsFixed(1))
+                          : Str.weatherDry)
+                      .of(context),
+                ].join(' · '),
+                style: AppText.caption(context,
+                    color: wet ? AppColors.rain : AppColors.inkMuted),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 12),
+        Text(
+          Str.weatherRange(today.tempMaxC.round(), today.tempMinC.round()).of(context),
+          style: AppText.title(context)
+              .copyWith(fontFeatures: const [FontFeature.tabularFigures()]),
+        ),
+      ],
+    );
+  }
+}
+
+/// The week ahead, one column a day. Deliberately temperature-only: the high is
+/// what decides whether a container dries out, and a second number per column
+/// turns the strip into a table nobody reads.
+class _ForecastStrip extends StatelessWidget {
+  const _ForecastStrip({required this.days});
+
+  final List<DayObservation> days;
+
+  @override
+  Widget build(BuildContext context) {
+    if (days.isEmpty) return const SizedBox.shrink();
+    // `Intl.defaultLocale` is set at startup, so the weekday comes out in the
+    // app's language without threading a locale through.
+    final fmt = DateFormat('EEE');
+    return Row(
+      children: [
+        for (final o in days)
+          Expanded(
+            child: Column(
+              children: [
+                Text(fmt.format(parseIso(o.date)),
+                    style: AppText.caption(context, color: AppColors.inkMuted),
+                    maxLines: 1),
+                const SizedBox(height: 4),
+                Icon(_conditionFace(o.weatherCode)?.icon ?? PhosphorIcons.circle,
+                    size: 18,
+                    color: _conditionFace(o.weatherCode)?.color ?? AppColors.inkPlaceholder),
+                const SizedBox(height: 4),
+                Text('${o.tempMaxC.round()}°',
+                    style: AppText.caption(context, color: AppColors.ink)
+                        .copyWith(fontFeatures: const [FontFeature.tabularFigures()]),
+                    maxLines: 1),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+/// The icon, word and colour for a WMO code, or null when there is no code to
+/// read — an old cache row, or a code outside the published table.
+///
+/// Phosphor ships no bolt in our subset, so thunder borrows the umbrella and
+/// leans on the warning colour to separate itself from plain rain.
+({IconData icon, LocalizedText name, Color color})? _conditionFace(int? code) =>
+    switch (weatherConditionFor(code)) {
+      WeatherCondition.clear =>
+        (icon: PhosphorIcons.sun, name: Str.weatherClear, color: AppColors.amber),
+      WeatherCondition.partlyCloudy => (
+          icon: PhosphorIcons.cloud,
+          name: Str.weatherPartlyCloudy,
+          color: AppColors.inkMuted
+        ),
+      WeatherCondition.overcast =>
+        (icon: PhosphorIcons.cloud, name: Str.weatherOvercast, color: AppColors.inkMuted),
+      WeatherCondition.fog =>
+        (icon: PhosphorIcons.cloud, name: Str.weatherFog, color: AppColors.inkFaint),
+      WeatherCondition.drizzle =>
+        (icon: PhosphorIcons.drop, name: Str.weatherDrizzle, color: AppColors.rain),
+      WeatherCondition.rain =>
+        (icon: PhosphorIcons.umbrella, name: Str.weatherRainy, color: AppColors.rain),
+      WeatherCondition.snow =>
+        (icon: PhosphorIcons.snowflake, name: Str.weatherSnow, color: AppColors.frost),
+      WeatherCondition.thunder =>
+        (icon: PhosphorIcons.umbrella, name: Str.weatherThunder, color: AppColors.warning),
+      null => null,
+    };
 
 /// 2.3 — Today's care: the weather card says what it changed, then today's
 /// tasks with checkboxes. Nothing to do → the mascot says so.
