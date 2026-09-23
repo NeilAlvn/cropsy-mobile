@@ -176,10 +176,16 @@ class SegmentedTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // The selected segment has to sit *above* its track. Light gets that for
+    // free — a white surface on the sand tile — but dark inverts the pair
+    // (tile 0xFF232B23 is lighter than surface 0xFF1A201A), so the thumb read
+    // as a hole punched in the control. Dark swaps the two tokens back into
+    // the right order rather than inventing a colour.
+    final dark = AppColors.isDark;
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: AppColors.tile,
+        color: dark ? AppColors.surface : AppColors.tile,
         borderRadius: BorderRadius.circular(Neo.radiusPill),
       ),
       child: Row(
@@ -194,7 +200,7 @@ class SegmentedTabs extends StatelessWidget {
                   margin: EdgeInsets.only(right: i == labels.length - 1 ? 0 : 4),
                   decoration: i == index
                       ? BoxDecoration(
-                          color: AppColors.surface,
+                          color: dark ? AppColors.tile : AppColors.surface,
                           borderRadius: BorderRadius.circular(Neo.radiusPill),
                           boxShadow: Neo.float,
                         )

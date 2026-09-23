@@ -31,23 +31,43 @@ abstract final class Neo {
   static const double borderWidth = 1;
 
   /// Hairline ring. Inputs, ghost buttons, dividers — not cards.
-  static Border border = Border.fromBorderSide(
-    BorderSide(color: AppColors.hairline, width: borderWidth),
-  );
+  ///
+  /// A getter, not a `static final`: a field would bake in whichever scheme
+  /// happened to be live the first time something drew a border, and then keep
+  /// drawing the light hairline all night.
+  static Border get border => Border.fromBorderSide(
+        BorderSide(color: AppColors.hairline, width: borderWidth),
+      );
+
+  /// Elevation is light falling past an edge, so the scheme decides how much
+  /// of it there is to block. The light column's 10% ink over a bright canvas
+  /// is a soft drop; the same ink over `canvas` at 0xFF121712 moves almost no
+  /// pixels, which is how the tab bar and the sheets lost their lift in dark.
+  /// Dark pays for a near-black canvas with a deeper, untinted shadow.
+  static Color _shadow(int lightArgb, int darkArgb) =>
+      Color(AppColors.isDark ? darkArgb : lightArgb);
 
   /// Level 1, floating: tab bar, icon buttons over media, toasts.
-  static const List<BoxShadow> float = [
-    BoxShadow(color: Color(0x1A17191C), offset: Offset(0, 8), blurRadius: 24),
-  ];
+  static List<BoxShadow> get float => [
+        BoxShadow(
+          color: _shadow(0x1A17191C, 0x66000000),
+          offset: const Offset(0, 8),
+          blurRadius: 24,
+        ),
+      ];
 
   /// Level 2, overlay: bottom sheets, dialogs, popovers.
-  static List<BoxShadow> overlay = [
-    BoxShadow(color: Color(0x2417191C), offset: Offset(0, 16), blurRadius: 40),
-  ];
+  static List<BoxShadow> get overlay => [
+        BoxShadow(
+          color: _shadow(0x2417191C, 0x8A000000),
+          offset: const Offset(0, 16),
+          blurRadius: 40,
+        ),
+      ];
 
   /// Legacy names, mapped onto the two levels above.
-  static List<BoxShadow> shadow = float;
-  static List<BoxShadow> shadowSm = float;
+  static List<BoxShadow> get shadow => float;
+  static List<BoxShadow> get shadowSm => float;
 
   /// Standard surface: a flat white card by default. Pass `shadowed: true`
   /// only for something that genuinely floats over content.

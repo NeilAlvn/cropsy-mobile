@@ -1,3 +1,4 @@
+import 'package:cropsy/design/brutal.dart';
 import 'package:cropsy/design/colors.dart';
 import 'package:cropsy/design/components.dart';
 import 'package:flutter/material.dart';
@@ -32,5 +33,20 @@ void main() {
       find.descendant(of: find.byType(PrimaryButton), matching: find.byType(Container)).first,
     );
     expect((box.decoration as BoxDecoration).color, AppColors.tile);
+  });
+
+  /// Shape tokens have to answer a scheme change too. As `static final` fields
+  /// they were computed once, so whichever scheme drew first kept its hairline
+  /// and its drop shadow for the rest of the session.
+  test('the shape tokens follow the scheme rather than the first read', () {
+    addTearDown(() => AppColors.scheme.value = AppPalette.light);
+
+    AppColors.scheme.value = AppPalette.light;
+    final lightBorder = Neo.border.top.color;
+    final lightShadow = Neo.float.single.color;
+
+    AppColors.scheme.value = AppPalette.dark;
+    expect(Neo.border.top.color, isNot(lightBorder));
+    expect(Neo.float.single.color.a, greaterThan(lightShadow.a));
   });
 }

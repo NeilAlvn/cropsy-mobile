@@ -282,6 +282,13 @@ class DraftBadge extends StatelessWidget {
   /// Short form for list tiles.
   final bool compact;
 
+  /// Terracotta is one fixed colour in both schemes — it belongs to the art,
+  /// not to the palette — and on the dark tile it falls to 2.9:1. Dark borrows
+  /// `amber`, the palette's other warm token, for the same note at 7.6:1.
   @override
-  Widget build(BuildContext context) => Pill(label: compact ? 'Concept' : 'Concept, nog niet gecontroleerd', icon: PhosphorIcons.notePencil, color: AppColors.clay);
+  Widget build(BuildContext context) => Pill(
+        label: compact ? 'Concept' : 'Concept, nog niet gecontroleerd',
+        icon: PhosphorIcons.notePencil,
+        color: AppColors.isDark ? AppColors.amber : AppColors.clay,
+      );
 }

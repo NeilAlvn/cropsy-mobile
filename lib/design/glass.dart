@@ -62,21 +62,28 @@ class GlassSurface extends StatelessWidget {
     // read through things": fall back to the solid surface (base 10).
     final opaque = MediaQuery.highContrastOf(context);
     final fill = tint ?? AppColors.surface;
+    // A pane of glass catches the light of the room it stands in. The light
+    // scheme's edge is a room full of it; the same white on the dark canvas
+    // reads as a lit ring drawn around the pill rather than as an edge, so
+    // dark keeps only the trace a dim room would actually throw.
+    final dark = AppColors.isDark;
+    final edge = dark ? 0.10 : 0.55;
+    final sheen = dark ? (0.06, 0.01) : (0.22, 0.02);
 
     final pane = DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: radius,
         color: opaque ? fill : fill.withValues(alpha: tintOpacity),
         // The specular edge. Brighter where a light above-left would catch it.
-        border: Border.all(color: Colors.white.withValues(alpha: 0.55), width: 1),
+        border: Border.all(color: Colors.white.withValues(alpha: edge), width: 1),
         gradient: opaque
             ? null
             : LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Colors.white.withValues(alpha: 0.22),
-                  Colors.white.withValues(alpha: 0.02),
+                  Colors.white.withValues(alpha: sheen.$1),
+                  Colors.white.withValues(alpha: sheen.$2),
                 ],
               ),
       ),
