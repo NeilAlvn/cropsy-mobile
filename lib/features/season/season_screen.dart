@@ -161,16 +161,6 @@ class _SeasonScreenState extends State<SeasonScreen> {
       break;
     }
 
-    final markers = seasonMarkers(MarkerFacts(
-      today: today,
-      frost: repo.frost,
-      plantCount: plants.length,
-      photoThisMonth: photoThisMonth,
-      euros: tally.euros,
-      kilos: tally.kg,
-      weatherTitle: weatherTitle,
-      weatherCaption: weatherCaption,
-    ));
     final tasks = [
       for (final t in await repo.seasonTasks())
         SeasonTask(
@@ -192,6 +182,55 @@ class _SeasonScreenState extends State<SeasonScreen> {
           ),
         ),
     ];
+
+    // A crop's first step is where a companion suggestion belongs: "plant basil
+    // alongside" reads right next to the tomato going in, and nowhere else.
+    final grown = <String, String>{};
+    for (final node in nodes) {
+      final at = grown[node.cropSlug];
+      if (at == null || node.start.compareTo(at) < 0) {
+        grown[node.cropSlug] = node.start;
+      }
+    }
+
+    // Verified NL collections from the snapshot once they exist (PRD 6.1),
+    // otherwise the sets derived from the catalogue — the same fallback Explore
+    // makes, so the path never points at a list that tab does not show.
+    final fromContent = repo.content.collections;
+    final collections = fromContent.isEmpty
+        ? [
+            for (final c in repo.collections)
+              (
+                slug: c.id,
+                // The derived sets are titled in English only, as Explore
+                // renders them; nothing here is translated that was not already.
+                title: LocalizedText(nl: c.title, en: c.title),
+                draft: c.draft,
+              ),
+          ]
+        : [
+            for (final c in fromContent)
+              (slug: c.slug, title: c.title, draft: c.draft),
+          ];
+
+    final markers = seasonMarkers(MarkerFacts(
+      today: today,
+      frost: repo.frost,
+      plantCount: plants.length,
+      photoThisMonth: photoThisMonth,
+      euros: tally.euros,
+      kilos: tally.kg,
+      weatherTitle: weatherTitle,
+      weatherCaption: weatherCaption,
+      checklist: repo.content.checklist,
+      grown: [for (final e in grown.entries) (slug: e.key, on: e.value)],
+      collections: collections,
+      busyMonths: {
+        for (final n in nodes) parseIso(n.start).month,
+        for (final t in tasks) parseIso(t.due).month,
+      },
+      nameOf: (slug) => repo.cropBySlug(slug)?.names,
+    ));
 
     final streak = await repo.streak(premium: premium);
 
@@ -842,6 +881,12 @@ class _MarkerItem implements _Item {
         SeasonMarkerKind.payoff => 'tally',
         SeasonMarkerKind.recap => 'recap',
         SeasonMarkerKind.weather => 'rain',
+        // A job for the month, a crop to put in beside another, a list to pick
+        // from: the watering can, the seedling and the chest already say
+        // exactly those three things elsewhere on the path.
+        SeasonMarkerKind.checklist => 'water',
+        SeasonMarkerKind.companion => 'sow',
+        SeasonMarkerKind.collection => 'chest',
       };
 
   @override
@@ -873,10 +918,24 @@ class _MarkerItem implements _Item {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
           ),
-          builder: (context) => _MonthOptions(month: 3, crops: repo.whatToGrowIn(3)),
+          builder: (context) => _CropOptions(title: Str.stillSowable(Str.month(3)), crops: repo.whatToGrowIn(3)),
         );
       case SeasonMarkerKind.recap:
         _recap(context);
+      // The checklist links to a crop when the editors gave it one, exactly as
+      // the Home card does; without a link there is only the job to explain.
+      case SeasonMarkerKind.checklist:
+      case SeasonMarkerKind.companion:
+        final crop = marker.slug == null ? null : repo.cropBySlug(marker.slug!);
+        if (crop == null) {
+          _tell(context);
+        } else {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_) => CropDetailScreen(crop: crop)),
+          );
+        }
+      case SeasonMarkerKind.collection:
+        _openCollection(context);
       case SeasonMarkerKind.ijsheiligen:
       case SeasonMarkerKind.lastFrost:
       case SeasonMarkerKind.firstFrost:
@@ -942,6 +1001,29 @@ class _MarkerItem implements _Item {
     );
   }
 
+  /// The themed list behind a collection stop, in the same grid the month's
+  /// chest opens. Snapshot collections name their crops; the derived ones carry
+  /// theirs already, so both end up as the same list of crops.
+  void _openCollection(BuildContext context) {
+    final slug = marker.slug;
+    final fromContent =
+        repo.content.collections.where((c) => c.slug == slug).firstOrNull;
+    final crops = fromContent != null
+        ? [for (final s in fromContent.cropSlugs) ?repo.cropBySlug(s)]
+        : repo.collections.where((c) => c.id == slug).firstOrNull?.crops ??
+            const <Crop>[];
+    if (crops.isEmpty) return _tell(context);
+    showAppSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (context) => _CropOptions(title: marker.title, crops: crops),
+    );
+  }
+
   /// The mascot explains the marker. Base 8.13: a sheet, not a dialog.
   void _tell(BuildContext context) => showAppSheet<void>(
         context: context,
@@ -961,6 +1043,12 @@ class _MarkerItem implements _Item {
                 pose: switch (marker.kind) {
                   SeasonMarkerKind.recap => MascotPose.celebrating,
                   SeasonMarkerKind.weather => MascotPose.rain,
+                  // The new stops are advice, not weather: the frost pose would
+                  // read as a warning the checklist never meant.
+                  SeasonMarkerKind.checklist ||
+                  SeasonMarkerKind.companion ||
+                  SeasonMarkerKind.collection =>
+                    MascotPose.pointing,
                   _ => MascotPose.frost,
                 },
                 size: 72,
@@ -1098,7 +1186,7 @@ void _openMonth(BuildContext context, GardenRepository repo, int month) =>
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       builder: (context) =>
-          _MonthOptions(month: month, crops: repo.whatToGrowIn(month)),
+          _CropOptions(title: Str.stillSowable(Str.month(month)), crops: repo.whatToGrowIn(month)),
     );
 
 /// One stop on the path: the connector, the button, and its label.
@@ -1401,10 +1489,12 @@ class _Crest extends StatelessWidget {
 
 /// What could still go in this month. Base 8.13: a sheet, not a screen, because
 /// it is a detour from the path rather than a place.
-class _MonthOptions extends StatelessWidget {
-  const _MonthOptions({required this.month, required this.crops});
+/// A sheet of crops to pick from: the month's still-sowable list, or the crops
+/// behind a collection stop. Only the heading differs, so only that is a field.
+class _CropOptions extends StatelessWidget {
+  const _CropOptions({required this.title, required this.crops});
 
-  final int month;
+  final LocalizedText title;
   final List<Crop> crops;
 
   @override
@@ -1428,8 +1518,7 @@ class _MonthOptions extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Text(Str.stillSowable(Str.month(month)).of(context),
-                  style: AppText.heading(context)),
+              Text(title.of(context), style: AppText.heading(context)),
               const SizedBox(height: 4),
               Text('${crops.length} crops for your region.',
                   style: AppText.bodyMuted(context)),

@@ -1,13 +1,23 @@
 import 'package:cropsy/features/season/season_markers.dart';
 import 'package:cropsy/features/season/season_rows.dart';
+import 'package:cropsy/timing/content_snapshot.dart';
 import 'package:cropsy/timing/types.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+/// The test catalogue knows every slug, so a companion stop is never dropped
+/// for want of a name. The "not in the catalogue" case gets its own test.
+LocalizedText? _anyName(String slug) => LocalizedText(nl: slug, en: slug);
 
 MarkerFacts _facts({
   int plants = 3,
   bool photo = false,
   double euros = 0,
   LocalizedText? weather,
+  List<ChecklistItem> checklist = const [],
+  List<({String slug, String on})> grown = const [],
+  List<({String slug, LocalizedText title, bool draft})> collections = const [],
+  Set<int> busy = const {},
+  LocalizedText? Function(String slug) nameOf = _anyName,
 }) =>
     MarkerFacts(
       today: DateTime.utc(2026, 9, 16),
@@ -19,9 +29,30 @@ MarkerFacts _facts({
       weatherTitle: weather,
       weatherCaption:
           weather == null ? null : const LocalizedText(nl: 'omdat', en: 'because'),
+      checklist: checklist,
+      grown: grown,
+      collections: collections,
+      busyMonths: busy,
+      nameOf: nameOf,
     );
 
+ChecklistItem _job(int month, String title, {String? link, bool draft = false}) =>
+    ChecklistItem(
+      month: month,
+      title: LocalizedText(nl: title, en: title),
+      body: const LocalizedText(nl: '', en: ''),
+      link: link,
+      draft: draft,
+    );
+
+({String slug, LocalizedText title, bool draft}) _list(String slug,
+        {bool draft = false}) =>
+    (slug: slug, title: LocalizedText(nl: slug, en: slug), draft: draft);
+
 Set<SeasonMarkerKind> _kinds(List<SeasonMarker> m) => m.map((e) => e.kind).toSet();
+
+List<SeasonMarker> _of(List<SeasonMarker> m, SeasonMarkerKind kind) =>
+    m.where((e) => e.kind == kind).toList();
 
 void main() {
   test('the year always carries its frost dates and its recap', () {
@@ -71,6 +102,122 @@ void main() {
     ));
     final weather = marks.firstWhere((m) => m.kind == SeasonMarkerKind.weather);
     expect(weather.on, '2026-09-16');
+  });
+
+  // ── the content stops ─────────────────────────────────────────────────────
+
+  test('with no content of its own, the path gains nothing new', () {
+    final marks = seasonMarkers(_facts());
+    expect(_kinds(marks), isNot(contains(SeasonMarkerKind.checklist)));
+    expect(_kinds(marks), isNot(contains(SeasonMarkerKind.companion)));
+    expect(_kinds(marks), isNot(contains(SeasonMarkerKind.collection)));
+  });
+
+  test('the month checklist lands in its own month, links and all', () {
+    final marks = seasonMarkers(_facts(checklist: [
+      _job(3, 'Chit the potatoes', link: 'potato'),
+      _job(7, 'Water in the evening'),
+    ]));
+    final jobs = _of(marks, SeasonMarkerKind.checklist);
+    expect(jobs.map((m) => m.on), ['2026-03-01', '2026-07-01']);
+    expect(jobs.first.title.nl, 'Chit the potatoes');
+    expect(jobs.first.slug, 'potato');
+    expect(jobs.last.slug, isNull);
+  });
+
+  test('a month gets at most two checklist stops, in snapshot order', () {
+    final marks = seasonMarkers(_facts(checklist: [
+      _job(4, 'one'),
+      _job(4, 'two'),
+      _job(4, 'three'),
+      _job(4, 'four'),
+    ]));
+    final jobs = _of(marks, SeasonMarkerKind.checklist);
+    expect(jobs.map((m) => m.title.en), ['one', 'two']);
+    // Consecutive days, so the section sort keeps the order they came in.
+    expect(jobs.map((m) => m.on), ['2026-04-01', '2026-04-02']);
+  });
+
+  test('draft checklist rows stay off the path', () {
+    final marks = seasonMarkers(_facts(checklist: [
+      _job(4, 'unverified', draft: true),
+      _job(4, 'verified'),
+    ]));
+    expect(_of(marks, SeasonMarkerKind.checklist).map((m) => m.title.en),
+        ['verified']);
+  });
+
+  test('a crop still to sow gets one good neighbour it does not grow', () {
+    final marks = seasonMarkers(_facts(grown: [
+      (slug: 'tomato', on: '2026-10-01'),
+    ]));
+    final pairs = _of(marks, SeasonMarkerKind.companion);
+    expect(pairs, hasLength(1));
+    // Basil is tomato's first listed companion and is not on the path.
+    expect(pairs.single.slug, 'basil');
+    expect(pairs.single.on, '2026-10-01');
+    expect(pairs.single.caption.en, contains('tomato'));
+  });
+
+  test('a partner already on the path is not suggested again', () {
+    final marks = seasonMarkers(_facts(grown: [
+      (slug: 'tomato', on: '2026-10-01'),
+      (slug: 'basil', on: '2026-10-02'),
+    ]));
+    expect(_of(marks, SeasonMarkerKind.companion).map((m) => m.slug),
+        isNot(contains('basil')));
+  });
+
+  test('a sowing that has already been does not suggest a neighbour', () {
+    final marks = seasonMarkers(_facts(grown: [
+      (slug: 'tomato', on: '2026-05-01'),
+    ]));
+    expect(_of(marks, SeasonMarkerKind.companion), isEmpty);
+  });
+
+  test('a partner the catalogue does not carry is skipped, not printed raw', () {
+    final marks = seasonMarkers(_facts(
+      grown: [(slug: 'tomato', on: '2026-10-01')],
+      nameOf: (slug) => slug == 'tomato' ? _anyName(slug) : null,
+    ));
+    expect(_of(marks, SeasonMarkerKind.companion), isEmpty);
+  });
+
+  test('the season gets two companion stops at most, never one per pair', () {
+    final marks = seasonMarkers(_facts(grown: [
+      (slug: 'tomato', on: '2026-10-01'),
+      (slug: 'cucumber', on: '2026-10-02'),
+      (slug: 'pea', on: '2026-10-03'),
+      (slug: 'cabbage', on: '2026-10-04'),
+    ]));
+    // Four crops, a dozen-odd pairings between them, two stops.
+    expect(_of(marks, SeasonMarkerKind.companion), hasLength(2));
+  });
+
+  test('one collection stop, in the first thin month from today on', () {
+    final marks = seasonMarkers(_facts(collections: [
+      _list('balconies'),
+      _list('fast'),
+    ]));
+    final lists = _of(marks, SeasonMarkerKind.collection);
+    expect(lists, hasLength(1));
+    // September already carries the photo marker and holds no plants of its
+    // own, so the list thickens that month rather than opening a new one.
+    expect(lists.single.on, '2026-09-15');
+    expect(lists.single.slug, 'balconies');
+  });
+
+  test('the collection keeps out of busy months and off bare ones', () {
+    final marks = seasonMarkers(
+        _facts(collections: [_list('balconies')], busy: {9, 10}));
+    // November has nothing on it: leaving it bare keeps its "still sowable"
+    // chest, so the stop falls through to December, which has the recap.
+    expect(_of(marks, SeasonMarkerKind.collection).single.on, '2026-12-15');
+  });
+
+  test('draft collections are not pointed at', () {
+    final marks = seasonMarkers(_facts(collections: [_list('beta', draft: true)]));
+    expect(_of(marks, SeasonMarkerKind.collection), isEmpty);
   });
 
   test('markers and nodes share one timeline inside a month', () {

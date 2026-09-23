@@ -1,5 +1,7 @@
+import 'package:cropsy/features/season/season_markers.dart';
 import 'package:cropsy/features/season/season_rows.dart';
 import 'package:cropsy/timing/season.dart';
+import 'package:cropsy/timing/types.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 SeasonNode _node(String start, String end, String slug) => SeasonNode(
@@ -61,5 +63,35 @@ void main() {
         .toList();
     // Only the current month survives, so the path still says where you are.
     expect(months, [9]);
+  });
+
+  test('a content stop opens a month, but never in place of its chest', () {
+    final rows = seasonRows(
+      nodes: const [],
+      today: today,
+      optionsFor: (_) => 8,
+      markers: const [
+        SeasonMarker(
+          kind: SeasonMarkerKind.checklist,
+          on: '2026-11-01',
+          title: LocalizedText(nl: 'Klusje', en: 'A job'),
+          caption: LocalizedText(nl: '', en: ''),
+        ),
+      ],
+    );
+    final november = rows
+        .skipWhile((r) => !(r.kind == SeasonRowKind.month && r.month == 11))
+        .skip(1)
+        .takeWhile((r) => r.kind != SeasonRowKind.month)
+        .map((r) => r.kind)
+        .toList();
+    // November is no longer empty, so it loses its suggestion chest — which is
+    // exactly why `seasonMarkers` only ever parks a collection stop in a month
+    // that already carries one of the season's own markers.
+    expect(november, [SeasonRowKind.marker]);
+    expect(
+      rows.where((r) => r.kind == SeasonRowKind.suggestion).map((r) => r.month),
+      [9, 10, 12],
+    );
   });
 }
