@@ -125,6 +125,9 @@ class CropsyApp extends StatelessWidget {
   final AuthService? auth;
   final PurchaseService? purchases;
 
+  /// One per app, so the navigator outlives the scheme it was built under.
+  static final _navigator = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return RepositoryScope(
@@ -145,15 +148,22 @@ class CropsyApp extends StatelessWidget {
               builder: (context, palette, _) => MaterialApp(
                 // Colour tokens are read during build, and a const widget that
                 // was already built will not rebuild just because its ancestor
-                // did. Keying the app on the scheme rebuilds everything once,
-                // which is the honest cost of tokens that are not inherited.
+                // did, so a scheme change has to rebuild the app rather than
+                // notify it. Keying the app on the scheme does that.
                 key: ValueKey(palette.brightness),
+                // That key would also throw away the navigation stack, which is
+                // how changing the theme from a pushed screen used to dump you
+                // back on Home. A global key re-parents the navigator into the
+                // new tree instead: the routes survive, and being reactivated
+                // is a dependency change, so each one rebuilds its page in the
+                // scheme that just won.
+                navigatorKey: _navigator,
                 title: 'Cropsy',
                 debugShowCheckedModeBanner: false,
                 themeMode: theme.materialMode,
                 theme: _themeData(Brightness.light),
                 darkTheme: _themeData(Brightness.dark),
-                home: const _Root(),
+                home: _Root(),
               ),
             ),
           ),
@@ -222,7 +232,7 @@ class _RootState extends State<_Root> {
   Widget build(BuildContext context) {
     return switch (_hasGarden) {
       null => Scaffold(backgroundColor: AppColors.paper),
-      true => const AppShell(),
+      true => AppShell(),
       false => OnboardingScreen(onDone: () => setState(() => _hasGarden = true)),
     };
   }

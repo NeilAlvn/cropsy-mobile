@@ -127,7 +127,7 @@ class _AppShellState extends State<AppShell> {
 
   // Not const: a const child is not rebuilt when its parent is, and these
   // screens read colour tokens at build time.
-  final _tabs = const [
+  final _tabs = [
     HomeScreen(),
     GardenScreen(),
     SeasonScreen(),
