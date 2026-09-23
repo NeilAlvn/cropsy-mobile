@@ -16,7 +16,7 @@ const authRedirect = 'com.cropsyapp.app://login-callback';
 /// paywall explains, everything stays free-tier. Filled once the App Store
 /// Connect products exist (PRD §9, Luuk).
 const revenueCatIosKey = 'appl_TyAhhbWkvGilYzwOHWpVEuoQtWX';
-const revenueCatAndroidKey = '';
+const revenueCatAndroidKey = 'goog_TdnQhLhENRoFBAyWerWXZRLuJPd';
 
 /// Entitlement identifier configured in RevenueCat.
 const premiumEntitlement = 'premium';
