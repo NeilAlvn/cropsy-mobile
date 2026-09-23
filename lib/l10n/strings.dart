@@ -1457,6 +1457,108 @@ abstract final class Str {
             "the region's frost dates.",
       );
 
+  // ── the weather card on Home ──────────────────────────────────────────────
+  static const weatherToday =
+      LocalizedText(nl: 'Het weer vandaag', en: "Today's weather");
+  static LocalizedText weatherRange(int high, int low) =>
+      LocalizedText(nl: '$high° / $low°', en: '$high° / $low°');
+  static LocalizedText weatherRain(String mm) =>
+      LocalizedText(nl: '$mm mm regen', en: '$mm mm rain');
+  static const weatherDry = LocalizedText(nl: 'Droog', en: 'Dry');
+  static const weatherNothingMoved = LocalizedText(
+    nl: 'Het weer verzet vandaag niets.',
+    en: 'The weather moves nothing today.',
+  );
+  static const weatherUnavailable = LocalizedText(
+    nl: 'Geen weerbericht. Het basisschema staat.',
+    en: 'No forecast. The base schedule stands.',
+  );
+
+  /// Open-Meteo WMO condition groups, named for the card and the strip.
+  static const weatherClear = LocalizedText(nl: 'Helder', en: 'Clear');
+  static const weatherPartlyCloudy =
+      LocalizedText(nl: 'Half bewolkt', en: 'Partly cloudy');
+  static const weatherOvercast = LocalizedText(nl: 'Bewolkt', en: 'Overcast');
+  static const weatherFog = LocalizedText(nl: 'Mist', en: 'Fog');
+  static const weatherDrizzle = LocalizedText(nl: 'Motregen', en: 'Drizzle');
+  static const weatherRainy = LocalizedText(nl: 'Regen', en: 'Rain');
+  static const weatherSnow = LocalizedText(nl: 'Sneeuw', en: 'Snow');
+  static const weatherThunder = LocalizedText(nl: 'Onweer', en: 'Thunder');
+
+  // ── the path's new stops ──────────────────────────────────────────────────
+  static const pathChecklistCaption =
+      LocalizedText(nl: 'Klusje voor deze maand', en: 'A job for this month');
+  static LocalizedText pathCompanion(LocalizedText partner) => LocalizedText(
+        nl: 'Zet ${partner.nl} erbij',
+        en: 'Plant ${partner.en} alongside',
+      );
+  static LocalizedText pathCompanionCaption(LocalizedText have) =>
+      LocalizedText(
+        nl: 'Goede buur voor je ${have.nl}',
+        en: 'A good neighbour for your ${have.en}',
+      );
+  static const pathCollectionCaption =
+      LocalizedText(nl: 'Een lijstje om uit te kiezen', en: 'A list to pick from');
+
+  // ── the settings hub ──────────────────────────────────────────────────────
+  static const accessibility =
+      LocalizedText(nl: 'Toegankelijkheid', en: 'Accessibility');
+  static const hapticsTitle = LocalizedText(nl: 'Trillingen', en: 'Haptics');
+  static const hapticsBlurb = LocalizedText(
+    nl: 'Een korte trilling bij afvinken en indrukken.',
+    en: 'A short buzz when you tick something off or press it.',
+  );
+  static const reduceMotionTitle =
+      LocalizedText(nl: 'Minder beweging', en: 'Reduce motion');
+  static const reduceMotionBlurb = LocalizedText(
+    nl: 'Animaties worden een directe wissel. Staat ook aan als je telefoon '
+        'erom vraagt.',
+    en: 'Animations become an instant change. Also on when your phone asks '
+        'for it.',
+  );
+  static const gardenProfile =
+      LocalizedText(nl: 'Je tuin aanpassen', en: 'Edit your garden');
+  static const gardenProfileBlurb = LocalizedText(
+    nl: 'Verhuisd, of meer ruimte gevonden?',
+    en: 'Moved house, or found more room?',
+  );
+  static const gardenSize = LocalizedText(nl: 'Oppervlakte', en: 'Size');
+  static LocalizedText gardenSizeM2(int m2) =>
+      LocalizedText(nl: '$m2 m²', en: '$m2 m²');
+  static const gardenSizeHint = LocalizedText(
+    nl: 'Hoeveel vierkante meter heb je om te telen?',
+    en: 'How many square metres do you have to grow in?',
+  );
+  static const sunHoursLabel = LocalizedText(nl: 'Uren zon', en: 'Hours of sun');
+  static const sunHoursHint = LocalizedText(
+    nl: 'Op een heldere dag in juni.',
+    en: 'On a clear day in June.',
+  );
+  static const gardenSaved =
+      LocalizedText(nl: 'Tuin bijgewerkt', en: 'Garden updated');
+  static const faq = LocalizedText(
+    nl: 'Veelgestelde vragen',
+    en: 'Frequently asked questions',
+  );
+  static const helpAndSupport =
+      LocalizedText(nl: 'Help en ondersteuning', en: 'Help & support');
+  static const notSignedIn =
+      LocalizedText(nl: 'Niet aangemeld', en: 'Not signed in');
+  static const onThisDevice =
+      LocalizedText(nl: 'Op deze telefoon', en: 'On this phone');
+
+  // ── searching the problems ────────────────────────────────────────────────
+  static const searchProblems =
+      LocalizedText(nl: 'Zoek een probleem', en: 'Search a problem');
+  static LocalizedText problemsFound(int n) => LocalizedText(
+        nl: '$n ${n == 1 ? 'probleem' : 'problemen'}',
+        en: '$n problem${n == 1 ? '' : 's'}',
+      );
+  static const noProblemsFound = LocalizedText(
+    nl: 'Niets gevonden. Probeer een ander woord.',
+    en: 'Nothing found. Try another word.',
+  );
+
   // ── months, for every sentence that names one ─────────────────────────────
   static const months = <LocalizedText>[
     LocalizedText(nl: 'januari', en: 'January'),
