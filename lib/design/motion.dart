@@ -6,9 +6,13 @@
 /// read durations through [Motion.of] rather than using the constants directly.
 library;
 
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:flutter/services.dart';
+
+import 'colors.dart';
 
 /// The two accessibility preferences the app offers on top of the phone's own.
 ///
@@ -53,9 +57,8 @@ class Motion {
   /// The app preference only ever adds: a phone that asks for reduced motion
   /// gets it whatever the app setting says, because the phone's answer is the
   /// one the person gave their operating system.
-  factory Motion.of(BuildContext context) => Motion._(
-        MediaQuery.disableAnimationsOf(context) || AccessPrefs.reduceMotion.value,
-      );
+  factory Motion.of(BuildContext context) =>
+      Motion._(MediaQuery.disableAnimationsOf(context) || AccessPrefs.reduceMotion.value);
 
   final bool reduced;
 
@@ -70,12 +73,18 @@ class Motion {
   static const Curve easeExit = Cubic(0.4, 0, 1, 1);
 
   /// Press scale and release. Base 9: damping 18, stiffness 260.
-  static const SpringDescription springPress =
-      SpringDescription(mass: 1, stiffness: 260, damping: 18);
+  static const SpringDescription springPress = SpringDescription(
+    mass: 1,
+    stiffness: 260,
+    damping: 18,
+  );
 
   /// Sheet detents and drag release. Base 9: damping 24, stiffness 200.
-  static const SpringDescription springSheet =
-      SpringDescription(mass: 1, stiffness: 200, damping: 24);
+  static const SpringDescription springSheet = SpringDescription(
+    mass: 1,
+    stiffness: 200,
+    damping: 24,
+  );
 
   /// Stagger between items arriving after load, capped at six items (base 9).
   static const Duration stagger = Duration(milliseconds: 40);
@@ -159,10 +168,7 @@ class Pressable extends StatefulWidget {
 }
 
 class _PressableState extends State<Pressable> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController.unbounded(
-    value: 1,
-    vsync: this,
-  );
+  late final AnimationController _c = AnimationController.unbounded(value: 1, vsync: this);
 
   @override
   void dispose() {
@@ -178,9 +184,7 @@ class _PressableState extends State<Pressable> with SingleTickerProviderStateMix
       _c.value = target;
       return;
     }
-    _c.animateWith(
-      SpringSimulation(Motion.springPress, _c.value, target, 0),
-    );
+    _c.animateWith(SpringSimulation(Motion.springPress, _c.value, target, 0));
   }
 
   @override
@@ -200,8 +204,7 @@ class _PressableState extends State<Pressable> with SingleTickerProviderStateMix
       onLongPress: widget.onLongPress,
       child: AnimatedBuilder(
         animation: _c,
-        builder: (context, child) =>
-            Transform.scale(scale: _c.value, child: child),
+        builder: (context, child) => Transform.scale(scale: _c.value, child: child),
         child: widget.child,
       ),
     );
@@ -234,6 +237,202 @@ class ArriveIn extends StatelessWidget {
         child: Transform.translate(offset: Offset(0, 8 * (1 - t)), child: child),
       ),
       child: child,
+    );
+  }
+}
+
+/// A number that counts up to its value, for the one number on a screen that is
+/// the payoff — crops matched, days to harvest, kilos logged. [text] rebuilds
+/// the whole sentence per frame so the count works inside a localised string.
+///
+/// Anything that is merely data (a list count, a badge) does not count up: the
+/// device is worth something only where it is rare.
+class CountUp extends StatelessWidget {
+  const CountUp({
+    super.key,
+    required this.value,
+    required this.text,
+    this.style,
+    this.duration = const Duration(milliseconds: 900),
+  });
+
+  final int value;
+  final String Function(int) text;
+  final TextStyle? style;
+  final Duration duration;
+
+  @override
+  Widget build(BuildContext context) {
+    final motion = Motion.of(context);
+    if (motion.reduced) return Text(text(value), style: style);
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: value.toDouble()),
+      duration: duration,
+      curve: Motion.easeEnter,
+      builder: (context, v, _) => Text(text(v.round()), style: style),
+    );
+  }
+}
+
+/// Seeds thrown from the centre of the child, once, when [play] turns true.
+/// The payoff moment: the plan is ready, the harvest is logged. Drawn rather
+/// than animated from a file, so it costs no asset and takes the accent colour
+/// with it into dark mode.
+class SeedBurst extends StatefulWidget {
+  const SeedBurst({super.key, required this.play, required this.child});
+
+  final bool play;
+  final Widget child;
+
+  @override
+  State<SeedBurst> createState() => _SeedBurstState();
+}
+
+class _SeedBurstState extends State<SeedBurst> with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1100),
+  );
+
+  /// Fixed seed: the burst looks hand-placed rather than random, and a test can
+  /// assert the same frame twice.
+  static final _seeds = List.generate(14, (i) {
+    final r = math.Random(7 + i);
+    return (
+      angle: -math.pi / 2 + (r.nextDouble() - 0.5) * math.pi * 1.4,
+      speed: 60 + r.nextDouble() * 70,
+      spin: (r.nextDouble() - 0.5) * 6,
+      size: 3.0 + r.nextDouble() * 2.5,
+      warm: i.isEven,
+    );
+  });
+
+  @override
+  void didUpdateWidget(SeedBurst old) {
+    super.didUpdateWidget(old);
+    if (widget.play && !old.play && !Motion.of(context).reduced) {
+      _c.forward(from: 0);
+      Haptics.complete();
+    }
+  }
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Stack(
+    alignment: Alignment.center,
+    children: [
+      widget.child,
+      Positioned.fill(
+        child: IgnorePointer(
+          child: AnimatedBuilder(
+            animation: _c,
+            builder: (context, _) => CustomPaint(
+              painter: _BurstPainter(_c.value, _seeds, AppColors.accent, AppColors.amber),
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+class _BurstPainter extends CustomPainter {
+  _BurstPainter(this.t, this.seeds, this.cool, this.warm);
+
+  final double t;
+  final List<({double angle, double speed, double spin, double size, bool warm})> seeds;
+  final Color cool;
+  final Color warm;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (t == 0 || t == 1) return;
+    final origin = Offset(size.width / 2, size.height / 2);
+    // Out fast, then gravity takes over — the arc is what reads as thrown.
+    final out = Curves.easeOutCubic.transform(t);
+    final fall = 90 * t * t;
+    final fade = t < 0.7 ? 1.0 : 1 - (t - 0.7) / 0.3;
+
+    for (final s in seeds) {
+      final d = s.speed * out;
+      final p = origin + Offset(math.cos(s.angle) * d, math.sin(s.angle) * d + fall);
+      canvas
+        ..save()
+        ..translate(p.dx, p.dy)
+        ..rotate(s.spin * t);
+      canvas.drawOval(
+        Rect.fromCenter(center: Offset.zero, width: s.size, height: s.size * 1.7),
+        Paint()..color = (s.warm ? warm : cool).withValues(alpha: fade),
+      );
+      canvas.restore();
+    }
+  }
+
+  @override
+  bool shouldRepaint(_BurstPainter old) => old.t != t;
+}
+
+/// A still photograph, drifting. Twenty seconds in, twenty back, at a scale
+/// nobody consciously sees moving — the difference between a screenshot and a
+/// screen. For full-bleed photography only; never behind text that has to be
+/// read precisely, and never on a list.
+///
+/// The child is scaled past the frame first, so the pan never exposes an edge.
+class SlowPan extends StatefulWidget {
+  const SlowPan({
+    super.key,
+    required this.child,
+    this.zoom = 1.12,
+    this.drift = const Offset(-0.03, 0.02),
+    this.period = const Duration(seconds: 20),
+  });
+
+  final Widget child;
+
+  /// How far past the frame the child is blown up. The pan can travel at most
+  /// half of this, or the edge shows.
+  final double zoom;
+
+  /// Travel across the period, as a fraction of the frame.
+  final Offset drift;
+  final Duration period;
+
+  @override
+  State<SlowPan> createState() => _SlowPanState();
+}
+
+class _SlowPanState extends State<SlowPan> with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(vsync: this, duration: widget.period)
+    ..repeat(reverse: true);
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (Motion.of(context).reduced) return widget.child;
+    return ClipRect(
+      child: AnimatedBuilder(
+        animation: _c,
+        builder: (context, child) {
+          // Centred on the midpoint, so the still we shipped is what the eye
+          // averages out to.
+          final t = Curves.easeInOut.transform(_c.value) - 0.5;
+          return Transform.scale(
+            scale: widget.zoom,
+            child: FractionalTranslation(translation: widget.drift * t, child: child),
+          );
+        },
+        child: widget.child,
+      ),
     );
   }
 }

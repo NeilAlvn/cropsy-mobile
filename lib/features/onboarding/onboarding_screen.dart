@@ -1,36 +1,73 @@
-/// Onboarding to PRD §5.1 (1.1–1.8): hero → trust → mascot hello →
-/// Part 1 "learn your garden" (location with postcode fallback, space type,
-/// growing method, size, sun) → Part 2 "learn your preference" (experience,
-/// food types, interests, companions, four statements) → pick crops →
-/// "creating your plan" beat → notifications ask, with the reason, after the
-/// first task is shown. No ATT prompt, no social-proof slide.
+/// Onboarding, PRD §5.1 (1.1–1.9), cut to eight steps.
+///
+/// hero → mascot hello with the trust line → location (postcode fallback) →
+/// space → size and sun → experience → what you want to eat and why → crops →
+/// the plan built on screen, then notifications with the reason, then the soft
+/// paywall once.
+///
+/// What GrowIt spends screens on and this does not: the Part 1 / Part 2 chapter
+/// cards, the growing-method question (asked per plant at add-plant, where the
+/// answer is actually true), companion planting (on by default, in Settings),
+/// the four "do you relate?" statements, and the season-path tour, which is now
+/// a card on the Season tab where the path actually is. No ATT prompt: we do
+/// not track. No social proof: §1.3 says drop it.
 library;
 
 import 'package:flutter/material.dart';
-import '../../analytics/analytics.dart';
-import '../../l10n/strings.dart';
-import '../../l10n/app_lang.dart';
-import '../../design/icons.dart';
 
+import '../../analytics/analytics.dart';
 import '../../data/frost_presets.dart';
 import '../../data/seed.dart';
 import '../../db/database.dart';
-import '../../design/brutal.dart';
 import '../../design/colors.dart';
+import '../../design/brutal.dart';
 import '../../design/components.dart';
 import '../../design/crop_image.dart';
+import '../../design/icons.dart';
 import '../../design/mascot.dart';
+import '../../design/motion.dart';
 import '../../design/typography.dart';
+import '../../l10n/app_lang.dart';
+import '../../l10n/strings.dart';
 import '../../notifications/reminders.dart';
 import '../../timing/types.dart';
 import '../location/frost_lookup.dart';
+import '../paywall/paywall_screen.dart';
 import '../repository_scope.dart';
 import '../settings/settings_screen.dart';
 import 'hero_page.dart';
+import 'steps.dart';
+
+/// Which kind of garden the answers describe. The growing-method question used
+/// to feed this; it does not exist any more, so space and size decide it alone.
+/// Top-level and pure so it can be checked without mounting a screen — the UI
+/// itself pulls in google_fonts, which hangs under `flutter test`.
+GardenKind gardenKindFor({required Set<String> spaces, required int sizeBucket}) {
+  if (spaces.contains('farm') || (spaces.contains('backyard') && sizeBucket >= 2)) {
+    return GardenKind.allotment;
+  }
+  if (spaces.contains('backyard')) return GardenKind.garden;
+  return GardenKind.balcony;
+}
+
+/// How far through the questions a page is, for the bar. The hero, the hello
+/// and the payoff are not questions and get no bar.
+double onboardingProgress(int page) => (page - _firstQuestion + 1) / _questionCount;
+
+/// Hero, hello, six questions, the plan.
+const int onboardingPageCount = 9;
+const int _questionCount = 6;
+const int _firstQuestion = 2;
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key, required this.onDone});
+  const OnboardingScreen({super.key, required this.onDone, required this.onBuildingPlan});
+
   final VoidCallback onDone;
+
+  /// Fired the moment the garden is about to exist. The root gate watches the
+  /// repository and would otherwise swap this screen for the app the instant
+  /// the garden lands, taking the plan beat and the paywall with it.
+  final VoidCallback onBuildingPlan;
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -40,27 +77,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final _controller = PageController();
   int _page = 0;
 
-  // Part 1 — garden
+  // The garden
   FrostRegion _region = defaultRegion;
   FrostLookup? _lookup; // GPS / postcode result, wins over the preset
   String? _postcode;
   final _spaces = <String>{'balcony'};
-  final _methods = <String>{'outdoor_containers'};
   int _sizeBucket = 0;
   String _sun = 'full';
-  // Part 2 — preference
-  String _experience = 'some';
-  final _foods = <String>{'vegetables', 'herbs'};
-  final _interests = <String>{'easy'};
-  bool _companions = true;
-  final _statements = <String, bool>{};
+  // The gardener
+  String _experience = 'never';
+  final _foods = <String>{'vegetables'};
+  final _interests = <String>{};
   // Crops
   late final Set<String> _picked = {...starterCrops.keys};
-  // Plan beat
+  // The payoff
   String? _firstTask;
   int _matches = 0;
 
-  static const _pageCount = 16;
   static const _pageDuration = Duration(milliseconds: 380);
   static const _pageCurve = Curves.easeInOutCubic;
 
@@ -71,26 +104,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _next() {
-    if (_page < _pageCount - 1) {
+    if (_page < onboardingPageCount - 1) {
       _controller.nextPage(duration: _pageDuration, curve: _pageCurve);
     } else {
       widget.onDone();
     }
   }
 
-  GardenKind get _kind {
-    if (_spaces.contains('farm') || _spaces.contains('backyard') && _sizeBucket >= 2) return GardenKind.allotment;
-    if (_spaces.contains('backyard')) return GardenKind.garden;
-    return GardenKind.balcony;
-  }
+  GardenKind get _kind => gardenKindFor(spaces: _spaces, sizeBucket: _sizeBucket);
 
   /// Creates the garden + plants, saves preferences, computes the plan beat.
   Future<void> _build() async {
+    widget.onBuildingPlan();
     final repo = RepositoryScope.of(context);
     final gardenId = await repo.createGarden(
       region: _region,
       kind: _kind,
-      sunHours: switch (_sun) { 'full' => 8, 'partial' => 5, _ => 3 },
+      sunHours: switch (_sun) {
+        'full' => 8,
+        'partial' => 5,
+        _ => 3,
+      },
       name: gardenKindLabel(_kind).pick(AppLangScope.of(context).isDutch),
       sizeM2: _sizeBuckets[_sizeBucket].$2,
       postcode: _postcode,
@@ -99,16 +133,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       lon: _lookup?.lon,
     );
     if (_lookup != null) repo.frostSource = _lookup!.source;
-    await repo.saveProfile(preferences: {
-      'spaces': _spaces.toList(),
-      'methods': _methods.toList(),
-      'sun': _sun,
-      'experience': _experience,
-      'foods': _foods.toList(),
-      'interests': _interests.toList(),
-      'companions': _companions,
-      'statements': _statements,
-    });
+    // `methods` and `companions` are no longer asked here: the place belongs to
+    // the plant, and companions default on. The jsonb shape is unchanged, so
+    // anything reading it keeps working — it just sees fewer keys on first run.
+    await repo.saveProfile(
+      preferences: {
+        'spaces': _spaces.toList(),
+        'sun': _sun,
+        'experience': _experience,
+        'foods': _foods.toList(),
+        'interests': _interests.toList(),
+      },
+    );
     for (final slug in _picked) {
       final crop = repo.cropBySlug(slug);
       await repo.addPlant(
@@ -124,14 +160,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       setState(() {
         _matches = repo.whatToGrowIn(month).length;
         _firstTask = week.isEmpty
-        ? null
-        : '${week.first.kind.name} ${week.first.cropNames.en.toLowerCase()}';
+            ? null
+            : '${week.first.kind.name} ${week.first.cropNames.en.toLowerCase()}';
       });
     }
   }
 
   Future<void> _skip() async {
     await RepositoryScope.of(context).seedDemoGarden();
+    widget.onDone();
+  }
+
+  /// The soft paywall (§1.9), once, after the payoff rather than before it.
+  /// It is dismissible and onboarding runs once, so that is the whole of
+  /// "shown once".
+  Future<void> _finish() async {
+    await Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const PaywallScreen(), fullscreenDialog: true));
     widget.onDone();
   }
 
@@ -144,40 +190,39 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         title: [
           TextSpan(text: Str.heroKnowWhatToDo.of(context)),
           TextSpan(
-              text: Str.heroThisWeek.of(context),
-              style: TextStyle(color: AppColors.sprout)),
+            text: Str.heroThisWeek.of(context),
+            style: TextStyle(color: AppColors.accent),
+          ),
           TextSpan(text: Str.heroInYourGarden.of(context)),
         ],
         subtitle: Str.heroSubtitle.of(context),
         buttonLabel: Str.getStarted.of(context),
         onNext: _next,
         // Reinstall path: sign in, sync pulls the garden, the root re-gates.
-        onSkip: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
+        onSkip: () =>
+            Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
       ),
-      _Step(
+
+      // ── who is asking, and why the dates can be trusted ─────────────────
+      StepFrame(
+        pose: MascotPose.wave,
+        title: Str.getToKnowTitle,
+        subtitle: Str.getToKnowBody,
+        onBack: _prev,
+        onSkip: _skip,
         onNext: _next,
-        child: _Copy(
-          pose: MascotPose.pointing,
-          title: Str.datesCheckedTitle.of(context),
-          body: Str.datesCheckedBody.of(context),
-        ),
+        body: MascotNote(text: Str.datesCheckedTitle),
       ),
-      _Step(
+
+      // ── the garden ──────────────────────────────────────────────────────
+      StepFrame(
+        pose: MascotPose.pointing,
+        title: Str.whereDoYouGrow,
+        subtitle: Str.frostBackbone,
+        progress: onboardingProgress(2),
+        onBack: _prev,
         onNext: _next,
-        child: const _PathIntro(),
-      ),
-      _Step(
-        onNext: _next,
-        child: _Copy(
-          pose: MascotPose.wave,
-          title: Str.getToKnowTitle.of(context),
-          body: Str.getToKnowBody.of(context),
-        ),
-      ),
-      // ── Part 1 ─────────────────────────────────────────────────────
-      _Step(
-        onNext: _next,
-        child: _LocationStep(
+        body: _LocationStep(
           region: _region,
           lookup: _lookup,
           onRegion: (r) => setState(() {
@@ -191,400 +236,193 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           }),
         ),
       ),
-      _Step(
+      StepFrame(
+        pose: MascotPose.thinking,
+        title: Str.whatSpace,
+        subtitle: Str.pickAllThatApply,
+        progress: onboardingProgress(3),
         enabled: _spaces.isNotEmpty,
+        onBack: _prev,
         onNext: _next,
-        child: _Choices(
-          title: Str.whereDoYouGrow,
-          subtitle: Str.pickAllThatApply,
+        body: ChoiceList(
           options: const [
             ('backyard', Str.spaceBackyard, PhosphorIcons.flowerLotus),
             ('balcony', Str.spaceBalcony, PhosphorIcons.buildings),
             ('indoor', Str.spaceIndoor, PhosphorIcons.browsers),
             ('farm', Str.spaceAllotment, PhosphorIcons.tractor),
-            ('other', Str.spaceOther, PhosphorIcons.dotsThree)
+            ('other', Str.spaceOther, PhosphorIcons.dotsThree),
           ],
           selected: _spaces,
           onToggle: (k) => setState(() => _spaces.contains(k) ? _spaces.remove(k) : _spaces.add(k)),
         ),
       ),
-      _Step(
-        enabled: _methods.isNotEmpty,
+      // Two answers, one screen: both describe the same patch of ground, and
+      // neither is worth a page of its own.
+      StepFrame(
+        pose: MascotPose.idle,
+        title: Str.howMuchSpace,
+        subtitle: Str.howMuchSpaceSub,
+        progress: onboardingProgress(4),
+        onBack: _prev,
         onNext: _next,
-        child: _Choices(
-          title: Str.howDoYouGrow,
-          subtitle: Str.pickAllThatApply,
-          options: const [
-            ('ground', Str.methodGround, PhosphorIcons.plant),
-            ('raised_beds', Str.methodRaisedBeds, PhosphorIcons.squaresFour),
-            ('indoor_containers', Str.methodPotsInside, PhosphorIcons.browsers),
-            ('outdoor_containers', Str.methodPotsOutside, PhosphorIcons.buildings)
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ChoiceList(
+              options: [
+                for (var i = 0; i < _sizeBuckets.length; i++)
+                  (
+                    '$i',
+                    LocalizedText(nl: _sizeBuckets[i].$1, en: _sizeBuckets[i].$1),
+                    PhosphorIcons.ruler,
+                  ),
+              ],
+              selected: {'$_sizeBucket'},
+              onToggle: (k) => setState(() => _sizeBucket = int.parse(k)),
+            ),
+            const SizedBox(height: 18),
+            GroupLabel(Str.howMuchSun),
+            ChoiceList(
+              options: const [
+                ('full', Str.sunFull, PhosphorIcons.sun),
+                ('partial', Str.sunPartial, PhosphorIcons.cloud),
+                ('shade', Str.sunShade, PhosphorIcons.umbrella),
+              ],
+              selected: {_sun},
+              onToggle: (k) => setState(() => _sun = k),
+            ),
           ],
-          selected: _methods,
-          onToggle: (k) => setState(() => _methods.contains(k) ? _methods.remove(k) : _methods.add(k)),
         ),
       ),
-      _Step(
+
+      // ── the gardener ────────────────────────────────────────────────────
+      StepFrame(
+        pose: MascotPose.holdingSeedling,
+        title: Str.grownBefore,
+        subtitle: Str.grownBeforeSub,
+        progress: onboardingProgress(5),
+        onBack: _prev,
         onNext: _next,
-        child: _Choices(
-          title: Str.howMuchSpace,
-          subtitle: Str.howMuchSpaceSub,
-          options: [
-            for (var i = 0; i < _sizeBuckets.length; i++)
-              (
-                '$i',
-                LocalizedText(nl: _sizeBuckets[i].$1, en: _sizeBuckets[i].$1),
-                PhosphorIcons.ruler
-              )
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ChoiceList(
+              options: const [
+                ('never', Str.experienceNever, PhosphorIcons.leaf),
+                ('some', Str.experienceSome, PhosphorIcons.leaf),
+                ('extensive', Str.experiencePlenty, PhosphorIcons.tree),
+              ],
+              selected: {_experience},
+              onToggle: (k) => setState(() => _experience = k),
+            ),
+            // The one answer that deserves an answer back. GrowIt's best
+            // moment, and it costs no step.
+            if (_experience == 'never') ...[
+              const SizedBox(height: 4),
+              MascotNote(pose: MascotPose.wave, text: Str.experienceReassure),
+            ],
           ],
-          selected: {'$_sizeBucket'},
-          onToggle: (k) => setState(() => _sizeBucket = int.parse(k)),
         ),
       ),
-      _Step(
-        onNext: _next,
-        child: _Choices(
-          title: Str.howMuchSun,
-          subtitle: Str.howMuchSunSub,
-          options: const [
-            ('full', Str.sunFull, PhosphorIcons.sun),
-            ('partial', Str.sunPartial, PhosphorIcons.cloud),
-            ('shade', Str.sunShade, PhosphorIcons.umbrella)
-          ],
-          selected: {_sun},
-          onToggle: (k) => setState(() => _sun = k),
-        ),
-      ),
-      // ── Part 2 ─────────────────────────────────────────────────────
-      _Step(
-        onNext: _next,
-        child: _Choices(
-          title: Str.grownBefore,
-          subtitle: Str.grownBeforeSub,
-          options: const [
-            ('never', Str.experienceNever, PhosphorIcons.leaf),
-            ('some', Str.experienceSome, PhosphorIcons.leaf),
-            ('extensive', Str.experiencePlenty, PhosphorIcons.tree)
-          ],
-          selected: {_experience},
-          onToggle: (k) => setState(() => _experience = k),
-        ),
-      ),
-      _Step(
+      // What you eat and what you want out of it are the same question asked
+      // twice, so they share a screen.
+      StepFrame(
+        pose: MascotPose.thinking,
+        title: Str.whatDoYouEat,
+        subtitle: Str.pickAllThatApply,
+        progress: onboardingProgress(6),
         enabled: _foods.isNotEmpty,
+        onBack: _prev,
         onNext: _next,
-        child: _Choices(
-          title: Str.whatDoYouEat,
-          subtitle: Str.pickAllThatApply,
-          options: const [
-            ('vegetables', Str.foodVegetables, PhosphorIcons.forkKnife),
-            ('herbs', Str.foodHerbs, PhosphorIcons.flower),
-            ('salad', Str.foodSalad, PhosphorIcons.leaf),
-            ('fruit', Str.foodFruit, PhosphorIcons.appleLogo),
-            ('roots', Str.foodRoots, PhosphorIcons.tree)
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ChoiceList(
+              options: const [
+                ('vegetables', Str.foodVegetables, PhosphorIcons.forkKnife),
+                ('herbs', Str.foodHerbs, PhosphorIcons.flower),
+                ('salad', Str.foodSalad, PhosphorIcons.leaf),
+                ('fruit', Str.foodFruit, PhosphorIcons.appleLogo),
+                ('roots', Str.foodRoots, PhosphorIcons.tree),
+              ],
+              selected: _foods,
+              onToggle: (k) =>
+                  setState(() => _foods.contains(k) ? _foods.remove(k) : _foods.add(k)),
+            ),
+            const SizedBox(height: 18),
+            GroupLabel(Str.whatMattersMost),
+            ChoiceList(
+              options: const [
+                ('easy', Str.interestEasy, PhosphorIcons.thumbsUp),
+                ('fast', Str.interestFast, PhosphorIcons.speedometer),
+                ('yield', Str.interestYield, PhosphorIcons.basket),
+                ('kids', Str.interestKids, PhosphorIcons.baby),
+                ('cost', Str.interestCost, PhosphorIcons.piggyBank),
+              ],
+              selected: _interests,
+              onToggle: (k) =>
+                  setState(() => _interests.contains(k) ? _interests.remove(k) : _interests.add(k)),
+            ),
           ],
-          selected: _foods,
-          onToggle: (k) => setState(() => _foods.contains(k) ? _foods.remove(k) : _foods.add(k)),
         ),
       ),
-      _Step(
-        onNext: _next,
-        child: _Choices(
-          title: Str.whatMattersMost,
-          subtitle: Str.pickAllThatApply,
-          options: const [
-            ('easy', Str.interestEasy, PhosphorIcons.thumbsUp),
-            ('fast', Str.interestFast, PhosphorIcons.speedometer),
-            ('yield', Str.interestYield, PhosphorIcons.basket),
-            ('kids', Str.interestKids, PhosphorIcons.baby),
-            ('cost', Str.interestCost, PhosphorIcons.piggyBank)
-          ],
-          selected: _interests,
-          onToggle: (k) => setState(() => _interests.contains(k) ? _interests.remove(k) : _interests.add(k)),
-        ),
-      ),
-      _Step(
-        onNext: _next,
-        child: _Choices(
-          title: Str.companionsAsk,
-          subtitle: Str.companionsAskSub,
-          options: const [
-            ('yes', Str.companionsYes, PhosphorIcons.heartStraight),
-            ('no', Str.companionsNo, PhosphorIcons.heartStraight)
-          ],
-          selected: {_companions ? 'yes' : 'no'},
-          onToggle: (k) => setState(() => _companions = k == 'yes'),
-        ),
-      ),
-      _Step(
-        onNext: _next,
-        child: _Statements(
-          answers: _statements,
-          onAnswer: (k, v) => setState(() => _statements[k] = v),
-        ),
-      ),
-      _Step(
+
+      StepFrame(
+        pose: MascotPose.watering,
+        title: Str.whatWillYouGrow,
+        subtitle: Str.pickAFewToStart,
+        progress: onboardingProgress(7),
         buttonLabel: Str.buildMyPlan.of(context),
         enabled: _picked.isNotEmpty,
+        onBack: _prev,
         onNext: () async {
           _next();
           await _build();
         },
-        child: _PlantsStep(
+        body: _PlantsStep(
           picked: _picked,
-          onToggle: (slug) => setState(() => _picked.contains(slug) ? _picked.remove(slug) : _picked.add(slug)),
+          onToggle: (slug) =>
+              setState(() => _picked.contains(slug) ? _picked.remove(slug) : _picked.add(slug)),
         ),
       ),
+
       _PlanStep(
         ready: _firstTask != null || _matches > 0,
-        region: _lookup == null
-            ? _region.name
-            : (_postcode ?? Str.yourLocationWord.of(context)),
+        region: _lookup == null ? _region.name : (_postcode ?? Str.yourLocationWord.of(context)),
         frost: _lookup?.profile ?? _region.profile,
         matches: _matches,
         firstTask: _firstTask,
         onDone: () async {
           await Reminders.requestPermission();
           Analytics.capture('onboarding_completed', properties: {'plants_picked': _picked.length});
-          widget.onDone();
+          await _finish();
         },
-        onLater: widget.onDone,
+        onLater: _finish,
       ),
     ];
-    assert(pages.length == _pageCount);
+    assert(pages.length == onboardingPageCount);
 
-    return Scaffold(
-      backgroundColor: AppColors.paper,
-      body: Stack(
-        children: [
-          PageView(
-            controller: _controller,
-            physics: const NeverScrollableScrollPhysics(),
-            onPageChanged: (p) => setState(() => _page = p),
-            children: pages,
-          ),
-          if (_page < _pageCount - 1)
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: SafeArea(
-                bottom: false,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
-                  child: _FloatingHeader(page: _page, pageCount: _pageCount - 1, onBack: _prev, onSkip: _skip),
-                ),
-              ),
-            ),
-        ],
-      ),
+    return PageView(
+      controller: _controller,
+      physics: const NeverScrollableScrollPhysics(),
+      onPageChanged: (p) => setState(() => _page = p),
+      children: pages,
     );
   }
 }
 
-class _FloatingHeader extends StatelessWidget {
-  const _FloatingHeader({required this.page, required this.pageCount, required this.onBack, required this.onSkip});
-  final int page;
-  final int pageCount;
-  final VoidCallback onBack;
-  final VoidCallback onSkip;
-
-  @override
-  Widget build(BuildContext context) {
-    final first = page == 0;
-    return Container(
-      decoration: Neo.box(color: AppColors.surface, shadowOverride: Neo.shadowSm),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: first ? onSkip : onBack,
-            child: first
-                ? Text(Str.skip.of(context), style: AppText.label(context))
-                : Icon(PhosphorIcons.caretLeft, size: 18, color: AppColors.ink),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(999),
-              child: LinearProgressIndicator(
-                value: (page + 1) / pageCount,
-                minHeight: 8,
-                backgroundColor: AppColors.hairline,
-                valueColor: AlwaysStoppedAnimation(AppColors.sprout),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// The season path, before the gardener has one: three stops and the shape of
-/// the year, so the middle tab is not a surprise on first run.
-class _PathIntro extends StatelessWidget {
-  const _PathIntro();
-
-  @override
-  Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(Str.seasonAsOnePath.of(context),
-              style: AppText.title(context)),
-          const SizedBox(height: 8),
-          Text(
-            Str.seasonAsOnePathBody.of(context),
-            style: AppText.bodyMuted(context),
-          ),
-          const SizedBox(height: 24),
-          const _MiniPath(),
-        ],
-      );
-}
-
-/// A still of the path: the same badges the real one uses, three stops of it.
-class _MiniPath extends StatelessWidget {
-  const _MiniPath();
-
-  static const _stops = <(String, LocalizedText, LocalizedText)>[
-    ('sow', Str.miniPathSow, Str.miniPathSowDay),
-    ('frost', Str.miniPathFrost, Str.miniPathFrostDay),
-    ('harvest', Str.miniPathHarvest, Str.miniPathHarvestDay),
-  ];
-
-  @override
-  Widget build(BuildContext context) => Column(
-        children: [
-          for (var i = 0; i < _stops.length; i++)
-            Row(
-              children: [
-                SizedBox(
-                  width: 96,
-                  child: Column(
-                    children: [
-                      Image.asset('assets/nodes/${_stops[i].$1}.png',
-                          width: 64, height: 64, excludeFromSemantics: true),
-                      if (i < _stops.length - 1)
-                        SizedBox(
-                          height: 24,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                left: BorderSide(
-                                  color: AppColors.ink.withValues(alpha: 0.12),
-                                  width: 4,
-                                ),
-                              ),
-                            ),
-                            child: const SizedBox(width: 4),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(_stops[i].$2.of(context),
-                            style: AppText.label(context)),
-                        Text(_stops[i].$3.of(context),
-                            style: AppText.caption(context)),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-        ],
-      );
-}
-
-class _Step extends StatelessWidget {
-  const _Step({required this.child, required this.onNext, this.buttonLabel, this.enabled = true});
-  final Widget child;
-  final String? buttonLabel;
-  final VoidCallback onNext;
-  final bool enabled;
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: [
-          const SizedBox(height: 62),
-          Expanded(child: child),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: PrimaryButton(
-                label: buttonLabel ?? Str.continueLabel.of(context),
-                icon: PhosphorIcons.arrowRight,
-                onPressed: enabled ? onNext : null),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _Copy extends StatelessWidget {
-  const _Copy({required this.pose, required this.title, required this.body});
-  final MascotPose pose;
-  final String title;
-  final String body;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(28),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Mascot(pose, size: 96),
-          const SizedBox(height: 24),
-          Text(title, style: AppText.display(context)),
-          const SizedBox(height: 12),
-          Text(body, style: AppText.body(context, color: AppColors.muted)),
-        ],
-      ),
-    );
-  }
-}
-
-class _Choices extends StatelessWidget {
-  const _Choices({required this.title, required this.subtitle, required this.options, required this.selected, required this.onToggle});
-  final LocalizedText title;
-  final LocalizedText subtitle;
-  final List<(String, LocalizedText, IconData)> options;
-  final Set<String> selected;
-  final ValueChanged<String> onToggle;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-        Text(title.of(context), style: AppText.title(context)),
-        const SizedBox(height: 6),
-        Text(subtitle.of(context), style: AppText.bodyMuted(context)),
-        const SizedBox(height: 14),
-        for (final (key, label, icon) in options)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: _SelectTile(icon: icon, label: label.of(context), selected: selected.contains(key), onTap: () => onToggle(key)),
-          ),
-      ],
-    );
-  }
-}
-
+/// Where you grow, which is really "which frost dates apply". GPS first, a
+/// postcode when that is refused, a region when both are.
 class _LocationStep extends StatefulWidget {
-  const _LocationStep({required this.region, required this.lookup, required this.onRegion, required this.onLookup});
+  const _LocationStep({
+    required this.region,
+    required this.lookup,
+    required this.onRegion,
+    required this.onLookup,
+  });
   final FrostRegion region;
   final FrostLookup? lookup;
   final ValueChanged<FrostRegion> onRegion;
@@ -598,6 +436,12 @@ class _LocationStepState extends State<_LocationStep> {
   bool _busy = false;
   String? _error;
   final _pc = TextEditingController();
+
+  @override
+  void dispose() {
+    _pc.dispose();
+    super.dispose();
+  }
 
   Future<void> _gps() async {
     setState(() {
@@ -631,51 +475,60 @@ class _LocationStepState extends State<_LocationStep> {
   @override
   Widget build(BuildContext context) {
     final l = widget.lookup;
-    return ListView(
-      padding: const EdgeInsets.all(20),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(Str.whereDoYouGrow.of(context), style: AppText.title(context)),
-        const SizedBox(height: 6),
-        Text(Str.frostBackbone.of(context),
-            style: AppText.bodyMuted(context)),
-        const SizedBox(height: 14),
-        PrimaryButton(label: (_busy ? Str.lookingUp : Str.useMyLocation).of(context), icon: PhosphorIcons.crosshair, onPressed: _busy ? null : _gps),
+        PrimaryButton(
+          label: (_busy ? Str.lookingUp : Str.useMyLocation).of(context),
+          icon: PhosphorIcons.crosshair,
+          onPressed: _busy ? null : _gps,
+        ),
         const SizedBox(height: 10),
-        Row(children: [
-          Expanded(
-            child: TextField(
-              controller: _pc,
-              textCapitalization: TextCapitalization.characters,
-              style: AppText.body(context),
-              decoration: InputDecoration(isDense: true, hintText: Str.postcodeHint.of(context)),
-              onSubmitted: (_) => _postcode(),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _pc,
+                textCapitalization: TextCapitalization.characters,
+                style: AppText.body(context),
+                decoration: InputDecoration(isDense: true, hintText: Str.postcodeHint.of(context)),
+                onSubmitted: (_) => _postcode(),
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          SecondaryButton(label: Str.lookUp.of(context), onPressed: _busy ? null : _postcode),
-        ]),
+            const SizedBox(width: 8),
+            // A bounded width on purpose: a Row hands its non-flex children
+            // infinity, and the button's own label is Flexible, which cannot lay
+            // out against that. The label ellipsises if a translation is long.
+            SizedBox(
+              width: 116,
+              child: SecondaryButton(
+                label: Str.lookUp.of(context),
+                onPressed: _busy ? null : _postcode,
+              ),
+            ),
+          ],
+        ),
         if (_error != null) ...[
           const SizedBox(height: 8),
-          Text(_error!, style: AppText.caption(context, color: AppColors.warn)),
+          Text(_error!, style: AppText.caption(context, color: AppColors.critical)),
         ],
         if (l != null) ...[
           const SizedBox(height: 12),
-          AppCard(
-            child: MascotSays(
-              pose: MascotPose.celebrating,
-              text: Str.foundFrostDates(l.profile.lastFrost.substring(5),
-                      l.profile.firstFrost.substring(5))
-                  .of(context),
+          MascotNote(
+            pose: MascotPose.celebrating,
+            text: Str.foundFrostDates(
+              l.profile.lastFrost.substring(5),
+              l.profile.firstFrost.substring(5),
             ),
           ),
         ],
         const SizedBox(height: 18),
-        Text(Str.orPickRegion.of(context), style: AppText.label(context, color: AppColors.muted)),
-        const SizedBox(height: 8),
+        GroupLabel(Str.orPickRegion),
         for (final r in frostRegions)
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
-            child: _SelectTile(
+            child: SelectTile(
               icon: PhosphorIcons.mapPin,
               label: r.name,
               selected: l == null && r.name == widget.region.name,
@@ -683,94 +536,6 @@ class _LocationStepState extends State<_LocationStep> {
             ),
           ),
       ],
-    );
-  }
-}
-
-const _statementList = <(String, LocalizedText)>[
-  ('behind', Str.statementBehind),
-  ('forget', Str.statementForget),
-  ('dates', Str.statementDates),
-  ('waste', Str.statementWaste),
-];
-
-class _Statements extends StatelessWidget {
-  const _Statements({required this.answers, required this.onAnswer});
-  final Map<String, bool> answers;
-  final void Function(String key, bool agree) onAnswer;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(20),
-      children: [
-        Text(Str.doYouRelate.of(context), style: AppText.title(context)),
-        const SizedBox(height: 6),
-        Text(Str.doYouRelateSub.of(context), style: AppText.bodyMuted(context)),
-        const SizedBox(height: 14),
-        for (final (key, text) in _statementList)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: AppCard(
-              child: Row(children: [
-                Expanded(
-                    child: Text(text.of(context), style: AppText.body(context))),
-                const SizedBox(width: 8),
-                _YesNo(value: answers[key], onChanged: (v) => onAnswer(key, v)),
-              ]),
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-class _YesNo extends StatelessWidget {
-  const _YesNo({required this.value, required this.onChanged});
-  final bool? value;
-  final ValueChanged<bool> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget b(bool v, IconData icon) => IconButton(
-          onPressed: () => onChanged(v),
-          icon: Icon(icon, color: value == v ? AppColors.sprout : AppColors.hairline),
-        );
-    return Row(mainAxisSize: MainAxisSize.min, children: [b(true, PhosphorIcons.thumbsUp), b(false, PhosphorIcons.thumbsDown)]);
-  }
-}
-
-class _SelectTile extends StatelessWidget {
-  const _SelectTile({required this.label, required this.selected, required this.onTap, this.icon, this.leadingWidget});
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-  final IconData? icon;
-  final Widget? leadingWidget;
-
-  @override
-  Widget build(BuildContext context) {
-    final fg = selected ? AppColors.onAccent : AppColors.ink;
-    final Widget? leading = icon != null ? Icon(icon, size: 22, color: selected ? AppColors.onAccent : AppColors.sprout) : leadingWidget;
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 160),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.sprout : AppColors.surface,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.border, width: 1),
-          boxShadow: selected ? Neo.shadowSm : null,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        child: Row(
-          children: [
-            if (leading != null) ...[leading, const SizedBox(width: 8)],
-            Expanded(child: Text(label, style: AppText.label(context, color: fg), maxLines: 1, overflow: TextOverflow.ellipsis)),
-            Icon(selected ? PhosphorIcons.checkCircle : PhosphorIcons.circle, size: 20, color: selected ? AppColors.onAccent : AppColors.hairline),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -783,34 +548,39 @@ class _PlantsStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
-    final options = <String>{...starterCrops.keys, 'chili', 'cucumber', 'chives', 'coriander', 'beetroot'}.toList();
-    return ListView(
-      padding: const EdgeInsets.all(20),
+    final options = <String>{
+      ...starterCrops.keys,
+      'chili',
+      'cucumber',
+      'chives',
+      'coriander',
+      'beetroot',
+    }.toList();
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      mainAxisSpacing: 10,
+      crossAxisSpacing: 10,
+      childAspectRatio: 2.4,
       children: [
-        Text(Str.whatWillYouGrow.of(context), style: AppText.title(context)),
-        const SizedBox(height: 6),
-        Text(Str.pickAFewToStart.of(context), style: AppText.bodyMuted(context)),
-        const SizedBox(height: 14),
-        GridView.count(
-          crossAxisCount: 2,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 2.9,
-          children: [
-            for (final slug in options)
-              _SelectTile(
-                leadingWidget: ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: SizedBox(width: 30, height: 30, child: CropImage(slug: slug, category: repo.cropCategory(slug))),
+        for (var i = 0; i < options.length; i++)
+          ArriveIn(
+            index: i,
+            child: SelectTile(
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(Neo.radiusThumb),
+                child: SizedBox(
+                  width: 32,
+                  height: 32,
+                  child: CropImage(slug: options[i], category: repo.cropCategory(options[i])),
                 ),
-                label: repo.cropNames(slug).of(context),
-                selected: picked.contains(slug),
-                onTap: () => onToggle(slug),
               ),
-          ],
-        ),
+              label: repo.cropNames(options[i]).of(context),
+              selected: picked.contains(options[i]),
+              onTap: () => onToggle(options[i]),
+            ),
+          ),
       ],
     );
   }
@@ -819,7 +589,16 @@ class _PlantsStep extends StatelessWidget {
 /// 1.7 + 1.8: the mascot builds the plan on screen, then asks for
 /// notifications with the reason — after the first task is visible.
 class _PlanStep extends StatelessWidget {
-  const _PlanStep({required this.ready, required this.region, required this.frost, required this.matches, required this.firstTask, required this.onDone, required this.onLater});
+  const _PlanStep({
+    required this.ready,
+    required this.region,
+    required this.frost,
+    required this.matches,
+    required this.firstTask,
+    required this.onDone,
+    required this.onLater,
+  });
+
   final bool ready;
   final String region;
   final FrostProfile frost;
@@ -830,46 +609,75 @@ class _PlanStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(28),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 40),
-            Mascot(ready ? MascotPose.celebrating : MascotPose.thinking, size: 96),
-            const SizedBox(height: 24),
-            Text((ready ? Str.planReady : Str.planBuilding).of(context),
-                style: AppText.display(context)),
-            const SizedBox(height: 16),
-            _Line(
+    return Scaffold(
+      backgroundColor: AppColors.canvas,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 32),
+              SeedBurst(
+                play: ready,
+                child: Mascot(ready ? MascotPose.celebrating : MascotPose.thinking, size: 104),
+              ),
+              const SizedBox(height: 22),
+              Text(
+                (ready ? Str.planReady : Str.planBuilding).of(context),
+                style: AppText.display(context),
+              ),
+              const SizedBox(height: 16),
+              _Line(
                 done: true,
-                text: Str.planFrostLine(region, frost.lastFrost.substring(5),
-                        frost.firstFrost.substring(5))
-                    .of(context)),
-            _Line(
+                label: Text(
+                  Str.planFrostLine(
+                    region,
+                    frost.lastFrost.substring(5),
+                    frost.firstFrost.substring(5),
+                  ).of(context),
+                  style: AppText.body(context),
+                ),
+              ),
+              _Line(
                 done: ready,
-                text: (ready ? Str.planMatches(matches) : Str.planMatching)
-                    .of(context)),
-            _Line(
+                // The one number that is the payoff, so it lands rather than
+                // appears.
+                label: ready
+                    ? CountUp(
+                        value: matches,
+                        text: (n) => Str.planMatches(n).of(context),
+                        style: AppText.body(context),
+                      )
+                    : Text(Str.planMatching.of(context), style: AppText.body(context)),
+              ),
+              _Line(
                 done: ready,
-                text: (ready
-                        ? (firstTask == null
-                            ? Str.planFirstTaskWaits
-                            : Str.planFirstTask(firstTask!))
-                        : Str.planFindingFirstTask)
-                    .of(context)),
-            const Spacer(),
-            if (ready) ...[
-              Text(Str.remindBlurb.of(context),
-                  style: AppText.bodyMuted(context)),
-              const SizedBox(height: 12),
-              PrimaryButton(label: Str.remindMe.of(context), icon: PhosphorIcons.bell, onPressed: onDone),
-              const SizedBox(height: 8),
-              SecondaryButton(label: Str.maybeLater.of(context), onPressed: onLater),
-            ] else
-              Center(child: CircularProgressIndicator(color: AppColors.sprout)),
-          ],
+                label: Text(
+                  (ready
+                          ? (firstTask == null
+                                ? Str.planFirstTaskWaits
+                                : Str.planFirstTask(firstTask!))
+                          : Str.planFindingFirstTask)
+                      .of(context),
+                  style: AppText.body(context),
+                ),
+              ),
+              const Spacer(),
+              if (ready) ...[
+                Text(Str.remindBlurb.of(context), style: AppText.bodyMuted(context)),
+                const SizedBox(height: 12),
+                PrimaryButton(
+                  label: Str.remindMe.of(context),
+                  icon: PhosphorIcons.bell,
+                  onPressed: onDone,
+                ),
+                const SizedBox(height: 8),
+                SecondaryButton(label: Str.maybeLater.of(context), onPressed: onLater),
+              ] else
+                Center(child: CircularProgressIndicator(color: AppColors.accent)),
+            ],
+          ),
         ),
       ),
     );
@@ -877,17 +685,23 @@ class _PlanStep extends StatelessWidget {
 }
 
 class _Line extends StatelessWidget {
-  const _Line({required this.done, required this.text});
+  const _Line({required this.done, required this.label});
   final bool done;
-  final String text;
+  final Widget label;
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: Row(children: [
-          Icon(done ? PhosphorIcons.checkCircle : PhosphorIcons.circle, color: done ? AppColors.sprout : AppColors.hairline, size: 20),
-          const SizedBox(width: 10),
-          Expanded(child: Text(text, style: AppText.body(context))),
-        ]),
-      );
+    padding: const EdgeInsets.only(bottom: 10),
+    child: Row(
+      children: [
+        Icon(
+          done ? PhosphorIcons.checkCircle : PhosphorIcons.circle,
+          color: done ? AppColors.accent : AppColors.hairline,
+          size: 20,
+        ),
+        const SizedBox(width: 10),
+        Expanded(child: label),
+      ],
+    ),
+  );
 }

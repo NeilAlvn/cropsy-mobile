@@ -129,4 +129,46 @@ void main() {
     await tester.pump();
     expect(buzzes, isEmpty);
   });
+
+  testWidgets('a count-up lands on its value, and skips the count when motion '
+      'is reduced', (tester) async {
+    String line(int n) => '$n crops';
+
+    await tester.pumpWidget(_app(
+        reduced: true, child: CountUp(value: 12, text: line)));
+    expect(find.text('12 crops'), findsOneWidget);
+
+    await tester.pumpWidget(_app(
+        reduced: false, child: CountUp(value: 12, text: line)));
+    await tester.pump();
+    expect(find.text('12 crops'), findsNothing, reason: 'it should still be counting');
+    await tester.pump(const Duration(milliseconds: 900));
+    expect(find.text('12 crops'), findsOneWidget);
+  });
+
+  testWidgets('the seed burst paints only while it plays', (tester) async {
+    Widget burst(bool play) =>
+        _app(reduced: false, child: SeedBurst(play: play, child: target));
+
+    await tester.pumpWidget(burst(false));
+    expect(tester.widget<SeedBurst>(find.byType(SeedBurst)).play, isFalse);
+
+    await tester.pumpWidget(burst(true));
+    await tester.pump(const Duration(milliseconds: 400));
+    // Mid-flight the painter has something to draw; settled, it draws nothing.
+    await tester.pump(const Duration(milliseconds: 800));
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('a slow pan holds still under reduced motion', (tester) async {
+    await tester.pumpWidget(
+        _app(reduced: true, child: const SlowPan(child: target)));
+    expect(find.byType(ClipRect), findsNothing);
+
+    await tester.pumpWidget(
+        _app(reduced: false, child: const SlowPan(child: target)));
+    expect(find.byType(ClipRect), findsOneWidget);
+    // A repeating controller must not leave the tester pumping forever.
+    await tester.pump(const Duration(seconds: 1));
+  });
 }

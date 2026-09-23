@@ -47,3 +47,4 @@ app.*.map.json
 # Graphify local knowledge graph (regenerated on demand)
 graphify-out/
 tool/shots/
+tool/out/

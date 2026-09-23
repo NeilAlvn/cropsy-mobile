@@ -120,6 +120,13 @@ class PrimaryButton extends StatelessWidget {
   }
 }
 
+/// The dark counterpart to [PrimaryButton].
+///
+/// Its label is [Flexible] so a long translation ellipsises rather than
+/// overflows, which means the button needs a **bounded width**. Dropped
+/// straight into a [Row] as a non-flex child it is handed infinity and fails to
+/// lay out — wrap it in a [SizedBox] or an [Expanded] there. [PrimaryButton] is
+/// the same.
 class SecondaryButton extends StatelessWidget {
   const SecondaryButton({super.key, required this.label, required this.onPressed});
 
