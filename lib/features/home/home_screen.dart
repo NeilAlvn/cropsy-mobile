@@ -254,7 +254,7 @@ class _HomeBand extends StatelessWidget {
           const SizedBox(height: 4),
           _RegionChip(region: region),
           const SizedBox(height: 16),
-          _SearchField(onChanged: onSearch),
+          SearchField(hint: Str.searchCrops, onChanged: onSearch),
         ],
       ),
       ),
@@ -359,41 +359,6 @@ class _ProfileButton extends StatelessWidget {
   }
 }
 
-/// Base 8.10: pill, 48 tall, tile fill. It sits at the foot of the band, where
-/// the gradient has already faded to canvas.
-class _SearchField extends StatelessWidget {
-  const _SearchField({required this.onChanged});
-
-  final ValueChanged<String> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48,
-      child: TextField(
-        onChanged: onChanged,
-        style: AppText.body(context),
-        decoration: InputDecoration(
-          isDense: true,
-          contentPadding: const EdgeInsets.symmetric(vertical: 14),
-          hintText: Str.searchCrops.of(context),
-          hintStyle: AppText.body(context, color: AppColors.inkPlaceholder),
-          prefixIcon: Icon(PhosphorIcons.magnifyingGlass, size: 20, color: AppColors.inkMuted),
-          filled: true,
-          fillColor: AppColors.surface,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(Neo.radiusPill),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(Neo.radiusPill),
-            borderSide: BorderSide(color: AppColors.accent, width: 2),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 /// PRD 2.8: shown at most once a week, dismissible, never a trial pitch.
 class _LifetimeCard extends StatefulWidget {
@@ -663,22 +628,22 @@ class _ForecastStrip extends StatelessWidget {
       WeatherCondition.clear =>
         (icon: PhosphorIcons.sun, name: Str.weatherClear, color: AppColors.amber),
       WeatherCondition.partlyCloudy => (
-          icon: PhosphorIcons.cloud,
+          icon: PhosphorIcons.cloudSun,
           name: Str.weatherPartlyCloudy,
           color: AppColors.inkMuted
         ),
       WeatherCondition.overcast =>
         (icon: PhosphorIcons.cloud, name: Str.weatherOvercast, color: AppColors.inkMuted),
       WeatherCondition.fog =>
-        (icon: PhosphorIcons.cloud, name: Str.weatherFog, color: AppColors.inkFaint),
+        (icon: PhosphorIcons.cloudFog, name: Str.weatherFog, color: AppColors.inkFaint),
       WeatherCondition.drizzle =>
         (icon: PhosphorIcons.drop, name: Str.weatherDrizzle, color: AppColors.rain),
       WeatherCondition.rain =>
-        (icon: PhosphorIcons.umbrella, name: Str.weatherRainy, color: AppColors.rain),
+        (icon: PhosphorIcons.cloudRain, name: Str.weatherRainy, color: AppColors.rain),
       WeatherCondition.snow =>
         (icon: PhosphorIcons.snowflake, name: Str.weatherSnow, color: AppColors.frost),
       WeatherCondition.thunder =>
-        (icon: PhosphorIcons.umbrella, name: Str.weatherThunder, color: AppColors.warning),
+        (icon: PhosphorIcons.cloudLightning, name: Str.weatherThunder, color: AppColors.warning),
       null => null,
     };
 

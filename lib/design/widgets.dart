@@ -279,3 +279,41 @@ class _GaugePainter extends CustomPainter {
   bool shouldRepaint(covariant _GaugePainter old) =>
       old.value != value || old.color != color;
 }
+
+/// Base 8.10: pill, 48 tall, one hairline-free fill, accent ring on focus.
+///
+/// Home searches crops and Diagnose searches problems; only the hint differs,
+/// so the control is one widget and the two searches read as the same app.
+class SearchField extends StatelessWidget {
+  const SearchField({super.key, required this.hint, required this.onChanged});
+
+  final LocalizedText hint;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+        height: 48,
+        child: TextField(
+          onChanged: onChanged,
+          style: AppText.body(context),
+          decoration: InputDecoration(
+            isDense: true,
+            contentPadding: const EdgeInsets.symmetric(vertical: 14),
+            hintText: hint.of(context),
+            hintStyle: AppText.body(context, color: AppColors.inkPlaceholder),
+            prefixIcon: Icon(PhosphorIcons.magnifyingGlass,
+                size: 20, color: AppColors.inkMuted),
+            filled: true,
+            fillColor: AppColors.surface,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(Neo.radiusPill),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(Neo.radiusPill),
+              borderSide: BorderSide(color: AppColors.accent, width: 2),
+            ),
+          ),
+        ),
+      );
+}

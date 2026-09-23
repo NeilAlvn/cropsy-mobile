@@ -10,11 +10,11 @@ import '../../l10n/mascot_lines.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
-import '../../design/brutal.dart';
 import '../../design/colors.dart';
 import '../../design/components.dart';
 import '../../design/mascot.dart';
 import '../../design/typography.dart';
+import '../../design/widgets.dart';
 import '../../timing/content_snapshot.dart';
 import '../repository_scope.dart';
 import '../scan/scan_screen.dart';
@@ -102,7 +102,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
           ),
           const SizedBox(height: 24),
           SectionHeader(Str.commonProblems.of(context)),
-          _SearchField(onChanged: (q) => setState(() => _query = q)),
+          SearchField(hint: Str.searchProblems, onChanged: (q) => setState(() => _query = q)),
           const SizedBox(height: 14),
           Text(Str.byPlantPart.of(context), style: AppText.caption(context)),
           const SizedBox(height: 8),
@@ -166,40 +166,6 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
 
 /// Base 8.10: pill, 48 tall, tile fill — the same control Home searches crops
 /// with, so the two searches read as one app. Duplicated rather than shared:
-/// it is twenty lines, and Home's copy is owned by another hand this week.
-class _SearchField extends StatelessWidget {
-  const _SearchField({required this.onChanged});
-
-  final ValueChanged<String> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48,
-      child: TextField(
-        onChanged: onChanged,
-        style: AppText.body(context),
-        decoration: InputDecoration(
-          isDense: true,
-          contentPadding: const EdgeInsets.symmetric(vertical: 14),
-          hintText: Str.searchProblems.of(context),
-          hintStyle: AppText.body(context, color: AppColors.inkPlaceholder),
-          prefixIcon: Icon(PhosphorIcons.magnifyingGlass, size: 20, color: AppColors.inkMuted),
-          filled: true,
-          fillColor: AppColors.surface,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(Neo.radiusPill),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(Neo.radiusPill),
-            borderSide: BorderSide(color: AppColors.accent, width: 2),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class ProblemScreen extends StatelessWidget {
   const ProblemScreen({super.key, required this.problem});

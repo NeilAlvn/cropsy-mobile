@@ -39,6 +39,10 @@ abstract final class PhosphorIcons {
   static const IconData circle = IconData(0xe18a, fontFamily: _regular);
   static const IconData clock = IconData(0xe19a, fontFamily: _regular);
   static const IconData cloud = IconData(0xe1aa, fontFamily: _regular);
+  static const IconData cloudFog = IconData(0xe53c, fontFamily: _regular);
+  static const IconData cloudLightning = IconData(0xe1b2, fontFamily: _regular);
+  static const IconData cloudRain = IconData(0xe1b4, fontFamily: _regular);
+  static const IconData cloudSun = IconData(0xe540, fontFamily: _regular);
   static const IconData crosshair = IconData(0xe1d6, fontFamily: _regular);
   static const IconData crosshairSimple = IconData(0xe1d8, fontFamily: _regular);
   static const IconData dotsThree = IconData(0xe1fe, fontFamily: _regular);
