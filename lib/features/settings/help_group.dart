@@ -107,10 +107,10 @@ const faq = <(LocalizedText, LocalizedText)>[
     ),
     LocalizedText(
       nl: 'Uit de vorstdatums voor jouw locatie (KNMI / Open-Meteo '
-          'klimaatnormalen, afgerond op ~10 km), gecombineerd met teeltregels '
+          'klimaatnormalen, afgerond op ~1 km), gecombineerd met teeltregels '
           'die tegen minstens twee Nederlandse zaaikalenders zijn gelegd.',
       en: 'From the frost dates for your location (KNMI / Open-Meteo climate '
-          'normals, rounded to ~10 km) combined with crop rules cross-checked '
+          'normals, rounded to ~1 km) combined with crop rules cross-checked '
           'against at least two Dutch seed calendars.',
     ),
   ),

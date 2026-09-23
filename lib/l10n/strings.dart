@@ -442,9 +442,9 @@ abstract final class Str {
     en: 'Could not delete the account. Try again later.',
   );
   static const scanOpensWithBeta = LocalizedText(
-    nl: 'Fotoscannen komt met de beta. De probleemgids werkt nu al offline.',
-    en: 'Photo scanning opens with the beta. The common-problems browser '
-        'already works offline.',
+    nl: 'Fotoscannen is nu niet beschikbaar. De probleemgids werkt offline.',
+    en: 'Photo scanning is not available right now. The common-problems '
+        'browser works offline.',
   );
   static const scanQuotaReached = LocalizedText(
     nl: 'Dagelijkse scanlimiet bereikt. Morgen weer, of ontgrendel levenslang '
@@ -1245,8 +1245,16 @@ abstract final class Str {
   static LocalizedText continueWith(String plan) =>
       LocalizedText(nl: 'Verder met $plan', en: 'Continue with $plan');
   static const purchasesOpenLater = LocalizedText(
-    nl: 'Kopen kan vanaf de beta. Er wordt nu niets afgeschreven.',
-    en: 'Purchases open with the beta. Nothing is charged yet.',
+    nl: 'Kopen is nu niet mogelijk. Er wordt niets afgeschreven.',
+    en: 'Purchases are not available right now. Nothing is charged.',
+  );
+  static const purchasesRestored = LocalizedText(
+    nl: 'Aankopen hersteld.',
+    en: 'Purchases restored.',
+  );
+  static const nothingToRestore = LocalizedText(
+    nl: 'Geen eerdere aankopen gevonden voor dit Apple-account.',
+    en: 'No earlier purchases found for this Apple account.',
   );
   static const restorePurchases = LocalizedText(
     nl: 'Aankopen herstellen',
@@ -1366,9 +1374,9 @@ abstract final class Str {
   );
   static const frostBackbone = LocalizedText(
     nl: 'Bepaalt je vorstdatums, de basis onder elke plantdatum. Afgerond op '
-        '~10 km, nooit gevolgd.',
+        '~1 km, nooit gevolgd.',
     en: 'Sets your frost dates, the backbone of every planting date. Rounded '
-        'to ~10 km, never tracked.',
+        'to ~1 km, never tracked.',
   );
   static const whatWillYouGrow = LocalizedText(
     nl: 'Wat ga je kweken?',

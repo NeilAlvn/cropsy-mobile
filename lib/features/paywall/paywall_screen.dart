@@ -5,6 +5,9 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../config.dart';
 import '../../l10n/strings.dart';
 import '../../timing/types.dart';
 import '../../l10n/app_lang.dart';
@@ -130,11 +133,42 @@ class _PaywallScreenState extends State<PaywallScreen> {
               const SizedBox(height: 8),
               Center(
                 child: TextButton(
-                  onPressed: purchases?.configured == true ? () => purchases!.restore() : null,
+                  onPressed: purchases?.configured == true
+                      ? () async {
+                          final ok = await purchases!.restore();
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(ok
+                                ? Str.purchasesRestored.of(context)
+                                : purchases.lastError ?? Str.nothingToRestore.of(context)),
+                          ));
+                        }
+                      : null,
                   child: Text(Str.restorePurchases.of(context), style: AppText.caption(context)),
                 ),
               ),
-              Center(child: Text(Str.lifetimeNothingEver.of(context), style: AppText.caption(context))),
+              // App Review 3.1.2: a subscription paywall states the renewal
+              // terms and links to the terms of use and the privacy policy.
+              Center(
+                child: Text(
+                  (_plan == 2 ? Str.renewsYearly : Str.lifetimeNothingEver).of(context),
+                  style: AppText.caption(context),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (final (label, path) in const [(Str.terms, '/terms'), (Str.privacy, '/privacy')])
+                    TextButton(
+                      onPressed: () => launchUrl(
+                        Uri.parse('$websiteUrl/${AppLangScope.of(context).code}$path'),
+                        mode: LaunchMode.externalApplication,
+                      ),
+                      child: Text(label.of(context), style: AppText.caption(context)),
+                    ),
+                ],
+              ),
             ],
           ),
         ),
