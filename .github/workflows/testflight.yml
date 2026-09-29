@@ -65,3 +65,41 @@ jobs:
           name: Cropsy-xcarchive
           path: ${{ runner.temp }}/Cropsy.xcarchive.zip
           retention-days: 5
+
+      # Without this every Cropsy crash arrives in Sentry with "<redacted>" on
+      # every in-app frame — Farmsy ran that way for weeks and a 35-user hang
+      # could not be read at all. Sentry matches dSYMs to events by UUID, so
+      # uploading here makes future events readable.
+      #
+      # It matters more than it looks because of the line above: the archive
+      # artifact is kept for 5 days. Once it expires the symbols are gone for
+      # good and that build can never be symbolicated. Farmsy lost build 31's
+      # that way, and rescuing build 32's took catching it with a day to spare.
+      #
+      # SENTRY_AUTH_TOKEN is the organization token, whose fixed org:ci scope is
+      # exactly "upload debug files" — it cannot read issues or change settings.
+      # Cropsy lives in the same Sentry org as Farmsy, so the same token serves
+      # both. sentry-cli reads the region from the token itself.
+      #
+      # Runs last and never fails the build: a missing dSYM costs readable
+      # stacks, a hard failure would discard a 45-minute archive.
+      - name: Upload dSYMs to Sentry
+        continue-on-error: true
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: farmsy
+          SENTRY_PROJECT: cropsy-ios
+        run: |
+          if [ -z "$SENTRY_AUTH_TOKEN" ]; then
+            echo "::warning::SENTRY_AUTH_TOKEN is not set — Cropsy stacks stay unsymbolicated (<redacted> frames). Set it with: gh secret set SENTRY_AUTH_TOKEN --repo NeilAlvn/cropsy-mobile"
+            exit 0
+          fi
+          DSYMS="$RUNNER_TEMP/Cropsy.xcarchive/dSYMs"
+          if [ ! -d "$DSYMS" ] || [ -z "$(ls -A "$DSYMS" 2>/dev/null)" ]; then
+            echo "::warning::No dSYMs found at $DSYMS — nothing to upload."
+            exit 0
+          fi
+          npm install -g @sentry/cli@^2
+          sentry-cli --version
+          sentry-cli debug-files upload "$DSYMS"
+          echo "dSYMs uploaded — future Cropsy events will symbolicate."
