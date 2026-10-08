@@ -65,7 +65,12 @@ class Reminders {
             final crop = i.cropNames.pick(lang);
             final verb = kindLine(i.kind).pick(lang);
             // German puts the verb last and keeps the noun's capital: "Tomate gießen".
-            return lang == 'de' ? '$crop ${verb.toLowerCase()}' : '$verb ${crop.toLowerCase()}';
+            // French reads as a label: "Tomate : arroser".
+            return switch (lang) {
+              'de' => '$crop ${verb.toLowerCase()}',
+              'fr' => '$crop : ${verb.toLowerCase()}',
+              _ => '$verb ${crop.toLowerCase()}',
+            };
           })
           .take(4)
           .join(', ');

@@ -24,7 +24,7 @@ abstract final class MascotLines {
     nl: 'Nog niets gepland. Tik "Plan het" bij een gewas en het komt hier te staan.',
     en: 'Nothing planned yet. Tap "Plan it" on a crop and it lands here.',
     de: 'Noch nichts geplant. Tippe bei einer Pflanze auf „Einplanen“, dann landet sie hier.',
-    fr: 'Rien de planifié pour l\'instant. Touche « Planifier » sur une plante et elle arrive ici.',
+    fr: 'Rien de planifié pour l\'instant. Touche « Planifier » sur une plante et elle arrive ici.',
   );
 
   static const gardenGrowingEmpty = LocalizedText(
@@ -77,10 +77,9 @@ abstract final class MascotLines {
         'geplant, darum '
         '${moved == 1 ? 'zieht 1 weiterer Schritt' : 'ziehen $moved weitere Schritte'} mit.',
     fr:
-        'Rien n\'est perdu. « ${step.pick('fr')} » a été fait $days '
-        '${days <= 1 ? 'jour' : 'jours'} ${later ? 'plus tard' : 'plus tôt'} que '
-        'prévu, donc '
-        '${moved <= 1 ? '$moved étape à venir bouge' : '$moved étapes à venir bougent'} avec.',
+        'Rien n\'est perdu. L\'étape « ${step.pick('fr')} » a été faite $days '
+        '${days <= 1 ? 'jour' : 'jours'} ${later ? 'plus tard' : 'plus tôt'} que prévu, donc '
+        '${moved <= 1 ? '$moved étape suivante se décale' : '$moved étapes suivantes se décalent'} aussi.',
   );
 
   static const frostWarning = LocalizedText(
@@ -91,7 +90,7 @@ abstract final class MascotLines {
         'Careful: the new harvest date lands near the first frost. Growing it '
         'anyway is fine, a faster variety is safer.',
     de: 'Achtung: Das neue Erntedatum liegt nah am ersten Frost. Weitermachen ist okay, eine schnellere Sorte ist sicherer.',
-    fr: 'Attention : la nouvelle date de récolte tombe près des premières gelées. Tu peux continuer, une variété plus rapide est plus sûre.',
+    fr: 'Attention : la nouvelle date de récolte tombe près des premières gelées. Tu peux continuer, une variété plus rapide est plus sûre.',
   );
 
   // ── the season's own markers ──────────────────────────────────────────────
@@ -105,7 +104,7 @@ abstract final class MascotLines {
         'common in the Netherlands, so tomatoes, courgettes and basil stay '
         'under cover until it passes.',
     de: 'Die Eisheiligen, 11. bis 15. Mai. Ein später Nachtfrost in dieser Woche ist in den Niederlanden häufig, darum bleiben Tomaten, Zucchini und Basilikum geschützt, bis sie vorbei sind.',
-    fr: 'Les saints de glace, du 11 au 15 mai. Une gelée nocturne tardive cette semaine-là est fréquente aux Pays-Bas, alors tomates, courgettes et basilic restent à l\'abri jusqu\'à ce qu\'elle passe.',
+    fr: 'Les saints de glace, du 11 au 15 mai. Une gelée nocturne tardive cette semaine-là est fréquente aux Pays-Bas, alors tomates, courgettes et basilic restent à l\'abri jusqu\'à la fin de cette période.',
   );
 
   static const lastFrost = LocalizedText(
@@ -118,7 +117,7 @@ abstract final class MascotLines {
         'the app is counted from it, and an average is not a promise: watch '
         'the forecast either side of it.',
     de: 'Der durchschnittliche letzte Frühjahrsfrost in deiner Region. Jedes Aussaatdatum in der App wird von ihm aus gerechnet, und ein Durchschnitt ist kein Versprechen: Behalte rund um den Termin die Vorhersage im Blick.',
-    fr: 'Les dernières gelées de printemps en moyenne dans ta région. Chaque date de semis de l\'app est comptée à partir d\'elles, et une moyenne n\'est pas une promesse : garde un œil sur les prévisions autour de cette date.',
+    fr: 'Les dernières gelées de printemps en moyenne dans ta région. Chaque date de semis de l\'app est comptée à partir d\'elles, et une moyenne n\'est pas une promesse : garde un œil sur les prévisions autour de cette date.',
   );
 
   static const firstFrost = LocalizedText(
@@ -142,7 +141,7 @@ abstract final class MascotLines {
         'At the end of December the season adds up: what you grew, what you '
         'picked, and what it saved you.',
     de: 'Ende Dezember zieht die Saison Bilanz: was du angebaut und geerntet hast und was es dir gespart hat.',
-    fr: 'Fin décembre, la saison fait le bilan : ce que tu as cultivé, ce que tu as récolté et ce que ça t\'a fait économiser.',
+    fr: 'Fin décembre, la saison fait le bilan : ce que tu as cultivé, ce que tu as récolté et ce que ça t\'a fait économiser.',
   );
 
   static const seedOrder = LocalizedText(
@@ -163,7 +162,7 @@ abstract final class MascotLines {
         'reeks telt gewoon door.',
     en: 'Rain did the watering. Skipped for you, and your streak still counts.',
     de: 'Der Regen hat gegossen. Für dich übersprungen, und deine Serie zählt trotzdem.',
-    fr: 'La pluie a arrosé. Passé pour toi, et ta série compte quand même.',
+    fr: 'La pluie a arrosé. Sauté pour toi, et ta série compte quand même.',
   );
 
   static const heatAhead = LocalizedText(
@@ -193,7 +192,7 @@ abstract final class MascotLines {
     nl: 'Vink één taak af, of sla er één over met een reden. Regen telt mee.',
     en: 'Tick one task, or skip one with a reason. Rain counts.',
     de: 'Hak eine Aufgabe ab oder überspring eine mit Grund. Regen zählt.',
-    fr: 'Coche une tâche, ou passe-en une avec une raison. La pluie compte.',
+    fr: 'Coche une tâche, ou passes-en une avec une raison. La pluie compte.',
   );
 
   static LocalizedText streakGoing(int days) => LocalizedText(
@@ -259,7 +258,7 @@ abstract final class MascotLines {
         'Best guesses, most likely first. Not this plant? Pick another or '
         'search by name.',
     de: 'Beste Vermutungen, die wahrscheinlichste zuerst. Nicht diese Pflanze? Wähl eine andere oder such nach dem Namen.',
-    fr: 'Meilleures hypothèses, la plus probable d\'abord. Pas cette plante ? Choisis-en une autre ou cherche par nom.',
+    fr: 'Meilleures hypothèses, la plus probable d\'abord. Pas cette plante ? Choisis-en une autre ou cherche par nom.',
   );
 
   static const scanIsAGuess = LocalizedText(
@@ -301,7 +300,7 @@ abstract final class MascotLines {
     nl: 'Hoi! Even kennismaken.',
     en: "Hi! Let's get to know each other.",
     de: 'Hallo! Lernen wir uns kennen.',
-    fr: 'Salut ! Faisons connaissance.',
+    fr: 'Salut ! Faisons connaissance.',
   );
 
   static const buildingPlan = LocalizedText(
@@ -359,8 +358,8 @@ abstract final class MascotLines {
         'Ernte, was reif ist, und deck ab oder hol es rein.',
     fr:
         'Les premières gelées sont attendues dans environ $days '
-        '${days <= 1 ? 'jour' : 'jours'} ($firstFrost). ${crop.pick('fr')} n\'y résiste pas. '
-        'Récolte ce qui est mûr, puis couvre ou rentre la plante.',
+        '${days <= 1 ? 'jour' : 'jours'} ($firstFrost). Cette plante n\'y résiste pas. '
+        'Récolte ce qui est mûr, puis couvre-la ou rentre-la.',
   );
 
   static LocalizedText insightLastFrostAhead(
@@ -380,7 +379,7 @@ abstract final class MascotLines {
         'Lass ${crop.pick('de')} bis nach den Eisheiligen drinnen.',
     fr:
         'Les dernières gelées sont encore à ~$days ${days <= 1 ? 'jour' : 'jours'} ($lastFrost). '
-        '${crop.pick('fr')} reste à l\'intérieur jusqu\'après les saints de glace.',
+        '${crop.pick('fr')} : à garder à l\'intérieur jusqu\'après les saints de glace.',
   );
 
   static LocalizedText insightColdNight(int tempC, String date) =>
@@ -395,7 +394,7 @@ abstract final class MascotLines {
             'Kalte Nacht im Anmarsch: $tempC °C am '
             '$date. Deck ab oder hol die Töpfe rein.',
         fr:
-            'Nuit froide en vue : $tempC °C le '
+            'Nuit froide en vue : $tempC °C le '
             '$date. Couvre d\'un voile ou rentre les pots.',
       );
 
@@ -415,8 +414,8 @@ abstract final class MascotLines {
             '$date: Ein Topf mit $litres L trocknet an einem Tag aus. Gieß '
             'morgens und stell den Topf in den Schatten, wenn es geht.',
         fr:
-            '$tempC °C le '
-            '$date : un pot de $litres L sèche en une journée. Arrose le '
+            '$tempC °C le '
+            '$date : un pot de $litres L sèche en une journée. Arrose le '
             'matin, et mets le pot à l\'ombre si tu peux.',
       );
 
@@ -431,7 +430,7 @@ abstract final class MascotLines {
         '$mm mm Regen in den nächsten drei Tagen. Lass das '
         'Gießen aus und prüf die Abzugslöcher.',
     fr:
-        '$mm mm de pluie dans les trois prochains jours. Saute '
-        'l\'arrosage et vérifie les trous de drainage.',
+        '$mm mm de pluie dans les trois prochains jours. Pas besoin '
+        'd\'arroser ; vérifie juste les trous de drainage.',
   );
 }
