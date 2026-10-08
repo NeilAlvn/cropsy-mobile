@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# Run from cropsy-mobile/ as: GEM_HOME=/opt/homebrew/Cellar/cocoapods/1.17.0/libexec ruby tool/l10n/add_lproj.rb
+# (the xcodeproj gem only loads from CocoaPods GEM_HOME). Revert the stray XCLocalSwiftPackageReference comment hunk it rewrites in project.pbxproj.
 # tool/l10n/add_lproj.rb — adds ios/Runner/<lang>.lproj/InfoPlist.strings to the
 # Runner target as one variant group. Idempotent. Uses the xcodeproj gem that
 # ships with CocoaPods.
