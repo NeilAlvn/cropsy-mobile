@@ -79,7 +79,7 @@ final profilesSync = TableSync<ProfileRow>(
           id: Value(w['id'] as String),
           owner: Value(w['owner'] as String),
           displayName: Value(w['display_name'] as String?),
-          lang: Value(w['lang'] as String? ?? 'nl'),
+          lang: Value(w['lang'] as String? ?? 'en'),
           preferences: Value(jsonEncode(w['preferences'] ?? {})),
           streakCount: Value((w['streak_count'] as num?)?.toInt() ?? 0),
           streakFrozenUntil: Value(w['streak_frozen_until'] as String?),

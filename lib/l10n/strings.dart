@@ -655,13 +655,6 @@ abstract final class Str {
   static const yourData = LocalizedText(nl: 'Jouw gegevens', en: 'Your data');
   static const appearance = LocalizedText(nl: 'Weergave', en: 'Appearance');
   static const language = LocalizedText(nl: 'Taal', en: 'Language');
-
-  static const reminderOneThing = LocalizedText(
-    nl: 'Eén ding te doen vandaag',
-    en: 'One thing to do today',
-  );
-  static LocalizedText reminderThings(int n) =>
-      LocalizedText(nl: '$n dingen te doen vandaag', en: '$n things to do today');
   static const help = LocalizedText(nl: 'Help', en: 'Help');
   static const themeSystem = LocalizedText(nl: 'Systeem', en: 'System');
   static const themeLight = LocalizedText(nl: 'Licht', en: 'Light');
@@ -671,10 +664,10 @@ abstract final class Str {
     en: 'System follows your phone.',
   );
   static const langNote = LocalizedText(
-    nl: 'De hele app spreekt beide talen. Een enkele teeltuitleg is er nog '
-        'alleen in het Nederlands; dat staat er dan bij.',
-    en: 'The whole app speaks both languages. A few growing guides are Dutch '
-        'only for now, and say so where you read them.',
+    nl: 'De interface spreekt zes talen. Een teeltuitleg die nog niet vertaald '
+        'is, lees je in het Engels; dat staat er dan bij.',
+    en: 'The interface speaks six languages. A growing guide that is not '
+        'translated yet reads in English, and says so.',
   );
   static const signInBlurb = LocalizedText(
     nl: 'Log in om je tuin te bewaren en te synchroniseren. Zonder account '
@@ -1559,6 +1552,14 @@ abstract final class Str {
         nl: 'Naast je foto van ${month.nl}',
         en: 'Next to your photo from ${month.en}',
       );
+
+  // ── reminders ─────────────────────────────────────────────────────────────
+  static const reminderOneThing = LocalizedText(
+    nl: 'Eén ding te doen vandaag',
+    en: 'One thing to do today',
+  );
+  static LocalizedText reminderThings(int n) =>
+      LocalizedText(nl: '$n dingen te doen vandaag', en: '$n things to do today');
 
   // ── months, for every sentence that names one ─────────────────────────────
   static const months = <LocalizedText>[
