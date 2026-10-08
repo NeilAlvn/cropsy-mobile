@@ -1,6 +1,7 @@
 import 'package:cropsy/l10n/app_lang.dart';
 import 'package:cropsy/l10n/strings.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -31,5 +32,17 @@ void main() {
     expect(Str.tabGarden.of(ctx), 'Mijn tuin');
     await tester.pumpWidget(app('de')); // no German yet → English
     expect(Str.tabGarden.of(ctx), 'My garden');
+  });
+
+  testWidgets('MaterialApp accepts every supported locale', (tester) async {
+    for (final (code, _) in appLanguages) {
+      await tester.pumpWidget(MaterialApp(
+        locale: Locale(code),
+        supportedLocales: [for (final (c, _) in appLanguages) Locale(c)],
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        home: const SizedBox(),
+      ));
+      expect(Localizations.localeOf(tester.element(find.byType(SizedBox))).languageCode, code);
+    }
   });
 }

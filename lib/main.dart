@@ -9,6 +9,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -128,25 +129,31 @@ class CropsyApp extends StatelessWidget {
               // palette through every widget.
               child: ValueListenableBuilder<AppPalette>(
                 valueListenable: AppColors.scheme,
-                builder: (context, palette, _) => MaterialApp(
-                  // Colour tokens are read during build, and a const widget that
-                  // was already built will not rebuild just because its ancestor
-                  // did, so a scheme change has to rebuild the app rather than
-                  // notify it. Keying the app on the scheme does that.
-                  key: ValueKey(palette.brightness),
-                  // That key would also throw away the navigation stack, which is
-                  // how changing the theme from a pushed screen used to dump you
-                  // back on Home. A global key re-parents the navigator into the
-                  // new tree instead: the routes survive, and being reactivated
-                  // is a dependency change, so each one rebuilds its page in the
-                  // scheme that just won.
-                  navigatorKey: _navigator,
-                  title: 'Cropsy',
-                  debugShowCheckedModeBanner: false,
-                  themeMode: theme.materialMode,
-                  theme: _themeData(Brightness.light),
-                  darkTheme: _themeData(Brightness.dark),
-                  home: _Root(),
+                builder: (context, palette, _) => ListenableBuilder(
+                  listenable: lang,
+                  builder: (context, _) => MaterialApp(
+                    // Colour tokens are read during build, and a const widget that
+                    // was already built will not rebuild just because its ancestor
+                    // did, so a scheme change has to rebuild the app rather than
+                    // notify it. Keying the app on the scheme does that.
+                    key: ValueKey(palette.brightness),
+                    // That key would also throw away the navigation stack, which is
+                    // how changing the theme from a pushed screen used to dump you
+                    // back on Home. A global key re-parents the navigator into the
+                    // new tree instead: the routes survive, and being reactivated
+                    // is a dependency change, so each one rebuilds its page in the
+                    // scheme that just won.
+                    navigatorKey: _navigator,
+                    title: 'Cropsy',
+                    debugShowCheckedModeBanner: false,
+                    themeMode: theme.materialMode,
+                    theme: _themeData(Brightness.light),
+                    darkTheme: _themeData(Brightness.dark),
+                    locale: Locale(lang.code),
+                    supportedLocales: [for (final (code, _) in appLanguages) Locale(code)],
+                    localizationsDelegates: GlobalMaterialLocalizations.delegates,
+                    home: _Root(),
+                  ),
                 ),
               ),
             ),
