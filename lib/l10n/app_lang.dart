@@ -1,8 +1,8 @@
 /// Which language the app speaks.
 ///
-/// Six codes planned, [shippedLanguages] live, English as the fallback. The choice lives on the profile so it
-/// syncs with the account; this holds the live value and tells the widgets
-/// that read it when it changes.
+/// Six codes planned, [shippedLanguages] live, English as the fallback. The
+/// choice lives on the profile so it syncs with the account; this holds the
+/// live value and tells the widgets that read it when it changes.
 library;
 
 import 'dart:ui' as ui;
