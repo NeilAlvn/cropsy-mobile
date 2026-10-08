@@ -75,7 +75,7 @@ Future<void> _boot() async {
   // reader's language too.
   await initializeDateFormatting();
   final profile = await repo.profile();
-  final lang = AppLang(profile?.lang ?? 'nl');
+  final lang = AppLang(profile?.lang ?? deviceLang());
   Intl.defaultLocale = lang.code;
   // Haptics and reduced motion are read at paint time, with no context and no
   // await to spare, so they are pulled out of the profile once, here.
@@ -86,7 +86,7 @@ Future<void> _boot() async {
   repo.addListener(() {
     debounce?.cancel();
     debounce = Timer(const Duration(seconds: 2), () async {
-      await Reminders.schedule(await repo.thisWeek(), today: repo.today, dutch: lang.isDutch);
+      await Reminders.schedule(await repo.thisWeek(), today: repo.today, lang: lang.code);
     });
   });
   runApp(CropsyApp(repository: repo, auth: auth, purchases: purchases, theme: theme, lang: lang));

@@ -23,6 +23,7 @@ import '../../data/frost_presets.dart';
 import '../../data/seed.dart';
 import '../../db/database.dart';
 import '../../db/uuid.dart';
+import '../../l10n/app_lang.dart';
 import '../../timing/content_snapshot.dart';
 import '../../timing/crop_snapshot.dart';
 import '../../timing/dates.dart';
@@ -173,7 +174,7 @@ class GardenRepository extends ChangeNotifier {
             id: Value(owner),
             owner: Value(owner),
             displayName: Value(displayName ?? existing?.displayName),
-            lang: Value(lang ?? existing?.lang ?? 'nl'),
+            lang: Value(lang ?? existing?.lang ?? deviceLang()),
             preferences: Value(jsonEncode(merged)),
             streakCount: Value(existing?.streakCount ?? 0),
             streakFrozenUntil: Value(existing?.streakFrozenUntil),

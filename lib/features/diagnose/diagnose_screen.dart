@@ -192,7 +192,7 @@ class ProblemScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
         children: [
-          Text(problem.names.other(AppLangScope.of(context).isDutch),
+          Text(problem.names.other(AppLangScope.of(context).code),
               style: AppText.bodyMuted(context)),
           if (problem.draft) const Padding(padding: EdgeInsets.only(top: 8), child: DraftBadge()),
           const SizedBox(height: 12),

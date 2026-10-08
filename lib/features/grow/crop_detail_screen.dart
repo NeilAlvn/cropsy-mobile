@@ -95,7 +95,7 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                     Text(crop.names.of(context), style: AppText.display(context)),
                     if (crop.draft) const Padding(padding: EdgeInsets.only(top: 4), child: DraftBadge()),
                     Text(
-                        crop.names.other(AppLangScope.of(context).isDutch),
+                        crop.names.other(AppLangScope.of(context).code),
                         style: AppText.bodyMuted(context)),
                     const SizedBox(height: 14),
                     Wrap(spacing: 8, runSpacing: 8, children: [

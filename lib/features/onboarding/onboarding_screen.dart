@@ -125,7 +125,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         'partial' => 5,
         _ => 3,
       },
-      name: gardenKindLabel(_kind).pick(AppLangScope.of(context).isDutch),
+      name: gardenKindLabel(_kind).pick(AppLangScope.of(context).code),
       sizeM2: _sizeBuckets[_sizeBucket].$2,
       postcode: _postcode,
       profile: _lookup?.profile,

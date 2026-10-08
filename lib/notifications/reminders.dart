@@ -8,6 +8,7 @@ import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../features/garden/garden_repository.dart';
+import '../l10n/strings.dart';
 import '../timing/dates.dart';
 import '../timing/types.dart';
 
@@ -39,12 +40,12 @@ class Reminders {
 
   /// Replace every scheduled reminder with the next seven days of items.
   ///
-  /// [dutch] follows the profile's language: a notification is the one piece of
+  /// [lang] follows the profile's language: a notification is the one piece of
   /// the app that speaks while no screen is open, so it has to be told.
   static Future<void> schedule(
     List<ThisWeekItem> items, {
     required String today,
-    bool dutch = true,
+    String lang = 'en',
     int hour = 8,
   }) async {
     await _plugin.cancelAll();
@@ -61,16 +62,14 @@ class Reminders {
       final list = byDay[day]!;
       final body = list
           .map((i) =>
-              '${_verb(i).pick(dutch)} ${i.cropNames.pick(dutch).toLowerCase()}')
+              '${_verb(i).pick(lang)} ${i.cropNames.pick(lang).toLowerCase()}')
           .take(4)
           .join(', ');
       await _plugin.zonedSchedule(
         id: id++,
         title: list.length == 1
-            ? (dutch ? 'Eén ding te doen vandaag' : 'One thing to do today')
-            : (dutch
-                ? '${list.length} dingen te doen vandaag'
-                : '${list.length} things to do today'),
+            ? Str.reminderOneThing.pick(lang)
+            : Str.reminderThings(list.length).pick(lang),
         body: body,
         scheduledDate: tz.TZDateTime.from(at.toUtc(), tz.UTC),
         notificationDetails: _details,

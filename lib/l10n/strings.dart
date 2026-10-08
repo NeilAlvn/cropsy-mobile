@@ -655,6 +655,13 @@ abstract final class Str {
   static const yourData = LocalizedText(nl: 'Jouw gegevens', en: 'Your data');
   static const appearance = LocalizedText(nl: 'Weergave', en: 'Appearance');
   static const language = LocalizedText(nl: 'Taal', en: 'Language');
+
+  static const reminderOneThing = LocalizedText(
+    nl: 'Eén ding te doen vandaag',
+    en: 'One thing to do today',
+  );
+  static LocalizedText reminderThings(int n) =>
+      LocalizedText(nl: '$n dingen te doen vandaag', en: '$n things to do today');
   static const help = LocalizedText(nl: 'Help', en: 'Help');
   static const themeSystem = LocalizedText(nl: 'Systeem', en: 'System');
   static const themeLight = LocalizedText(nl: 'Licht', en: 'Light');

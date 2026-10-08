@@ -88,7 +88,7 @@ class _AppearanceGroupState extends State<AppearanceGroup> {
           SettingsRow(
             icon: PhosphorIcons.globe,
             title: Str.language.of(context),
-            value: lang.isDutch ? 'Nederlands' : 'English',
+            value: languageName(lang.code),
             onTap: _pickLanguage,
           ),
         ]),
