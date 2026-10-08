@@ -66,7 +66,7 @@ abstract final class MascotLines {
         '${later ? 'later' : 'earlier'} than planned, so $moved upcoming '
         '${moved == 1 ? 'step moves' : 'steps move'} with it.',
     de:
-        'Du liegst nicht zurück. ${step.pick('de')} war $days '
+        'Du hängst nicht hinterher. ${step.pick('de')} war $days '
         '${days == 1 ? 'Tag' : 'Tage'} ${later ? 'später' : 'früher'} als '
         'geplant, darum '
         '${moved == 1 ? 'zieht 1 weiterer Schritt' : 'ziehen $moved weitere Schritte'} mit.',
@@ -79,7 +79,7 @@ abstract final class MascotLines {
     en:
         'Careful: the new harvest date lands near the first frost. Growing it '
         'anyway is fine, a faster variety is safer.',
-    de: 'Achtung: Das neue Erntedatum liegt nah am ersten Frost. Du kannst sie trotzdem anbauen, eine schnellere Sorte ist sicherer.',
+    de: 'Achtung: Das neue Erntedatum liegt nah am ersten Frost. Weitermachen ist okay, eine schnellere Sorte ist sicherer.',
   );
 
   // ── the season's own markers ──────────────────────────────────────────────
@@ -126,7 +126,7 @@ abstract final class MascotLines {
     en:
         'At the end of December the season adds up: what you grew, what you '
         'picked, and what it saved you.',
-    de: 'Ende Dezember zieht die Saison Bilanz: was du angebaut, was du geerntet und was es dir gespart hat.',
+    de: 'Ende Dezember zieht die Saison Bilanz: was du angebaut und geerntet hast und was es dir gespart hat.',
   );
 
   static const seedOrder = LocalizedText(

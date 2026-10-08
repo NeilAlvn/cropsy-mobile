@@ -174,7 +174,7 @@ class GardenRepository extends ChangeNotifier {
             id: Value(owner),
             owner: Value(owner),
             displayName: Value(displayName ?? existing?.displayName),
-            lang: Value(lang ?? existing?.lang ?? deviceLang()),
+            lang: Value(lang ?? existing?.lang ?? deviceLangPlanned()),
             preferences: Value(jsonEncode(merged)),
             streakCount: Value(existing?.streakCount ?? 0),
             streakFrozenUntil: Value(existing?.streakFrozenUntil),

@@ -45,7 +45,7 @@ abstract final class Str {
   static const greetingSub = LocalizedText(
     nl: 'Dit staat er deze week in je tuin.',
     en: 'Here is your garden this week.',
-    de: 'Das ist dein Garten diese Woche.',
+    de: 'Das steht diese Woche in deinem Garten an.',
   );
   static const searchCrops = LocalizedText(
     nl: 'Zoek groenten',
@@ -75,7 +75,7 @@ abstract final class Str {
   static const unlockLifetime = LocalizedText(
     nl: 'Levenslang, één prijs, voorgoed',
     en: 'Unlock lifetime, one price, forever',
-    de: 'Lebenslang freischalten, ein Preis, für immer',
+    de: 'Lifetime freischalten: ein Preis, für immer',
   );
   static const startStreak = LocalizedText(
     nl: 'Begin vandaag een reeks',
@@ -109,7 +109,7 @@ abstract final class Str {
       LocalizedText(
         nl: '${step.nl} · gepland $day',
         en: '${step.en} · planned $day',
-        de: '${step.pick('de')} · geplant für $day',
+        de: '${step.pick('de')} · geplant am $day',
       );
   static const nothingToDoToday = LocalizedText(
     nl: 'Niets te doen vandaag. Geniet ervan.',
@@ -119,7 +119,7 @@ abstract final class Str {
   static LocalizedText thingsToDoToday(int n) => LocalizedText(
     nl: n == 1 ? 'Eén ding te doen vandaag.' : '$n dingen te doen vandaag.',
     en: n == 1 ? '1 thing to do today.' : '$n things to do today.',
-    de: n == 1 ? 'Heute ist 1 Sache zu tun.' : 'Heute sind $n Sachen zu tun.',
+    de: n == 1 ? 'Heute steht 1 Aufgabe an.' : 'Heute stehen $n Aufgaben an.',
   );
   static LocalizedText removeKeepsYourHarvests(String name) => LocalizedText(
     nl:
@@ -869,7 +869,7 @@ abstract final class Str {
     en:
         'Daily scan limit reached. Tomorrow again, or unlock lifetime for '
         'more.',
-    de: 'Tägliches Scan-Limit erreicht. Morgen geht es weiter, oder schalte Lebenslang für mehr frei.',
+    de: 'Tägliches Scan-Limit erreicht. Morgen geht es weiter, oder schalte Lifetime für mehr frei.',
   );
   static LocalizedText scanFailed(String code) => LocalizedText(
     nl: 'Scannen mislukt ($code). Probeer opnieuw.',
@@ -921,14 +921,14 @@ abstract final class Str {
     de: 'Du bist hier',
   );
   static LocalizedText cropsSuitMonth(int n) => LocalizedText(
-    nl: '$n gewassen passen',
-    en: '$n crops suit it',
-    de: '$n Pflanzen passen',
+    nl: n == 1 ? '1 gewas past' : '$n gewassen passen',
+    en: n == 1 ? '1 crop suits it' : '$n crops suit it',
+    de: n == 1 ? '1 Pflanze passt' : '$n Pflanzen passen',
   );
   static LocalizedText cropsCanGoIn(int n) => LocalizedText(
-    nl: 'Er kunnen nog $n gewassen in',
-    en: '$n crops can still go in',
-    de: '$n Pflanzen können noch rein',
+    nl: n == 1 ? 'Er kan nog 1 gewas in' : 'Er kunnen nog $n gewassen in',
+    en: n == 1 ? '1 crop can still go in' : '$n crops can still go in',
+    de: n == 1 ? '1 Pflanze kann noch rein' : '$n Pflanzen können noch rein',
   );
   static LocalizedText nothingPlanned(LocalizedText month) => LocalizedText(
     nl: 'Nog niets gepland voor ${month.nl}',
@@ -970,6 +970,8 @@ abstract final class Str {
 
   /// "Tomaat bijmesten" reads right in Dutch, "Feed Tomato" in English, so the
   /// two languages put the crop on different sides of the verb.
+  /// [step] must be verb-led (nl/de lowercase it after the crop): today the
+  /// season list passes pot on, plant out, thin and feed only.
   static LocalizedText stepOnCrop(LocalizedText step, LocalizedText crop) =>
       LocalizedText(
         nl: '${crop.nl} ${step.nl.toLowerCase()}',
@@ -1013,9 +1015,9 @@ abstract final class Str {
     de: 'Saatgut bestellen',
   );
   static LocalizedText cropsOnList(int n) => LocalizedText(
-    nl: '$n gewassen op je lijst',
-    en: '$n crops on your list',
-    de: '$n Pflanzen auf deiner Liste',
+    nl: n == 1 ? '1 gewas op je lijst' : '$n gewassen op je lijst',
+    en: n == 1 ? '1 crop on your list' : '$n crops on your list',
+    de: n == 1 ? '1 Pflanze auf deiner Liste' : '$n Pflanzen auf deiner Liste',
   );
   static const monthPhoto = LocalizedText(
     nl: 'Maak de foto van deze maand',
@@ -1123,12 +1125,16 @@ abstract final class Str {
   );
   static const grow = LocalizedText(nl: 'Kweken', en: 'Grow', de: 'Anbauen');
   static LocalizedText searchCropCount(int n) => LocalizedText(
-    nl: 'Zoek in $n gewassen…',
-    en: 'Search $n crops…',
-    de: 'In $n Pflanzen suchen…',
+    nl: n == 1 ? 'Zoek in 1 gewas…' : 'Zoek in $n gewassen…',
+    en: n == 1 ? 'Search 1 crop…' : 'Search $n crops…',
+    de: n == 1 ? 'In 1 Pflanze suchen…' : 'In $n Pflanzen suchen…',
   );
   static LocalizedText results(int n) =>
-      LocalizedText(nl: '$n resultaten', en: '$n results', de: '$n Ergebnisse');
+      LocalizedText(
+        nl: n == 1 ? '1 resultaat' : '$n resultaten',
+        en: n == 1 ? '1 result' : '$n results',
+        de: n == 1 ? '1 Ergebnis' : '$n Ergebnisse',
+      );
   static const profile = LocalizedText(
     nl: 'Profiel',
     en: 'Profile',
@@ -1247,12 +1253,12 @@ abstract final class Str {
   );
   static const langNote = LocalizedText(
     nl:
-        'De interface spreekt zes talen. Een teeltuitleg die nog niet vertaald '
-        'is, lees je in het Engels; dat staat er dan bij.',
+        'De interface spreekt meerdere talen. Een teeltuitleg die nog niet '
+        'vertaald is, lees je in het Engels; dat staat er dan bij.',
     en:
-        'The interface speaks six languages. A growing guide that is not '
+        'The interface speaks several languages. A growing guide that is not '
         'translated yet reads in English, and says so.',
-    de: 'Die App spricht sechs Sprachen. Eine Anbauanleitung, die noch nicht übersetzt ist, erscheint auf Englisch und sagt das auch.',
+    de: 'Die App spricht mehrere Sprachen. Eine Anbauanleitung, die noch nicht übersetzt ist, erscheint auf Englisch und sagt das auch.',
   );
   static const signInBlurb = LocalizedText(
     nl:
@@ -1515,7 +1521,7 @@ abstract final class Str {
   static const planLifetime = LocalizedText(
     nl: 'Levenslang',
     en: 'Lifetime',
-    de: 'Lebenslang',
+    de: 'Lifetime',
   );
   static const planYearly = LocalizedText(
     nl: 'Jaarlijks',
@@ -1525,14 +1531,14 @@ abstract final class Str {
   static const lifetimeNothingToCancel = LocalizedText(
     nl: 'Levenslang. Niets op te zeggen.',
     en: 'Lifetime. Nothing to cancel.',
-    de: 'Lebenslang. Nichts zu kündigen.',
+    de: 'Einmalkauf. Nichts zu kündigen.',
   );
   static const freeTierBlurb = LocalizedText(
     nl:
         '1 tuin · 6 groeiende planten · volledige tijdlijn, herinneringen en '
         'elk gewas.',
     en: '1 garden · 6 growing plants · full timeline, reminders and every crop.',
-    de: '1 Garten · 6 wachsende Pflanzen · ganzer Zeitplan, Erinnerungen und jede Pflanze.',
+    de: '1 Garten · 6 wachsende Pflanzen · ganze Zeitleiste, Erinnerungen und alle Pflanzenarten.',
   );
   static LocalizedText cropDataVersion(String version) => LocalizedText(
     nl: 'Cropsy · gewasdata $version',
@@ -1608,7 +1614,7 @@ abstract final class Str {
     en:
         '1 garden · 6 growing plants · full timeline, reminders and every crop '
         '· 20 photos · 2 streak freezes a month',
-    de: '1 Garten · 6 wachsende Pflanzen · ganzer Zeitplan, Erinnerungen und jede Pflanze · 20 Fotos · 2 Serien-Pausen pro Monat',
+    de: '1 Garten · 6 wachsende Pflanzen · ganze Zeitleiste, Erinnerungen und alle Pflanzenarten · 20 Fotos · 2 Pausentage pro Monat',
   );
   static const planLifetimeBlurb = LocalizedText(
     nl:
@@ -1617,7 +1623,7 @@ abstract final class Str {
     en:
         'Unlimited gardens and plants · planner grid · diagnose · unlimited '
         'photos and freezes · export',
-    de: 'Unbegrenzt Gärten und Pflanzen · Beetplaner · Diagnose · unbegrenzt Fotos und Pausen · Export',
+    de: 'Unbegrenzt viele Gärten und Pflanzen · Beetplaner · Diagnose · unbegrenzt viele Fotos und Pausentage · Export',
   );
   static const planYearlyBlurb = LocalizedText(
     nl:
@@ -1626,7 +1632,7 @@ abstract final class Str {
     en:
         'Everything in Lifetime, as a subscription. Cancel in the App Store '
         'any time.',
-    de: 'Alles aus Lebenslang, als Abo. Jederzeit im App Store kündbar.',
+    de: 'Alles aus Lifetime, als Abo. Jederzeit im App Store kündbar.',
   );
   static const noPriceForUnit = LocalizedText(
     nl: 'Nog geen prijs voor deze eenheid',
@@ -2386,7 +2392,7 @@ abstract final class Str {
   static const lifetimeNothingEver = LocalizedText(
     nl: 'Levenslang: nooit iets op te zeggen.',
     en: 'Lifetime: nothing to cancel, ever.',
-    de: 'Lebenslang: nie etwas zu kündigen.',
+    de: 'Einmalkauf: nie etwas zu kündigen.',
   );
 
   // ── where you grow ────────────────────────────────────────────────────────
@@ -2562,7 +2568,7 @@ abstract final class Str {
         'Sowing, potting on, harvest, the frost dates that govern them, and '
         'the months when nothing is planned yet. Tick a step off and '
         'everything after it moves with you.',
-    de: 'Säen, umtopfen, ernten, die Frostdaten, die das alles bestimmen, und die Monate, in denen noch nichts geplant ist. Hak einen Schritt ab, und alles danach zieht mit.',
+    de: 'Aussaat, Umtopfen, Ernte, die Frostdaten, die das alles bestimmen, und die Monate, in denen noch nichts geplant ist. Hak einen Schritt ab, und alles danach zieht mit.',
   );
   static const frostBackbone = LocalizedText(
     nl:
@@ -2903,12 +2909,12 @@ abstract final class Str {
   static const reminderOneThing = LocalizedText(
     nl: 'Eén ding te doen vandaag',
     en: 'One thing to do today',
-    de: 'Heute ist eine Sache zu tun',
+    de: 'Heute steht eine Aufgabe an',
   );
   static LocalizedText reminderThings(int n) => LocalizedText(
     nl: '$n dingen te doen vandaag',
     en: '$n things to do today',
-    de: 'Heute sind $n Sachen zu tun',
+    de: 'Heute stehen $n Aufgaben an',
   );
 
   // ── task and step names (kindLine, nodeKindLine) ──────────────────────────
@@ -2935,7 +2941,7 @@ abstract final class Str {
   static const thinSeedlings = LocalizedText(
     nl: 'Uitdunnen',
     en: 'Thin seedlings',
-    de: 'Sämlinge vereinzeln',
+    de: 'Vereinzeln',
   );
   static const harvestWindow = LocalizedText(
     nl: 'Oogstvenster',
@@ -2976,7 +2982,7 @@ abstract final class Str {
   static const freezesUnlimited = LocalizedText(
     nl: 'Onbeperkt vriesdagen.',
     en: 'Unlimited freeze days.',
-    de: 'Unbegrenzt Pausentage.',
+    de: 'Unbegrenzt viele Pausentage.',
   );
   static LocalizedText freezesLeft(int n) => LocalizedText(
     nl: 'Nog $n '
@@ -3143,7 +3149,7 @@ abstract final class Str {
         'telefoon. Weerhints en synchroniseren hebben verbinding nodig.',
     en: 'Yes. Crops, dates, reminders and the timeline all run on the phone. '
         'Weather hints and sync need a connection.',
-    de: 'Ja. Pflanzen, Termine, Erinnerungen und der Zeitplan laufen auf dem '
+    de: 'Ja. Pflanzen, Termine, Erinnerungen und die Zeitleiste laufen auf dem '
         'Handy. Wetterhinweise und Synchronisierung brauchen eine Verbindung.',
   );
   static const faqFreeQ = LocalizedText(
@@ -3156,8 +3162,8 @@ abstract final class Str {
         'herinneringen en elk gewas, voorgoed. Lifetime geeft meer ruimte.',
     en: 'One garden, six growing plants, the full timeline, reminders and '
         'every crop, forever. Lifetime unlocks more room.',
-    de: 'Ein Garten, sechs wachsende Pflanzen, der ganze Zeitplan, '
-        'Erinnerungen und jede Pflanze, für immer. Lebenslang gibt dir mehr Platz.',
+    de: 'Ein Garten, sechs wachsende Pflanzen, die ganze Zeitleiste, '
+        'Erinnerungen und alle Pflanzenarten, für immer. Lifetime gibt dir mehr Platz.',
   );
   static const faqDeleteQ = LocalizedText(
     nl: 'Hoe verwijder ik mijn account?',

@@ -15,10 +15,17 @@ void main() {
     expect(normalizeLang(null), 'en');
   });
 
+  test('the stored language keeps a planned code the app does not speak yet', () {
+    expect(shippedLanguages, isNot(contains('fr')));
+    expect(plannedLang('fr-FR'), 'fr');
+    expect(normalizeLang('fr-FR'), 'en');
+    expect(plannedLang('it'), 'en');
+  });
+
   test('six languages planned, the picker offers only the shipped ones', () {
     expect(appLanguages.map((l) => l.$1), ['en', 'nl', 'de', 'fr', 'sv', 'pt']);
     expect(appLanguages.map((l) => l.$1), containsAll(shippedLanguages));
-    expect(pickerLanguages.length, 3);
+    expect(pickerLanguages.length, shippedLanguages.length);
     expect(pickerLanguages.first.$1, 'en');
     expect(languageName('sv'), 'Svenska');
     expect(languageName('xx'), 'English');

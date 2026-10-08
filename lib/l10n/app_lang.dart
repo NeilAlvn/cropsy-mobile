@@ -28,14 +28,24 @@ const shippedLanguages = ['en', 'nl', 'de'];
 /// What the picker and MaterialApp offer: [appLanguages] that have shipped.
 final pickerLanguages = [for (final l in appLanguages) if (shippedLanguages.contains(l.$1)) l];
 
-/// `de-AT` → `de`, `pt_PT` → `pt` once shipped; anything not shipped → `en`.
-String normalizeLang(String? code) {
+String _snap(String? code, Iterable<String> codes) {
   final c = code?.split(RegExp('[-_]')).first.toLowerCase();
-  return shippedLanguages.contains(c) ? c! : 'en';
+  return codes.contains(c) ? c! : 'en';
 }
+
+/// What the app speaks: `de-AT` → `de`; anything not shipped yet → `en`.
+String normalizeLang(String? code) => _snap(code, shippedLanguages);
+
+/// What the reader wants, on the six planned codes: `fr-FR` → `fr` even
+/// before French ships. This is what the profile stores, so the reader moves
+/// to their language the day its wave lands; [normalizeLang] gates the read.
+String plannedLang(String? code) => _snap(code, [for (final (c, _) in appLanguages) c]);
 
 /// The phone's language, snapped onto the shipped codes.
 String deviceLang() => normalizeLang(ui.PlatformDispatcher.instance.locale.languageCode);
+
+/// The phone's language on the planned codes, for the stored profile.
+String deviceLangPlanned() => plannedLang(ui.PlatformDispatcher.instance.locale.languageCode);
 
 String languageName(String code) =>
     appLanguages.firstWhere((l) => l.$1 == code, orElse: () => appLanguages.first).$2;
