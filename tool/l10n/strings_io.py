@@ -17,12 +17,16 @@ BLOCK = re.compile(
 STR = r"""(?:'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")"""
 FIELD = lambda lang: re.compile(rf"\b{lang}:\s*(?P<val>(?:{STR}\s*)+)", re.S)
 
+ESC = {'n': '\n', 't': '\t'}
+
 def dart_to_text(val: str) -> str:
-    parts = [p[1:-1] for p in re.findall(STR, val)]
-    return ''.join(parts).replace("\\'", "'").replace('\\$', '$')
+    """Dart literals -> plain text (CSV carries real newlines, not `\\n`)."""
+    return ''.join(re.sub(r'\\(.)', lambda e: ESC.get(e[1], e[1]), p[1:-1], flags=re.S)
+                   for p in re.findall(STR, val))
 
 def text_to_dart(text: str) -> str:
-    return "'" + text.replace('\\', '\\\\').replace("'", "\\'").replace('$', '\\$') + "'"
+    t = text.replace('\\', '\\\\').replace("'", "\\'").replace('$', '\\$')
+    return "'" + t.replace('\r\n', '\n').replace('\n', '\\n').replace('\t', '\\t') + "'"
 
 def blocks(src: str):
     return list(BLOCK.finditer(src))
