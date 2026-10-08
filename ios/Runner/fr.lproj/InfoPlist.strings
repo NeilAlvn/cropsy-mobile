@@ -1,0 +1,3 @@
+"NSCameraUsageDescription" = "Cropsy utilise l'appareil photo pour les photos de croissance et pour identifier ou diagnostiquer une plante à partir d'une photo.";
+"NSPhotoLibraryUsageDescription" = "Cropsy ajoute les photos que tu choisis au journal de croissance d'une plante, ou en utilise une pour identifier ou diagnostiquer une plante.";
+"NSLocationWhenInUseUsageDescription" = "Cropsy utilise ta position une seule fois pour trouver les dates de gelées de ton potager. Elle est arrondie à environ 1 km et jamais suivie.";
