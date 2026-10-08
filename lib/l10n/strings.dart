@@ -957,7 +957,7 @@ abstract final class Str {
     de: 'Jede Pflanze wird mit mindestens zwei NL-Quellen abgeglichen, IVN, Tuinadvies, zaaitijden.nl und Groei & Bloei, bevor sie bei dir ankommt. Und wenn das Leben dazwischenkommt, zieht der Plan mit. Nichts ist je „zu spät“.',
     fr: 'Chaque plante est vérifiée auprès d\'au moins deux sources néerlandaises, IVN, Tuinadvies, zaaitijden.nl et Groei & Bloei, avant d\'arriver chez toi. Et quand la vie s\'en mêle, le plan bouge avec toi. Une tâche n\'est jamais « ratée » : elle est « déplacée ».',
     sv: 'Varje växt kontrolleras mot minst två nederländska källor – IVN, Tuinadvies, zaaitijden.nl och Groei & Bloei – innan den når dig. Och när livet kommer emellan flyttar planen med dig. En uppgift är aldrig ”missad”, den är bara ”flyttad”.',
-    pt: 'Cada planta é verificada em pelo menos duas fontes neerlandesas, (IVN, Tuinadvies, zaaitijden.nl e Groei & Bloei) antes de chegar a ti. E quando a vida se mete pelo meio, o plano acompanha-te. Nada fica “perdido”: só muda de data.',
+    pt: 'Cada planta é verificada em pelo menos duas fontes neerlandesas (IVN, Tuinadvies, zaaitijden.nl e Groei & Bloei) antes de chegar a ti. E quando a vida se mete pelo meio, o plano acompanha-te. Nada fica “perdido”: só muda de data.',
   );
   static const getToKnowTitle = LocalizedText(
     nl: 'Hoi! Even kennismaken',
@@ -1382,13 +1382,24 @@ abstract final class Str {
     sv: 'i din odling',
     pt: 'na tua horta',
   );
-  static const plotWord = LocalizedText(
+  /// The garden header ("Utrecht tuin"): [regionPlotAccent] is the word the
+  /// header colours, and it sits at the end of [regionPlot] in nl/en/de and at
+  /// the start in fr/sv/pt.
+  static LocalizedText regionPlot(String region) => LocalizedText(
+    nl: '$region tuin',
+    en: '$region plot',
+    de: '$region – Garten',
+    fr: 'Potager de $region',
+    sv: 'Odling i $region',
+    pt: 'Horta de $region',
+  );
+  static const regionPlotAccent = LocalizedText(
     nl: 'tuin',
     en: 'plot',
     de: 'Garten',
-    fr: 'potager',
-    sv: 'odling',
-    pt: 'horta',
+    fr: 'Potager',
+    sv: 'Odling',
+    pt: 'Horta',
   );
   static const yourLocation = LocalizedText(
     nl: 'Jouw locatie',
@@ -1736,8 +1747,8 @@ abstract final class Str {
   static LocalizedText tallySoFar(int euros, String kilos) => LocalizedText(
     nl: '€$euros en $kilos kg tot nu toe',
     en: '€$euros and $kilos kg so far',
-    de: '$euros € und $kilos kg bisher',
-    fr: '$euros € et $kilos kg pour l\'instant',
+    de: '$euros € und ${kilos.replaceAll('.', ',')} kg bisher',
+    fr: '$euros € et ${kilos.replaceAll('.', ',')} kg pour l\'instant',
     sv: '$euros € och ${kilos.replaceAll('.', ',')} kg hittills',
     pt: '$euros € e ${kilos.replaceAll('.', ',')} kg até agora',
   );
@@ -2632,8 +2643,8 @@ abstract final class Str {
   static LocalizedText savedAtPrices(String euros) => LocalizedText(
     nl: '≈ €$euros bespaard tegen NL supermarktprijzen',
     en: '≈ €$euros saved at NL supermarket prices',
-    de: '≈ $euros € gespart nach NL-Supermarktpreisen',
-    fr: '≈ $euros € économisés aux prix des supermarchés NL',
+    de: '≈ ${euros.replaceAll('.', ',')} € gespart nach NL-Supermarktpreisen',
+    fr: '≈ ${euros.replaceAll('.', ',')} € économisés aux prix des supermarchés NL',
     sv: '≈ ${euros.replaceAll('.', ',')} € sparat enligt nederländska butikspriser',
     pt: '≈ ${euros.replaceAll('.', ',')} € poupados a preços de supermercado NL',
   );

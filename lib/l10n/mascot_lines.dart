@@ -336,7 +336,7 @@ abstract final class MascotLines {
     de: 'Die 25 häufigsten Probleme auf niederländischen Balkonen, Schnecken, Läuse, Mehltau, Blütenendfäule, werden geschrieben und geprüft. Sie kommen mit dem Inhalts-Update.',
     fr: 'Les 25 problèmes les plus courants sur les balcons néerlandais, limaces, pucerons, oïdium, nécrose apicale, sont en cours d\'écriture et de vérification. Ils arrivent avec la mise à jour du contenu.',
     sv: 'De 25 vanligaste problemen på nederländska balkonger – sniglar, bladlöss, mjöldagg, pistillröta – skrivs och kontrolleras just nu. De kommer med innehållsuppdateringen.',
-    pt: 'Os 25 problemas mais comuns nas varandas neerlandesas, (lesmas, pulgões, oídio, podridão apical) estão a ser escritos e verificados. Chegam com a atualização de conteúdo.',
+    pt: 'Os 25 problemas mais comuns nas varandas neerlandesas (lesmas, pulgões, oídio, podridão apical) estão a ser escritos e verificados. Chegam com a atualização de conteúdo.',
   );
 
   static const seasonLaysItselfOut = LocalizedText(

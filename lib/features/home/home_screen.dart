@@ -60,13 +60,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
+    final lang = AppLangScope.of(context).code;
     final List<Crop> crops = _query.isNotEmpty
         ? (repo.crops
             .where((c) =>
                 c.names.en.toLowerCase().contains(_query.toLowerCase()) ||
-                c.names.nl.toLowerCase().contains(_query.toLowerCase()))
+                c.names.nl.toLowerCase().contains(_query.toLowerCase()) ||
+                c.names.pick(lang).toLowerCase().contains(_query.toLowerCase()))
             .toList()
-          ..sort((a, b) => a.names.en.compareTo(b.names.en)))
+          ..sort((a, b) => a.names.pick(lang).compareTo(b.names.pick(lang))))
         : repo.whatToGrowIn(_month!, filter: _filter);
 
     return SafeArea(

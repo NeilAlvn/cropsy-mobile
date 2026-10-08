@@ -91,7 +91,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // Crops
   late final Set<String> _picked = {...starterCrops.keys};
   // The payoff
-  String? _firstTask;
+  LocalizedText? _firstTask;
   int _matches = 0;
 
   static const _pageDuration = Duration(milliseconds: 380);
@@ -161,7 +161,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         _matches = repo.whatToGrowIn(month).length;
         _firstTask = week.isEmpty
             ? null
-            : '${week.first.kind.name} ${week.first.cropNames.en.toLowerCase()}';
+            : Str.stepOnCrop(kindLine(week.first.kind), week.first.cropNames);
       });
     }
   }
@@ -603,7 +603,7 @@ class _PlanStep extends StatelessWidget {
   final String region;
   final FrostProfile frost;
   final int matches;
-  final String? firstTask;
+  final LocalizedText? firstTask;
   final VoidCallback onDone;
   final VoidCallback onLater;
 
@@ -657,7 +657,7 @@ class _PlanStep extends StatelessWidget {
                   (ready
                           ? (firstTask == null
                                 ? Str.planFirstTaskWaits
-                                : Str.planFirstTask(firstTask!))
+                                : Str.planFirstTask(firstTask!.of(context)))
                           : Str.planFindingFirstTask)
                       .of(context),
                   style: AppText.body(context),

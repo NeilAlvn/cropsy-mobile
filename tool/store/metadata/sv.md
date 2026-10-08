@@ -26,7 +26,7 @@ Logga varje skörd i gram eller styck och se årssumman växa. Tillväxtfotona s
 
 GRATIS ATT PROVA
 Gratis: 1 odling, 6 växter, hela tidslinjen med påminnelser, alla odlingsguider, 20 dagboksfoton.
-Premium (29,99 € per år): obegränsat med odlingar och växter, odlingsplanerare, diagnos, obegränsat med foton och export.
+Premium (29,99 € per år): obegränsat antal odlingar och växter, odlingsplanerare, diagnos, obegränsat antal foton och export.
 Lifetime (49,99 € en gång): allt i Premium, betalas en gång, alla framtida funktioner ingår.
 
 Priserna visas i din lokala valuta i butiken. Köpen går via App Store.

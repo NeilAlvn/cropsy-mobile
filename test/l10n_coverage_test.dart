@@ -36,6 +36,33 @@ void main() {
     });
   }
 
+  test('app code never builds a LocalizedText whose nl and en differ', () {
+    // A hand-built `LocalizedText(nl: 'Zaaien', en: 'Sow')` outside lib/l10n is
+    // a string the other four languages can never reach. Identity wrappers
+    // (`nl: slug, en: slug`) are data, not copy, and pass.
+    final ctor = RegExp(r'\bLocalizedText\(\s*nl:\s*(.+?),\s*en:\s*(.+?)\s*\)', dotAll: true);
+    String norm(String e) => e.replaceAll(RegExp(r'\s+'), ' ').trim();
+    final bad = <String>[];
+    for (final f in Directory('lib').listSync(recursive: true).whereType<File>()) {
+      final path = f.path;
+      if (!path.endsWith('.dart') ||
+          path.startsWith('lib/l10n/') ||
+          path == 'lib/timing/types.dart') {
+        continue;
+      }
+      final src = f.readAsStringSync();
+      for (final m in ctor.allMatches(src)) {
+        // The lazy `(.+?)\)` stops at the first `)`: enough while the args are
+        // plain expressions; a call inside an argument would only make this stricter.
+        if (norm(m[1]!) != norm(m[2]!)) {
+          final line = '\n'.allMatches(src.substring(0, m.start)).length + 1;
+          bad.add('$path:$line: nl=${norm(m[1]!)} en=${norm(m[2]!)}');
+        }
+      }
+    }
+    expect(bad, isEmpty);
+  });
+
   test('the stripper drops literals, interpolations and comments', () {
     const src = r'''a(nl: 'x nl: ${b ? 'de:' : "fr:"} \' en:', de: "y") // sv: z
 /* pt: */ c(en: 1)''';
