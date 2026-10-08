@@ -125,15 +125,14 @@ class ContentSnapshot {
   final List<Problem> problems;
   final List<Guide> guides;
 
-  /// The crop's guide in [lang], else any language it has. NL first (PRD §4.4).
-  Guide? guideFor(String cropSlug, {String lang = 'nl'}) {
-    Guide? any;
-    for (final g in guides) {
-      if (g.cropSlug != cropSlug) continue;
-      if (g.lang == lang) return g;
-      any ??= g;
+  /// The crop's guide in [lang], else English, else Dutch, else any.
+  Guide? guideFor(String cropSlug, {String lang = 'en'}) {
+    final rows = guides.where((g) => g.cropSlug == cropSlug);
+    for (final l in [lang, 'en', 'nl']) {
+      final hit = rows.where((g) => g.lang == l).firstOrNull;
+      if (hit != null) return hit;
     }
-    return any;
+    return rows.firstOrNull;
   }
 
   static const empty = ContentSnapshot(version: '', collections: [], checklist: [], prices: {});
