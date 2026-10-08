@@ -9,6 +9,8 @@ import 'package:cropsy/timing/replan.dart';
 import 'package:cropsy/timing/types.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'backend_sides.dart';
+
 void main() {
   final fixture = jsonDecode(
     File('test/fixtures/replan.fixture.json').readAsStringSync(),
@@ -37,8 +39,8 @@ void main() {
       );
       final expected = c['result'] as Map<String, dynamic>;
       expect(result.shiftDays, expected['shift_days']);
-      expect(result.nodes.map((n) => n.toJson()).toList(), expected['nodes']);
-      expect(result.warnings.map((w) => w.toJson()).toList(), expected['warnings']);
+      expect(backendSides(result.nodes.map((n) => n.toJson()).toList()), expected['nodes']);
+      expect(backendSides(result.warnings.map((w) => w.toJson()).toList()), expected['warnings']);
       // Input untouched.
       expect(path.every((n) => n.loggedOn == null && n.movedReason == null), isTrue);
     });

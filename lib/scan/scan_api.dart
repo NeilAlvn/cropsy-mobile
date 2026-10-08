@@ -46,6 +46,12 @@ class ScanException implements Exception {
 /// `/api/identify?lang=de` — the proxies ask the providers in this language.
 String scanPath(String path, String lang) => '$path?lang=${normalizeLang(lang)}';
 
+/// The disclaimer in the reader's language, English when the server has none.
+String? disclaimerFor(Map<String, dynamic> body, String lang) {
+  final d = body['disclaimer'] as Map?;
+  return (d?[normalizeLang(lang)] ?? d?['en']) as String?;
+}
+
 Future<ScanResult> _post(String path, File photo, String? token, String lang) async {
   if (token == null) throw ScanException('unauthorized', 401);
   final req = http.MultipartRequest('POST', Uri.parse('$apiBaseUrl${scanPath(path, lang)}'))
@@ -68,7 +74,7 @@ Future<ScanResult> _post(String path, File photo, String? token, String lang) as
     ],
     reason: body['reason'] as String?,
     healthy: body['healthy'] as bool?,
-    disclaimer: (body['disclaimer'] as Map?)?['en'] as String?,
+    disclaimer: disclaimerFor(body, lang),
     used: body['used'] as int?,
     limit: body['limit'] as int?,
   );

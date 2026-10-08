@@ -3,6 +3,7 @@
 /// curated override map for common crops. Replace with real data later.
 library;
 
+import '../l10n/strings.dart';
 import '../timing/types.dart';
 
 enum Difficulty { easy, medium, hard }
@@ -15,9 +16,9 @@ String difficultyLabel(Difficulty d) => switch (d) {
 
 /// The same, in both languages, for anything the gardener reads.
 LocalizedText difficultyLine(Difficulty d) => switch (d) {
-      Difficulty.easy => const LocalizedText(nl: 'Makkelijk', en: 'Easy'),
-      Difficulty.medium => const LocalizedText(nl: 'Gemiddeld', en: 'Medium'),
-      Difficulty.hard => const LocalizedText(nl: 'Lastig', en: 'Hard'),
+      Difficulty.easy => Str.easyFilter,
+      Difficulty.medium => Str.difficultyMedium,
+      Difficulty.hard => Str.difficultyHard,
     };
 
 // Hand-set for the crops people actually start with, so those read right.

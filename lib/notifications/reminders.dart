@@ -7,10 +7,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../design/components.dart' show kindLine;
 import '../features/garden/garden_repository.dart';
 import '../l10n/strings.dart';
 import '../timing/dates.dart';
-import '../timing/types.dart';
 
 class Reminders {
   static final _plugin = FlutterLocalNotificationsPlugin();
@@ -63,8 +63,9 @@ class Reminders {
       final body = list
           .map((i) {
             final crop = i.cropNames.pick(lang);
-            // German capitalises nouns, so the crop keeps its capital there.
-            return '${_verb(i).pick(lang)} ${lang == 'de' ? crop : crop.toLowerCase()}';
+            final verb = kindLine(i.kind).pick(lang);
+            // German puts the verb last and keeps the noun's capital: "Tomate gießen".
+            return lang == 'de' ? '$crop ${verb.toLowerCase()}' : '$verb ${crop.toLowerCase()}';
           })
           .take(4)
           .join(', ');
@@ -81,14 +82,4 @@ class Reminders {
     }
   }
 
-  static LocalizedText _verb(ThisWeekItem i) => switch (i.kind.name) {
-        'water' => const LocalizedText(nl: 'Water geven', en: 'Water'),
-        'sow' => const LocalizedText(nl: 'Zaaien', en: 'Sow'),
-        'transplant' => const LocalizedText(nl: 'Uitplanten', en: 'Plant out'),
-        'harvest' => const LocalizedText(nl: 'Oogsten', en: 'Harvest'),
-        'feed' => const LocalizedText(nl: 'Bijmesten', en: 'Feed'),
-        'potOn' => const LocalizedText(nl: 'Verpotten', en: 'Pot on'),
-        'thin' => const LocalizedText(nl: 'Uitdunnen', en: 'Thin'),
-        _ => const LocalizedText(nl: 'Checken', en: 'Check'),
-      };
 }

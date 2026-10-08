@@ -2911,6 +2911,271 @@ abstract final class Str {
     de: 'Heute sind $n Sachen zu tun',
   );
 
+  // ── task and step names (kindLine, nodeKindLine) ──────────────────────────
+  static const taskWater = LocalizedText(
+    nl: 'Water geven',
+    en: 'Water',
+    de: 'Gießen',
+  );
+  static const taskHarvest = LocalizedText(
+    nl: 'Oogsten',
+    en: 'Harvest',
+    de: 'Ernten',
+  );
+  static const taskPotOn = LocalizedText(
+    nl: 'Verpotten',
+    en: 'Pot on',
+    de: 'Umtopfen',
+  );
+  static const taskThin = LocalizedText(
+    nl: 'Uitdunnen',
+    en: 'Thin',
+    de: 'Vereinzeln',
+  );
+  static const thinSeedlings = LocalizedText(
+    nl: 'Uitdunnen',
+    en: 'Thin seedlings',
+    de: 'Sämlinge vereinzeln',
+  );
+  static const harvestWindow = LocalizedText(
+    nl: 'Oogstvenster',
+    en: 'Harvest window',
+    de: 'Erntefenster',
+  );
+
+  // ── difficulty (difficultyLine; easy is easyFilter) ───────────────────────
+  static const difficultyMedium = LocalizedText(
+    nl: 'Gemiddeld',
+    en: 'Medium',
+    de: 'Mittel',
+  );
+  static const difficultyHard = LocalizedText(
+    nl: 'Lastig',
+    en: 'Hard',
+    de: 'Schwierig',
+  );
+
+  // ── skipping a step ───────────────────────────────────────────────────────
+  static const skipRained = LocalizedText(
+    nl: 'Het regende',
+    en: 'It rained',
+    de: 'Es hat geregnet',
+  );
+  static const skipNotNeeded = LocalizedText(
+    nl: 'Niet nodig',
+    en: 'Not needed',
+    de: 'Nicht nötig',
+  );
+  static const skipNoTime = LocalizedText(
+    nl: 'Geen tijd',
+    en: 'No time',
+    de: 'Keine Zeit',
+  );
+
+  // ── streak freezes ────────────────────────────────────────────────────────
+  static const freezesUnlimited = LocalizedText(
+    nl: 'Onbeperkt vriesdagen.',
+    en: 'Unlimited freeze days.',
+    de: 'Unbegrenzt Pausentage.',
+  );
+  static LocalizedText freezesLeft(int n) => LocalizedText(
+    nl: 'Nog $n '
+        '${n == 1 ? 'vriesdag' : 'vriesdagen'} deze maand.',
+    en: '$n freeze '
+        'day${n == 1 ? '' : 's'} left this month.',
+    de: 'Noch $n ${n == 1 ? 'Pausentag' : 'Pausentage'} diesen Monat.',
+  );
+
+  // ── weather adjustments (timing/weather_adjust.dart) ──────────────────────
+  static LocalizedText adjustRainSkip(num mm) => LocalizedText(
+    nl: 'Genoeg regen rond deze dag ($mm mm). Overslaan.',
+    en: 'Enough rain around this day ($mm mm). Skip watering.',
+    de: 'Genug Regen rund um diesen Tag ($mm mm). Gießen fällt aus.',
+  );
+  static LocalizedText adjustHeat(num t) => LocalizedText(
+    nl: 'Hitte verwacht ($t°C). Eerder water geven.',
+    en: 'Heat expected ($t°C). Water earlier.',
+    de: 'Hitze erwartet ($t °C). Früher gießen.',
+  );
+  static LocalizedText adjustSoilCold(num gate) => LocalizedText(
+    nl: 'Bodem nog te koud (< $gate°C). Uitgesteld tot het warmer is.',
+    en: 'Soil still too cold (< $gate°C). Held until it warms up.',
+    de: 'Boden noch zu kalt (< $gate °C). Verschoben, bis es wärmer ist.',
+  );
+  static LocalizedText adjustSoilStaysCold(num gate) => LocalizedText(
+    nl: 'Bodem blijft te koud (< $gate°C). Nog even wachten.',
+    en: 'Soil staying too cold (< $gate°C). Wait a little longer.',
+    de: 'Boden bleibt zu kalt (< $gate °C). Noch etwas warten.',
+  );
+  static const weatherMovedTask = LocalizedText(
+    nl: 'Het weer heeft een taak verzet',
+    en: 'The weather moved a task',
+    de: 'Das Wetter hat eine Aufgabe verschoben',
+  );
+
+  // ── replanning (timing/replan.dart) ───────────────────────────────────────
+  // The step as the subject of "… was later than planned". German opens the
+  // sentence after the colon, so its side carries article and capital.
+  static const stepSowing = LocalizedText(
+    nl: 'zaaien',
+    en: 'sowing',
+    de: 'Die Aussaat',
+  );
+  static const stepPottingOn = LocalizedText(
+    nl: 'verpotten',
+    en: 'potting on',
+    de: 'Das Umtopfen',
+  );
+  static const stepPlantingOut = LocalizedText(
+    nl: 'uitplanten',
+    en: 'planting out',
+    de: 'Das Auspflanzen',
+  );
+  static const stepThinning = LocalizedText(
+    nl: 'uitdunnen',
+    en: 'thinning',
+    de: 'Das Vereinzeln',
+  );
+  static const stepFeeding = LocalizedText(
+    nl: 'bemesten',
+    en: 'feeding',
+    de: 'Das Düngen',
+  );
+  static const stepWatering = LocalizedText(
+    nl: 'water geven',
+    en: 'watering',
+    de: 'Das Gießen',
+  );
+  static const stepHarvest = LocalizedText(
+    nl: 'oogsten',
+    en: 'harvest',
+    de: 'Die Ernte',
+  );
+  static const stepHarvested = LocalizedText(
+    nl: 'geoogst',
+    en: 'harvested',
+    de: 'Die Ernte',
+  );
+  static LocalizedText replanMoved(String sign, int days, LocalizedText step, bool later) =>
+      LocalizedText(
+    nl: 'Verplaatst ($sign$days dagen): ${step.nl} was '
+        '${later ? 'later' : 'eerder'} dan gepland.',
+    en: 'Moved ($sign$days days): ${step.en} was '
+        '${later ? 'later' : 'earlier'} than planned.',
+    de: 'Verschoben ($sign$days Tage): ${step.pick('de')} war '
+        '${later ? 'später' : 'früher'} als geplant.',
+  );
+  static LocalizedText replanFrostWarning(String end, String firstFrost) => LocalizedText(
+    nl: 'De oogst loopt nu tot $end, dicht bij de eerste vorst '
+        '($firstFrost). Toch doorgaan, of een sneller ras kiezen?',
+    en: 'Harvest now runs until $end, close to first frost '
+        '($firstFrost). Grow it anyway, or swap for a faster variety?',
+    de: 'Die Ernte läuft jetzt bis $end, nah am ersten Frost '
+        '($firstFrost). Trotzdem weitermachen oder eine schnellere Sorte wählen?',
+  );
+
+  // ── succession (timing/season.dart) ───────────────────────────────────────
+  /// [after] is null when the earlier crop is not in the snapshot; its slug
+  /// stands in.
+  static LocalizedText successionNote(
+    LocalizedText? after,
+    String afterSlug,
+    String freeFrom,
+    LocalizedText crop,
+    String until,
+  ) =>
+      LocalizedText(
+    nl: 'Plek vrij na ${after?.nl ?? afterSlug} ($freeFrom) — ${crop.nl} zaaien kan nog tot $until.',
+    en: 'Space frees up after ${after?.en ?? afterSlug} ($freeFrom) — ${crop.en} can still be sown until $until.',
+    de: 'Platz frei nach ${after?.pick('de') ?? afterSlug} ($freeFrom) — ${crop.pick('de')} kannst du noch bis $until säen.',
+  );
+
+  // ── help: questions and answers ───────────────────────────────────────────
+  static const faqDatesQ = LocalizedText(
+    nl: 'Waar komen de plantdata vandaan?',
+    en: 'Where do the planting dates come from?',
+    de: 'Woher kommen die Pflanztermine?',
+  );
+  static const faqDatesA = LocalizedText(
+    nl: 'Uit de vorstdatums voor jouw locatie (KNMI / Open-Meteo '
+        'klimaatnormalen, afgerond op ~1 km), gecombineerd met teeltregels '
+        'die tegen minstens twee Nederlandse zaaikalenders zijn gelegd.',
+    en: 'From the frost dates for your location (KNMI / Open-Meteo climate '
+        'normals, rounded to ~1 km) combined with crop rules cross-checked '
+        'against at least two Dutch seed calendars.',
+    de: 'Aus den Frostdaten für deinen Standort (KNMI-/Open-Meteo-Klimamittel, '
+        'auf ~1 km gerundet), kombiniert mit Anbauregeln, die mit mindestens '
+        'zwei niederländischen Aussaatkalendern abgeglichen sind.',
+  );
+  static const faqBehindQ = LocalizedText(
+    nl: 'Ik loop achter. Is mijn plan verpest?',
+    en: 'I fell behind. Is my plan ruined?',
+    de: 'Ich hänge hinterher. Ist mein Plan jetzt hin?',
+  );
+  static const faqBehindA = LocalizedText(
+    nl: 'Nee. Log wat je echt hebt gedaan en wanneer; elke volgende stap '
+        'schuift mee. Niets is ooit "te laat", het is "verzet".',
+    en: 'No. Log what you actually did and when; every later step moves with '
+        'it. Nothing is ever "overdue", it is "moved".',
+    de: 'Nein. Trag ein, was du wirklich gemacht hast und wann; jeder spätere '
+        'Schritt zieht mit. Nichts ist je „zu spät“, es ist „verschoben“.',
+  );
+  static const faqWateringQ = LocalizedText(
+    nl: 'Waarom is een waterbeurt verdwenen?',
+    en: 'Why did a watering disappear?',
+    de: 'Warum ist ein Gießtermin verschwunden?',
+  );
+  static const faqWateringA = LocalizedText(
+    nl: 'Het heeft rond die dag genoeg geregend, of er is regen voorspeld. '
+        'De weerregel op Home vertelt wat er veranderde.',
+    en: 'It rained enough around that day, or rain is forecast. The weather '
+        'line on Home says what changed.',
+    de: 'Rund um diesen Tag hat es genug geregnet, oder es ist Regen '
+        'vorhergesagt. Die Wetterzeile auf Home sagt dir, was sich geändert hat.',
+  );
+  static const faqOfflineQ = LocalizedText(
+    nl: 'Werkt het offline?',
+    en: 'Does it work offline?',
+    de: 'Funktioniert es offline?',
+  );
+  static const faqOfflineA = LocalizedText(
+    nl: 'Ja. Gewassen, data, herinneringen en de tijdlijn draaien op de '
+        'telefoon. Weerhints en synchroniseren hebben verbinding nodig.',
+    en: 'Yes. Crops, dates, reminders and the timeline all run on the phone. '
+        'Weather hints and sync need a connection.',
+    de: 'Ja. Pflanzen, Termine, Erinnerungen und der Zeitplan laufen auf dem '
+        'Handy. Wetterhinweise und Synchronisierung brauchen eine Verbindung.',
+  );
+  static const faqFreeQ = LocalizedText(
+    nl: 'Wat zit er in de gratis versie?',
+    en: 'What does the free tier include?',
+    de: 'Was ist in der Gratisversion drin?',
+  );
+  static const faqFreeA = LocalizedText(
+    nl: 'Eén tuin, zes groeiende planten, de volledige tijdlijn, '
+        'herinneringen en elk gewas, voorgoed. Lifetime geeft meer ruimte.',
+    en: 'One garden, six growing plants, the full timeline, reminders and '
+        'every crop, forever. Lifetime unlocks more room.',
+    de: 'Ein Garten, sechs wachsende Pflanzen, der ganze Zeitplan, '
+        'Erinnerungen und jede Pflanze, für immer. Lebenslang gibt dir mehr Platz.',
+  );
+  static const faqDeleteQ = LocalizedText(
+    nl: 'Hoe verwijder ik mijn account?',
+    en: 'How do I delete my account?',
+    de: 'Wie lösche ich mein Konto?',
+  );
+  static const faqDeleteA = LocalizedText(
+    nl: 'Profiel → Account → Account verwijderen. Dat wist je account '
+        'en elke gesynchroniseerde rij; lokale gegevens blijven op deze '
+        'telefoon tot je de app verwijdert.',
+    en: 'Profile → Account → Delete account. It removes your account and '
+        'every synced row; local data stays on this phone until you delete '
+        'the app.',
+    de: 'Profil → Konto → Konto löschen. Das entfernt dein Konto und jede '
+        'synchronisierte Zeile; lokale Daten bleiben auf diesem Handy, bis du '
+        'die App löschst.',
+  );
+
   // ── months, for every sentence that names one ─────────────────────────────
   static const months = <LocalizedText>[
     LocalizedText(nl: 'januari', en: 'January', de: 'Januar'),

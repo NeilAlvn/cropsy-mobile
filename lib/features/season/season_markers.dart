@@ -428,11 +428,7 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
       kind: SeasonMarkerKind.weather,
       on: toIso(facts.today),
       title: weather,
-      caption: facts.weatherCaption ??
-          const LocalizedText(
-            nl: 'Het weer heeft een taak verzet',
-            en: 'The weather moved a task',
-          ),
+      caption: facts.weatherCaption ?? Str.weatherMovedTask,
     ));
   }
 

@@ -830,14 +830,8 @@ class _StreakCard extends StatelessWidget {
                       s.count == 0
                           ? MascotLines.streakStart.of(context)
                           : (premium
-                                  ? const LocalizedText(
-                                      nl: 'Onbeperkt vriesdagen.',
-                                      en: 'Unlimited freeze days.')
-                                  : LocalizedText(
-                                      nl: 'Nog $freezesLeft '
-                                          '${freezesLeft == 1 ? 'vriesdag' : 'vriesdagen'} deze maand.',
-                                      en: '$freezesLeft freeze '
-                                          'day${freezesLeft == 1 ? '' : 's'} left this month.'))
+                                  ? Str.freezesUnlimited
+                                  : Str.freezesLeft(freezesLeft))
                               .of(context),
                       style: AppText.caption(context),
                     ),

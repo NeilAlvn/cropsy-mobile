@@ -6,6 +6,8 @@ import 'package:cropsy/timing/season.dart';
 import 'package:cropsy/timing/types.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'backend_sides.dart';
+
 void main() {
   test('season path matches the backend fixture', () {
     final fixture = jsonDecode(File('test/fixtures/season.fixture.json').readAsStringSync()) as Map<String, dynamic>;
@@ -29,6 +31,6 @@ void main() {
         maxSuggestions: (params['maxSuggestions'] as num).toInt(),
       ),
     );
-    expect(nodes.map((n) => n.toJson()).toList(), fixture['nodes']);
+    expect(backendSides(nodes.map((n) => n.toJson()).toList()), fixture['nodes']);
   });
 }

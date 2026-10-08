@@ -12,6 +12,7 @@
 /// against `docs/fixtures/replan.fixture.json`.
 library;
 
+import '../l10n/strings.dart';
 import 'dates.dart';
 import 'types.dart';
 
@@ -239,26 +240,16 @@ class ReplanResult {
   final List<ReplanWarning> warnings;
 }
 
-const _kindNl = <NodeKind, String>{
-  NodeKind.sow: 'zaaien',
-  NodeKind.potOn: 'verpotten',
-  NodeKind.transplant: 'uitplanten',
-  NodeKind.thin: 'uitdunnen',
-  NodeKind.feed: 'bemesten',
-  NodeKind.water: 'water geven',
-  NodeKind.harvest: 'oogsten',
-  NodeKind.harvested: 'geoogst',
-};
-const _kindEn = <NodeKind, String>{
-  NodeKind.sow: 'sowing',
-  NodeKind.potOn: 'potting on',
-  NodeKind.transplant: 'planting out',
-  NodeKind.thin: 'thinning',
-  NodeKind.feed: 'feeding',
-  NodeKind.water: 'watering',
-  NodeKind.harvest: 'harvest',
-  NodeKind.harvested: 'harvested',
-};
+LocalizedText _step(NodeKind k) => switch (k) {
+      NodeKind.sow => Str.stepSowing,
+      NodeKind.potOn => Str.stepPottingOn,
+      NodeKind.transplant => Str.stepPlantingOut,
+      NodeKind.thin => Str.stepThinning,
+      NodeKind.feed => Str.stepFeeding,
+      NodeKind.water => Str.stepWatering,
+      NodeKind.harvest => Str.stepHarvest,
+      NodeKind.harvested => Str.stepHarvested,
+    };
 
 int _diffDays(String a, String b) =>
     ((parseIso(a).millisecondsSinceEpoch - parseIso(b).millisecondsSinceEpoch) /
@@ -285,12 +276,7 @@ ReplanResult logNode(
   }
 
   final sign = delta > 0 ? '+' : '−';
-  final reason = LocalizedText(
-    nl: 'Verplaatst ($sign${delta.abs()} dagen): ${_kindNl[anchor.kind]} was '
-        '${delta > 0 ? 'later' : 'eerder'} dan gepland.',
-    en: 'Moved ($sign${delta.abs()} days): ${_kindEn[anchor.kind]} was '
-        '${delta > 0 ? 'later' : 'earlier'} than planned.',
-  );
+  final reason = Str.replanMoved(sign, delta.abs(), _step(anchor.kind), delta > 0);
 
   final warnings = <ReplanWarning>[];
   for (var j = i + 1; j < out.length; j++) {
@@ -311,12 +297,7 @@ ReplanResult logNode(
       if (end.compareTo(limit) > 0) {
         warnings.add(ReplanWarning(
           nodeId: moved.id,
-          reason: LocalizedText(
-            nl: 'De oogst loopt nu tot $end, dicht bij de eerste vorst '
-                '($firstFrost). Toch doorgaan, of een sneller ras kiezen?',
-            en: 'Harvest now runs until $end, close to first frost '
-                '($firstFrost). Grow it anyway, or swap for a faster variety?',
-          ),
+          reason: Str.replanFrostWarning(end, firstFrost),
         ));
       }
     }

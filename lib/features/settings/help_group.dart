@@ -100,77 +100,10 @@ class FaqScreen extends StatelessWidget {
 /// The help content. Chrome, not crop data, so it lives here rather than in the
 /// snapshot, and it carries both languages like everything else the user reads.
 const faq = <(LocalizedText, LocalizedText)>[
-  (
-    LocalizedText(
-      nl: 'Waar komen de plantdata vandaan?',
-      en: 'Where do the planting dates come from?',
-    ),
-    LocalizedText(
-      nl: 'Uit de vorstdatums voor jouw locatie (KNMI / Open-Meteo '
-          'klimaatnormalen, afgerond op ~1 km), gecombineerd met teeltregels '
-          'die tegen minstens twee Nederlandse zaaikalenders zijn gelegd.',
-      en: 'From the frost dates for your location (KNMI / Open-Meteo climate '
-          'normals, rounded to ~1 km) combined with crop rules cross-checked '
-          'against at least two Dutch seed calendars.',
-    ),
-  ),
-  (
-    LocalizedText(
-      nl: 'Ik loop achter. Is mijn plan verpest?',
-      en: 'I fell behind. Is my plan ruined?',
-    ),
-    LocalizedText(
-      nl: 'Nee. Log wat je echt hebt gedaan en wanneer; elke volgende stap '
-          'schuift mee. Niets is ooit "te laat", het is "verzet".',
-      en: 'No. Log what you actually did and when; every later step moves with '
-          'it. Nothing is ever "overdue", it is "moved".',
-    ),
-  ),
-  (
-    LocalizedText(
-      nl: 'Waarom is een waterbeurt verdwenen?',
-      en: 'Why did a watering disappear?',
-    ),
-    LocalizedText(
-      nl: 'Het heeft rond die dag genoeg geregend, of er is regen voorspeld. '
-          'De weerregel op Home vertelt wat er veranderde.',
-      en: 'It rained enough around that day, or rain is forecast. The weather '
-          'line on Home says what changed.',
-    ),
-  ),
-  (
-    LocalizedText(nl: 'Werkt het offline?', en: 'Does it work offline?'),
-    LocalizedText(
-      nl: 'Ja. Gewassen, data, herinneringen en de tijdlijn draaien op de '
-          'telefoon. Weerhints en synchroniseren hebben verbinding nodig.',
-      en: 'Yes. Crops, dates, reminders and the timeline all run on the phone. '
-          'Weather hints and sync need a connection.',
-    ),
-  ),
-  (
-    LocalizedText(
-      nl: 'Wat zit er in de gratis versie?',
-      en: 'What does the free tier include?',
-    ),
-    LocalizedText(
-      nl: 'Eén tuin, zes groeiende planten, de volledige tijdlijn, '
-          'herinneringen en elk gewas, voorgoed. Lifetime geeft meer ruimte.',
-      en: 'One garden, six growing plants, the full timeline, reminders and '
-          'every crop, forever. Lifetime unlocks more room.',
-    ),
-  ),
-  (
-    LocalizedText(
-      nl: 'Hoe verwijder ik mijn account?',
-      en: 'How do I delete my account?',
-    ),
-    LocalizedText(
-      nl: 'Profiel → Account → Account verwijderen. Dat wist je account '
-          'en elke gesynchroniseerde rij; lokale gegevens blijven op deze '
-          'telefoon tot je de app verwijdert.',
-      en: 'Profile → Account → Delete account. It removes your account and '
-          'every synced row; local data stays on this phone until you delete '
-          'the app.',
-    ),
-  ),
+  (Str.faqDatesQ, Str.faqDatesA),
+  (Str.faqBehindQ, Str.faqBehindA),
+  (Str.faqWateringQ, Str.faqWateringA),
+  (Str.faqOfflineQ, Str.faqOfflineA),
+  (Str.faqFreeQ, Str.faqFreeA),
+  (Str.faqDeleteQ, Str.faqDeleteA),
 ];

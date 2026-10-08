@@ -282,4 +282,72 @@ abstract final class MascotLines {
     en: 'Your plan is ready. From here I tell you what to do each week.',
     de: 'Dein Plan ist fertig. Ab jetzt sage ich dir jede Woche, was zu tun ist.',
   );
+
+  // ── plant insights (features/garden/insights.dart) ────────────────────────
+  static LocalizedText insightHarvestPastFrost(String firstFrost) => LocalizedText(
+    nl: 'Het oogstvenster loopt door tot na de eerste vorst '
+        '($firstFrost). Doorgaan mag voor wat als eerste rijpt: '
+        'zet de pot binnen, of kies volgend jaar een snellere variëteit.',
+    en: 'The harvest window runs past the first frost '
+        '($firstFrost). Grow it anyway for what ripens first, '
+        'move the pot inside, or swap for a faster variety next time.',
+    de: 'Das Erntefenster reicht über den ersten Frost hinaus '
+        '($firstFrost). Für das, was zuerst reif wird, lohnt es sich trotzdem: '
+        'Hol den Topf rein, oder nimm nächstes Mal eine schnellere Sorte.',
+  );
+
+  static LocalizedText insightFirstFrostSoon(int days, String firstFrost, LocalizedText crop) =>
+      LocalizedText(
+    nl: 'De eerste vorst wordt over ongeveer $days dagen verwacht '
+        '($firstFrost). ${crop.nl} overleeft dat niet. '
+        'Pluk wat rijp is en dek af of zet binnen.',
+    en: 'First frost is expected in about $days days '
+        '($firstFrost). ${crop.en} does not survive it. '
+        'Pick what is ripe and cover or move it in.',
+    de: 'Der erste Frost wird in etwa $days Tagen erwartet '
+        '($firstFrost). ${crop.pick('de')} übersteht ihn nicht. '
+        'Ernte, was reif ist, und deck ab oder hol es rein.',
+  );
+
+  static LocalizedText insightLastFrostAhead(int days, String lastFrost, LocalizedText crop) =>
+      LocalizedText(
+    nl: 'De laatste vorst is nog ~$days dagen weg ($lastFrost). '
+        'Houd ${crop.nl.toLowerCase()} binnen tot na de ijsheiligen.',
+    en: 'Last frost is still ~$days days away ($lastFrost). '
+        'Keep ${crop.en.toLowerCase()} inside until after IJsheiligen.',
+    // German nouns keep their capital.
+    de: 'Der letzte Frost ist noch ~$days Tage entfernt ($lastFrost). '
+        'Lass ${crop.pick('de')} bis nach den Eisheiligen drinnen.',
+  );
+
+  static LocalizedText insightColdNight(int tempC, String date) => LocalizedText(
+    nl: 'Koude nacht op komst: $tempC°C op '
+        '$date. Dek af of zet de potten binnen.',
+    en: 'Cold night ahead: $tempC°C on '
+        '$date. Fleece or bring pots in.',
+    de: 'Kalte Nacht im Anmarsch: $tempC °C am '
+        '$date. Deck ab oder hol die Töpfe rein.',
+  );
+
+  static LocalizedText insightHeat(int tempC, String date, int litres) => LocalizedText(
+    nl: '$tempC°C op '
+        '$date: een pot van $litres L '
+        'droogt in één dag uit. Geef water in de ochtend en zet de pot '
+        'in de schaduw als dat kan.',
+    en: '$tempC°C on '
+        '$date: a $litres L pot dries out '
+        'in a day. Water in the morning, shade the pot if you can.',
+    de: '$tempC °C am '
+        '$date: Ein Topf mit $litres L trocknet an einem Tag aus. Gieß '
+        'morgens und stell den Topf in den Schatten, wenn es geht.',
+  );
+
+  static LocalizedText insightRain(int mm) => LocalizedText(
+    nl: '$mm mm regen in de komende drie dagen. Sla het '
+        'water geven over en controleer de gaatjes in de pot.',
+    en: '$mm mm of rain in the next three days. Skip '
+        'watering and check the drainage holes.',
+    de: '$mm mm Regen in den nächsten drei Tagen. Lass das '
+        'Gießen aus und prüf die Abzugslöcher.',
+  );
 }
