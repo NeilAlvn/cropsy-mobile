@@ -18,6 +18,7 @@ abstract final class Str {
     de: 'Home',
     fr: 'Accueil',
     sv: 'Hem',
+    pt: 'Início',
   );
   static const tabGarden = LocalizedText(
     nl: 'Mijn tuin',
@@ -25,6 +26,7 @@ abstract final class Str {
     de: 'Mein Garten',
     fr: 'Mon potager',
     sv: 'Min odling',
+    pt: 'A minha horta',
   );
   static const tabSeason = LocalizedText(
     nl: 'Seizoenspad',
@@ -32,6 +34,7 @@ abstract final class Str {
     de: 'Saisonpfad',
     fr: 'Parcours',
     sv: 'Säsong',
+    pt: 'Estação',
   );
   static const tabExplore = LocalizedText(
     nl: 'Ontdek',
@@ -39,6 +42,7 @@ abstract final class Str {
     de: 'Entdecken',
     fr: 'Explorer',
     sv: 'Utforska',
+    pt: 'Explorar',
   );
   static const tabDiagnose = LocalizedText(
     nl: 'Diagnose',
@@ -46,6 +50,7 @@ abstract final class Str {
     de: 'Diagnose',
     fr: 'Diagnostic',
     sv: 'Diagnos',
+    pt: 'Diagnóstico',
   );
 
   // ── home ──────────────────────────────────────────────────────────────────
@@ -55,6 +60,7 @@ abstract final class Str {
     de: 'Hallo',
     fr: 'Salut',
     sv: 'Hej',
+    pt: 'Olá',
   );
   static LocalizedText greetingNamed(String name) => LocalizedText(
     nl: 'Hoi, $name',
@@ -62,6 +68,7 @@ abstract final class Str {
     de: 'Hallo, $name',
     fr: 'Salut, $name',
     sv: 'Hej, $name',
+    pt: 'Olá, $name',
   );
   static const greetingSub = LocalizedText(
     nl: 'Dit staat er deze week in je tuin.',
@@ -69,6 +76,7 @@ abstract final class Str {
     de: 'Das steht diese Woche in deinem Garten an.',
     fr: 'Voici ton potager cette semaine.',
     sv: 'Så här ser din odling ut den här veckan.',
+    pt: 'Esta é a tua horta esta semana.',
   );
   static const searchCrops = LocalizedText(
     nl: 'Zoek groenten',
@@ -76,6 +84,7 @@ abstract final class Str {
     de: 'Gemüse suchen',
     fr: 'Chercher un légume',
     sv: 'Sök grönsaker',
+    pt: 'Procurar legumes',
   );
   static LocalizedText todaysCare(int open) => LocalizedText(
     nl: 'Vandaag te doen ($open)',
@@ -83,6 +92,7 @@ abstract final class Str {
     de: 'Heute zu tun ($open)',
     fr: 'À faire aujourd\'hui ($open)',
     sv: 'Att göra idag ($open)',
+    pt: 'Cuidados de hoje ($open)',
   );
   static LocalizedText upcomingHarvest(int n) => LocalizedText(
     nl: 'Binnenkort oogsten ($n)',
@@ -90,6 +100,7 @@ abstract final class Str {
     de: 'Bald ernten ($n)',
     fr: 'Récolte bientôt ($n)',
     sv: 'Snart skörd ($n)',
+    pt: 'Próximas colheitas ($n)',
   );
   static LocalizedText whatToGrow(LocalizedText month) => LocalizedText(
     nl: 'Wat te zaaien in ${month.nl}',
@@ -97,6 +108,7 @@ abstract final class Str {
     de: 'Was anbauen im ${month.pick('de')}',
     fr: 'Que cultiver en ${month.pick('fr')}',
     sv: 'Vad du kan odla i ${month.pick('sv')}',
+    pt: 'O que cultivar em ${month.pick('pt')}',
   );
   static LocalizedText checklistFor(LocalizedText month) => LocalizedText(
     nl: 'Checklist voor ${month.nl}',
@@ -104,6 +116,7 @@ abstract final class Str {
     de: 'Checkliste für ${month.pick('de')}',
     fr: 'À faire en ${month.pick('fr')}',
     sv: 'Att göra i ${month.pick('sv')}',
+    pt: 'Tarefas de ${month.pick('pt')}',
   );
   static const unlockLifetime = LocalizedText(
     nl: 'Levenslang, één prijs, voorgoed',
@@ -111,6 +124,7 @@ abstract final class Str {
     de: 'Lifetime freischalten: ein Preis, für immer',
     fr: 'Débloque Lifetime : un seul prix, pour toujours',
     sv: 'Lås upp Lifetime – ett pris, för alltid',
+    pt: 'Desbloqueia o Lifetime: um só preço, para sempre',
   );
   static const startStreak = LocalizedText(
     nl: 'Begin vandaag een reeks',
@@ -118,6 +132,7 @@ abstract final class Str {
     de: 'Starte heute eine Serie',
     fr: 'Lance une série aujourd\'hui',
     sv: 'Börja en svit idag',
+    pt: 'Começa uma série hoje',
   );
   static LocalizedText streakDays(int days) => LocalizedText(
     nl: '$days ${days == 1 ? 'dag' : 'dagen'} op rij',
@@ -125,6 +140,7 @@ abstract final class Str {
     de: '$days ${days == 1 ? 'Tag' : 'Tage'} in Folge',
     fr: '$days ${days <= 1 ? 'jour' : 'jours'} d\'affilée',
     sv: '$days ${days == 1 ? 'dag' : 'dagar'} i rad',
+    pt: days == 1 ? '1 dia seguido' : '$days dias seguidos',
   );
 
   // ── the season path ───────────────────────────────────────────────────────
@@ -134,6 +150,7 @@ abstract final class Str {
     de: 'Saison',
     fr: 'Saison',
     sv: 'Säsong',
+    pt: 'Estação',
   );
   static LocalizedText yearInGarden(int year) => LocalizedText(
     nl: '$year in jouw tuin',
@@ -141,6 +158,7 @@ abstract final class Str {
     de: '$year in deinem Garten',
     fr: '$year dans ton potager',
     sv: '$year i din odling',
+    pt: '$year na tua horta',
   );
   static const today = LocalizedText(
     nl: 'Vandaag',
@@ -148,6 +166,7 @@ abstract final class Str {
     de: 'Heute',
     fr: 'Aujourd\'hui',
     sv: 'Idag',
+    pt: 'Hoje',
   );
   static const tomorrow = LocalizedText(
     nl: 'Morgen',
@@ -155,6 +174,7 @@ abstract final class Str {
     de: 'Morgen',
     fr: 'Demain',
     sv: 'Imorgon',
+    pt: 'Amanhã',
   );
   static LocalizedText stepPlannedOn(LocalizedText step, String day) =>
       LocalizedText(
@@ -163,6 +183,7 @@ abstract final class Str {
         de: '${step.pick('de')} · geplant am $day',
         fr: '${step.pick('fr')} · pour le $day',
         sv: '${step.pick('sv')} · planerat $day',
+        pt: '${step.pick('pt')} · planeado para $day',
       );
   static const nothingToDoToday = LocalizedText(
     nl: 'Niets te doen vandaag. Geniet ervan.',
@@ -170,6 +191,7 @@ abstract final class Str {
     de: 'Heute nichts zu tun. Genieß es.',
     fr: 'Rien à faire aujourd\'hui. Profites-en.',
     sv: 'Inget att göra idag. Njut av det.',
+    pt: 'Nada para fazer hoje. Aproveita.',
   );
   static LocalizedText thingsToDoToday(int n) => LocalizedText(
     nl: n == 1 ? 'Eén ding te doen vandaag.' : '$n dingen te doen vandaag.',
@@ -179,6 +201,7 @@ abstract final class Str {
         ? '$n chose à faire aujourd\'hui.'
         : '$n choses à faire aujourd\'hui.',
     sv: n == 1 ? '1 sak att göra idag.' : '$n saker att göra idag.',
+    pt: n == 1 ? '1 coisa para fazer hoje.' : '$n coisas para fazer hoje.',
   );
   static LocalizedText removeKeepsYourHarvests(String name) => LocalizedText(
     nl:
@@ -196,6 +219,9 @@ abstract final class Str {
     sv:
         'Det här tar bort $name från din odling. Skördar du redan har '
         'loggat finns kvar i din säsongshistorik.',
+    pt:
+        'Isto tira $name da tua horta. As colheitas que já registaste '
+        'ficam no histórico da estação.',
   );
   static const symptoms = LocalizedText(
     nl: 'Symptomen',
@@ -203,6 +229,7 @@ abstract final class Str {
     de: 'Symptome',
     fr: 'Symptômes',
     sv: 'Symtom',
+    pt: 'Sintomas',
   );
   static const pickSomething = LocalizedText(
     nl: 'Kies iets ',
@@ -210,6 +237,7 @@ abstract final class Str {
     de: 'Wähl etwas ',
     fr: 'Choisis quelque chose ',
     sv: 'Välj något ',
+    pt: 'Escolhe algo ',
   );
   static const toGrow = LocalizedText(
     nl: 'om te telen',
@@ -217,6 +245,7 @@ abstract final class Str {
     de: 'zum Anbauen',
     fr: 'à cultiver',
     sv: 'att odla',
+    pt: 'para cultivar',
   );
   static const minSoilTemp = LocalizedText(
     nl: 'Min. bodemtemperatuur',
@@ -224,6 +253,7 @@ abstract final class Str {
     de: 'Min. Bodentemp.',
     fr: 'Temp. du sol min.',
     sv: 'Min. jordtemp.',
+    pt: 'Temp. mín. do solo',
   );
   static const minPotSize = LocalizedText(
     nl: 'Min. potmaat',
@@ -231,6 +261,7 @@ abstract final class Str {
     de: 'Min. Topfgröße',
     fr: 'Taille de pot min.',
     sv: 'Min. krukstorlek',
+    pt: 'Vaso mínimo',
   );
   static const containerFriendly = LocalizedText(
     nl: 'Geschikt voor potten',
@@ -238,6 +269,7 @@ abstract final class Str {
     de: 'Topfgeeignet',
     fr: 'Convient en pot',
     sv: 'Passar i kruka',
+    pt: 'Bom para vasos',
   );
   static const yes = LocalizedText(
     nl: 'Ja',
@@ -245,6 +277,7 @@ abstract final class Str {
     de: 'Ja',
     fr: 'Oui',
     sv: 'Ja',
+    pt: 'Sim',
   );
   static const balconySuitability = LocalizedText(
     nl: 'Geschikt voor NL-balkon',
@@ -252,6 +285,7 @@ abstract final class Str {
     de: 'Eignung für NL-Balkone',
     fr: 'Adaptation aux balcons NL',
     sv: 'Passar på NL-balkong',
+    pt: 'Adequação a varandas NL',
   );
   static const balconyGreat = LocalizedText(
     nl: 'Prima',
@@ -259,6 +293,7 @@ abstract final class Str {
     de: 'Super',
     fr: 'Parfait',
     sv: 'Utmärkt',
+    pt: 'Ótimo',
   );
   static const balconyAfterIjsheiligen = LocalizedText(
     nl: 'Goed na de ijsheiligen',
@@ -266,6 +301,7 @@ abstract final class Str {
     de: 'Gut nach den Eisheiligen',
     fr: 'Bien après les saints de glace',
     sv: 'Bra efter sista frosten',
+    pt: 'Bom após as últimas geadas',
   );
   static const balconyNeedsBed = LocalizedText(
     nl: 'Heeft een bed nodig',
@@ -273,6 +309,7 @@ abstract final class Str {
     de: 'Braucht ein Beet',
     fr: 'Demande un carré',
     sv: 'Behöver en bädd',
+    pt: 'Precisa de canteiro',
   );
   static const moveBackToPlanning = LocalizedText(
     nl: 'Terug naar gepland',
@@ -280,6 +317,7 @@ abstract final class Str {
     de: 'Zurück in die Planung',
     fr: 'Remettre en planification',
     sv: 'Flytta tillbaka till Planerat',
+    pt: 'Voltar ao planeamento',
   );
   static const removeFromGarden = LocalizedText(
     nl: 'Uit de tuin halen',
@@ -287,6 +325,7 @@ abstract final class Str {
     de: 'Aus dem Garten entfernen',
     fr: 'Retirer du potager',
     sv: 'Ta bort från odlingen',
+    pt: 'Remover da horta',
   );
   static LocalizedText removeKeepsHarvests(String name) => LocalizedText(
     nl:
@@ -304,6 +343,9 @@ abstract final class Str {
     sv:
         'Det här tar bort $name från din odling. Loggade skördar finns kvar '
         'i din säsongshistorik.',
+    pt:
+        'Isto tira $name da tua horta. As colheitas registadas ficam no '
+        'histórico da estação.',
   );
   static const tapPlanToGrow = LocalizedText(
     nl: 'Tik op "Wil ik telen" bij een gewas om het hier te zetten.',
@@ -311,6 +353,7 @@ abstract final class Str {
     de: 'Tippe bei einer Pflanze auf „Einplanen“, um sie hier hinzuzufügen.',
     fr: 'Touche « Planifier » sur une plante pour l\'ajouter ici.',
     sv: 'Tryck på ”Planera” på en växt för att lägga till den här.',
+    pt: 'Toca em “Planear” numa planta para a adicionares aqui.',
   );
   static const tapGrowingIt = LocalizedText(
     nl: 'Tik op "Staat er al" bij een gewas, of start een gepland gewas.',
@@ -318,6 +361,7 @@ abstract final class Str {
     de: 'Tippe bei einer Pflanze auf „Wächst schon“ oder starte eine geplante.',
     fr: 'Touche « Déjà planté » sur une plante, ou démarre une plante planifiée.',
     sv: 'Tryck på ”Odlar redan” på en växt, eller starta en planerad.',
+    pt: 'Toca em “Já plantei” numa planta, ou começa uma planeada.',
   );
   static const sowIndoors = LocalizedText(
     nl: 'Binnen zaaien',
@@ -325,6 +369,7 @@ abstract final class Str {
     de: 'Vorziehen',
     fr: 'Semer en intérieur',
     sv: 'Förkultivera',
+    pt: 'Semear em interior',
   );
   static const plantOut = LocalizedText(
     nl: 'Uitplanten',
@@ -332,6 +377,7 @@ abstract final class Str {
     de: 'Auspflanzen',
     fr: 'Repiquer',
     sv: 'Plantera ut',
+    pt: 'Transplantar',
   );
   static const sowOutdoors = LocalizedText(
     nl: 'Buiten zaaien',
@@ -339,6 +385,7 @@ abstract final class Str {
     de: 'Draußen säen',
     fr: 'Semer en extérieur',
     sv: 'Så utomhus',
+    pt: 'Semear no exterior',
   );
   static const treatmentOrganicFirst = LocalizedText(
     nl: 'Aanpak (biologisch eerst)',
@@ -346,6 +393,7 @@ abstract final class Str {
     de: 'Behandlung (zuerst biologisch)',
     fr: 'Traitement (bio d\'abord)',
     sv: 'Behandling (ekologiskt först)',
+    pt: 'Tratamento (biológico primeiro)',
   );
   static const prevention = LocalizedText(
     nl: 'Voorkomen',
@@ -353,6 +401,7 @@ abstract final class Str {
     de: 'Vorbeugung',
     fr: 'Prévention',
     sv: 'Förebyggande',
+    pt: 'Prevenção',
   );
   static const lastFrostRow = LocalizedText(
     nl: 'Laatste vorst',
@@ -360,6 +409,7 @@ abstract final class Str {
     de: 'Letzter Frost',
     fr: 'Dernières gelées',
     sv: 'Sista frosten',
+    pt: 'Última geada',
   );
   static const firstFrostRow = LocalizedText(
     nl: 'Eerste vorst',
@@ -367,6 +417,7 @@ abstract final class Str {
     de: 'Erster Frost',
     fr: 'Premières gelées',
     sv: 'Första frosten',
+    pt: 'Primeira geada',
   );
   static const preferredSun = LocalizedText(
     nl: 'Voorkeur zon',
@@ -374,6 +425,7 @@ abstract final class Str {
     de: 'Lichtbedarf',
     fr: 'Ensoleillement',
     sv: 'Solläge',
+    pt: 'Exposição solar',
   );
   static const frostTender = LocalizedText(
     nl: 'Vorstgevoelig',
@@ -381,6 +433,7 @@ abstract final class Str {
     de: 'Frostempfindlich',
     fr: 'Sensible au gel',
     sv: 'Frostkänslig',
+    pt: 'Sensível à geada',
   );
   static const yesWaitForLastFrost = LocalizedText(
     nl: 'Ja, wacht op de laatste vorst',
@@ -388,6 +441,7 @@ abstract final class Str {
     de: 'Ja, letzten Frost abwarten',
     fr: 'Oui, attends les dernières gelées',
     sv: 'Ja, vänta till efter sista frosten',
+    pt: 'Sim, espera pela última geada',
   );
   static const no = LocalizedText(
     nl: 'Nee',
@@ -395,15 +449,24 @@ abstract final class Str {
     de: 'Nein',
     fr: 'Non',
     sv: 'Nej',
+    pt: 'Não',
   );
 
-  static const empty = LocalizedText(nl: '', en: '', de: '', fr: '', sv: '');
+  static const empty = LocalizedText(
+    nl: '',
+    en: '',
+    de: '',
+    fr: '',
+    sv: '',
+    pt: '',
+  );
   static const sow = LocalizedText(
     nl: 'Zaaien',
     en: 'Sow',
     de: 'Säen',
     fr: 'Semer',
     sv: 'Så',
+    pt: 'Semear',
   );
   static const startIndoors = LocalizedText(
     nl: 'Binnen starten',
@@ -411,6 +474,7 @@ abstract final class Str {
     de: 'Vorziehen',
     fr: 'Semer en intérieur',
     sv: 'Förkultivera',
+    pt: 'Semear em interior',
   );
   static const plantOutside = LocalizedText(
     nl: 'Buiten planten',
@@ -418,6 +482,7 @@ abstract final class Str {
     de: 'Auspflanzen',
     fr: 'Repiquer',
     sv: 'Plantera ut',
+    pt: 'Plantar no exterior',
   );
   static const easyFilter = LocalizedText(
     nl: 'Makkelijk',
@@ -425,6 +490,7 @@ abstract final class Str {
     de: 'Einfach',
     fr: 'Facile',
     sv: 'Lätt',
+    pt: 'Fácil',
   );
   static const whatIsWrongHere = LocalizedText(
     nl: 'Wat klopt hier niet?',
@@ -432,6 +498,7 @@ abstract final class Str {
     de: 'Was stimmt hier nicht?',
     fr: 'Qu\'est-ce qui ne va pas ici ?',
     sv: 'Vad är fel här?',
+    pt: 'O que se passa aqui?',
   );
   static const whatWouldBeBetter = LocalizedText(
     nl: 'Wat zou dit beter maken?',
@@ -439,6 +506,7 @@ abstract final class Str {
     de: 'Was würde es besser machen?',
     fr: 'Qu\'est-ce qui rendrait ça meilleur ?',
     sv: 'Vad skulle göra det bättre?',
+    pt: 'O que tornaria isto melhor?',
   );
   static const climateNormals = LocalizedText(
     nl: 'KNMI/Open-Meteo klimaatnormalen',
@@ -446,6 +514,7 @@ abstract final class Str {
     de: 'KNMI/Open-Meteo-Klimamittel',
     fr: 'Normales climatiques KNMI/Open-Meteo',
     sv: 'Klimatnormaler från KNMI/Open-Meteo',
+    pt: 'Normais climáticas KNMI/Open-Meteo',
   );
   static const regionalPreset = LocalizedText(
     nl: 'NL regiovoorinstelling',
@@ -453,6 +522,7 @@ abstract final class Str {
     de: 'NL-Regionalvorgabe',
     fr: 'Préréglage régional NL',
     sv: 'Regional förinställning NL',
+    pt: 'Predefinição regional NL',
   );
 
   /// The crop data's own sun values, said in words.
@@ -463,6 +533,7 @@ abstract final class Str {
       de: 'volle Sonne',
       fr: 'plein soleil',
       sv: 'full sol',
+      pt: 'sol pleno',
     ),
     'partial' => const LocalizedText(
       nl: 'halfschaduw',
@@ -470,6 +541,7 @@ abstract final class Str {
       de: 'Halbschatten',
       fr: 'mi-ombre',
       sv: 'halvskugga',
+      pt: 'meia-sombra',
     ),
     'shade-tolerant' => const LocalizedText(
       nl: 'verdraagt schaduw',
@@ -477,8 +549,16 @@ abstract final class Str {
       de: 'schattenverträglich',
       fr: 'tolère l\'ombre',
       sv: 'tål skugga',
+      pt: 'tolera sombra',
     ),
-    _ => LocalizedText(nl: value, en: value, de: value, fr: value, sv: value),
+    _ => LocalizedText(
+      nl: value,
+      en: value,
+      de: value,
+      fr: value,
+      sv: value,
+      pt: value,
+    ),
   };
   static LocalizedText daysToHarvest(num min, num max) => LocalizedText(
     nl: '$min-$max dagen',
@@ -486,6 +566,7 @@ abstract final class Str {
     de: '$min-$max Tage',
     fr: '$min-$max jours',
     sv: '$min–$max dagar',
+    pt: '$min–$max dias',
   );
   static const stageSprout = LocalizedText(
     nl: 'Kiem',
@@ -493,6 +574,7 @@ abstract final class Str {
     de: 'Keimling',
     fr: 'Pousse',
     sv: 'Grodd',
+    pt: 'Rebento',
   );
   static const dayOne = LocalizedText(
     nl: 'Dag 1',
@@ -500,6 +582,7 @@ abstract final class Str {
     de: 'Tag 1',
     fr: 'Jour 1',
     sv: 'Dag 1',
+    pt: 'Dia 1',
   );
   static LocalizedText dayRange(num from, num to) => LocalizedText(
     nl: 'Dag $from-$to',
@@ -507,6 +590,7 @@ abstract final class Str {
     de: 'Tag $from-$to',
     fr: 'Jour $from-$to',
     sv: 'Dag $from–$to',
+    pt: 'Dia $from–$to',
   );
   static const enoughRainBadge = LocalizedText(
     nl: 'Genoeg regen',
@@ -514,6 +598,7 @@ abstract final class Str {
     de: 'Genug Regen',
     fr: 'Assez de pluie',
     sv: 'Nog med regn',
+    pt: 'Chuva suficiente',
   );
   static const heatComingBadge = LocalizedText(
     nl: 'Hitte op komst',
@@ -521,6 +606,7 @@ abstract final class Str {
     de: 'Hitze kommt',
     fr: 'Chaleur en vue',
     sv: 'Värme på väg',
+    pt: 'Vem aí calor',
   );
   static const soilTooColdBadge = LocalizedText(
     nl: 'Grond te koud',
@@ -528,6 +614,7 @@ abstract final class Str {
     de: 'Boden zu kalt',
     fr: 'Sol trop froid',
     sv: 'För kall jord',
+    pt: 'Solo demasiado frio',
   );
   static const gardenKindBalcony = LocalizedText(
     nl: 'Balkon',
@@ -535,6 +622,7 @@ abstract final class Str {
     de: 'Balkon',
     fr: 'Balcon',
     sv: 'Balkong',
+    pt: 'Varanda',
   );
   static const gardenKindGarden = LocalizedText(
     nl: 'Tuin',
@@ -542,6 +630,7 @@ abstract final class Str {
     de: 'Garten',
     fr: 'Jardin',
     sv: 'Trädgård',
+    pt: 'Jardim',
   );
   static const gardenKindAllotment = LocalizedText(
     nl: 'Volkstuin',
@@ -549,6 +638,7 @@ abstract final class Str {
     de: 'Kleingarten',
     fr: 'Jardin familial',
     sv: 'Kolonilott',
+    pt: 'Horta urbana',
   );
   static const contactUs = LocalizedText(
     nl: 'Contact',
@@ -556,6 +646,7 @@ abstract final class Str {
     de: 'Kontakt',
     fr: 'Nous contacter',
     sv: 'Kontakta oss',
+    pt: 'Contacta-nos',
   );
   static const privacy = LocalizedText(
     nl: 'Privacy',
@@ -563,6 +654,7 @@ abstract final class Str {
     de: 'Datenschutz',
     fr: 'Confidentialité',
     sv: 'Integritet',
+    pt: 'Privacidade',
   );
   static const terms = LocalizedText(
     nl: 'Voorwaarden',
@@ -570,6 +662,7 @@ abstract final class Str {
     de: 'AGB',
     fr: 'Conditions',
     sv: 'Villkor',
+    pt: 'Termos',
   );
   static const yourHarvests = LocalizedText(
     nl: 'Jouw oogsten',
@@ -577,6 +670,7 @@ abstract final class Str {
     de: 'Deine Ernten',
     fr: 'Tes récoltes',
     sv: 'Dina skördar',
+    pt: 'As tuas colheitas',
   );
   static const placeGround = LocalizedText(
     nl: 'In de volle grond',
@@ -584,6 +678,7 @@ abstract final class Str {
     de: 'Im Boden',
     fr: 'En pleine terre',
     sv: 'I marken',
+    pt: 'Na terra',
   );
   static const placeRaisedBed = LocalizedText(
     nl: 'Verhoogde bak',
@@ -591,6 +686,7 @@ abstract final class Str {
     de: 'Hochbeet',
     fr: 'Carré potager',
     sv: 'Pallkrage',
+    pt: 'Canteiro elevado',
   );
   static const placePotOutside = LocalizedText(
     nl: 'Pot buiten',
@@ -598,6 +694,7 @@ abstract final class Str {
     de: 'Topf draußen',
     fr: 'Pot dehors',
     sv: 'Kruka ute',
+    pt: 'Vaso no exterior',
   );
   static const placePotInside = LocalizedText(
     nl: 'Pot binnen',
@@ -605,6 +702,7 @@ abstract final class Str {
     de: 'Topf drinnen',
     fr: 'Pot dedans',
     sv: 'Kruka inne',
+    pt: 'Vaso no interior',
   );
   static const methodSowedIndoors = LocalizedText(
     nl: 'Binnen gezaaid',
@@ -612,6 +710,7 @@ abstract final class Str {
     de: 'Vorgezogen',
     fr: 'Semé en intérieur',
     sv: 'Förkultiverad',
+    pt: 'Semeei em interior',
   );
   static const methodSowedOutside = LocalizedText(
     nl: 'Buiten gezaaid',
@@ -619,6 +718,7 @@ abstract final class Str {
     de: 'Draußen gesät',
     fr: 'Semé en extérieur',
     sv: 'Sådd utomhus',
+    pt: 'Semeei no exterior',
   );
   static const methodPlantedSeedling = LocalizedText(
     nl: 'Zaailing geplant',
@@ -626,6 +726,7 @@ abstract final class Str {
     de: 'Jungpflanze gesetzt',
     fr: 'Plant mis en terre',
     sv: 'Planterad som planta',
+    pt: 'Plantei uma muda',
   );
   static const methodPlantedSets = LocalizedText(
     nl: 'Geplant (bollen / knollen)',
@@ -633,6 +734,7 @@ abstract final class Str {
     de: 'Gesteckt (Zwiebeln / Knollen)',
     fr: 'Planté (bulbilles / tubercules)',
     sv: 'Planterad (sättlök / knölar)',
+    pt: 'Plantei (bolbilhos / tubérculos)',
   );
   // ── the how-tos table ─────────────────────────────────────────────────────
   static const sowDepth = LocalizedText(
@@ -641,6 +743,7 @@ abstract final class Str {
     de: 'Saattiefe',
     fr: 'Profondeur de semis',
     sv: 'Sådjup',
+    pt: 'Profundidade',
   );
   static const germination = LocalizedText(
     nl: 'Kieming',
@@ -648,6 +751,7 @@ abstract final class Str {
     de: 'Keimung',
     fr: 'Germination',
     sv: 'Groning',
+    pt: 'Germinação',
   );
   static const plantOutAfter = LocalizedText(
     nl: 'Uitplanten na',
@@ -655,6 +759,7 @@ abstract final class Str {
     de: 'Auspflanzen nach',
     fr: 'Repiquer après',
     sv: 'Plantera ut efter',
+    pt: 'Transplantar após',
   );
   static const spacing = LocalizedText(
     nl: 'Plantafstand',
@@ -662,6 +767,7 @@ abstract final class Str {
     de: 'Abstand',
     fr: 'Espacement',
     sv: 'Avstånd',
+    pt: 'Espaçamento',
   );
   static const perSquare = LocalizedText(
     nl: 'Per vak van 30 cm',
@@ -669,6 +775,7 @@ abstract final class Str {
     de: 'Pro 30-cm-Quadrat',
     fr: 'Par carré de 30 cm',
     sv: 'Per ruta om 30 cm',
+    pt: 'Por quadrado de 30 cm',
   );
   static const care = LocalizedText(
     nl: 'Verzorging',
@@ -676,6 +783,7 @@ abstract final class Str {
     de: 'Pflege',
     fr: 'Entretien',
     sv: 'Skötsel',
+    pt: 'Cuidados',
   );
   static const waterSmallPot = LocalizedText(
     nl: 'Water (kleine pot)',
@@ -683,6 +791,7 @@ abstract final class Str {
     de: 'Gießen (kleiner Topf)',
     fr: 'Arrosage (petit pot)',
     sv: 'Vattna (liten kruka)',
+    pt: 'Rega (vaso pequeno)',
   );
   static const waterInGround = LocalizedText(
     nl: 'Water (volle grond)',
@@ -690,6 +799,7 @@ abstract final class Str {
     de: 'Gießen (im Boden)',
     fr: 'Arrosage (pleine terre)',
     sv: 'Vattna (i marken)',
+    pt: 'Rega (na terra)',
   );
   static const feed = LocalizedText(
     nl: 'Bijmesten',
@@ -697,6 +807,7 @@ abstract final class Str {
     de: 'Düngen',
     fr: 'Fertiliser',
     sv: 'Gödsla',
+    pt: 'Adubar',
   );
   static const perennial = LocalizedText(
     nl: 'Meerjarig',
@@ -704,6 +815,7 @@ abstract final class Str {
     de: 'Mehrjährig',
     fr: 'Vivace',
     sv: 'Perenn',
+    pt: 'Perene',
   );
   static const firstHarvest = LocalizedText(
     nl: 'Eerste oogst',
@@ -711,6 +823,7 @@ abstract final class Str {
     de: 'Erste Ernte',
     fr: 'Première récolte',
     sv: 'Första skörd',
+    pt: 'Primeira colheita',
   );
   static LocalizedText aboutDays(int n) => LocalizedText(
     nl: '~$n dagen',
@@ -718,6 +831,7 @@ abstract final class Str {
     de: '~$n Tage',
     fr: '~$n ${n <= 1 ? 'jour' : 'jours'}',
     sv: '~$n ${n == 1 ? 'dag' : 'dagar'}',
+    pt: '~$n ${n == 1 ? 'dia' : 'dias'}',
   );
   static LocalizedText daysIndoors(int n) => LocalizedText(
     nl: '~$n dagen binnen',
@@ -725,6 +839,7 @@ abstract final class Str {
     de: '~$n Tage drinnen',
     fr: '~$n ${n <= 1 ? 'jour' : 'jours'} en intérieur',
     sv: '~$n ${n == 1 ? 'dag' : 'dagar'} inomhus',
+    pt: '~$n ${n == 1 ? 'dia' : 'dias'} em interior',
   );
 
   /// "var 3:e dag": Swedish ordinals take :a after 1 and 2 (not 11, 12).
@@ -740,6 +855,7 @@ abstract final class Str {
     de: n == 1 ? 'jeden Tag' : 'alle $n Tage',
     fr: n <= 1 ? 'chaque jour' : 'tous les $n jours',
     sv: _svEvery(n),
+    pt: n == 1 ? 'todos os dias' : 'a cada $n dias',
   );
   static LocalizedText everyDaysEstablished(int n) => LocalizedText(
     nl: 'elke $n dagen zodra hij aanslaat',
@@ -747,6 +863,7 @@ abstract final class Str {
     de: 'alle $n Tage, sobald sie angewachsen ist',
     fr: 'tous les $n jours une fois installée',
     sv: '${_svEvery(n)} när den har etablerat sig',
+    pt: '${n == 1 ? 'todos os dias' : 'a cada $n dias'} depois de estabelecida',
   );
   static const comesBackNextYear = LocalizedText(
     nl: 'komt volgend jaar terug',
@@ -754,6 +871,7 @@ abstract final class Str {
     de: 'kommt nächstes Jahr wieder',
     fr: 'revient l\'an prochain',
     sv: 'kommer tillbaka nästa år',
+    pt: 'volta no próximo ano',
   );
   static LocalizedText daysAfterPlantOut(num min, num max) => LocalizedText(
     nl: '$min-$max dagen na het uitplanten',
@@ -761,6 +879,7 @@ abstract final class Str {
     de: '$min-$max Tage nach dem Auspflanzen',
     fr: '$min-$max jours après le repiquage',
     sv: '$min–$max dagar efter utplantering',
+    pt: '$min–$max dias após a transplantação',
   );
 
   // ── onboarding chrome ─────────────────────────────────────────────────────
@@ -770,6 +889,7 @@ abstract final class Str {
     de: 'Wissen, was\n',
     fr: 'Ce qu\'il faut faire\n',
     sv: 'Vet vad du ska göra\n',
+    pt: 'Sabe o que fazer\n',
   );
   static const heroThisWeek = LocalizedText(
     nl: 'deze week',
@@ -777,6 +897,7 @@ abstract final class Str {
     de: 'diese Woche',
     fr: 'cette semaine',
     sv: 'den här veckan',
+    pt: 'esta semana',
   );
   static const heroInYourGarden = LocalizedText(
     nl: ' moet doen in je tuin.',
@@ -784,6 +905,7 @@ abstract final class Str {
     de: ' im Garten ansteht.',
     fr: ' dans ton potager.',
     sv: ' i din odling.',
+    pt: ' na tua horta.',
   );
   static const heroSubtitle = LocalizedText(
     nl:
@@ -795,6 +917,7 @@ abstract final class Str {
     de: 'Pflanztermine und Erinnerungen, abgestimmt auf niederländisches und EU-Wetter, gemacht für Balkone und Töpfe.',
     fr: 'Des dates de plantation et des rappels adaptés à la météo des Pays-Bas et de l\'UE, pensés pour les balcons et les pots.',
     sv: 'Så- och planteringsdatum och påminnelser anpassade efter vädret i Nederländerna och EU, gjorda för balkonger och krukor.',
+    pt: 'Datas de plantação e lembretes ajustados ao clima dos Países Baixos e da UE, pensados para varandas e vasos.',
   );
   static const getStarted = LocalizedText(
     nl: 'Beginnen',
@@ -802,6 +925,7 @@ abstract final class Str {
     de: 'Los geht\'s',
     fr: 'C\'est parti',
     sv: 'Kom igång',
+    pt: 'Começar',
   );
   static const continueLabel = LocalizedText(
     nl: 'Verder',
@@ -809,6 +933,7 @@ abstract final class Str {
     de: 'Weiter',
     fr: 'Continuer',
     sv: 'Fortsätt',
+    pt: 'Continuar',
   );
   static const datesCheckedTitle = LocalizedText(
     nl: 'Elke datum gelegd naast Nederlandse zaaikalenders',
@@ -816,6 +941,7 @@ abstract final class Str {
     de: 'Jedes Datum mit niederländischen Aussaatkalendern abgeglichen',
     fr: 'Chaque date vérifiée dans des calendriers des semis néerlandais',
     sv: 'Varje datum kontrollerat mot nederländska såkalendrar',
+    pt: 'Cada data verificada em calendários de sementeira neerlandeses',
   );
   static const datesCheckedBody = LocalizedText(
     nl:
@@ -831,6 +957,7 @@ abstract final class Str {
     de: 'Jede Pflanze wird mit mindestens zwei NL-Quellen abgeglichen, IVN, Tuinadvies, zaaitijden.nl und Groei & Bloei, bevor sie bei dir ankommt. Und wenn das Leben dazwischenkommt, zieht der Plan mit. Nichts ist je „zu spät“.',
     fr: 'Chaque plante est vérifiée auprès d\'au moins deux sources néerlandaises, IVN, Tuinadvies, zaaitijden.nl et Groei & Bloei, avant d\'arriver chez toi. Et quand la vie s\'en mêle, le plan bouge avec toi. Une tâche n\'est jamais « ratée » : elle est « déplacée ».',
     sv: 'Varje växt kontrolleras mot minst två nederländska källor – IVN, Tuinadvies, zaaitijden.nl och Groei & Bloei – innan den når dig. Och när livet kommer emellan flyttar planen med dig. En uppgift är aldrig ”missad”, den är bara ”flyttad”.',
+    pt: 'Cada planta é verificada em pelo menos duas fontes neerlandesas, IVN, Tuinadvies, zaaitijden.nl e Groei & Bloei, antes de chegar a ti. E quando a vida se mete pelo meio, o plano acompanha-te. Nada fica “perdido”: só muda de data.',
   );
   static const getToKnowTitle = LocalizedText(
     nl: 'Hoi! Even kennismaken',
@@ -838,6 +965,7 @@ abstract final class Str {
     de: 'Hallo! Lernen wir uns kennen',
     fr: 'Salut ! Faisons connaissance',
     sv: 'Hej! Nu lär vi känna varandra',
+    pt: 'Olá! Vamos conhecer-nos',
   );
   static const getToKnowBody = LocalizedText(
     nl:
@@ -849,6 +977,7 @@ abstract final class Str {
     de: 'Ein paar kurze Fragen zu deinem Platz und dazu, was du gern isst. Zwei Minuten, dann steht dein Plan.',
     fr: 'Quelques questions rapides sur ton espace et ce que tu aimes manger. Deux minutes, et ton plan est prêt.',
     sv: 'Några snabba frågor om din plats och vad du gillar att äta. Två minuter, sedan är din plan klar.',
+    pt: 'Algumas perguntas rápidas sobre o teu espaço e o que gostas de comer. Dois minutos e o teu plano fica pronto.',
   );
   static const whatSpace = LocalizedText(
     nl: 'Welke ruimte heb je om te telen?',
@@ -856,6 +985,7 @@ abstract final class Str {
     de: 'Wo kannst du anbauen?',
     fr: 'Où peux-tu cultiver ?',
     sv: 'Var har du plats att odla?',
+    pt: 'Que espaço tens para cultivar?',
   );
   static const experienceReassure = LocalizedText(
     nl:
@@ -867,6 +997,7 @@ abstract final class Str {
     de: 'Gut — dann fangen wir ganz vorne an. Du bekommst jeden Schritt, wenn er dran ist, und den Grund dazu.',
     fr: 'Très bien — on commence par le début. Tu auras chaque étape au bon moment, avec la raison derrière.',
     sv: 'Bra – då börjar vi från början. Du får varje steg när det är dags, och varför.',
+    pt: 'Ótimo — então começamos do princípio. Recebes cada passo quando chega a altura, e a razão por trás dele.',
   );
   static const pickAllThatApply = LocalizedText(
     nl: 'Kies alles wat past.',
@@ -874,6 +1005,7 @@ abstract final class Str {
     de: 'Wähl alles, was passt.',
     fr: 'Choisis tout ce qui convient.',
     sv: 'Välj alla som stämmer.',
+    pt: 'Escolhe todas as que se aplicam.',
   );
   static const spaceBackyard = LocalizedText(
     nl: 'Tuin',
@@ -881,6 +1013,7 @@ abstract final class Str {
     de: 'Garten',
     fr: 'Jardin',
     sv: 'Trädgård',
+    pt: 'Jardim',
   );
   static const spaceBalcony = LocalizedText(
     nl: 'Balkon',
@@ -888,6 +1021,7 @@ abstract final class Str {
     de: 'Balkon',
     fr: 'Balcon',
     sv: 'Balkong',
+    pt: 'Varanda',
   );
   static const spaceIndoor = LocalizedText(
     nl: 'Binnen',
@@ -895,6 +1029,7 @@ abstract final class Str {
     de: 'Drinnen',
     fr: 'Intérieur',
     sv: 'Inomhus',
+    pt: 'Dentro de casa',
   );
   static const spaceAllotment = LocalizedText(
     nl: 'Volkstuin',
@@ -902,6 +1037,7 @@ abstract final class Str {
     de: 'Kleingarten',
     fr: 'Jardin familial',
     sv: 'Kolonilott',
+    pt: 'Horta urbana',
   );
   static const spaceOther = LocalizedText(
     nl: 'Ergens anders',
@@ -909,6 +1045,7 @@ abstract final class Str {
     de: 'Woanders',
     fr: 'Ailleurs',
     sv: 'Någon annanstans',
+    pt: 'Outro sítio',
   );
   static const howMuchSpace = LocalizedText(
     nl: 'Hoeveel ruimte?',
@@ -916,6 +1053,7 @@ abstract final class Str {
     de: 'Wie viel Platz?',
     fr: 'Combien de place ?',
     sv: 'Hur mycket plats?',
+    pt: 'Quanto espaço?',
   );
   static const howMuchSpaceSub = LocalizedText(
     nl: 'Ongeveer, het bepaalt hoeveel planten passen.',
@@ -923,6 +1061,7 @@ abstract final class Str {
     de: 'Ungefähr, das bestimmt, wie viele Pflanzen passen.',
     fr: 'En gros, ça décide combien de plantes tiennent.',
     sv: 'Ungefär – det avgör hur många växter som får plats.',
+    pt: 'Mais ou menos; define quantas plantas cabem.',
   );
   static const howMuchSun = LocalizedText(
     nl: 'Hoeveel zon?',
@@ -930,6 +1069,7 @@ abstract final class Str {
     de: 'Wie viel Sonne?',
     fr: 'Combien de soleil ?',
     sv: 'Hur mycket sol?',
+    pt: 'Quanto sol?',
   );
   static const howMuchSunSub = LocalizedText(
     nl: 'Op een heldere dag, hoe lang staat het in de volle zon?',
@@ -937,6 +1077,7 @@ abstract final class Str {
     de: 'Wie lange scheint an einem klaren Tag die Sonne direkt hin?',
     fr: 'Par temps clair, combien de temps est-ce au soleil direct ?',
     sv: 'En klar dag, hur länge står det i direkt sol?',
+    pt: 'Num dia limpo, quanto tempo apanha sol direto?',
   );
   static const sunFull = LocalizedText(
     nl: 'Volle zon (6u+)',
@@ -944,6 +1085,7 @@ abstract final class Str {
     de: 'Volle Sonne (6h+)',
     fr: 'Plein soleil (6 h+)',
     sv: 'Full sol (6 h+)',
+    pt: 'Sol pleno (6 h+)',
   );
   static const sunPartial = LocalizedText(
     nl: 'Halfschaduw (3-6u)',
@@ -951,6 +1093,7 @@ abstract final class Str {
     de: 'Halbschatten (3-6h)',
     fr: 'Mi-ombre (3-6 h)',
     sv: 'Halvskugga (3–6 h)',
+    pt: 'Meia-sombra (3–6 h)',
   );
   static const sunShade = LocalizedText(
     nl: 'Schaduw (< 3u)',
@@ -958,6 +1101,7 @@ abstract final class Str {
     de: 'Schatten (< 3h)',
     fr: 'Ombre (< 3 h)',
     sv: 'Skugga (< 3 h)',
+    pt: 'Sombra (< 3 h)',
   );
   static const grownBefore = LocalizedText(
     nl: 'Eerder iets geteeld?',
@@ -965,6 +1109,7 @@ abstract final class Str {
     de: 'Schon mal etwas angebaut?',
     fr: 'Déjà cultivé quelque chose ?',
     sv: 'Har du odlat förut?',
+    pt: 'Já cultivaste alguma coisa?',
   );
   static const grownBeforeSub = LocalizedText(
     nl: 'Zo stemmen we het advies af.',
@@ -972,6 +1117,7 @@ abstract final class Str {
     de: 'Damit unsere Tipps zu dir passen.',
     fr: 'Pour que nos conseils te correspondent.',
     sv: 'Så att råden hamnar på rätt nivå.',
+    pt: 'Para acertarmos nos conselhos.',
   );
   static const experienceNever = LocalizedText(
     nl: 'Nooit',
@@ -979,6 +1125,7 @@ abstract final class Str {
     de: 'Nie',
     fr: 'Jamais',
     sv: 'Aldrig',
+    pt: 'Nunca',
   );
   static const experienceSome = LocalizedText(
     nl: 'Een seizoen of twee',
@@ -986,6 +1133,7 @@ abstract final class Str {
     de: 'Ein, zwei Saisons',
     fr: 'Une saison ou deux',
     sv: 'En säsong eller två',
+    pt: 'Uma ou duas estações',
   );
   static const experiencePlenty = LocalizedText(
     nl: 'Genoeg',
@@ -993,6 +1141,7 @@ abstract final class Str {
     de: 'Viel',
     fr: 'Beaucoup',
     sv: 'Massor',
+    pt: 'Muitas vezes',
   );
   static const whatDoYouEat = LocalizedText(
     nl: 'Wat eet je graag?',
@@ -1000,6 +1149,7 @@ abstract final class Str {
     de: 'Was isst du gern?',
     fr: 'Qu\'est-ce que tu aimes manger ?',
     sv: 'Vad gillar du att äta?',
+    pt: 'O que gostas de comer?',
   );
   static const foodVegetables = LocalizedText(
     nl: 'Groente',
@@ -1007,6 +1157,7 @@ abstract final class Str {
     de: 'Gemüse',
     fr: 'Légumes',
     sv: 'Grönsaker',
+    pt: 'Legumes',
   );
   static const foodHerbs = LocalizedText(
     nl: 'Kruiden',
@@ -1014,6 +1165,7 @@ abstract final class Str {
     de: 'Kräuter',
     fr: 'Herbes aromatiques',
     sv: 'Örter',
+    pt: 'Ervas aromáticas',
   );
   static const foodSalad = LocalizedText(
     nl: 'Slablad',
@@ -1021,6 +1173,7 @@ abstract final class Str {
     de: 'Blattsalate',
     fr: 'Salades',
     sv: 'Sallad',
+    pt: 'Folhas de salada',
   );
   static const foodFruit = LocalizedText(
     nl: 'Fruit',
@@ -1028,6 +1181,7 @@ abstract final class Str {
     de: 'Obst',
     fr: 'Fruits',
     sv: 'Frukt',
+    pt: 'Fruta',
   );
   static const foodRoots = LocalizedText(
     nl: 'Wortelgroente',
@@ -1035,6 +1189,7 @@ abstract final class Str {
     de: 'Wurzelgemüse',
     fr: 'Légumes-racines',
     sv: 'Rotfrukter',
+    pt: 'Legumes de raiz',
   );
   static const whatMattersMost = LocalizedText(
     nl: 'Wat is het belangrijkst?',
@@ -1042,6 +1197,7 @@ abstract final class Str {
     de: 'Was ist dir am wichtigsten?',
     fr: 'Qu\'est-ce qui compte le plus ?',
     sv: 'Vad är viktigast?',
+    pt: 'O que é mais importante?',
   );
   static const interestEasy = LocalizedText(
     nl: 'Makkelijk te telen',
@@ -1049,6 +1205,7 @@ abstract final class Str {
     de: 'Leicht anzubauen',
     fr: 'Facile à cultiver',
     sv: 'Lättodlat',
+    pt: 'Fácil de cultivar',
   );
   static const interestFast = LocalizedText(
     nl: 'Snel oogsten',
@@ -1056,6 +1213,7 @@ abstract final class Str {
     de: 'Schnelle Ernte',
     fr: 'Récolte rapide',
     sv: 'Snabb skörd',
+    pt: 'Colheita rápida',
   );
   static const interestYield = LocalizedText(
     nl: 'Veel opbrengst',
@@ -1063,6 +1221,7 @@ abstract final class Str {
     de: 'Hoher Ertrag',
     fr: 'Bon rendement',
     sv: 'Stor skörd',
+    pt: 'Muita produção',
   );
   static const interestKids = LocalizedText(
     nl: 'Leuk met kinderen',
@@ -1070,6 +1229,7 @@ abstract final class Str {
     de: 'Spaß mit Kindern',
     fr: 'Avec les enfants',
     sv: 'Kul med barn',
+    pt: 'Com crianças',
   );
   static const interestCost = LocalizedText(
     nl: 'Scheelt geld',
@@ -1077,6 +1237,7 @@ abstract final class Str {
     de: 'Spart Geld',
     fr: 'Économique',
     sv: 'Sparar pengar',
+    pt: 'Poupa dinheiro',
   );
   static const buildMyPlan = LocalizedText(
     nl: 'Bouw mijn plan',
@@ -1084,6 +1245,7 @@ abstract final class Str {
     de: 'Plan erstellen',
     fr: 'Créer mon plan',
     sv: 'Skapa min plan',
+    pt: 'Criar o meu plano',
   );
   static const yourLocationWord = LocalizedText(
     nl: 'jouw locatie',
@@ -1091,6 +1253,7 @@ abstract final class Str {
     de: 'deinen Standort',
     fr: 'ta position',
     sv: 'din plats',
+    pt: 'a tua localização',
   );
   static const planReady = LocalizedText(
     nl: 'Je plan staat klaar',
@@ -1098,6 +1261,7 @@ abstract final class Str {
     de: 'Dein Plan ist fertig',
     fr: 'Ton plan est prêt',
     sv: 'Din plan är klar',
+    pt: 'O teu plano está pronto',
   );
   static const planBuilding = LocalizedText(
     nl: 'Je teeltplan wordt gemaakt…',
@@ -1105,6 +1269,7 @@ abstract final class Str {
     de: 'Dein Anbauplan entsteht…',
     fr: 'Ton plan de culture se prépare…',
     sv: 'Skapar din odlingsplan…',
+    pt: 'A criar o teu plano de cultivo…',
   );
   static LocalizedText planFrostLine(
     String region,
@@ -1116,6 +1281,7 @@ abstract final class Str {
     de: 'Frostdaten für $region: letzter $last, erster $first',
     fr: 'Dates de gel pour $region : dernières $last, premières $first',
     sv: 'Frostdatum för $region: sista $last, första $first',
+    pt: 'Datas de geada para $region: última $last, primeira $first',
   );
   static LocalizedText planMatches(int n) => LocalizedText(
     nl: n == 1
@@ -1133,6 +1299,9 @@ abstract final class Str {
     sv: n == 1
         ? '1 växt passar din plats den här månaden'
         : '$n växter passar din plats den här månaden',
+    pt: n == 1
+        ? '1 planta é boa para o teu espaço este mês'
+        : '$n plantas são boas para o teu espaço este mês',
   );
   static const planMatching = LocalizedText(
     nl: 'Gewassen zoeken die in je ruimte passen…',
@@ -1140,6 +1309,7 @@ abstract final class Str {
     de: 'Pflanzen werden auf deinen Platz abgestimmt…',
     fr: 'On adapte les plantes à ton espace…',
     sv: 'Matchar växter med din plats…',
+    pt: 'A escolher plantas para o teu espaço…',
   );
   static const planFirstTaskWaits = LocalizedText(
     nl: 'De eerste taak komt zodra er een venster opengaat',
@@ -1147,6 +1317,7 @@ abstract final class Str {
     de: 'Die erste Aufgabe kommt, sobald sich ein Zeitfenster öffnet',
     fr: 'La première tâche arrive dès qu\'une fenêtre s\'ouvre',
     sv: 'Första uppgiften kommer så fort det är dags',
+    pt: 'A primeira tarefa chega assim que se abrir uma janela',
   );
   static LocalizedText planFirstTask(String task) => LocalizedText(
     nl: 'Eerste taak: $task',
@@ -1154,6 +1325,7 @@ abstract final class Str {
     de: 'Erste Aufgabe: $task',
     fr: 'Première tâche : $task',
     sv: 'Första uppgiften: $task',
+    pt: 'Primeira tarefa: $task',
   );
   static const planFindingFirstTask = LocalizedText(
     nl: 'Je eerste taak zoeken…',
@@ -1161,6 +1333,7 @@ abstract final class Str {
     de: 'Erste Aufgabe wird gesucht…',
     fr: 'On cherche ta première tâche…',
     sv: 'Letar fram din första uppgift…',
+    pt: 'A procurar a tua primeira tarefa…',
   );
   static const noLocationPickRegion = LocalizedText(
     nl: 'Geen locatie, vul een postcode in of kies hieronder een regio.',
@@ -1168,6 +1341,7 @@ abstract final class Str {
     de: 'Kein Standort. Gib eine Postleitzahl ein oder wähl unten eine Region.',
     fr: 'Pas de position. Entre un code postal ou choisis une région ci-dessous.',
     sv: 'Ingen plats – ange ett postnummer eller välj en region nedan.',
+    pt: 'Sem localização: introduz um código postal ou escolhe uma região abaixo.',
   );
   static const postcodeNotFoundPickRegion = LocalizedText(
     nl:
@@ -1177,6 +1351,7 @@ abstract final class Str {
     de: 'Postleitzahl nicht gefunden (1234AB) oder du bist offline. Wähl unten eine Region.',
     fr: 'Code postal introuvable (1234AB), ou tu es hors ligne. Choisis une région ci-dessous.',
     sv: 'Postnumret hittades inte (1234AB), eller så är du offline. Välj en region nedan.',
+    pt: 'Código postal não encontrado (1234AB), ou estás sem ligação. Escolhe uma região abaixo.',
   );
   static LocalizedText foundFrostDates(
     String last,
@@ -1187,6 +1362,9 @@ abstract final class Str {
     de: 'Gefunden. Letzter Frost etwa $last, erster Frost etwa $first.',
     fr: 'Trouvé. Dernières gelées vers le $last, premières gelées vers le $first.',
     sv: 'Hittat. Sista frosten runt $last, första frosten runt $first.',
+    pt:
+        'Encontrado. Última geada por volta de $last, primeira geada por '
+        'volta de $first.',
   );
   static const whatToDo = LocalizedText(
     nl: 'Wat te doen ',
@@ -1194,6 +1372,7 @@ abstract final class Str {
     de: 'Was zu tun ist ',
     fr: 'Quoi faire ',
     sv: 'Det här gör du ',
+    pt: 'O que fazer ',
   );
   static const inYourGarden = LocalizedText(
     nl: 'in je tuin',
@@ -1201,6 +1380,7 @@ abstract final class Str {
     de: 'in deinem Garten',
     fr: 'dans ton potager',
     sv: 'i din odling',
+    pt: 'na tua horta',
   );
   static const plotWord = LocalizedText(
     nl: 'tuin',
@@ -1208,6 +1388,7 @@ abstract final class Str {
     de: 'Garten',
     fr: 'potager',
     sv: 'odling',
+    pt: 'horta',
   );
   static const yourLocation = LocalizedText(
     nl: 'Jouw locatie',
@@ -1215,6 +1396,7 @@ abstract final class Str {
     de: 'Dein Standort',
     fr: 'Ta position',
     sv: 'Din plats',
+    pt: 'A tua localização',
   );
   static LocalizedText noLocationMatch(String query) => LocalizedText(
     nl:
@@ -1232,6 +1414,9 @@ abstract final class Str {
     sv:
         'Ingen träff för ”$query”. Prova en stad i närheten, ett postnummer '
         '(1234AB) eller välj en region.',
+    pt:
+        'Sem resultados para “$query”. Tenta uma cidade próxima, um código '
+        'postal (1234AB) ou escolhe uma região.',
   );
   static const useCurrentLocation = LocalizedText(
     nl: 'Gebruik mijn huidige locatie',
@@ -1239,6 +1424,7 @@ abstract final class Str {
     de: 'Aktuellen Standort nutzen',
     fr: 'Utiliser ma position actuelle',
     sv: 'Använd min nuvarande plats',
+    pt: 'Usar a minha localização atual',
   );
   static const detectingLocation = LocalizedText(
     nl: 'Locatie bepalen…',
@@ -1246,6 +1432,7 @@ abstract final class Str {
     de: 'Standort wird ermittelt…',
     fr: 'On cherche ta position…',
     sv: 'Hittar din plats…',
+    pt: 'A detetar a tua localização…',
   );
   static const renewsYearly = LocalizedText(
     nl:
@@ -1255,6 +1442,7 @@ abstract final class Str {
     de: 'Verlängert sich jährlich. Verwalten oder kündigen im App Store / Play Store.',
     fr: 'Renouvellement annuel. Gère ou résilie dans l\'App Store / le Play Store.',
     sv: 'Förnyas varje år. Hantera eller säg upp i App Store / Google Play.',
+    pt: 'Renova anualmente. Gere ou cancela na App Store / Play Store.',
   );
   static const couldNotDeleteAccount = LocalizedText(
     nl: 'Account verwijderen lukte niet. Probeer het later opnieuw.',
@@ -1262,6 +1450,7 @@ abstract final class Str {
     de: 'Das Konto konnte nicht gelöscht werden. Versuch es später noch einmal.',
     fr: 'Impossible de supprimer le compte. Réessaie plus tard.',
     sv: 'Kunde inte radera kontot. Försök igen senare.',
+    pt: 'Não foi possível eliminar a conta. Tenta mais tarde.',
   );
   static const scanOpensWithBeta = LocalizedText(
     nl: 'Fotoscannen is nu niet beschikbaar. De probleemgids werkt offline.',
@@ -1271,6 +1460,7 @@ abstract final class Str {
     de: 'Foto-Scans sind gerade nicht verfügbar. Die Übersicht häufiger Probleme funktioniert offline.',
     fr: 'Le scan photo n\'est pas disponible pour l\'instant. La liste des problèmes courants marche hors ligne.',
     sv: 'Fotoskanning är inte tillgänglig just nu. Listan med vanliga problem fungerar offline.',
+    pt: 'A análise por fotografia não está disponível de momento. O guia de problemas comuns funciona sem ligação.',
   );
   static const scanQuotaReached = LocalizedText(
     nl:
@@ -1282,6 +1472,7 @@ abstract final class Str {
     de: 'Tägliches Scan-Limit erreicht. Morgen geht es weiter, oder schalte Lifetime für mehr frei.',
     fr: 'Limite de scans du jour atteinte. Reviens demain, ou débloque Lifetime pour en avoir plus.',
     sv: 'Dagens gräns för skanningar är nådd. Försök igen imorgon, eller lås upp Lifetime för fler.',
+    pt: 'Limite diário de análises atingido. Volta amanhã, ou desbloqueia o Lifetime para mais.',
   );
   static LocalizedText scanFailed(String code) => LocalizedText(
     nl: 'Scannen mislukt ($code). Probeer opnieuw.',
@@ -1289,6 +1480,7 @@ abstract final class Str {
     de: 'Scan fehlgeschlagen ($code). Versuch es noch einmal.',
     fr: 'Échec du scan ($code). Réessaie.',
     sv: 'Skanningen misslyckades ($code). Försök igen.',
+    pt: 'A análise falhou ($code). Tenta outra vez.',
   );
   static const snapTipsIdentify = LocalizedText(
     nl: 'Fototips: één plant, een blad of bloem vult het beeld, daglicht.',
@@ -1296,6 +1488,7 @@ abstract final class Str {
     de: 'Foto-Tipps: eine Pflanze, ein Blatt oder eine Blüte füllt das Bild, Tageslicht.',
     fr: 'Conseils photo : une seule plante, une feuille ou une fleur qui remplit le cadre, la lumière du jour.',
     sv: 'Fototips: en växt, ett blad eller en blomma som fyller bilden, dagsljus.',
+    pt: 'Dicas para a foto: uma planta, uma folha ou flor a encher o enquadramento, luz do dia.',
   );
   static const snapTipsDiagnose = LocalizedText(
     nl:
@@ -1307,6 +1500,7 @@ abstract final class Str {
     de: 'Foto-Tipps: die beschädigte Stelle scharf und nah, dazu eine weitere Aufnahme, wenn du unsicher bist.',
     fr: 'Conseils photo : la partie abîmée nette et de près, plus une vue plus large en cas de doute.',
     sv: 'Fototips: den skadade delen skarpt och nära, plus en bredare bild om du är osäker.',
+    pt: 'Dicas para a foto: a parte danificada nítida e de perto, e uma mais afastada se tiveres dúvidas.',
   );
   static LocalizedText rainSkipsWatering(int mm) => LocalizedText(
     nl:
@@ -1324,6 +1518,9 @@ abstract final class Str {
     sv:
         'Det har regnat $mm mm de senaste tre dagarna. Vattningar runt idag '
         'hoppas över.',
+    pt:
+        'Choveu $mm mm nos últimos três dias. As regas à volta de hoje '
+        'foram saltadas.',
   );
   static const heatAhead = LocalizedText(
     nl:
@@ -1335,6 +1532,7 @@ abstract final class Str {
     de: 'Hitze im Anmarsch (30 °C+). Töpfe trocknen an einem Tag aus, darum rückt das Gießen nach vorne.',
     fr: 'Chaleur en vue (30 °C+). Les pots sèchent en une journée, alors les arrosages avancent.',
     sv: 'Värme på väg (30 °C+). Krukor torkar ut på en dag, så vattningen flyttas tidigare.',
+    pt: 'Vem aí calor (30 °C+). Os vasos secam num dia, por isso as regas passam para mais cedo.',
   );
   static const forecastCalm = LocalizedText(
     nl: 'Niets bijzonders in de verwachting. Het plan blijft staan.',
@@ -1342,6 +1540,7 @@ abstract final class Str {
     de: 'Nichts Dramatisches in der Vorhersage. Der Plan steht.',
     fr: 'Rien de spécial dans les prévisions. Le plan tient.',
     sv: 'Inget dramatiskt i prognosen. Planen står fast.',
+    pt: 'Nada de dramático na previsão. O plano mantém-se.',
   );
   static const youAreHere = LocalizedText(
     nl: 'Hier ben je',
@@ -1349,6 +1548,7 @@ abstract final class Str {
     de: 'Du bist hier',
     fr: 'Tu es ici',
     sv: 'Du är här',
+    pt: 'Estás aqui',
   );
   static LocalizedText cropsSuitMonth(int n) => LocalizedText(
     nl: n == 1 ? '1 gewas past' : '$n gewassen passen',
@@ -1356,6 +1556,7 @@ abstract final class Str {
     de: n == 1 ? '1 Pflanze passt' : '$n Pflanzen passen',
     fr: n <= 1 ? '$n plante convient' : '$n plantes conviennent',
     sv: n == 1 ? '1 växt passar' : '$n växter passar',
+    pt: n == 1 ? '1 planta adequada' : '$n plantas adequadas',
   );
   static LocalizedText cropsCanGoIn(int n) => LocalizedText(
     nl: n == 1 ? 'Er kan nog 1 gewas in' : 'Er kunnen nog $n gewassen in',
@@ -1367,6 +1568,9 @@ abstract final class Str {
     sv: n == 1
         ? '1 växt kan fortfarande komma i jorden'
         : '$n växter kan fortfarande komma i jorden',
+    pt: n == 1
+        ? '1 planta ainda pode ir para a terra'
+        : '$n plantas ainda podem ir para a terra',
   );
   static LocalizedText nothingPlanned(LocalizedText month) => LocalizedText(
     nl: 'Nog niets gepland voor ${month.nl}',
@@ -1374,6 +1578,7 @@ abstract final class Str {
     de: 'Nichts geplant im ${month.pick('de')}',
     fr: 'Rien de planifié en ${month.pick('fr')}',
     sv: 'Inget planerat i ${month.pick('sv')}',
+    pt: 'Nada planeado para ${month.pick('pt')}',
   );
   static LocalizedText stillSowable(LocalizedText month) => LocalizedText(
     nl: 'Nog te zaaien in ${month.nl}',
@@ -1381,6 +1586,7 @@ abstract final class Str {
     de: 'Im ${month.pick('de')} noch zu säen',
     fr: 'Encore à semer en ${month.pick('fr')}',
     sv: 'Går fortfarande att så i ${month.pick('sv')}',
+    pt: 'Ainda dá para semear em ${month.pick('pt')}',
   );
   static LocalizedText openAndDone(int open, int done) => LocalizedText(
     nl: '$open nu open · $done gedaan',
@@ -1388,6 +1594,7 @@ abstract final class Str {
     de: '$open jetzt offen · $done erledigt',
     fr: '$open à faire · $done ${done <= 1 ? 'faite' : 'faites'}',
     sv: '$open att göra · $done ${done == 1 ? 'klar' : 'klara'}',
+    pt: '$open por fazer · $done ${done == 1 ? 'feita' : 'feitas'}',
   );
   static LocalizedText doneNothingOpen(int done) => LocalizedText(
     nl: '$done gedaan · niets open vandaag',
@@ -1395,6 +1602,7 @@ abstract final class Str {
     de: '$done erledigt · heute nichts offen',
     fr: '$done ${done <= 1 ? 'faite' : 'faites'} · rien à faire aujourd\'hui',
     sv: '$done ${done == 1 ? 'klar' : 'klara'} · inget kvar idag',
+    pt: '$done ${done == 1 ? 'feita' : 'feitas'} · nada por fazer hoje',
   );
 
   // ── the path's own stops ──────────────────────────────────────────────────
@@ -1404,6 +1612,7 @@ abstract final class Str {
     de: '${crop.pick('de')} säen',
     fr: '${crop.pick('fr')} : semer',
     sv: 'Så ${crop.pick('sv').toLowerCase()}',
+    pt: 'Semear ${crop.pick('pt').toLowerCase()}',
   );
   static LocalizedText harvestCrop(LocalizedText crop) => LocalizedText(
     nl: '${crop.nl} oogsten',
@@ -1411,6 +1620,7 @@ abstract final class Str {
     de: '${crop.pick('de')} ernten',
     fr: '${crop.pick('fr')} : récolter',
     sv: 'Skörda ${crop.pick('sv').toLowerCase()}',
+    pt: 'Colher ${crop.pick('pt').toLowerCase()}',
   );
   static LocalizedText followOn(LocalizedText crop) => LocalizedText(
     nl: 'Daarna: ${crop.nl}',
@@ -1418,6 +1628,7 @@ abstract final class Str {
     de: 'Danach: ${crop.pick('de')}',
     fr: 'Ensuite : ${crop.pick('fr')}',
     sv: 'Sedan: ${crop.pick('sv').toLowerCase()}',
+    pt: 'A seguir: ${crop.pick('pt').toLowerCase()}',
   );
 
   /// "Tomaat bijmesten" reads right in Dutch, "Feed Tomato" in English, so the
@@ -1431,6 +1642,7 @@ abstract final class Str {
         de: '${crop.pick('de')} ${step.pick('de').toLowerCase()}',
         fr: '${crop.pick('fr')} : ${step.pick('fr').toLowerCase()}',
         sv: '${step.pick('sv')} ${crop.pick('sv').toLowerCase()}',
+        pt: '${step.pick('pt')} ${crop.pick('pt').toLowerCase()}',
       );
 
   static const ijsheiligen = LocalizedText(
@@ -1439,6 +1651,7 @@ abstract final class Str {
     de: 'Eisheiligen',
     fr: 'Saints de glace',
     sv: 'Sista frostnätterna',
+    pt: 'Últimas geadas',
   );
   static const ijsheiligenSub = LocalizedText(
     nl: 'Vorstgevoelige gewassen blijven tot 15 mei binnen',
@@ -1446,6 +1659,7 @@ abstract final class Str {
     de: 'Empfindliche Pflanzen bleiben bis 15. Mai drinnen',
     fr: 'Les plantes sensibles restent à l\'abri jusqu\'au 15 mai',
     sv: 'Ömtåliga växter stannar inne till 15 maj',
+    pt: 'As plantas sensíveis ficam abrigadas até 15 de maio',
   );
   static const lastFrost = LocalizedText(
     nl: 'Laatste vorst, gemiddeld',
@@ -1453,6 +1667,7 @@ abstract final class Str {
     de: 'Letzter Frost, im Schnitt',
     fr: 'Dernières gelées, en moyenne',
     sv: 'Sista frosten, i snitt',
+    pt: 'Última geada, em média',
   );
   static const lastFrostSub = LocalizedText(
     nl: 'Daarna mogen vorstgevoelige gewassen naar buiten',
@@ -1460,6 +1675,7 @@ abstract final class Str {
     de: 'Danach dürfen empfindliche Pflanzen raus',
     fr: 'Après ça, les plantes sensibles peuvent sortir',
     sv: 'Efter det kan ömtåliga växter flytta ut',
+    pt: 'Depois disto, as plantas sensíveis podem ir para fora',
   );
   static const firstFrost = LocalizedText(
     nl: 'Eerste vorst, gemiddeld',
@@ -1467,6 +1683,7 @@ abstract final class Str {
     de: 'Erster Frost, im Schnitt',
     fr: 'Premières gelées, en moyenne',
     sv: 'Första frosten, i snitt',
+    pt: 'Primeira geada, em média',
   );
   static const firstFrostSub = LocalizedText(
     nl: 'Haal vorstgevoelige gewassen hiervoor binnen',
@@ -1474,6 +1691,7 @@ abstract final class Str {
     de: 'Hol empfindliche Pflanzen vorher rein',
     fr: 'Rentre les plantes sensibles avant ça',
     sv: 'Ta in ömtåliga växter före det',
+    pt: 'Recolhe as plantas sensíveis antes disto',
   );
   static const orderSeed = LocalizedText(
     nl: 'Bestel je zaad',
@@ -1481,6 +1699,7 @@ abstract final class Str {
     de: 'Saatgut bestellen',
     fr: 'Commande tes graines',
     sv: 'Beställ dina fröer',
+    pt: 'Encomenda as sementes',
   );
   static LocalizedText cropsOnList(int n) => LocalizedText(
     nl: n == 1 ? '1 gewas op je lijst' : '$n gewassen op je lijst',
@@ -1488,6 +1707,7 @@ abstract final class Str {
     de: n == 1 ? '1 Pflanze auf deiner Liste' : '$n Pflanzen auf deiner Liste',
     fr: n <= 1 ? '$n plante sur ta liste' : '$n plantes sur ta liste',
     sv: n == 1 ? '1 växt på din lista' : '$n växter på din lista',
+    pt: n == 1 ? '1 planta na tua lista' : '$n plantas na tua lista',
   );
   static const monthPhoto = LocalizedText(
     nl: 'Maak de foto van deze maand',
@@ -1495,6 +1715,7 @@ abstract final class Str {
     de: 'Mach das Foto des Monats',
     fr: 'Prends la photo du mois',
     sv: 'Ta månadens foto',
+    pt: 'Tira a foto deste mês',
   );
   static const seasonInPictures = LocalizedText(
     nl: 'Je seizoen, in beeld',
@@ -1502,6 +1723,7 @@ abstract final class Str {
     de: 'Deine Saison in Bildern',
     fr: 'Ta saison en images',
     sv: 'Din säsong i bilder',
+    pt: 'A tua estação, em imagens',
   );
   static const seasonTally = LocalizedText(
     nl: 'Seizoensoogst',
@@ -1509,6 +1731,7 @@ abstract final class Str {
     de: 'Saisonbilanz',
     fr: 'Bilan de saison',
     sv: 'Säsongens summering',
+    pt: 'Balanço da estação',
   );
   static LocalizedText tallySoFar(int euros, String kilos) => LocalizedText(
     nl: '€$euros en $kilos kg tot nu toe',
@@ -1516,6 +1739,7 @@ abstract final class Str {
     de: '$euros € und $kilos kg bisher',
     fr: '$euros € et $kilos kg pour l\'instant',
     sv: '$euros € och ${kilos.replaceAll('.', ',')} kg hittills',
+    pt: '$euros € e ${kilos.replaceAll('.', ',')} kg até agora',
   );
   static const tallyEmpty = LocalizedText(
     nl: 'Log een oogst en het telt hier op',
@@ -1523,6 +1747,7 @@ abstract final class Str {
     de: 'Trag eine Ernte ein, dann summiert sie sich hier',
     fr: 'Note une récolte et elle s\'additionne ici',
     sv: 'Logga en skörd så räknas den ihop här',
+    pt: 'Regista uma colheita e ela soma-se aqui',
   );
   static LocalizedText recapTitle(int year) => LocalizedText(
     nl: 'Jouw $year, op één kaart',
@@ -1530,6 +1755,7 @@ abstract final class Str {
     de: 'Dein $year auf einer Karte',
     fr: 'Ton $year, en une carte',
     sv: 'Ditt $year, på ett kort',
+    pt: 'O teu $year, num só cartão',
   );
   static const recapSub = LocalizedText(
     nl: 'Wat je teelde, plukte en bespaarde',
@@ -1537,6 +1763,7 @@ abstract final class Str {
     de: 'Was du angebaut, geerntet und gespart hast',
     fr: 'Ce que tu as cultivé, récolté et économisé',
     sv: 'Vad du odlade, skördade och sparade',
+    pt: 'O que cultivaste, colheste e poupaste',
   );
   static LocalizedText recapPicked(int euros) => LocalizedText(
     nl: '€$euros geplukt tot nu toe',
@@ -1544,6 +1771,7 @@ abstract final class Str {
     de: '$euros € bisher geerntet',
     fr: '$euros € récoltés pour l\'instant',
     sv: '$euros € skördat hittills',
+    pt: '$euros € colhidos até agora',
   );
   static const plantsGrown = LocalizedText(
     nl: 'Planten geteeld',
@@ -1551,6 +1779,7 @@ abstract final class Str {
     de: 'Angebaute Pflanzen',
     fr: 'Plantes cultivées',
     sv: 'Odlade växter',
+    pt: 'Plantas cultivadas',
   );
   static const picked = LocalizedText(
     nl: 'Geoogst',
@@ -1558,6 +1787,7 @@ abstract final class Str {
     de: 'Geerntet',
     fr: 'Récolté',
     sv: 'Skördat',
+    pt: 'Colhido',
   );
   static const saved = LocalizedText(
     nl: 'Bespaard',
@@ -1565,6 +1795,7 @@ abstract final class Str {
     de: 'Gespart',
     fr: 'Économisé',
     sv: 'Sparat',
+    pt: 'Poupado',
   );
 
   // ── the weather, when it moves something ──────────────────────────────────
@@ -1574,6 +1805,7 @@ abstract final class Str {
     de: 'Der Regen hat gegossen',
     fr: 'La pluie a arrosé',
     sv: 'Regnet vattnade åt dig',
+    pt: 'A chuva regou por ti',
   );
   static const rainDidItSub = LocalizedText(
     nl: 'Overgeslagen, je reeks telt door',
@@ -1581,6 +1813,7 @@ abstract final class Str {
     de: 'Für dich übersprungen, die Serie zählt trotzdem',
     fr: 'Sauté pour toi, la série compte quand même',
     sv: 'Överhoppat åt dig, sviten räknas ändå',
+    pt: 'Saltámos a rega por ti; a série continua a contar',
   );
   static const heatComing = LocalizedText(
     nl: 'Hitte op komst',
@@ -1588,6 +1821,7 @@ abstract final class Str {
     de: 'Hitze im Anmarsch',
     fr: 'Chaleur en vue',
     sv: 'Värme på väg',
+    pt: 'Vem aí calor',
   );
   static const heatComingSub = LocalizedText(
     nl: 'Eerder water geven dan gepland',
@@ -1595,6 +1829,7 @@ abstract final class Str {
     de: 'Früher gießen als geplant',
     fr: 'Arrose plus tôt que prévu',
     sv: 'Vattna tidigare än planerat',
+    pt: 'Rega mais cedo do que o planeado',
   );
   static const soilCold = LocalizedText(
     nl: 'Bodem nog te koud',
@@ -1602,6 +1837,7 @@ abstract final class Str {
     de: 'Boden noch zu kalt',
     fr: 'Sol encore trop froid',
     sv: 'Jorden är fortfarande för kall',
+    pt: 'Solo ainda demasiado frio',
   );
   static const soilColdSub = LocalizedText(
     nl: 'Zaaien wacht tot het warmer is',
@@ -1609,6 +1845,7 @@ abstract final class Str {
     de: 'Gesät wird, sobald er wärmer ist',
     fr: 'Le semis attend qu\'il se réchauffe',
     sv: 'Sådden väntar tills det blir varmare',
+    pt: 'A sementeira espera até o solo aquecer',
   );
 
   // ── browse: Explore and Grow ──────────────────────────────────────────────
@@ -1618,6 +1855,7 @@ abstract final class Str {
     de: 'Entdecken',
     fr: 'Explorer',
     sv: 'Utforska',
+    pt: 'Explorar',
   );
   static const findNextCrop = LocalizedText(
     nl: 'Vind je volgende gewas',
@@ -1625,6 +1863,7 @@ abstract final class Str {
     de: 'Finde deine nächste Pflanze',
     fr: 'Trouve ta prochaine plante',
     sv: 'Hitta din nästa växt',
+    pt: 'Encontra a tua próxima planta',
   );
   static const identifyFromPhoto = LocalizedText(
     nl: 'Herken een plant van een foto',
@@ -1632,6 +1871,7 @@ abstract final class Str {
     de: 'Pflanze per Foto bestimmen',
     fr: 'Identifier une plante en photo',
     sv: 'Identifiera en växt från ett foto',
+    pt: 'Identifica uma planta por fotografia',
   );
   static const grow = LocalizedText(
     nl: 'Kweken',
@@ -1639,6 +1879,7 @@ abstract final class Str {
     de: 'Anbauen',
     fr: 'Cultiver',
     sv: 'Odla',
+    pt: 'Cultivar',
   );
   static LocalizedText searchCropCount(int n) => LocalizedText(
     nl: n == 1 ? 'Zoek in 1 gewas…' : 'Zoek in $n gewassen…',
@@ -1646,6 +1887,7 @@ abstract final class Str {
     de: n == 1 ? 'In 1 Pflanze suchen…' : 'In $n Pflanzen suchen…',
     fr: n <= 1 ? 'Chercher parmi $n plante…' : 'Chercher parmi $n plantes…',
     sv: n == 1 ? 'Sök bland 1 växt…' : 'Sök bland $n växter…',
+    pt: n == 1 ? 'Procurar em 1 planta…' : 'Procurar em $n plantas…',
   );
   static LocalizedText results(int n) => LocalizedText(
     nl: n == 1 ? '1 resultaat' : '$n resultaten',
@@ -1653,6 +1895,7 @@ abstract final class Str {
     de: n == 1 ? '1 Ergebnis' : '$n Ergebnisse',
     fr: n <= 1 ? '$n résultat' : '$n résultats',
     sv: '$n resultat',
+    pt: n == 1 ? '1 resultado' : '$n resultados',
   );
   static const profile = LocalizedText(
     nl: 'Profiel',
@@ -1660,6 +1903,7 @@ abstract final class Str {
     de: 'Profil',
     fr: 'Profil',
     sv: 'Profil',
+    pt: 'Perfil',
   );
 
   // ── crop detail ───────────────────────────────────────────────────────────
@@ -1669,6 +1913,7 @@ abstract final class Str {
     de: 'Einplanen',
     fr: 'Planifier',
     sv: 'Planera',
+    pt: 'Planear',
   );
   static const growingIt = LocalizedText(
     nl: 'Ik kweek het',
@@ -1676,6 +1921,7 @@ abstract final class Str {
     de: 'Wächst schon',
     fr: 'Déjà planté',
     sv: 'Odlar redan',
+    pt: 'Já plantei',
   );
   static const goodNeighbours = LocalizedText(
     nl: 'Goede buren',
@@ -1683,6 +1929,7 @@ abstract final class Str {
     de: 'Gute Nachbarn',
     fr: 'Bons voisins',
     sv: 'Goda grannar',
+    pt: 'Bons vizinhos',
   );
   static const badNeighbours = LocalizedText(
     nl: 'Slechte buren',
@@ -1690,6 +1937,7 @@ abstract final class Str {
     de: 'Schlechte Nachbarn',
     fr: 'Mauvais voisins',
     sv: 'Dåliga grannar',
+    pt: 'Maus vizinhos',
   );
   static const noCompanionData = LocalizedText(
     nl: 'Nog geen buurgegevens.',
@@ -1697,6 +1945,7 @@ abstract final class Str {
     de: 'Noch keine Nachbarschaftsdaten.',
     fr: 'Pas encore de données d\'association.',
     sv: 'Inga uppgifter om grannar än.',
+    pt: 'Ainda sem dados de consociação.',
   );
   static const draftMatrix = LocalizedText(
     nl: 'Concept. De gecontroleerde matrix komt met de contentupdate',
@@ -1704,6 +1953,7 @@ abstract final class Str {
     de: 'Entwurf. Die geprüfte Tabelle kommt mit dem Inhalts-Update',
     fr: 'Brouillon. Le tableau vérifié arrive avec la mise à jour du contenu',
     sv: 'Utkast. Den verifierade tabellen kommer med innehållsuppdateringen',
+    pt: 'Rascunho. A tabela verificada chega com a atualização de conteúdo',
   );
   static LocalizedText verifiedAgainst(int n) => LocalizedText(
     nl: 'Gecontroleerd tegen $n NL-bronnen',
@@ -1713,6 +1963,7 @@ abstract final class Str {
     sv: n == 1
         ? 'Kontrollerad mot 1 NL-källa'
         : 'Kontrollerad mot $n NL-källor',
+    pt: n == 1 ? 'Verificado em 1 fonte NL' : 'Verificado em $n fontes NL',
   );
   static LocalizedText basedOn(String region) => LocalizedText(
     nl: 'Op basis van: $region',
@@ -1720,6 +1971,7 @@ abstract final class Str {
     de: 'Grundlage: $region',
     fr: 'Basé sur : $region',
     sv: 'Baserat på: $region',
+    pt: 'Com base em: $region',
   );
   static LocalizedText potLitres(num litres) => LocalizedText(
     nl: '$litres L pot',
@@ -1727,6 +1979,7 @@ abstract final class Str {
     de: '$litres-L-Topf',
     fr: 'Pot de $litres L',
     sv: 'Kruka på $litres L',
+    pt: 'Vaso de $litres L',
   );
   static LocalizedText harvestInDays(int days) => LocalizedText(
     nl: 'Oogst over $days dagen',
@@ -1734,6 +1987,7 @@ abstract final class Str {
     de: 'Ernte in $days ${days == 1 ? 'Tag' : 'Tagen'}',
     fr: 'Récolte dans $days ${days <= 1 ? 'jour' : 'jours'}',
     sv: 'Skörd om $days ${days == 1 ? 'dag' : 'dagar'}',
+    pt: 'Colheita daqui a $days ${days == 1 ? 'dia' : 'dias'}',
   );
   static const readyToHarvest = LocalizedText(
     nl: 'Klaar om te oogsten',
@@ -1741,6 +1995,7 @@ abstract final class Str {
     de: 'Erntereif',
     fr: 'À récolter',
     sv: 'Redo att skörda',
+    pt: 'Pronto a colher',
   );
   static LocalizedText harvestDays(int min, int max) => LocalizedText(
     nl: '$min–$max dagen',
@@ -1748,6 +2003,7 @@ abstract final class Str {
     de: '$min–$max Tage',
     fr: '$min–$max jours',
     sv: '$min–$max dagar',
+    pt: '$min–$max dias',
   );
 
   // ── settings ──────────────────────────────────────────────────────────────
@@ -1757,6 +2013,7 @@ abstract final class Str {
     de: 'Einstellungen',
     fr: 'Réglages',
     sv: 'Inställningar',
+    pt: 'Definições',
   );
   static const account = LocalizedText(
     nl: 'Account',
@@ -1764,6 +2021,7 @@ abstract final class Str {
     de: 'Konto',
     fr: 'Compte',
     sv: 'Konto',
+    pt: 'Conta',
   );
   static const membership = LocalizedText(
     nl: 'Lidmaatschap',
@@ -1771,6 +2029,7 @@ abstract final class Str {
     de: 'Mitgliedschaft',
     fr: 'Abonnement',
     sv: 'Medlemskap',
+    pt: 'Plano',
   );
   static const yourData = LocalizedText(
     nl: 'Jouw gegevens',
@@ -1778,6 +2037,7 @@ abstract final class Str {
     de: 'Deine Daten',
     fr: 'Tes données',
     sv: 'Din data',
+    pt: 'Os teus dados',
   );
   static const appearance = LocalizedText(
     nl: 'Weergave',
@@ -1785,6 +2045,7 @@ abstract final class Str {
     de: 'Darstellung',
     fr: 'Apparence',
     sv: 'Utseende',
+    pt: 'Aspeto',
   );
   static const language = LocalizedText(
     nl: 'Taal',
@@ -1792,6 +2053,7 @@ abstract final class Str {
     de: 'Sprache',
     fr: 'Langue',
     sv: 'Språk',
+    pt: 'Idioma',
   );
   static const help = LocalizedText(
     nl: 'Help',
@@ -1799,6 +2061,7 @@ abstract final class Str {
     de: 'Hilfe',
     fr: 'Aide',
     sv: 'Hjälp',
+    pt: 'Ajuda',
   );
   static const themeSystem = LocalizedText(
     nl: 'Systeem',
@@ -1806,6 +2069,7 @@ abstract final class Str {
     de: 'System',
     fr: 'Système',
     sv: 'System',
+    pt: 'Sistema',
   );
   static const themeLight = LocalizedText(
     nl: 'Licht',
@@ -1813,6 +2077,7 @@ abstract final class Str {
     de: 'Hell',
     fr: 'Clair',
     sv: 'Ljust',
+    pt: 'Claro',
   );
   static const themeDark = LocalizedText(
     nl: 'Donker',
@@ -1820,6 +2085,7 @@ abstract final class Str {
     de: 'Dunkel',
     fr: 'Sombre',
     sv: 'Mörkt',
+    pt: 'Escuro',
   );
   static const themeFollows = LocalizedText(
     nl: 'Systeem volgt je telefoon.',
@@ -1827,6 +2093,7 @@ abstract final class Str {
     de: 'System folgt deinem Handy.',
     fr: '« Système » suit ton téléphone.',
     sv: 'System följer din mobil.',
+    pt: '“Sistema” segue o teu telemóvel.',
   );
   static const langNote = LocalizedText(
     nl:
@@ -1838,6 +2105,7 @@ abstract final class Str {
     de: 'Die App spricht mehrere Sprachen. Eine Anbauanleitung, die noch nicht übersetzt ist, erscheint auf Englisch und sagt das auch.',
     fr: 'L\'app parle plusieurs langues. Un guide de culture pas encore traduit s\'affiche en anglais, et le dit.',
     sv: 'Appen talar flera språk. En odlingsguide som inte är översatt än visas på engelska, och det står då tydligt.',
+    pt: 'A interface fala vários idiomas. Um guia de cultivo que ainda não está traduzido aparece em inglês, e diz isso.',
   );
   static const signInBlurb = LocalizedText(
     nl:
@@ -1849,6 +2117,7 @@ abstract final class Str {
     de: 'Melde dich an, um deinen Garten zu sichern und zu synchronisieren. Ohne Anmeldung funktioniert alles weiter offline.',
     fr: 'Connecte-toi pour sauvegarder et synchroniser ton potager. Sans compte, tout continue de marcher hors ligne.',
     sv: 'Logga in för att säkerhetskopiera och synka din odling. Allt fungerar offline även utan konto.',
+    pt: 'Inicia sessão para guardar e sincronizar a tua horta. Sem conta, tudo continua a funcionar sem ligação.',
   );
   static const email = LocalizedText(
     nl: 'E-mail',
@@ -1856,6 +2125,7 @@ abstract final class Str {
     de: 'E-Mail',
     fr: 'E-mail',
     sv: 'E-post',
+    pt: 'E-mail',
   );
   static const sendLink = LocalizedText(
     nl: 'Stuur me een inloglink',
@@ -1863,6 +2133,7 @@ abstract final class Str {
     de: 'Anmeldelink senden',
     fr: 'M\'envoyer un lien de connexion',
     sv: 'Skicka en inloggningslänk',
+    pt: 'Envia-me um link de acesso',
   );
   static const checkYourMail = LocalizedText(
     nl: 'Kijk in je mail. De link logt je in.',
@@ -1870,6 +2141,7 @@ abstract final class Str {
     de: 'Schau in dein Postfach. Der Link meldet dich an.',
     fr: 'Regarde tes e-mails. Le lien te connecte.',
     sv: 'Kolla din mejl. Länken loggar in dig.',
+    pt: 'Vê o teu e-mail. O link inicia a sessão.',
   );
   static const passwordOptional = LocalizedText(
     nl: 'Wachtwoord (optioneel)',
@@ -1877,6 +2149,7 @@ abstract final class Str {
     de: 'Passwort (optional)',
     fr: 'Mot de passe (facultatif)',
     sv: 'Lösenord (valfritt)',
+    pt: 'Palavra-passe (opcional)',
   );
   static const signIn = LocalizedText(
     nl: 'Inloggen',
@@ -1884,6 +2157,7 @@ abstract final class Str {
     de: 'Anmelden',
     fr: 'Se connecter',
     sv: 'Logga in',
+    pt: 'Iniciar sessão',
   );
   static const createAccount = LocalizedText(
     nl: 'Account maken',
@@ -1891,6 +2165,7 @@ abstract final class Str {
     de: 'Konto erstellen',
     fr: 'Créer un compte',
     sv: 'Skapa konto',
+    pt: 'Criar conta',
   );
   static const accountCreated = LocalizedText(
     nl: 'Account aangemaakt. Bevestig via de mail die we stuurden.',
@@ -1898,6 +2173,7 @@ abstract final class Str {
     de: 'Konto erstellt. Bestätige es über die Mail, die wir dir geschickt haben.',
     fr: 'Compte créé. Confirme-le via l\'e-mail qu\'on t\'a envoyé.',
     sv: 'Kontot är skapat. Bekräfta via mejlet vi skickade.',
+    pt: 'Conta criada. Confirma através do e-mail que te enviámos.',
   );
   static const signedIn = LocalizedText(
     nl: 'Ingelogd',
@@ -1905,6 +2181,7 @@ abstract final class Str {
     de: 'Angemeldet',
     fr: 'Connexion active',
     sv: 'Inloggad',
+    pt: 'Sessão iniciada',
   );
   static const syncNow = LocalizedText(
     nl: 'Sync nu',
@@ -1912,6 +2189,7 @@ abstract final class Str {
     de: 'Synchronisieren',
     fr: 'Synchroniser',
     sv: 'Synka nu',
+    pt: 'Sincronizar',
   );
   static const signOut = LocalizedText(
     nl: 'Uitloggen',
@@ -1919,6 +2197,7 @@ abstract final class Str {
     de: 'Abmelden',
     fr: 'Déconnexion',
     sv: 'Logga ut',
+    pt: 'Terminar sessão',
   );
   static const syncing = LocalizedText(
     nl: 'Synchroniseren…',
@@ -1926,6 +2205,7 @@ abstract final class Str {
     de: 'Sync läuft…',
     fr: 'Synchronisation…',
     sv: 'Synkar…',
+    pt: 'A sincronizar…',
   );
   static const notSyncedYet = LocalizedText(
     nl: 'Nog niet gesynchroniseerd.',
@@ -1933,6 +2213,7 @@ abstract final class Str {
     de: 'Noch nicht synchronisiert.',
     fr: 'Pas encore synchronisé.',
     sv: 'Inte synkat än.',
+    pt: 'Ainda não sincronizado.',
   );
   static LocalizedText lastSync(String time) => LocalizedText(
     nl: 'Laatste sync $time',
@@ -1940,6 +2221,7 @@ abstract final class Str {
     de: 'Zuletzt synchronisiert $time',
     fr: 'Dernière synchro $time',
     sv: 'Senast synkat $time',
+    pt: 'Última sincronização: $time',
   );
   static const someTablesFailed = LocalizedText(
     nl: ' · een deel is mislukt',
@@ -1947,6 +2229,7 @@ abstract final class Str {
     de: ' · teils fehlgeschlagen',
     fr: ' · échec partiel',
     sv: ' · en del misslyckades',
+    pt: ' · algumas tabelas falharam',
   );
   static const alreadyInStep = LocalizedText(
     nl: 'Alles liep al gelijk.',
@@ -1954,6 +2237,7 @@ abstract final class Str {
     de: 'Alles war schon auf dem neuesten Stand.',
     fr: 'Tout était déjà à jour.',
     sv: 'Allt var redan i synk.',
+    pt: 'Já estava tudo sincronizado.',
   );
   static const deleteAccount = LocalizedText(
     nl: 'Account verwijderen',
@@ -1961,6 +2245,7 @@ abstract final class Str {
     de: 'Konto löschen',
     fr: 'Supprimer le compte',
     sv: 'Radera konto',
+    pt: 'Eliminar conta',
   );
   static const deleteAccountAsk = LocalizedText(
     nl: 'Account verwijderen?',
@@ -1968,6 +2253,7 @@ abstract final class Str {
     de: 'Konto löschen?',
     fr: 'Supprimer le compte ?',
     sv: 'Radera kontot?',
+    pt: 'Eliminar conta?',
   );
   static const deleteAccountBody = LocalizedText(
     nl:
@@ -1979,6 +2265,7 @@ abstract final class Str {
     de: 'Entfernt dein Konto und jeden synchronisierten Garten, jede Pflanze und jeden Eintrag. Das lässt sich nicht rückgängig machen.',
     fr: 'Supprime ton compte et chaque potager, plante et entrée synchronisés. C\'est irréversible.',
     sv: 'Tar bort ditt konto och varje synkad odling, växt och logg. Det går inte att ångra.',
+    pt: 'Remove a tua conta e todas as hortas, plantas e registos sincronizados. Não pode ser desfeito.',
   );
   static const deleted = LocalizedText(
     nl: 'Account verwijderd. Je lokale gegevens blijven op deze telefoon.',
@@ -1986,6 +2273,7 @@ abstract final class Str {
     de: 'Konto gelöscht. Deine lokalen Daten bleiben auf diesem Handy.',
     fr: 'Compte supprimé. Tes données locales restent sur ce téléphone.',
     sv: 'Kontot är raderat. Din lokala data finns kvar på den här mobilen.',
+    pt: 'Conta eliminada. Os teus dados locais ficam neste telemóvel.',
   );
   static const cancel = LocalizedText(
     nl: 'Annuleren',
@@ -1993,6 +2281,7 @@ abstract final class Str {
     de: 'Abbrechen',
     fr: 'Annuler',
     sv: 'Avbryt',
+    pt: 'Cancelar',
   );
   static const delete = LocalizedText(
     nl: 'Verwijderen',
@@ -2000,6 +2289,7 @@ abstract final class Str {
     de: 'Löschen',
     fr: 'Supprimer',
     sv: 'Radera',
+    pt: 'Eliminar',
   );
   static const exportData = LocalizedText(
     nl: 'Exporteer mijn data (JSON)',
@@ -2007,6 +2297,7 @@ abstract final class Str {
     de: 'Meine Daten exportieren (JSON)',
     fr: 'Exporter mes données (JSON)',
     sv: 'Exportera min data (JSON)',
+    pt: 'Exportar os meus dados (JSON)',
   );
   static const seasonMailTitle = LocalizedText(
     nl: 'Seizoensmail',
@@ -2014,6 +2305,7 @@ abstract final class Str {
     de: 'Saison-E-Mail',
     fr: 'E-mail de saison',
     sv: 'Säsongsmejl',
+    pt: 'E-mail sazonal',
   );
   static const seasonMailBlurb = LocalizedText(
     nl: 'Twee mails per jaar: in februari als het zaaiseizoen begint, in oktober je oogstoverzicht. Verder niets, en uitschrijven kan met één klik.',
@@ -2021,6 +2313,7 @@ abstract final class Str {
     de: 'Zwei E-Mails im Jahr: im Februar, wenn die Aussaat beginnt, im Oktober deine Erntebilanz. Sonst nichts, und ein Klick meldet dich ab.',
     fr: 'Deux e-mails par an : en février quand la saison des semis commence, en octobre ton bilan de récolte. Rien d\'autre, et un clic suffit pour te désabonner.',
     sv: 'Två mejl om året: i februari när såsäsongen börjar, i oktober din skördesammanfattning. Inget annat, och ett klick avregistrerar dig.',
+    pt: 'Dois e-mails por ano: em fevereiro, quando começa a época de sementeira, e em outubro, o resumo da tua colheita. Mais nada, e um clique cancela a subscrição.',
   );
   static const seasonMailNeedsAccount = LocalizedText(
     nl: 'Log in met een e-mailadres om dit aan te zetten.',
@@ -2028,6 +2321,7 @@ abstract final class Str {
     de: 'Melde dich mit einer E-Mail-Adresse an, um das einzuschalten.',
     fr: 'Connecte-toi avec une adresse e-mail pour activer ça.',
     sv: 'Logga in med en e-postadress för att slå på det här.',
+    pt: 'Inicia sessão com um endereço de e-mail para ativar isto.',
   );
 
   static const forgotPassword = LocalizedText(
@@ -2036,6 +2330,7 @@ abstract final class Str {
     de: 'Passwort vergessen?',
     fr: 'Mot de passe oublié ?',
     sv: 'Glömt lösenordet?',
+    pt: 'Esqueceste a palavra-passe?',
   );
   static const resetMailSent = LocalizedText(
     nl: 'Check je mail voor een link om een nieuw wachtwoord te kiezen.',
@@ -2043,6 +2338,7 @@ abstract final class Str {
     de: 'Schau in dein Postfach: Dort wartet ein Link, mit dem du ein neues Passwort wählst.',
     fr: 'Regarde tes e-mails : un lien t\'attend pour choisir un nouveau mot de passe.',
     sv: 'Kolla din mejl efter en länk för att välja ett nytt lösenord.',
+    pt: 'Vê o teu e-mail: tens lá um link para escolher uma nova palavra-passe.',
   );
   static const changePassword = LocalizedText(
     nl: 'Wachtwoord wijzigen',
@@ -2050,6 +2346,7 @@ abstract final class Str {
     de: 'Passwort ändern',
     fr: 'Changer de mot de passe',
     sv: 'Byt lösenord',
+    pt: 'Alterar palavra-passe',
   );
   static const changeEmail = LocalizedText(
     nl: 'E-mailadres wijzigen',
@@ -2057,6 +2354,7 @@ abstract final class Str {
     de: 'E-Mail-Adresse ändern',
     fr: 'Changer d\'adresse e-mail',
     sv: 'Byt e-postadress',
+    pt: 'Alterar endereço de e-mail',
   );
   static const newPassword = LocalizedText(
     nl: 'Nieuw wachtwoord',
@@ -2064,6 +2362,7 @@ abstract final class Str {
     de: 'Neues Passwort',
     fr: 'Nouveau mot de passe',
     sv: 'Nytt lösenord',
+    pt: 'Nova palavra-passe',
   );
   static const newEmail = LocalizedText(
     nl: 'Nieuw e-mailadres',
@@ -2071,6 +2370,7 @@ abstract final class Str {
     de: 'Neue E-Mail-Adresse',
     fr: 'Nouvelle adresse e-mail',
     sv: 'Ny e-postadress',
+    pt: 'Novo endereço de e-mail',
   );
   static const passwordChanged = LocalizedText(
     nl: 'Je wachtwoord is gewijzigd.',
@@ -2078,6 +2378,7 @@ abstract final class Str {
     de: 'Dein Passwort wurde geändert.',
     fr: 'Ton mot de passe a été changé.',
     sv: 'Ditt lösenord har ändrats.',
+    pt: 'A tua palavra-passe foi alterada.',
   );
   static const emailChangeSent = LocalizedText(
     nl: 'Check allebei je mailboxen: het oude en het nieuwe adres moeten bevestigen.',
@@ -2085,6 +2386,7 @@ abstract final class Str {
     de: 'Schau in beide Postfächer: Die alte und die neue Adresse müssen jeweils bestätigen.',
     fr: 'Regarde les deux boîtes mail : l\'ancienne et la nouvelle adresse doivent chacune confirmer.',
     sv: 'Kolla båda inkorgarna: både den gamla och den nya adressen måste bekräfta.',
+    pt: 'Vê as duas caixas de correio: o endereço antigo e o novo têm de confirmar.',
   );
   static const emailChangeBlurb = LocalizedText(
     nl: 'Je tuin, logboek en oogsten verhuizen mee.',
@@ -2092,6 +2394,7 @@ abstract final class Str {
     de: 'Dein Garten, dein Tagebuch und deine Ernten kommen mit.',
     fr: 'Ton potager, ton journal et tes récoltes suivent.',
     sv: 'Din odling, dagbok och dina skördar följer med.',
+    pt: 'A tua horta, o diário e as colheitas vêm contigo.',
   );
   static const recoveryTitle = LocalizedText(
     nl: 'Kies een nieuw wachtwoord',
@@ -2099,6 +2402,7 @@ abstract final class Str {
     de: 'Wähl ein neues Passwort',
     fr: 'Choisis un nouveau mot de passe',
     sv: 'Välj ett nytt lösenord',
+    pt: 'Escolhe uma nova palavra-passe',
   );
   static const recoveryBody = LocalizedText(
     nl: 'Je bent binnen via de herstellink. Kies nu een nieuw wachtwoord, dan ben je weer de enige met de sleutel.',
@@ -2106,6 +2410,7 @@ abstract final class Str {
     de: 'Du bist über den Wiederherstellungslink gekommen. Wähl jetzt ein neues Passwort, damit wieder nur du den Schlüssel hast.',
     fr: 'Tu as utilisé le lien de récupération. Choisis maintenant un nouveau mot de passe, pour que personne d\'autre n\'ait la clé.',
     sv: 'Du kom in via återställningslänken. Välj ett nytt lösenord nu, så att du är den enda med nyckeln igen.',
+    pt: 'Entraste pelo link de recuperação. Escolhe já uma nova palavra-passe, para que só tu tenhas a chave outra vez.',
   );
 
   static const analyticsTitle = LocalizedText(
@@ -2114,6 +2419,7 @@ abstract final class Str {
     de: 'Anonyme Nutzungsdaten teilen',
     fr: 'Partager des données d\'usage anonymes',
     sv: 'Dela anonym användningsdata',
+    pt: 'Partilhar dados de utilização anónimos',
   );
   static const analyticsBlurb = LocalizedText(
     nl: 'Welke schermen je opent en wanneer je een plant toevoegt — nooit je notities, foto\'s of locatie. Uit laten mag; de app werkt hetzelfde.',
@@ -2121,6 +2427,7 @@ abstract final class Str {
     de: 'Welche Bildschirme du öffnest und wann du eine Pflanze hinzufügst — nie deine Notizen, Fotos oder dein Standort. Ausgeschaltet lassen ist okay; die App funktioniert genauso.',
     fr: 'Les écrans que tu ouvres et quand tu ajoutes une plante — jamais tes notes, photos ou ta position. Tu peux laisser ça désactivé ; l\'app marche pareil.',
     sv: 'Vilka skärmar du öppnar och när du lägger till en växt – aldrig dina anteckningar, foton eller din plats. Det går bra att låta bli; appen fungerar likadant.',
+    pt: 'Que ecrãs abres e quando adicionas uma planta — nunca as tuas notas, fotos ou localização. Deixar desligado não faz mal; a app funciona igual.',
   );
   static const analyticsAskTitle = LocalizedText(
     nl: 'Help Cropsy beter te maken?',
@@ -2128,6 +2435,7 @@ abstract final class Str {
     de: 'Hilfst du, Cropsy besser zu machen?',
     fr: 'Tu nous aides à améliorer Cropsy ?',
     sv: 'Vill du hjälpa till att göra Cropsy bättre?',
+    pt: 'Ajudas a melhorar o Cropsy?',
   );
   static const analyticsAskBody = LocalizedText(
     nl: 'We kijken graag welke schermen gebruikt worden en waar mensen vastlopen. Anoniem, in de EU verwerkt, en nooit je notities, foto\'s of locatie. Je kunt dit altijd wijzigen in Instellingen.',
@@ -2135,6 +2443,7 @@ abstract final class Str {
     de: 'Wir würden gern sehen, welche Bildschirme genutzt werden und wo es hakt. Anonym, in der EU verarbeitet und nie deine Notizen, Fotos oder dein Standort. Du kannst das jederzeit in den Einstellungen ändern.',
     fr: 'On aimerait voir quels écrans servent et où ça bloque. Anonyme, traité dans l\'UE, et jamais tes notes, photos ou ta position. Tu peux changer ça à tout moment dans les Réglages.',
     sv: 'Vi vill gärna se vilka skärmar som används och var folk fastnar. Anonymt, behandlas inom EU, och aldrig dina anteckningar, foton eller din plats. Du kan ändra det när som helst i Inställningar.',
+    pt: 'Gostávamos de ver que ecrãs são usados e onde as pessoas ficam presas. Anónimo, tratado na UE, e nunca as tuas notas, fotos ou localização. Podes mudar isto quando quiseres nas Definições.',
   );
   static const analyticsAskYes = LocalizedText(
     nl: 'Prima',
@@ -2142,6 +2451,7 @@ abstract final class Str {
     de: 'Klar',
     fr: 'Volontiers',
     sv: 'Gärna',
+    pt: 'Claro',
   );
   static const analyticsAskNo = LocalizedText(
     nl: 'Liever niet',
@@ -2149,6 +2459,7 @@ abstract final class Str {
     de: 'Nein danke',
     fr: 'Non merci',
     sv: 'Nej tack',
+    pt: 'Prefiro não',
   );
 
   static const exportBlurb = LocalizedText(
@@ -2157,6 +2468,7 @@ abstract final class Str {
     de: 'Kopiert alles in die Zwischenablage.',
     fr: 'Copie tout dans le presse-papiers.',
     sv: 'Kopierar allt till urklipp.',
+    pt: 'Copia tudo para a área de transferência.',
   );
   static const copied = LocalizedText(
     nl: 'Gekopieerd naar het klembord.',
@@ -2164,6 +2476,7 @@ abstract final class Str {
     de: 'In die Zwischenablage kopiert.',
     fr: 'Copié dans le presse-papiers.',
     sv: 'Kopierat till urklipp.',
+    pt: 'Copiado para a área de transferência.',
   );
   static const seePlans = LocalizedText(
     nl: 'Bekijk plannen',
@@ -2171,6 +2484,7 @@ abstract final class Str {
     de: 'Tarife ansehen',
     fr: 'Voir les offres',
     sv: 'Visa priser',
+    pt: 'Ver planos',
   );
   static const managePlan = LocalizedText(
     nl: 'Beheer plan',
@@ -2178,6 +2492,7 @@ abstract final class Str {
     de: 'Tarif verwalten',
     fr: 'Gérer l\'offre',
     sv: 'Hantera medlemskap',
+    pt: 'Gerir plano',
   );
   static const restore = LocalizedText(
     nl: 'Herstellen',
@@ -2185,6 +2500,7 @@ abstract final class Str {
     de: 'Wiederherstellen',
     fr: 'Restaurer',
     sv: 'Återställ',
+    pt: 'Restaurar',
   );
   static const checkedWithStore = LocalizedText(
     nl: 'Gecontroleerd bij de store.',
@@ -2192,6 +2508,7 @@ abstract final class Str {
     de: 'Beim Store nachgefragt.',
     fr: 'Vérifié auprès du store.',
     sv: 'Kontrollerat med butiken.',
+    pt: 'Verificado com a loja.',
   );
   static const syncUnavailable = LocalizedText(
     nl: 'Synchroniseren zit niet in deze build.',
@@ -2199,6 +2516,7 @@ abstract final class Str {
     de: 'Synchronisieren ist in diesem Build nicht verfügbar.',
     fr: 'La synchronisation n\'est pas disponible dans cette version.',
     sv: 'Synk är inte tillgänglig i den här versionen.',
+    pt: 'A sincronização não está disponível nesta versão.',
   );
   static const planFree = LocalizedText(
     nl: 'Gratis',
@@ -2206,6 +2524,7 @@ abstract final class Str {
     de: 'Gratis',
     fr: 'Gratuit',
     sv: 'Gratis',
+    pt: 'Grátis',
   );
   static const planLifetime = LocalizedText(
     nl: 'Levenslang',
@@ -2213,6 +2532,7 @@ abstract final class Str {
     de: 'Lifetime',
     fr: 'Lifetime',
     sv: 'Lifetime',
+    pt: 'Lifetime',
   );
   static const planYearly = LocalizedText(
     nl: 'Jaarlijks',
@@ -2220,6 +2540,7 @@ abstract final class Str {
     de: 'Jährlich',
     fr: 'Annuel',
     sv: 'Årsvis',
+    pt: 'Anual',
   );
   static const lifetimeNothingToCancel = LocalizedText(
     nl: 'Levenslang. Niets op te zeggen.',
@@ -2227,6 +2548,7 @@ abstract final class Str {
     de: 'Einmalkauf. Nichts zu kündigen.',
     fr: 'Achat unique. Rien à résilier.',
     sv: 'Lifetime. Inget att säga upp.',
+    pt: 'Lifetime. Nada para cancelar.',
   );
   static const freeTierBlurb = LocalizedText(
     nl:
@@ -2236,6 +2558,7 @@ abstract final class Str {
     de: '1 Garten · 6 wachsende Pflanzen · ganze Zeitleiste, Erinnerungen und alle Pflanzenarten.',
     fr: '1 potager · 6 plantes en culture · chronologie complète, rappels et toutes les plantes.',
     sv: '1 odling · 6 växter · hela tidslinjen, påminnelser och alla växtsorter.',
+    pt: '1 horta · 6 plantas a crescer · cronologia completa, lembretes e todas as plantas.',
   );
   static LocalizedText cropDataVersion(String version) => LocalizedText(
     nl: 'Cropsy · gewasdata $version',
@@ -2243,6 +2566,7 @@ abstract final class Str {
     de: 'Cropsy · Pflanzendaten $version',
     fr: 'Cropsy · données des plantes $version',
     sv: 'Cropsy · växtdata $version',
+    pt: 'Cropsy · dados das plantas $version',
   );
   static LocalizedText frostDates(String region, String source) =>
       LocalizedText(
@@ -2251,6 +2575,7 @@ abstract final class Str {
         de: 'Frostdaten: $region ($source)',
         fr: 'Dates de gel : $region ($source)',
         sv: 'Frostdatum: $region ($source)',
+        pt: 'Datas de geada: $region ($source)',
       );
 
   // ── this week ─────────────────────────────────────────────────────────────
@@ -2260,6 +2585,7 @@ abstract final class Str {
     de: 'Diese Woche',
     fr: 'Cette semaine',
     sv: 'Den här veckan',
+    pt: 'Esta semana',
   );
   static const nothingDueThisWeek = LocalizedText(
     nl: 'Deze week staat er niets te doen',
@@ -2267,6 +2593,7 @@ abstract final class Str {
     de: 'Diese Woche steht nichts an',
     fr: 'Rien de prévu cette semaine',
     sv: 'Inget att göra den här veckan',
+    pt: 'Nada para fazer esta semana',
   );
   static const addPlantsToSee = LocalizedText(
     nl: 'Voeg planten toe bij Kweken om te zien wat er te doen is.',
@@ -2274,6 +2601,7 @@ abstract final class Str {
     de: 'Füg unter Anbauen Pflanzen hinzu, um zu sehen, was zu tun ist.',
     fr: 'Ajoute des plantes dans Cultiver pour voir quoi faire.',
     sv: 'Lägg till växter under Odla för att se vad du ska göra.',
+    pt: 'Adiciona plantas em Cultivar para veres o que fazer.',
   );
 
   // ── harvest ───────────────────────────────────────────────────────────────
@@ -2283,6 +2611,7 @@ abstract final class Str {
     de: 'Ernte',
     fr: 'Récolte',
     sv: 'Skörd',
+    pt: 'Colheita',
   );
   static const thisSeason = LocalizedText(
     nl: 'DIT SEIZOEN',
@@ -2290,6 +2619,7 @@ abstract final class Str {
     de: 'DIESE SAISON',
     fr: 'CETTE SAISON',
     sv: 'DEN HÄR SÄSONGEN',
+    pt: 'ESTA ESTAÇÃO',
   );
   static const nothingYet = LocalizedText(
     nl: 'Nog niets',
@@ -2297,6 +2627,7 @@ abstract final class Str {
     de: 'Noch nichts',
     fr: 'Rien pour l\'instant',
     sv: 'Inget än',
+    pt: 'Ainda nada',
   );
   static LocalizedText savedAtPrices(String euros) => LocalizedText(
     nl: '≈ €$euros bespaard tegen NL supermarktprijzen',
@@ -2304,6 +2635,7 @@ abstract final class Str {
     de: '≈ $euros € gespart nach NL-Supermarktpreisen',
     fr: '≈ $euros € économisés aux prix des supermarchés NL',
     sv: '≈ ${euros.replaceAll('.', ',')} € sparat enligt priser i NL-butiker',
+    pt: '≈ ${euros.replaceAll('.', ',')} € poupados a preços de supermercado NL',
   );
   static LocalizedText unpricedCount(int n) => LocalizedText(
     nl: n == 1 ? '1 zonder prijs' : '$n zonder prijs',
@@ -2311,6 +2643,7 @@ abstract final class Str {
     de: n == 1 ? '1 ohne Preis' : '$n ohne Preis',
     fr: '$n sans prix',
     sv: '$n utan pris',
+    pt: '$n sem preço',
   );
   static LocalizedText harvestsLogged(int n) => LocalizedText(
     nl: n == 1 ? '1 oogst gelogd' : '$n oogsten gelogd',
@@ -2318,6 +2651,7 @@ abstract final class Str {
     de: n == 1 ? '1 Ernte eingetragen' : '$n Ernten eingetragen',
     fr: n <= 1 ? '$n récolte notée' : '$n récoltes notées',
     sv: n == 1 ? '1 skörd loggad' : '$n skördar loggade',
+    pt: n == 1 ? '1 colheita registada' : '$n colheitas registadas',
   );
   static const planFreePrice = LocalizedText(
     nl: '€0',
@@ -2325,6 +2659,7 @@ abstract final class Str {
     de: '0 €',
     fr: '0 €',
     sv: '0 €',
+    pt: '0 €',
   );
   static const planLifetimePrice = LocalizedText(
     nl: '€49,99 eenmalig',
@@ -2332,6 +2667,7 @@ abstract final class Str {
     de: '49,99 € einmalig',
     fr: '49,99 € une fois',
     sv: '49,99 € en gång',
+    pt: '49,99 € uma vez',
   );
   static const planYearlyPrice = LocalizedText(
     nl: '€29,99 / jaar',
@@ -2339,6 +2675,7 @@ abstract final class Str {
     de: '29,99 € / Jahr',
     fr: '29,99 €/an',
     sv: '29,99 € / år',
+    pt: '29,99 € / ano',
   );
   static const planFreeBlurb = LocalizedText(
     nl:
@@ -2350,6 +2687,7 @@ abstract final class Str {
     de: '1 Garten · 6 wachsende Pflanzen · ganze Zeitleiste, Erinnerungen und alle Pflanzenarten · 20 Fotos · 2 Pausentage pro Monat',
     fr: '1 potager · 6 plantes en culture · chronologie complète, rappels et toutes les plantes · 20 photos · 2 jours de pause par mois',
     sv: '1 odling · 6 växter · hela tidslinjen, påminnelser och alla växtsorter · 20 foton · 2 pausdagar i månaden',
+    pt: '1 horta · 6 plantas a crescer · cronologia completa, lembretes e todas as plantas · 20 fotos · 2 dias de pausa por mês',
   );
   static const planLifetimeBlurb = LocalizedText(
     nl:
@@ -2361,6 +2699,7 @@ abstract final class Str {
     de: 'Unbegrenzt viele Gärten und Pflanzen · Beetplaner · Diagnose · unbegrenzt viele Fotos und Pausentage · Export',
     fr: 'Potagers et plantes illimités · plan de carré · diagnostic · photos et jours de pause illimités · export',
     sv: 'Obegränsat med odlingar och växter · odlingsplanerare · diagnos · obegränsat med foton och pausdagar · export',
+    pt: 'Hortas e plantas ilimitadas · grelha do planeador · diagnóstico · fotos e dias de pausa ilimitados · exportação',
   );
   static const planYearlyBlurb = LocalizedText(
     nl:
@@ -2372,6 +2711,7 @@ abstract final class Str {
     de: 'Alles aus Lifetime, als Abo. Jederzeit im App Store kündbar.',
     fr: 'Tout ce qu\'offre Lifetime, en abonnement. Résiliable à tout moment dans l\'App Store.',
     sv: 'Allt i Lifetime, som prenumeration. Säg upp i App Store när du vill.',
+    pt: 'Tudo o que o Lifetime tem, como subscrição. Cancela na App Store quando quiseres.',
   );
   static const noPriceForUnit = LocalizedText(
     nl: 'Nog geen prijs voor deze eenheid',
@@ -2379,6 +2719,7 @@ abstract final class Str {
     de: 'Für diese Einheit gibt es noch keinen Preis',
     fr: 'Pas encore de prix pour cette unité',
     sv: 'Inget pris för den här enheten än',
+    pt: 'Ainda sem preço para esta unidade',
   );
 
   // ── diagnose ──────────────────────────────────────────────────────────────
@@ -2388,6 +2729,7 @@ abstract final class Str {
     de: 'Diagnose',
     fr: 'Diagnostic',
     sv: 'Diagnos',
+    pt: 'Diagnóstico',
   );
   static const autoDiagnose = LocalizedText(
     nl: 'Diagnose van een foto',
@@ -2395,6 +2737,7 @@ abstract final class Str {
     de: 'Automatische Diagnose per Foto',
     fr: 'Diagnostic automatique par photo',
     sv: 'Automatisk diagnos från ett foto',
+    pt: 'Diagnóstico automático por foto',
   );
   static const autoDiagnoseSub = LocalizedText(
     nl: 'Altijd een gok, nooit een oordeel. Premium.',
@@ -2402,6 +2745,7 @@ abstract final class Str {
     de: 'Immer eine Vermutung, nie ein Urteil. Premium.',
     fr: 'Toujours une hypothèse, jamais un verdict. Premium.',
     sv: 'Alltid en gissning, aldrig en dom. Premium.',
+    pt: 'Sempre um palpite, nunca um veredicto. Premium.',
   );
   static const commonProblems = LocalizedText(
     nl: 'Veelvoorkomende problemen',
@@ -2409,6 +2753,7 @@ abstract final class Str {
     de: 'Häufige Probleme',
     fr: 'Problèmes courants',
     sv: 'Vanliga problem',
+    pt: 'Problemas comuns',
   );
   static const byPlantPart = LocalizedText(
     nl: 'Per plantdeel',
@@ -2416,6 +2761,7 @@ abstract final class Str {
     de: 'Nach Pflanzenteil',
     fr: 'Par partie de la plante',
     sv: 'Efter växtdel',
+    pt: 'Por parte da planta',
   );
   static const all = LocalizedText(
     nl: 'Alles',
@@ -2423,6 +2769,7 @@ abstract final class Str {
     de: 'Alle',
     fr: 'Tout',
     sv: 'Alla',
+    pt: 'Todos',
   );
   static const nothingForThatPart = LocalizedText(
     nl: 'Hier staat nog niets voor dat deel.',
@@ -2430,6 +2777,7 @@ abstract final class Str {
     de: 'Für diesen Teil ist noch nichts gelistet.',
     fr: 'Rien de listé pour cette partie pour l\'instant.',
     sv: 'Inget listat för den delen än.',
+    pt: 'Ainda nada listado para essa parte.',
   );
   static const partWhole = LocalizedText(
     nl: 'Hele plant',
@@ -2437,6 +2785,7 @@ abstract final class Str {
     de: 'Ganze Pflanze',
     fr: 'Plante entière',
     sv: 'Hela växten',
+    pt: 'Planta inteira',
   );
   static const partLeaves = LocalizedText(
     nl: 'Blad',
@@ -2444,6 +2793,7 @@ abstract final class Str {
     de: 'Blätter',
     fr: 'Feuilles',
     sv: 'Blad',
+    pt: 'Folhas',
   );
   static const partStems = LocalizedText(
     nl: 'Stengels',
@@ -2451,6 +2801,7 @@ abstract final class Str {
     de: 'Stängel',
     fr: 'Tiges',
     sv: 'Stjälkar',
+    pt: 'Caules',
   );
   static const partFlowers = LocalizedText(
     nl: 'Bloemen',
@@ -2458,6 +2809,7 @@ abstract final class Str {
     de: 'Blüten',
     fr: 'Fleurs',
     sv: 'Blommor',
+    pt: 'Flores',
   );
   static const partFruits = LocalizedText(
     nl: 'Vruchten',
@@ -2465,6 +2817,7 @@ abstract final class Str {
     de: 'Früchte',
     fr: 'Fruits',
     sv: 'Frukter',
+    pt: 'Frutos',
   );
   static const partRoots = LocalizedText(
     nl: 'Wortels',
@@ -2472,6 +2825,7 @@ abstract final class Str {
     de: 'Wurzeln',
     fr: 'Racines',
     sv: 'Rötter',
+    pt: 'Raízes',
   );
 
   // ── the garden tab ────────────────────────────────────────────────────────
@@ -2481,6 +2835,7 @@ abstract final class Str {
     de: 'Mein Garten',
     fr: 'Mon potager',
     sv: 'Min odling',
+    pt: 'A minha horta',
   );
   static const planning = LocalizedText(
     nl: 'Gepland',
@@ -2488,6 +2843,7 @@ abstract final class Str {
     de: 'Planung',
     fr: 'Planifié',
     sv: 'Planerat',
+    pt: 'Planeadas',
   );
   static const growing = LocalizedText(
     nl: 'Groeit',
@@ -2495,6 +2851,7 @@ abstract final class Str {
     de: 'Im Anbau',
     fr: 'En culture',
     sv: 'Växer',
+    pt: 'A crescer',
   );
   // Short enough to sit in a four-way segmented control.
   static const reminders = LocalizedText(
@@ -2503,6 +2860,7 @@ abstract final class Str {
     de: 'Erinnerungen',
     fr: 'Rappels',
     sv: 'Påminnelser',
+    pt: 'Lembretes',
   );
   static const start = LocalizedText(
     nl: 'Starten',
@@ -2510,6 +2868,7 @@ abstract final class Str {
     de: 'Start',
     fr: 'Démarrer',
     sv: 'Starta',
+    pt: 'Começar',
   );
   static const remove = LocalizedText(
     nl: 'Verwijderen',
@@ -2517,6 +2876,7 @@ abstract final class Str {
     de: 'Entfernen',
     fr: 'Retirer',
     sv: 'Ta bort',
+    pt: 'Remover',
   );
   static LocalizedText removeAsk(String name) => LocalizedText(
     nl: '$name verwijderen?',
@@ -2524,6 +2884,7 @@ abstract final class Str {
     de: '$name entfernen?',
     fr: 'Retirer $name ?',
     sv: 'Ta bort $name?',
+    pt: 'Remover $name?',
   );
   static LocalizedText removedFromGarden(String name) => LocalizedText(
     nl: '$name is uit je tuin gehaald',
@@ -2531,6 +2892,7 @@ abstract final class Str {
     de: '$name wurde aus deinem Garten entfernt',
     fr: '$name n\'est plus dans ton potager',
     sv: '$name är borttagen från din odling',
+    pt: '$name saiu da tua horta',
   );
   static const editGarden = LocalizedText(
     nl: 'Tuin bewerken',
@@ -2538,6 +2900,7 @@ abstract final class Str {
     de: 'Garten bearbeiten',
     fr: 'Modifier le potager',
     sv: 'Redigera odling',
+    pt: 'Editar horta',
   );
   static const gardenName = LocalizedText(
     nl: 'Naam van de tuin',
@@ -2545,6 +2908,7 @@ abstract final class Str {
     de: 'Name des Gartens',
     fr: 'Nom du potager',
     sv: 'Odlingens namn',
+    pt: 'Nome da horta',
   );
   static const growingSituation = LocalizedText(
     nl: 'Waar tuinier je?',
@@ -2552,6 +2916,7 @@ abstract final class Str {
     de: 'Anbausituation',
     fr: 'Conditions de culture',
     sv: 'Odlingsplats',
+    pt: 'Condições de cultivo',
   );
   static LocalizedText sunHours(int hours) => LocalizedText(
     nl: 'Uren zon per dag: ${hours}u',
@@ -2559,6 +2924,7 @@ abstract final class Str {
     de: 'Sonnenstunden pro Tag: ${hours}h',
     fr: 'Heures de soleil par jour : $hours h',
     sv: 'Soltimmar per dag: $hours h',
+    pt: 'Horas de sol por dia: $hours h',
   );
   static const saveChanges = LocalizedText(
     nl: 'Opslaan',
@@ -2566,6 +2932,7 @@ abstract final class Str {
     de: 'Änderungen speichern',
     fr: 'Enregistrer',
     sv: 'Spara ändringar',
+    pt: 'Guardar alterações',
   );
   static const nothingPlannedYet = LocalizedText(
     nl: 'Nog niets gepland',
@@ -2573,6 +2940,7 @@ abstract final class Str {
     de: 'Noch nichts geplant',
     fr: 'Rien de planifié pour l\'instant',
     sv: 'Inget planerat än',
+    pt: 'Ainda nada planeado',
   );
   static const nothingGrowingYet = LocalizedText(
     nl: 'Nog niets aan het groeien',
@@ -2580,6 +2948,7 @@ abstract final class Str {
     de: 'Noch nichts im Anbau',
     fr: 'Rien en culture pour l\'instant',
     sv: 'Inget växer än',
+    pt: 'Ainda nada a crescer',
   );
   static const balcony = LocalizedText(
     nl: 'Balkon',
@@ -2587,6 +2956,7 @@ abstract final class Str {
     de: 'Balkon',
     fr: 'Balcon',
     sv: 'Balkong',
+    pt: 'Varanda',
   );
   static const gardenKind = LocalizedText(
     nl: 'Tuin',
@@ -2594,6 +2964,7 @@ abstract final class Str {
     de: 'Garten',
     fr: 'Jardin',
     sv: 'Trädgård',
+    pt: 'Jardim',
   );
   static const allotment = LocalizedText(
     nl: 'Volkstuin',
@@ -2601,6 +2972,7 @@ abstract final class Str {
     de: 'Kleingarten',
     fr: 'Jardin familial',
     sv: 'Kolonilott',
+    pt: 'Horta urbana',
   );
 
   // ── a plant ───────────────────────────────────────────────────────────────
@@ -2610,6 +2982,7 @@ abstract final class Str {
     de: 'Anbauanleitung →',
     fr: 'Guide de culture →',
     sv: 'Odlingsguide →',
+    pt: 'Guia de cultivo →',
   );
   static const growthLog = LocalizedText(
     nl: 'Groeilog',
@@ -2617,6 +2990,7 @@ abstract final class Str {
     de: 'Verlauf',
     fr: 'Historique',
     sv: 'Historik',
+    pt: 'Registo de crescimento',
   );
   static const logHarvest = LocalizedText(
     nl: 'Oogst loggen',
@@ -2624,6 +2998,7 @@ abstract final class Str {
     de: 'Ernte eintragen',
     fr: 'Noter une récolte',
     sv: 'Logga skörd',
+    pt: 'Registar colheita',
   );
   static const harvestLogged = LocalizedText(
     nl: 'Oogst gelogd',
@@ -2631,6 +3006,7 @@ abstract final class Str {
     de: 'Ernte eingetragen',
     fr: 'Récolte notée',
     sv: 'Skörd loggad',
+    pt: 'Colheita registada',
   );
   static LocalizedText movedToPlanning(String crop) => LocalizedText(
     nl: '$crop staat weer bij Gepland',
@@ -2638,6 +3014,7 @@ abstract final class Str {
     de: '$crop ist wieder in der Planung',
     fr: '$crop est de retour dans Planifié',
     sv: '$crop är flyttad till Planerat',
+    pt: '$crop voltou para Planeadas',
   );
   static const noEntriesYet = LocalizedText(
     nl: 'Nog geen notities. Voeg er een toe om de tijdlijn te starten.',
@@ -2645,6 +3022,7 @@ abstract final class Str {
     de: 'Noch keine Einträge. Füg einen hinzu, um die Zeitleiste zu starten.',
     fr: 'Pas encore d\'entrées. Ajoutes-en une pour lancer la chronologie.',
     sv: 'Inga anteckningar än. Lägg till en för att starta tidslinjen.',
+    pt: 'Ainda sem registos. Adiciona um para começar a cronologia.',
   );
   static const howMuch = LocalizedText(
     nl: 'Hoeveel?',
@@ -2652,6 +3030,7 @@ abstract final class Str {
     de: 'Wie viel?',
     fr: 'Combien ?',
     sv: 'Hur mycket?',
+    pt: 'Quanto?',
   );
   static const howMuchHint = LocalizedText(
     nl: 'bijv. 6 of 0,4',
@@ -2659,6 +3038,7 @@ abstract final class Str {
     de: 'z. B. 6 oder 0,4',
     fr: 'ex. 6 ou 0,4',
     sv: 't.ex. 6 eller 0,4',
+    pt: 'ex. 6 ou 0,4',
   );
   static const pieces = LocalizedText(
     nl: 'stuks',
@@ -2666,6 +3046,7 @@ abstract final class Str {
     de: 'Stück',
     fr: 'pièces',
     sv: 'stycken',
+    pt: 'unidades',
   );
   static const saveHarvest = LocalizedText(
     nl: 'Oogst opslaan',
@@ -2673,6 +3054,7 @@ abstract final class Str {
     de: 'Ernte speichern',
     fr: 'Enregistrer',
     sv: 'Spara skörd',
+    pt: 'Guardar colheita',
   );
   static const editPlant = LocalizedText(
     nl: 'Plant bewerken',
@@ -2680,6 +3062,7 @@ abstract final class Str {
     de: 'Pflanze bearbeiten',
     fr: 'Modifier la plante',
     sv: 'Redigera växt',
+    pt: 'Editar planta',
   );
   static const potSizeLitres = LocalizedText(
     nl: 'Potmaat (liter)',
@@ -2687,6 +3070,7 @@ abstract final class Str {
     de: 'Topfgröße (Liter)',
     fr: 'Taille du pot (litres)',
     sv: 'Krukstorlek (liter)',
+    pt: 'Tamanho do vaso (litros)',
   );
   static const leaveBlankInGround = LocalizedText(
     nl: 'leeg laten voor in de volle grond',
@@ -2694,6 +3078,7 @@ abstract final class Str {
     de: 'leer lassen, wenn im Boden',
     fr: 'laisse vide si en pleine terre',
     sv: 'lämna tomt om den växer i marken',
+    pt: 'deixa em branco se for na terra',
   );
   static const planted = LocalizedText(
     nl: 'Geplant',
@@ -2701,6 +3086,7 @@ abstract final class Str {
     de: 'Gepflanzt',
     fr: 'Planté',
     sv: 'Planterad',
+    pt: 'Plantado',
   );
   static const growthStage = LocalizedText(
     nl: 'Groeifase',
@@ -2708,6 +3094,7 @@ abstract final class Str {
     de: 'Wachstumsphase',
     fr: 'Stade de croissance',
     sv: 'Tillväxtfas',
+    pt: 'Fase de crescimento',
   );
   static const yourPath = LocalizedText(
     nl: 'Jouw pad',
@@ -2715,6 +3102,7 @@ abstract final class Str {
     de: 'Dein Pfad',
     fr: 'Ton parcours',
     sv: 'Din väg',
+    pt: 'O teu percurso',
   );
   static const journal = LocalizedText(
     nl: 'Logboek',
@@ -2722,6 +3110,7 @@ abstract final class Str {
     de: 'Tagebuch',
     fr: 'Journal',
     sv: 'Dagbok',
+    pt: 'Diário',
   );
   static const yourSeason = LocalizedText(
     nl: 'Jouw seizoen',
@@ -2729,6 +3118,7 @@ abstract final class Str {
     de: 'Deine Saison',
     fr: 'Ta saison',
     sv: 'Din säsong',
+    pt: 'A tua estação',
   );
   static const bedFreesUp = LocalizedText(
     nl: 'Plek komt vrij',
@@ -2736,6 +3126,7 @@ abstract final class Str {
     de: 'Beet wird frei',
     fr: 'Le carré se libère',
     sv: 'Platsen blir ledig',
+    pt: 'Canteiro livre',
   );
   static const about = LocalizedText(
     nl: 'Over',
@@ -2743,6 +3134,7 @@ abstract final class Str {
     de: 'Infos',
     fr: 'À propos',
     sv: 'Om',
+    pt: 'Sobre',
   );
   static const yourCrops = LocalizedText(
     nl: 'Jouw gewassen',
@@ -2750,6 +3142,7 @@ abstract final class Str {
     de: 'Deine Pflanzen',
     fr: 'Tes plantes',
     sv: 'Dina växter',
+    pt: 'As tuas plantas',
   );
   static const plannedSection = LocalizedText(
     nl: 'Gepland',
@@ -2757,6 +3150,7 @@ abstract final class Str {
     de: 'Geplant',
     fr: 'Planifié',
     sv: 'Planerat',
+    pt: 'Planeadas',
   );
   static const types = LocalizedText(
     nl: 'Rassen',
@@ -2764,6 +3158,7 @@ abstract final class Str {
     de: 'Sorten',
     fr: 'Variétés',
     sv: 'Sorter',
+    pt: 'Tipos',
   );
 
   /// A crop page's sections: the jump chip and the heading say the same thing.
@@ -2774,6 +3169,7 @@ abstract final class Str {
       de: 'Kalender',
       fr: 'Calendrier',
       sv: 'Kalender',
+      pt: 'Calendário',
     ),
     'Timeline' => const LocalizedText(
       nl: 'Tijdlijn',
@@ -2781,6 +3177,7 @@ abstract final class Str {
       de: 'Zeitleiste',
       fr: 'Chronologie',
       sv: 'Tidslinje',
+      pt: 'Cronologia',
     ),
     'Difficulty' => const LocalizedText(
       nl: 'Moeilijkheid',
@@ -2788,6 +3185,7 @@ abstract final class Str {
       de: 'Schwierigkeit',
       fr: 'Difficulté',
       sv: 'Svårighet',
+      pt: 'Dificuldade',
     ),
     'Location' => const LocalizedText(
       nl: 'Standplaats',
@@ -2795,6 +3193,7 @@ abstract final class Str {
       de: 'Standort',
       fr: 'Emplacement',
       sv: 'Plats',
+      pt: 'Localização',
     ),
     'Soil' => const LocalizedText(
       nl: 'Grond',
@@ -2802,6 +3201,7 @@ abstract final class Str {
       de: 'Boden',
       fr: 'Sol',
       sv: 'Jord',
+      pt: 'Solo',
     ),
     'How-tos' => const LocalizedText(
       nl: 'Zo doe je het',
@@ -2809,6 +3209,7 @@ abstract final class Str {
       de: 'Anleitungen',
       fr: 'Pas à pas',
       sv: 'Steg för steg',
+      pt: 'Passo a passo',
     ),
     'Neighbours' => const LocalizedText(
       nl: 'Buren',
@@ -2816,6 +3217,7 @@ abstract final class Str {
       de: 'Nachbarn',
       fr: 'Voisins',
       sv: 'Grannar',
+      pt: 'Vizinhos',
     ),
     'Benefits' => const LocalizedText(
       nl: 'Waarom telen',
@@ -2823,6 +3225,7 @@ abstract final class Str {
       de: 'Vorteile',
       fr: 'Bienfaits',
       sv: 'Nytta',
+      pt: 'Benefícios',
     ),
     'FAQ' => const LocalizedText(
       nl: 'Vragen',
@@ -2830,8 +3233,9 @@ abstract final class Str {
       de: 'FAQ',
       fr: 'FAQ',
       sv: 'Frågor',
+      pt: 'Perguntas',
     ),
-    _ => LocalizedText(nl: id, en: id, de: id, fr: id, sv: id),
+    _ => LocalizedText(nl: id, en: id, de: id, fr: id, sv: id, pt: id),
   };
   static const plantingCalendar = LocalizedText(
     nl: 'Zaaikalender',
@@ -2839,6 +3243,7 @@ abstract final class Str {
     de: 'Aussaatkalender',
     fr: 'Calendrier des semis',
     sv: 'Odlingskalender',
+    pt: 'Calendário de plantação',
   );
   static const growthTimeline = LocalizedText(
     nl: 'Groeitijdlijn',
@@ -2846,6 +3251,7 @@ abstract final class Str {
     de: 'Wachstumsverlauf',
     fr: 'Chronologie de croissance',
     sv: 'Tillväxtens tidslinje',
+    pt: 'Cronologia de crescimento',
   );
   static const suitableLocation = LocalizedText(
     nl: 'Geschikte standplaats',
@@ -2853,6 +3259,7 @@ abstract final class Str {
     de: 'Geeigneter Standort',
     fr: 'Emplacement adapté',
     sv: 'Lämplig plats',
+    pt: 'Local adequado',
   );
   static const soilPrep = LocalizedText(
     nl: 'Grond voorbereiden',
@@ -2860,6 +3267,7 @@ abstract final class Str {
     de: 'Bodenvorbereitung',
     fr: 'Préparation du sol',
     sv: 'Jordförberedelse',
+    pt: 'Preparação do solo',
   );
   static const whyGrowIt = LocalizedText(
     nl: 'Waarom telen',
@@ -2867,6 +3275,7 @@ abstract final class Str {
     de: 'Warum anbauen',
     fr: 'Pourquoi la cultiver',
     sv: 'Varför odla den',
+    pt: 'Porquê cultivar',
   );
   static const comingSoil = LocalizedText(
     nl: 'Grond voorbereiden',
@@ -2874,6 +3283,7 @@ abstract final class Str {
     de: 'Bodenvorbereitung',
     fr: 'Préparation du sol',
     sv: 'Jordförberedelse',
+    pt: 'Preparação do solo',
   );
   static const comingHowTos = LocalizedText(
     nl: 'Stap voor stap per fase',
@@ -2881,6 +3291,7 @@ abstract final class Str {
     de: 'Schritt-für-Schritt-Anleitungen pro Phase',
     fr: 'Guides pas à pas pour chaque stade',
     sv: 'Steg-för-steg-guider per fas',
+    pt: 'Guias passo a passo por fase',
   );
   static const comingFaq = LocalizedText(
     nl: 'Vragen, nagekeken door telers',
@@ -2888,6 +3299,7 @@ abstract final class Str {
     de: 'Von Gärtnern geprüfte FAQ',
     fr: 'FAQ relue par des jardiniers',
     sv: 'Vanliga frågor, granskade av odlare',
+    pt: 'Perguntas revistas por horticultores',
   );
   static const comingBenefits = LocalizedText(
     nl: 'Voeding en gezondheid (NEVO)',
@@ -2895,6 +3307,7 @@ abstract final class Str {
     de: 'Nährwerte und Vorteile (NEVO)',
     fr: 'Nutrition et bienfaits (NEVO)',
     sv: 'Näring och nytta (NEVO)',
+    pt: 'Nutrição e benefícios (NEVO)',
   );
   static LocalizedText contentComing(LocalizedText what) => LocalizedText(
     nl:
@@ -2912,6 +3325,9 @@ abstract final class Str {
     sv:
         '${what.pick('sv')}: skrivs och kontrolleras för nederländska odlingar. '
         'Kommer med innehållsuppdateringen.',
+    pt:
+        '${what.pick('pt')}: em escrita e verificação para hortas neerlandesas. '
+        'Chega com a atualização de conteúdo.',
   );
 
   /// Said above a guide we only have in one language yet.
@@ -2922,6 +3338,7 @@ abstract final class Str {
       de: 'Diese Anleitung gibt es vorerst nur auf Deutsch.',
       fr: 'Ce guide n\'existe pour l\'instant qu\'en allemand.',
       sv: 'Den här guiden finns än så länge bara på tyska.',
+      pt: 'Este guia, por agora, só existe em alemão.',
     ),
     'nl' => const LocalizedText(
       nl: 'Deze uitleg is er nu alleen in het Nederlands.',
@@ -2929,6 +3346,7 @@ abstract final class Str {
       de: 'Diese Anleitung gibt es vorerst nur auf Niederländisch.',
       fr: 'Ce guide n\'existe pour l\'instant qu\'en néerlandais.',
       sv: 'Den här guiden finns än så länge bara på nederländska.',
+      pt: 'Este guia, por agora, só existe em neerlandês.',
     ),
     'fr' => const LocalizedText(
       nl: 'Deze uitleg is er nu alleen in het Frans.',
@@ -2936,6 +3354,7 @@ abstract final class Str {
       de: 'Diese Anleitung gibt es vorerst nur auf Französisch.',
       fr: 'Ce guide n\'existe pour l\'instant qu\'en français.',
       sv: 'Den här guiden finns än så länge bara på franska.',
+      pt: 'Este guia, por agora, só existe em francês.',
     ),
     'sv' => const LocalizedText(
       nl: 'Deze uitleg is er nu alleen in het Zweeds.',
@@ -2943,6 +3362,15 @@ abstract final class Str {
       de: 'Diese Anleitung gibt es vorerst nur auf Schwedisch.',
       fr: 'Ce guide n\'existe pour l\'instant qu\'en suédois.',
       sv: 'Den här guiden finns än så länge bara på svenska.',
+      pt: 'Este guia, por agora, só existe em sueco.',
+    ),
+    'pt' => const LocalizedText(
+      nl: 'Deze uitleg is er nu alleen in het Portugees.',
+      en: 'This guide is in Portuguese for now.',
+      de: 'Diese Anleitung gibt es vorerst nur auf Portugiesisch.',
+      fr: 'Ce guide n\'existe pour l\'instant qu\'en portugais.',
+      sv: 'Den här guiden finns än så länge bara på portugisiska.',
+      pt: 'Este guia, por agora, só existe em português.',
     ),
     _ => const LocalizedText(
       nl: 'Deze uitleg is er nu alleen in het Engels.',
@@ -2950,6 +3378,7 @@ abstract final class Str {
       de: 'Diese Anleitung gibt es vorerst nur auf Englisch.',
       fr: 'Ce guide n\'existe pour l\'instant qu\'en anglais.',
       sv: 'Den här guiden finns än så länge bara på engelska.',
+      pt: 'Este guia, por agora, só existe em inglês.',
     ),
   };
   static LocalizedText atSupplier(String supplier) => LocalizedText(
@@ -2958,6 +3387,7 @@ abstract final class Str {
     de: 'bei $supplier',
     fr: 'chez $supplier',
     sv: 'hos $supplier',
+    pt: 'em $supplier',
   );
   static const oftenOn = LocalizedText(
     nl: 'Vaak bij',
@@ -2965,6 +3395,7 @@ abstract final class Str {
     de: 'Häufig an',
     fr: 'Souvent sur',
     sv: 'Ofta på',
+    pt: 'Comum em',
   );
   static const insightsForYou = LocalizedText(
     nl: 'Wat nu belangrijk is',
@@ -2972,6 +3403,7 @@ abstract final class Str {
     de: 'Tipps für dich',
     fr: 'Conseils pour toi',
     sv: 'Tips för dig',
+    pt: 'Dicas para ti',
   );
   static LocalizedText plantedOn(String day) => LocalizedText(
     nl: 'geplant $day',
@@ -2979,6 +3411,7 @@ abstract final class Str {
     de: 'gepflanzt am $day',
     fr: 'planté le $day',
     sv: 'planterad $day',
+    pt: 'plantado a $day',
   );
   static const countsTowardsTally = LocalizedText(
     nl: 'Telt mee voor je seizoensoogst.',
@@ -2986,6 +3419,7 @@ abstract final class Str {
     de: 'Zählt zu deiner Saisonbilanz.',
     fr: 'Compte dans ton bilan de saison.',
     sv: 'Räknas in i säsongens summering.',
+    pt: 'Conta para o balanço da estação.',
   );
   static const noShopPrice = LocalizedText(
     nl:
@@ -2997,6 +3431,7 @@ abstract final class Str {
     de: 'Für diese Pflanze gibt es noch keinen Ladenpreis, darum zählt sie zum Ertrag, aber nicht zum gesparten Geld.',
     fr: 'Cette plante n\'a pas encore de prix en magasin, elle compte donc dans le rendement mais pas dans l\'argent économisé.',
     sv: 'Den här växten har inget butikspris än, så den räknas in i skörden men inte i sparade pengar.',
+    pt: 'Esta planta ainda não tem preço de loja, por isso conta para a produção mas não para o dinheiro poupado.',
   );
   static LocalizedText pricedPerUnit(LocalizedText unit) => LocalizedText(
     nl:
@@ -3014,6 +3449,9 @@ abstract final class Str {
     sv:
         'Din summering prissätter den här växten per ${unit.pick('sv')}, så det '
         'här räknas in i skörden men inte i sparade pengar.',
+    pt:
+        'O teu balanço conta o preço desta planta por ${unit.pick('pt')}, por isso '
+        'isto soma à produção mas não ao dinheiro poupado.',
   );
   static const unitKg = LocalizedText(
     nl: 'kg',
@@ -3021,6 +3459,7 @@ abstract final class Str {
     de: 'kg',
     fr: 'kg',
     sv: 'kg',
+    pt: 'kg',
   );
 
   // ── the growth log ────────────────────────────────────────────────────────
@@ -3030,6 +3469,7 @@ abstract final class Str {
     de: '${crop.pick('de')}: Wie läuft es?',
     fr: '${crop.pick('fr')} : comment ça pousse ?',
     sv: '${crop.pick('sv')}: hur går det?',
+    pt: '${crop.pick('pt')}: como está a correr?',
   );
   static LocalizedText photosCount(int n) => LocalizedText(
     nl: "Foto's ($n/9)",
@@ -3037,6 +3477,7 @@ abstract final class Str {
     de: 'Fotos ($n/9)',
     fr: 'Photos ($n/9)',
     sv: 'Foton ($n/9)',
+    pt: 'Fotos ($n/9)',
   );
   static const noteOptional = LocalizedText(
     nl: 'Notitie (optioneel)',
@@ -3044,6 +3485,7 @@ abstract final class Str {
     de: 'Notiz (optional)',
     fr: 'Note (facultatif)',
     sv: 'Anteckning (valfritt)',
+    pt: 'Nota (opcional)',
   );
   static const noteHint = LocalizedText(
     nl: 'Eerste bloemen, luis op de toppen…',
@@ -3051,6 +3493,7 @@ abstract final class Str {
     de: 'Erste Blüten, Läuse an den Spitzen…',
     fr: 'Premières fleurs, pucerons sur les pointes…',
     sv: 'Första blommorna, bladlöss på topparna…',
+    pt: 'Primeiras flores, pulgões nas pontas…',
   );
   static const saveLog = LocalizedText(
     nl: 'Log opslaan',
@@ -3058,6 +3501,7 @@ abstract final class Str {
     de: 'Eintrag speichern',
     fr: 'Enregistrer l\'entrée',
     sv: 'Spara',
+    pt: 'Guardar registo',
   );
   static const moodBad = LocalizedText(
     nl: 'Slecht',
@@ -3065,6 +3509,7 @@ abstract final class Str {
     de: 'Schlecht',
     fr: 'Mauvais',
     sv: 'Dåligt',
+    pt: 'Mau',
   );
   static const moodOkay = LocalizedText(
     nl: 'Gaat wel',
@@ -3072,6 +3517,7 @@ abstract final class Str {
     de: 'Okay',
     fr: 'Moyen',
     sv: 'Okej',
+    pt: 'Razoável',
   );
   static const moodGood = LocalizedText(
     nl: 'Goed',
@@ -3079,6 +3525,7 @@ abstract final class Str {
     de: 'Gut',
     fr: 'Bien',
     sv: 'Bra',
+    pt: 'Bom',
   );
   static const moodExcellent = LocalizedText(
     nl: 'Uitstekend',
@@ -3086,6 +3533,7 @@ abstract final class Str {
     de: 'Super',
     fr: 'Excellent',
     sv: 'Utmärkt',
+    pt: 'Excelente',
   );
   static const stageStarting = LocalizedText(
     nl: 'Gestart',
@@ -3093,6 +3541,7 @@ abstract final class Str {
     de: 'Beginn',
     fr: 'Début',
     sv: 'Start',
+    pt: 'A começar',
   );
   static const stageSeedling = LocalizedText(
     nl: 'Zaailing',
@@ -3100,6 +3549,7 @@ abstract final class Str {
     de: 'Sämling',
     fr: 'Jeune plant',
     sv: 'Groddplanta',
+    pt: 'Plântula',
   );
   static const stageVegetative = LocalizedText(
     nl: 'Groeiend',
@@ -3107,6 +3557,7 @@ abstract final class Str {
     de: 'Wachstum',
     fr: 'Croissance',
     sv: 'Tillväxt',
+    pt: 'Vegetativo',
   );
   static const stageFlowering = LocalizedText(
     nl: 'Bloeiend',
@@ -3114,6 +3565,7 @@ abstract final class Str {
     de: 'Blüte',
     fr: 'Floraison',
     sv: 'Blomning',
+    pt: 'Floração',
   );
   static const stageHarvesting = LocalizedText(
     nl: 'Oogsten',
@@ -3121,6 +3573,7 @@ abstract final class Str {
     de: 'Ernte',
     fr: 'En récolte',
     sv: 'Skörd',
+    pt: 'Em colheita',
   );
   static const stageHarvested = LocalizedText(
     nl: 'Geoogst',
@@ -3128,6 +3581,7 @@ abstract final class Str {
     de: 'Geerntet',
     fr: 'Récolté',
     sv: 'Skördad',
+    pt: 'Colhido',
   );
 
   // ── adding a plant ────────────────────────────────────────────────────────
@@ -3137,6 +3591,7 @@ abstract final class Str {
     de: 'Pflanzendetails festlegen',
     fr: 'Détails de la plante',
     sv: 'Om växten',
+    pt: 'Detalhes da planta',
   );
   static const plantDetailsSub = LocalizedText(
     nl: 'Hiermee bepalen we de oogsttiming en de herinneringen.',
@@ -3144,6 +3599,7 @@ abstract final class Str {
     de: 'Deine Angaben bestimmen den Erntezeitpunkt und die Pflege-Erinnerungen.',
     fr: 'Tes réponses fixent le moment de la récolte et les rappels d\'entretien.',
     sv: 'Det du fyller i styr skördetiden och skötselpåminnelserna.',
+    pt: 'O que indicas define a altura da colheita e os lembretes de cuidados.',
   );
   static const plantingDate = LocalizedText(
     nl: 'Plantdatum',
@@ -3151,6 +3607,7 @@ abstract final class Str {
     de: 'Pflanzdatum',
     fr: 'Date de plantation',
     sv: 'Planteringsdatum',
+    pt: 'Data de plantação',
   );
   static const howDidItStart = LocalizedText(
     nl: 'Hoe is het begonnen?',
@@ -3158,6 +3615,7 @@ abstract final class Str {
     de: 'Wie hat sie angefangen?',
     fr: 'Comment a-t-elle commencé ?',
     sv: 'Hur började den?',
+    pt: 'Como começou?',
   );
   static const whereDoesItLive = LocalizedText(
     nl: 'Waar staat het?',
@@ -3165,6 +3623,7 @@ abstract final class Str {
     de: 'Wo wächst sie?',
     fr: 'Où pousse-t-elle ?',
     sv: 'Var står den?',
+    pt: 'Onde está?',
   );
   static LocalizedText atLeastLitres(int litres) => LocalizedText(
     nl: 'Minstens $litres L voor dit gewas',
@@ -3172,6 +3631,7 @@ abstract final class Str {
     de: 'Mindestens $litres L für diese Pflanze',
     fr: 'Au moins $litres L pour cette plante',
     sv: 'Minst $litres L för den här växten',
+    pt: 'Pelo menos $litres L para esta planta',
   );
   static const varietyOptional = LocalizedText(
     nl: 'Ras (optioneel)',
@@ -3179,6 +3639,7 @@ abstract final class Str {
     de: 'Sorte (optional)',
     fr: 'Variété (facultatif)',
     sv: 'Sort (valfritt)',
+    pt: 'Variedade (opcional)',
   );
   static const varietyHint = LocalizedText(
     nl: 'bijv. Moneymaker',
@@ -3186,6 +3647,7 @@ abstract final class Str {
     de: 'z. B. Moneymaker',
     fr: 'ex. Moneymaker',
     sv: 't.ex. Moneymaker',
+    pt: 'ex. Moneymaker',
   );
 
   // ── logging a node ────────────────────────────────────────────────────────
@@ -3195,6 +3657,7 @@ abstract final class Str {
     de: 'Heute erledigt',
     fr: 'Fait aujourd\'hui',
     sv: 'Gjort idag',
+    pt: 'Feito hoje',
   );
   static const didItOn = LocalizedText(
     nl: 'Ik deed dit op…',
@@ -3202,6 +3665,7 @@ abstract final class Str {
     de: 'Erledigt am…',
     fr: 'Je l\'ai fait le…',
     sv: 'Jag gjorde det den…',
+    pt: 'Fiz isto em…',
   );
   static const skipThisOne = LocalizedText(
     nl: 'Sla deze over',
@@ -3209,6 +3673,7 @@ abstract final class Str {
     de: 'Diesmal überspringen',
     fr: 'Passer cette fois',
     sv: 'Hoppa över den här',
+    pt: 'Saltar esta',
   );
   static const gotIt = LocalizedText(
     nl: 'Duidelijk',
@@ -3216,6 +3681,7 @@ abstract final class Str {
     de: 'Verstanden',
     fr: 'Compris',
     sv: 'Uppfattat',
+    pt: 'Percebido',
   );
   static const now = LocalizedText(
     nl: 'Nu',
@@ -3223,6 +3689,7 @@ abstract final class Str {
     de: 'Jetzt',
     fr: 'Maintenant',
     sv: 'Nu',
+    pt: 'Agora',
   );
   static const skipped = LocalizedText(
     nl: 'Overgeslagen',
@@ -3230,6 +3697,7 @@ abstract final class Str {
     de: 'Übersprungen',
     fr: 'Sauté',
     sv: 'Överhoppad',
+    pt: 'Saltado',
   );
   static LocalizedText doneOn(String day) => LocalizedText(
     nl: 'Gedaan $day',
@@ -3237,6 +3705,7 @@ abstract final class Str {
     de: 'Erledigt am $day',
     fr: 'Fait le $day',
     sv: 'Klart $day',
+    pt: 'Feito a $day',
   );
   static LocalizedText movedFrom(String day, LocalizedText reason) =>
       LocalizedText(
@@ -3245,6 +3714,7 @@ abstract final class Str {
         de: 'Verschoben vom $day · ${reason.pick('de')}',
         fr: 'Déplacé du $day · ${reason.pick('fr')}',
         sv: 'Flyttad från $day · ${reason.pick('sv')}',
+        pt: 'Movido de $day · ${reason.pick('pt')}',
       );
 
   // ── the planner ───────────────────────────────────────────────────────────
@@ -3254,6 +3724,7 @@ abstract final class Str {
     de: 'Gartenplaner',
     fr: 'Planificateur de potager',
     sv: 'Odlingsplanerare',
+    pt: 'Planeador de horta',
   );
   static const plannerBlurb = LocalizedText(
     nl: 'Leg je bed uit in vakjes van 30 cm.',
@@ -3261,6 +3732,7 @@ abstract final class Str {
     de: 'Plane dein Beet in 30-cm-Quadraten.',
     fr: 'Organise ton carré en cases de 30 cm.',
     sv: 'Planera din bädd i rutor om 30 cm.',
+    pt: 'Organiza o teu canteiro em quadrados de 30 cm.',
   );
   static const save = LocalizedText(
     nl: 'Opslaan',
@@ -3268,6 +3740,7 @@ abstract final class Str {
     de: 'Speichern',
     fr: 'Enregistrer',
     sv: 'Spara',
+    pt: 'Guardar',
   );
   static const layoutSaved = LocalizedText(
     nl: 'Indeling opgeslagen',
@@ -3275,6 +3748,7 @@ abstract final class Str {
     de: 'Plan gespeichert',
     fr: 'Plan enregistré',
     sv: 'Planen är sparad',
+    pt: 'Disposição guardada',
   );
   static const pickACrop = LocalizedText(
     nl: 'Kies hieronder een gewas en tik dan op de vakjes.',
@@ -3282,6 +3756,7 @@ abstract final class Str {
     de: 'Wähl unten eine Pflanze und tippe dann auf Felder.',
     fr: 'Choisis une plante ci-dessous, puis touche des cases.',
     sv: 'Välj en växt nedan och tryck sedan på rutor.',
+    pt: 'Escolhe uma planta abaixo e toca nas células.',
   );
   static LocalizedText painting(LocalizedText crop) => LocalizedText(
     nl: '${crop.nl} plaatsen. Tik een gevuld vakje om het leeg te maken.',
@@ -3289,6 +3764,7 @@ abstract final class Str {
     de: '${crop.pick('de')} setzen. Tippe auf ein volles Feld, um es zu leeren.',
     fr: 'Placement : ${crop.pick('fr')}. Touche une case remplie pour la vider.',
     sv: 'Placerar ${crop.pick('sv').toLowerCase()}. Tryck på en fylld ruta för att tömma den.',
+    pt: 'A colocar ${crop.pick('pt').toLowerCase()}. Toca numa célula preenchida para a limpar.',
   );
   static const redCells = LocalizedText(
     nl: 'Rode vakjes staan naast een gewas dat ze niet liggen.',
@@ -3296,6 +3772,7 @@ abstract final class Str {
     de: 'Rote Felder liegen neben einem schlechten Nachbarn.',
     fr: 'Les cases rouges sont à côté d\'un mauvais voisin.',
     sv: 'Röda rutor står bredvid en växt de inte trivs med.',
+    pt: 'As células vermelhas estão ao lado de uma planta de que não gostam.',
   );
   static const planIt = LocalizedText(
     nl: 'Plan het',
@@ -3303,6 +3780,7 @@ abstract final class Str {
     de: 'Einplanen',
     fr: 'Planifier',
     sv: 'Planera',
+    pt: 'Planear',
   );
   static LocalizedText addedToPlanning(String crop) => LocalizedText(
     nl: '$crop staat bij Gepland',
@@ -3310,6 +3788,7 @@ abstract final class Str {
     de: '$crop ist jetzt in der Planung',
     fr: '$crop est maintenant dans Planifié',
     sv: '$crop är tillagd i Planerat',
+    pt: '$crop está agora em Planeadas',
   );
 
   // ── profile ───────────────────────────────────────────────────────────────
@@ -3319,6 +3798,7 @@ abstract final class Str {
     de: 'Tage in Folge',
     fr: 'Jours d\'affilée',
     sv: 'Dagar i rad',
+    pt: 'Dias seguidos',
   );
   static const growingNow = LocalizedText(
     nl: 'Groeit nu',
@@ -3326,6 +3806,7 @@ abstract final class Str {
     de: 'Wächst gerade',
     fr: 'En culture',
     sv: 'Växer nu',
+    pt: 'A crescer agora',
   );
   static const harvested = LocalizedText(
     nl: 'Geoogst',
@@ -3333,6 +3814,7 @@ abstract final class Str {
     de: 'Geerntet',
     fr: 'Récolté',
     sv: 'Skördat',
+    pt: 'Colhido',
   );
   static const yourGarden = LocalizedText(
     nl: 'Jouw tuin',
@@ -3340,6 +3822,7 @@ abstract final class Str {
     de: 'Dein Garten',
     fr: 'Ton potager',
     sv: 'Din odling',
+    pt: 'A tua horta',
   );
   static const region = LocalizedText(
     nl: 'Regio',
@@ -3347,6 +3830,7 @@ abstract final class Str {
     de: 'Region',
     fr: 'Région',
     sv: 'Region',
+    pt: 'Região',
   );
   static const settingsAndSync = LocalizedText(
     nl: 'Instellingen en sync',
@@ -3354,6 +3838,7 @@ abstract final class Str {
     de: 'Einstellungen und Sync',
     fr: 'Réglages et synchro',
     sv: 'Inställningar och synk',
+    pt: 'Definições e sincronização',
   );
   static const signInToSync = LocalizedText(
     nl: 'Log in om te synchroniseren',
@@ -3361,6 +3846,7 @@ abstract final class Str {
     de: 'Für Sync anmelden',
     fr: 'Se connecter pour synchroniser',
     sv: 'Logga in för att synka',
+    pt: 'Inicia sessão para sincronizar',
   );
   static const yourName = LocalizedText(
     nl: 'Je naam',
@@ -3368,6 +3854,7 @@ abstract final class Str {
     de: 'Dein Name',
     fr: 'Ton prénom',
     sv: 'Ditt namn',
+    pt: 'O teu nome',
   );
   static const gardener = LocalizedText(
     nl: 'Tuinier',
@@ -3375,6 +3862,7 @@ abstract final class Str {
     de: 'Gärtner',
     fr: 'Main verte',
     sv: 'Odlare',
+    pt: 'Mão verde',
   );
   static const onThisDeviceOnly = LocalizedText(
     nl: 'Alleen op deze telefoon',
@@ -3382,6 +3870,7 @@ abstract final class Str {
     de: 'Nur auf diesem Gerät',
     fr: 'Sur cet appareil uniquement',
     sv: 'Bara på den här enheten',
+    pt: 'Só neste dispositivo',
   );
 
   // ── scanning ──────────────────────────────────────────────────────────────
@@ -3391,6 +3880,7 @@ abstract final class Str {
     de: 'Pflanze bestimmen',
     fr: 'Identifier une plante',
     sv: 'Identifiera en växt',
+    pt: 'Identificar uma planta',
   );
   static const diagnoseAPlant = LocalizedText(
     nl: 'Stel een diagnose',
@@ -3398,6 +3888,7 @@ abstract final class Str {
     de: 'Pflanze untersuchen',
     fr: 'Diagnostiquer une plante',
     sv: 'Diagnostisera en växt',
+    pt: 'Diagnosticar uma planta',
   );
   static const whatIsIt = LocalizedText(
     nl: 'Wat is dit?',
@@ -3405,6 +3896,7 @@ abstract final class Str {
     de: 'Was ist das?',
     fr: 'Qu\'est-ce que c\'est ?',
     sv: 'Vad är det?',
+    pt: 'O que é?',
   );
   static const isItOk = LocalizedText(
     nl: 'Is het gezond?',
@@ -3412,6 +3904,7 @@ abstract final class Str {
     de: 'Alles okay?',
     fr: 'Tout va bien ?',
     sv: 'Mår den bra?',
+    pt: 'Está saudável?',
   );
   static const takePhoto = LocalizedText(
     nl: 'Foto maken',
@@ -3419,6 +3912,7 @@ abstract final class Str {
     de: 'Foto aufnehmen',
     fr: 'Prendre une photo',
     sv: 'Ta foto',
+    pt: 'Tirar foto',
   );
   static const fromPhotos = LocalizedText(
     nl: "Uit foto's",
@@ -3426,6 +3920,7 @@ abstract final class Str {
     de: 'Aus Fotos',
     fr: 'Galerie',
     sv: 'Från bilder',
+    pt: 'Galeria',
   );
   static const noConnectionScan = LocalizedText(
     nl: 'Geen verbinding. Scannen heeft internet nodig; de rest werkt offline.',
@@ -3433,6 +3928,7 @@ abstract final class Str {
     de: 'Keine Verbindung. Scans brauchen das Netz; alles andere funktioniert offline.',
     fr: 'Pas de connexion. Les scans ont besoin du réseau ; tout le reste marche hors ligne.',
     sv: 'Ingen anslutning. Skanningar behöver nätet; allt annat fungerar offline.',
+    pt: 'Sem ligação. As análises precisam de rede; tudo o resto funciona sem ligação.',
   );
   static const notOneOfOurCrops = LocalizedText(
     nl: 'Nog niet een van onze gewassen',
@@ -3440,6 +3936,7 @@ abstract final class Str {
     de: 'Noch nicht in unserer Liste',
     fr: 'Pas encore dans notre liste',
     sv: 'Inte en av våra växter än',
+    pt: 'Ainda não é uma das nossas plantas',
   );
   static const noGuideYet = LocalizedText(
     nl: 'Hier is nog geen gids voor',
@@ -3447,6 +3944,7 @@ abstract final class Str {
     de: 'Dafür gibt es noch keine Anleitung',
     fr: 'Pas encore de guide pour celle-ci',
     sv: 'Ingen guide för den här än',
+    pt: 'Ainda sem guia para esta',
   );
   static LocalizedText scansUsed(int used, int limit) => LocalizedText(
     nl: '$used van $limit scans vandaag gebruikt',
@@ -3454,6 +3952,7 @@ abstract final class Str {
     de: '$used von $limit Scans heute genutzt',
     fr: 'Scans utilisés aujourd\'hui : $used/$limit',
     sv: '$used av $limit skanningar använda idag',
+    pt: '$used de $limit análises usadas hoje',
   );
 
   // ── the paywall ───────────────────────────────────────────────────────────
@@ -3465,6 +3964,7 @@ abstract final class Str {
     de: 'Einmal zahlen für mehr Platz. Kein Probe-Abo, keine Karte, keine Verlängerungs-Überraschung.',
     fr: 'Paie une fois pour plus de place. Pas d\'essai, pas de carte, pas de renouvellement surprise.',
     sv: 'Betala en gång för mer plats. Ingen provperiod, inget kort, ingen överraskande förnyelse.',
+    pt: 'Paga uma vez por mais espaço. Sem período experimental, sem cartão, sem surpresas de renovação automática.',
   );
   static const oneMoment = LocalizedText(
     nl: 'Momentje…',
@@ -3472,6 +3972,7 @@ abstract final class Str {
     de: 'Einen Moment…',
     fr: 'Un instant…',
     sv: 'Ett ögonblick…',
+    pt: 'Um momento…',
   );
   static const keepItFree = LocalizedText(
     nl: 'Hou het gratis',
@@ -3479,6 +3980,7 @@ abstract final class Str {
     de: 'Gratis bleiben',
     fr: 'Rester sur Gratuit',
     sv: 'Fortsätt gratis',
+    pt: 'Continuar grátis',
   );
   static LocalizedText continueWith(String plan) => LocalizedText(
     nl: 'Verder met $plan',
@@ -3486,6 +3988,7 @@ abstract final class Str {
     de: 'Weiter mit $plan',
     fr: 'Continuer avec $plan',
     sv: 'Fortsätt med $plan',
+    pt: 'Continuar com $plan',
   );
   static const purchasesOpenLater = LocalizedText(
     nl: 'Kopen is nu niet mogelijk. Er wordt niets afgeschreven.',
@@ -3493,6 +3996,7 @@ abstract final class Str {
     de: 'Käufe sind gerade nicht verfügbar. Es wird nichts berechnet.',
     fr: 'Les achats ne sont pas disponibles pour l\'instant. Rien n\'est facturé.',
     sv: 'Köp är inte tillgängliga just nu. Inget dras.',
+    pt: 'As compras não estão disponíveis de momento. Não é cobrado nada.',
   );
   static const purchasesRestored = LocalizedText(
     nl: 'Aankopen hersteld.',
@@ -3500,6 +4004,7 @@ abstract final class Str {
     de: 'Käufe wiederhergestellt.',
     fr: 'Achats restaurés.',
     sv: 'Köpen är återställda.',
+    pt: 'Compras restauradas.',
   );
   static const nothingToRestore = LocalizedText(
     nl: 'Geen eerdere aankopen gevonden voor dit Apple-account.',
@@ -3507,6 +4012,7 @@ abstract final class Str {
     de: 'Keine früheren Käufe für diesen Apple-Account gefunden.',
     fr: 'Aucun achat précédent trouvé pour ce compte Apple.',
     sv: 'Inga tidigare köp hittades för det här Apple-kontot.',
+    pt: 'Não foram encontradas compras anteriores nesta conta Apple.',
   );
   static const restorePurchases = LocalizedText(
     nl: 'Aankopen herstellen',
@@ -3514,6 +4020,7 @@ abstract final class Str {
     de: 'Käufe wiederherstellen',
     fr: 'Restaurer les achats',
     sv: 'Återställ köp',
+    pt: 'Restaurar compras',
   );
   static const lifetimeNothingEver = LocalizedText(
     nl: 'Levenslang: nooit iets op te zeggen.',
@@ -3521,6 +4028,7 @@ abstract final class Str {
     de: 'Einmalkauf: nie etwas zu kündigen.',
     fr: 'Achat unique : jamais rien à résilier.',
     sv: 'Lifetime: inget att säga upp, någonsin.',
+    pt: 'Lifetime: nada para cancelar, nunca.',
   );
 
   // ── where you grow ────────────────────────────────────────────────────────
@@ -3530,6 +4038,7 @@ abstract final class Str {
     de: 'Wo gärtnerst du?',
     fr: 'Où cultives-tu ?',
     sv: 'Var odlar du?',
+    pt: 'Onde cultivas?',
   );
   static const townOrPostcode = LocalizedText(
     nl: 'Plaats, regio of postcode',
@@ -3537,6 +4046,7 @@ abstract final class Str {
     de: 'Ort, Region oder Postleitzahl',
     fr: 'Ville, région ou code postal',
     sv: 'Ort, region eller postnummer',
+    pt: 'Cidade, região ou código postal',
   );
   static LocalizedText usePostcode(String code) => LocalizedText(
     nl: 'Gebruik postcode $code',
@@ -3544,6 +4054,7 @@ abstract final class Str {
     de: 'Postleitzahl $code nutzen',
     fr: 'Utiliser le code postal $code',
     sv: 'Använd postnummer $code',
+    pt: 'Usar o código postal $code',
   );
   static const looksUpFrost = LocalizedText(
     nl: 'Zoekt de vorstdatums voor dat gebied op.',
@@ -3551,6 +4062,7 @@ abstract final class Str {
     de: 'Sucht die Frostdaten für dieses Gebiet.',
     fr: 'Cherche les dates de gel pour cette zone.',
     sv: 'Hämtar frostdatumen för den rutan.',
+    pt: 'Procura as datas de geada dessa zona.',
   );
   static const snapToRegion = LocalizedText(
     nl: 'Kies de dichtstbijzijnde teeltregio',
@@ -3558,6 +4070,7 @@ abstract final class Str {
     de: 'Auf die nächste Anbauregion setzen',
     fr: 'Prendre la région de culture la plus proche',
     sv: 'Välj närmaste odlingsregion',
+    pt: 'Ajustar à região de cultivo mais próxima',
   );
   static const noLocation = LocalizedText(
     nl: 'Geen locatie gevonden. Kies een regio of vul een postcode in.',
@@ -3565,6 +4078,7 @@ abstract final class Str {
     de: 'Kein Standort gefunden. Wähl eine Region oder gib eine Postleitzahl ein.',
     fr: 'Position introuvable. Choisis une région ou entre un code postal.',
     sv: 'Kunde inte hitta en plats. Välj en region eller ange ett postnummer.',
+    pt: 'Não foi possível obter a localização. Escolhe uma região ou introduz um código postal.',
   );
   static const postcodeNotFound = LocalizedText(
     nl: 'Postcode niet gevonden (verwacht 1234AB), of je bent offline.',
@@ -3572,6 +4086,7 @@ abstract final class Str {
     de: 'Postleitzahl nicht gefunden (erwartet 1234AB) oder du bist offline.',
     fr: 'Code postal introuvable (format attendu 1234AB), ou tu es hors ligne.',
     sv: 'Postnumret hittades inte (väntat format 1234AB), eller så är du offline.',
+    pt: 'Código postal não encontrado (formato esperado 1234AB), ou estás sem ligação.',
   );
   static const useMyLocation = LocalizedText(
     nl: 'Gebruik mijn locatie',
@@ -3579,6 +4094,7 @@ abstract final class Str {
     de: 'Meinen Standort nutzen',
     fr: 'Utiliser ma position',
     sv: 'Använd min plats',
+    pt: 'Usar a minha localização',
   );
   static const lookingUp = LocalizedText(
     nl: 'Zoeken…',
@@ -3586,6 +4102,7 @@ abstract final class Str {
     de: 'Suche…',
     fr: 'Recherche…',
     sv: 'Söker…',
+    pt: 'A procurar…',
   );
   static const postcodeHint = LocalizedText(
     nl: 'Postcode, bijv. 1012AB',
@@ -3593,6 +4110,7 @@ abstract final class Str {
     de: 'Postleitzahl, z. B. 1012AB',
     fr: 'Code postal, ex. 1012AB',
     sv: 'Postnummer, t.ex. 1012AB',
+    pt: 'Código postal, ex. 1012AB',
   );
   static const lookUp = LocalizedText(
     nl: 'Zoek op',
@@ -3600,6 +4118,7 @@ abstract final class Str {
     de: 'Suchen',
     fr: 'Chercher',
     sv: 'Sök',
+    pt: 'Procurar',
   );
   static const orPickRegion = LocalizedText(
     nl: 'Of kies een regio',
@@ -3607,6 +4126,7 @@ abstract final class Str {
     de: 'Oder wähl eine Region',
     fr: 'Ou choisis une région',
     sv: 'Eller välj en region',
+    pt: 'Ou escolhe uma região',
   );
 
   // ── feedback on content ───────────────────────────────────────────────────
@@ -3616,6 +4136,7 @@ abstract final class Str {
     de: 'Ist diese Info hilfreich?',
     fr: 'Cette info t\'est utile ?',
     sv: 'Är den här informationen användbar?',
+    pt: 'Esta informação é útil?',
   );
   static const reportError = LocalizedText(
     nl: 'Fout melden',
@@ -3623,6 +4144,7 @@ abstract final class Str {
     de: 'Fehler melden',
     fr: 'Signaler',
     sv: 'Rapportera fel',
+    pt: 'Reportar erro',
   );
   static const whatIsWrong = LocalizedText(
     nl: 'Wat klopt er niet?',
@@ -3630,6 +4152,7 @@ abstract final class Str {
     de: 'Was stimmt nicht?',
     fr: 'Qu\'est-ce qui ne va pas ?',
     sv: 'Vad är fel?',
+    pt: 'O que está errado?',
   );
   static const whatIsWrongHint = LocalizedText(
     nl: 'bijv. het zaaivenster is te vroeg voor Groningen',
@@ -3637,6 +4160,7 @@ abstract final class Str {
     de: 'z. B. Aussaatfenster ist für Groningen zu früh',
     fr: 'ex. la période de semis est trop tôt pour Groningue',
     sv: 't.ex. såfönstret är för tidigt för Groningen',
+    pt: 'ex. a janela de sementeira é cedo demais para Groningen',
   );
   static const send = LocalizedText(
     nl: 'Versturen',
@@ -3644,6 +4168,7 @@ abstract final class Str {
     de: 'Senden',
     fr: 'Envoyer',
     sv: 'Skicka',
+    pt: 'Enviar',
   );
   static const thanksChecked = LocalizedText(
     nl: 'Dank je. We kijken elke melding binnen een week na.',
@@ -3651,6 +4176,7 @@ abstract final class Str {
     de: 'Danke. Wir prüfen jede Meldung innerhalb einer Woche.',
     fr: 'Merci. On vérifie chaque signalement sous une semaine.',
     sv: 'Tack. Vi går igenom varje rapport inom en vecka.',
+    pt: 'Obrigado. Verificamos cada relato no prazo de uma semana.',
   );
   static const thanksFeedback = LocalizedText(
     nl: 'Dank voor je feedback.',
@@ -3658,6 +4184,7 @@ abstract final class Str {
     de: 'Danke für das Feedback.',
     fr: 'Merci pour ton retour.',
     sv: 'Tack för din feedback.',
+    pt: 'Obrigado pelo feedback.',
   );
   static const thanksNoted = LocalizedText(
     nl: 'Dank, genoteerd.',
@@ -3665,6 +4192,7 @@ abstract final class Str {
     de: 'Danke, notiert.',
     fr: 'Merci, c\'est noté.',
     sv: 'Tack, noterat.',
+    pt: 'Obrigado, anotado.',
   );
   static const likeThis = LocalizedText(
     nl: 'Hier heb ik wat aan',
@@ -3672,6 +4200,7 @@ abstract final class Str {
     de: 'Gefällt mir',
     fr: 'J\'aime bien',
     sv: 'Jag gillar det här',
+    pt: 'Gosto disto',
   );
   static const errorInContent = LocalizedText(
     nl: 'Fout in de inhoud',
@@ -3679,6 +4208,7 @@ abstract final class Str {
     de: 'Fehler im Inhalt',
     fr: 'Erreur dans le contenu',
     sv: 'Fel i innehållet',
+    pt: 'Erro no conteúdo',
   );
   static const suggestion = LocalizedText(
     nl: 'Suggestie',
@@ -3686,6 +4216,7 @@ abstract final class Str {
     de: 'Vorschlag',
     fr: 'Suggestion',
     sv: 'Förslag',
+    pt: 'Sugestão',
   );
 
   static const overallDifficulty = LocalizedText(
@@ -3694,6 +4225,7 @@ abstract final class Str {
     de: 'Schwierigkeit insgesamt',
     fr: 'Difficulté globale',
     sv: 'Svårighet totalt',
+    pt: 'Dificuldade geral',
   );
 
   /// Problem kind pills on the Diagnose tab (data carries the English key).
@@ -3704,6 +4236,7 @@ abstract final class Str {
       de: 'Schädling',
       fr: 'ravageur',
       sv: 'skadedjur',
+      pt: 'praga',
     ),
     'disease' => const LocalizedText(
       nl: 'ziekte',
@@ -3711,6 +4244,7 @@ abstract final class Str {
       de: 'Krankheit',
       fr: 'maladie',
       sv: 'växtsjukdom',
+      pt: 'doença',
     ),
     'disorder' => const LocalizedText(
       nl: 'stoornis',
@@ -3718,8 +4252,16 @@ abstract final class Str {
       de: 'Störung',
       fr: 'trouble',
       sv: 'störning',
+      pt: 'distúrbio',
     ),
-    _ => LocalizedText(nl: kind, en: kind, de: kind, fr: kind, sv: kind),
+    _ => LocalizedText(
+      nl: kind,
+      en: kind,
+      de: kind,
+      fr: kind,
+      sv: kind,
+      pt: kind,
+    ),
   };
 
   static const draftBadge = LocalizedText(
@@ -3728,6 +4270,7 @@ abstract final class Str {
     de: 'Entwurf',
     fr: 'Brouillon',
     sv: 'Utkast',
+    pt: 'Rascunho',
   );
   static const draftBadgeLong = LocalizedText(
     nl: 'Concept, nog niet gecontroleerd',
@@ -3735,6 +4278,7 @@ abstract final class Str {
     de: 'Entwurf, noch nicht geprüft',
     fr: 'Brouillon, pas encore vérifié',
     sv: 'Utkast, inte verifierat än',
+    pt: 'Rascunho, ainda não verificado',
   );
 
   // ── onboarding ────────────────────────────────────────────────────────────
@@ -3744,6 +4288,7 @@ abstract final class Str {
     de: 'Überspringen',
     fr: 'Passer',
     sv: 'Hoppa över',
+    pt: 'Saltar',
   );
   static const alreadyHaveAccount = LocalizedText(
     nl: 'Heb je al een account? Inloggen',
@@ -3751,6 +4296,7 @@ abstract final class Str {
     de: 'Schon ein Konto? Anmelden',
     fr: 'Déjà un compte ? Se connecter',
     sv: 'Har du redan ett konto? Logga in',
+    pt: 'Já tens conta? Inicia sessão',
   );
   static const seasonAsOnePath = LocalizedText(
     nl: 'Je seizoen, als één pad',
@@ -3758,6 +4304,7 @@ abstract final class Str {
     de: 'Deine Saison als ein Pfad',
     fr: 'Ta saison, en un seul parcours',
     sv: 'Din säsong, som en enda väg',
+    pt: 'A tua estação, num só percurso',
   );
   static const seasonAsOnePathBody = LocalizedText(
     nl:
@@ -3771,6 +4318,7 @@ abstract final class Str {
     de: 'Aussaat, Umtopfen, Ernte, die Frostdaten, die das alles bestimmen, und die Monate, in denen noch nichts geplant ist. Hak einen Schritt ab, und alles danach zieht mit.',
     fr: 'Semis, rempotage, récolte, les dates de gel qui décident de tout, et les mois où rien n\'est encore planifié. Coche une étape, et tout ce qui suit bouge avec toi.',
     sv: 'Sådd, omplantering, skörd, frostdatumen som styr dem och månaderna då inget är planerat än. Bocka av ett steg så flyttar allt efter det med dig.',
+    pt: 'Sementeira, mudança de vaso, colheita, as datas de geada que as regem, e os meses em que ainda não há nada planeado. Marca um passo como feito e tudo o que vem depois acompanha-te.',
   );
   static const frostBackbone = LocalizedText(
     nl:
@@ -3782,6 +4330,7 @@ abstract final class Str {
     de: 'Bestimmt deine Frostdaten, die Grundlage jedes Pflanztermins. Auf ~1 km gerundet, nie verfolgt.',
     fr: 'Fixe tes dates de gel, la base de chaque date de plantation. Arrondi à ~1 km, jamais suivi.',
     sv: 'Bestämmer dina frostdatum, grunden för varje sådatum. Avrundat till ~1 km, spåras aldrig.',
+    pt: 'Define as tuas datas de geada, a base de todas as datas de plantação. Arredondado a ~1 km, nunca seguido.',
   );
   static const whatWillYouGrow = LocalizedText(
     nl: 'Wat ga je kweken?',
@@ -3789,6 +4338,7 @@ abstract final class Str {
     de: 'Was willst du anbauen?',
     fr: 'Que vas-tu cultiver ?',
     sv: 'Vad vill du odla?',
+    pt: 'O que vais cultivar?',
   );
   static const pickAFewToStart = LocalizedText(
     nl: 'Kies er een paar om te beginnen. Later bijzetten kan altijd.',
@@ -3796,6 +4346,7 @@ abstract final class Str {
     de: 'Wähl ein paar für den Anfang. Mehr geht jederzeit.',
     fr: 'Choisis-en quelques-unes pour commencer. Tu pourras en ajouter quand tu veux.',
     sv: 'Välj några att börja med. Du kan lägga till fler när som helst.',
+    pt: 'Escolhe algumas para começar. Adiciona mais quando quiseres.',
   );
   static const remindBlurb = LocalizedText(
     nl:
@@ -3807,6 +4358,7 @@ abstract final class Str {
     de: 'Ein kleiner Stups am richtigen Tag? Eine Erinnerung am Morgen, nur wenn etwas zu tun ist, und still, wenn es geregnet hat.',
     fr: 'Un petit coup de pouce le jour J ? Un rappel le matin, seulement s\'il y a quelque chose à faire, et rien quand il a plu.',
     sv: 'Vill du bli påmind samma dag? En påminnelse på morgonen, bara när det finns något att göra, och den håller tyst när det har regnat.',
+    pt: 'Queres um lembrete no dia? Um lembrete de manhã, só quando há algo para fazer, e fica em silêncio quando choveu.',
   );
   static const remindMe = LocalizedText(
     nl: 'Herinner me',
@@ -3814,6 +4366,7 @@ abstract final class Str {
     de: 'Erinnere mich',
     fr: 'Me le rappeler',
     sv: 'Påminn mig',
+    pt: 'Lembra-me',
   );
   static const maybeLater = LocalizedText(
     nl: 'Misschien later',
@@ -3821,6 +4374,7 @@ abstract final class Str {
     de: 'Vielleicht später',
     fr: 'Plus tard',
     sv: 'Kanske senare',
+    pt: 'Talvez mais tarde',
   );
 
   // ── the paywall's headline ────────────────────────────────────────────────
@@ -3830,6 +4384,7 @@ abstract final class Str {
     de: 'Ein Garten gratis,\nfür immer.',
     fr: 'Un potager gratuit,\npour toujours.',
     sv: 'En gratis odling,\nför alltid.',
+    pt: 'Uma horta grátis,\npara sempre.',
   );
 
   // ── odds and ends ─────────────────────────────────────────────────────────
@@ -3839,6 +4394,7 @@ abstract final class Str {
     de: 'Was anbauen im…',
     fr: 'Que cultiver en…',
     sv: 'Vad du kan odla i…',
+    pt: 'O que cultivar em…',
   );
   static const whichPlant = LocalizedText(
     nl: 'Welke plant?',
@@ -3846,6 +4402,7 @@ abstract final class Str {
     de: 'Welche Pflanze?',
     fr: 'Quelle plante ?',
     sv: 'Vilken växt?',
+    pt: 'Que planta?',
   );
   static LocalizedText plantIn(String months) => LocalizedText(
     nl: 'Planten in: $months',
@@ -3853,6 +4410,7 @@ abstract final class Str {
     de: 'Pflanzzeit: $months',
     fr: 'Planter en : $months',
     sv: 'Plantera i: $months',
+    pt: 'Plantar em: $months',
   );
   static LocalizedText sources(String list) => LocalizedText(
     nl: 'Bronnen: $list',
@@ -3860,6 +4418,7 @@ abstract final class Str {
     de: 'Quellen: $list',
     fr: 'Sources : $list',
     sv: 'Källor: $list',
+    pt: 'Fontes: $list',
   );
   static LocalizedText frostRelative(
     String anchor,
@@ -3881,6 +4440,9 @@ abstract final class Str {
     sv:
         'De här datumen utgår från frosten (förankrade i $anchor för $region), '
         'så de flyttar med din region, inte efter en fast kalender.',
+    pt:
+        'Estas datas dependem da geada (ancoradas em $anchor para $region), '
+        'por isso mudam com a tua região, não com um calendário fixo.',
   );
   static LocalizedText firstHarvestAround(
     String region,
@@ -3901,6 +4463,9 @@ abstract final class Str {
     sv:
         'I $region hamnar din första skörd runt $date, beräknat från '
         'regionens frostdatum.',
+    pt:
+        'Em $region, a tua primeira colheita chega por volta de $date, '
+        'calculada a partir das datas de geada da região.',
   );
 
   // ── the weather card on Home ──────────────────────────────────────────────
@@ -3910,6 +4475,7 @@ abstract final class Str {
     de: 'Wetter heute',
     fr: 'Météo du jour',
     sv: 'Dagens väder',
+    pt: 'O tempo hoje',
   );
   static LocalizedText weatherRange(int high, int low) => LocalizedText(
     nl: '$high° / $low°',
@@ -3917,6 +4483,7 @@ abstract final class Str {
     de: '$high° / $low°',
     fr: '$high° / $low°',
     sv: '$high° / $low°',
+    pt: '$high° / $low°',
   );
   static LocalizedText weatherRain(String mm) => LocalizedText(
     nl: '$mm mm regen',
@@ -3924,6 +4491,7 @@ abstract final class Str {
     de: '$mm mm Regen',
     fr: '$mm mm de pluie',
     sv: '$mm mm regn',
+    pt: '$mm mm de chuva',
   );
   static const weatherDry = LocalizedText(
     nl: 'Droog',
@@ -3931,6 +4499,7 @@ abstract final class Str {
     de: 'Trocken',
     fr: 'Sec',
     sv: 'Torrt',
+    pt: 'Seco',
   );
   static const weatherNothingMoved = LocalizedText(
     nl: 'Het weer verzet vandaag niets.',
@@ -3938,6 +4507,7 @@ abstract final class Str {
     de: 'Das Wetter verschiebt heute nichts.',
     fr: 'La météo ne déplace rien aujourd\'hui.',
     sv: 'Vädret flyttar inget idag.',
+    pt: 'Hoje o tempo não muda nada.',
   );
   static const weatherUnavailable = LocalizedText(
     nl: 'Geen weerbericht. Het basisschema staat.',
@@ -3945,6 +4515,7 @@ abstract final class Str {
     de: 'Keine Vorhersage. Der Grundplan steht.',
     fr: 'Pas de prévisions. Le plan de base tient.',
     sv: 'Ingen prognos. Grundschemat gäller.',
+    pt: 'Sem previsão. O plano base mantém-se.',
   );
 
   /// Open-Meteo WMO condition groups, named for the card and the strip.
@@ -3954,6 +4525,7 @@ abstract final class Str {
     de: 'Klar',
     fr: 'Dégagé',
     sv: 'Klart',
+    pt: 'Céu limpo',
   );
   static const weatherPartlyCloudy = LocalizedText(
     nl: 'Half bewolkt',
@@ -3961,6 +4533,7 @@ abstract final class Str {
     de: 'Teils bewölkt',
     fr: 'Partiellement nuageux',
     sv: 'Växlande molnighet',
+    pt: 'Parcialmente nublado',
   );
   static const weatherOvercast = LocalizedText(
     nl: 'Bewolkt',
@@ -3968,6 +4541,7 @@ abstract final class Str {
     de: 'Bedeckt',
     fr: 'Couvert',
     sv: 'Mulet',
+    pt: 'Encoberto',
   );
   static const weatherFog = LocalizedText(
     nl: 'Mist',
@@ -3975,6 +4549,7 @@ abstract final class Str {
     de: 'Nebel',
     fr: 'Brouillard',
     sv: 'Dimma',
+    pt: 'Nevoeiro',
   );
   static const weatherDrizzle = LocalizedText(
     nl: 'Motregen',
@@ -3982,6 +4557,7 @@ abstract final class Str {
     de: 'Nieselregen',
     fr: 'Bruine',
     sv: 'Duggregn',
+    pt: 'Chuvisco',
   );
   static const weatherRainy = LocalizedText(
     nl: 'Regen',
@@ -3989,6 +4565,7 @@ abstract final class Str {
     de: 'Regen',
     fr: 'Pluie',
     sv: 'Regn',
+    pt: 'Chuva',
   );
   static const weatherSnow = LocalizedText(
     nl: 'Sneeuw',
@@ -3996,6 +4573,7 @@ abstract final class Str {
     de: 'Schnee',
     fr: 'Neige',
     sv: 'Snö',
+    pt: 'Neve',
   );
   static const weatherThunder = LocalizedText(
     nl: 'Onweer',
@@ -4003,6 +4581,7 @@ abstract final class Str {
     de: 'Gewitter',
     fr: 'Orage',
     sv: 'Åska',
+    pt: 'Trovoada',
   );
 
   // ── the path's new stops ──────────────────────────────────────────────────
@@ -4012,6 +4591,7 @@ abstract final class Str {
     de: 'Eine Aufgabe für diesen Monat',
     fr: 'Une tâche pour ce mois-ci',
     sv: 'En uppgift för den här månaden',
+    pt: 'Uma tarefa para este mês',
   );
   static LocalizedText pathCompanion(LocalizedText partner) => LocalizedText(
     nl: 'Zet ${partner.nl} erbij',
@@ -4019,6 +4599,7 @@ abstract final class Str {
     de: '${partner.pick('de')} dazupflanzen',
     fr: 'À planter à côté : ${partner.pick('fr')}',
     sv: 'Plantera ${partner.pick('sv').toLowerCase()} bredvid',
+    pt: 'Plantar ${partner.pick('pt').toLowerCase()} ao lado',
   );
   static LocalizedText pathCompanionCaption(LocalizedText have) =>
       LocalizedText(
@@ -4027,6 +4608,7 @@ abstract final class Str {
         de: 'Ein guter Nachbar für ${have.pick('de')}',
         fr: '${have.pick('fr')} : un bon voisin',
         sv: '${have.pick('sv')}: en god granne',
+        pt: '${have.pick('pt')}: um bom vizinho',
       );
   static const pathCollectionCaption = LocalizedText(
     nl: 'Een lijstje om uit te kiezen',
@@ -4034,6 +4616,7 @@ abstract final class Str {
     de: 'Eine Liste zum Auswählen',
     fr: 'Une liste où choisir',
     sv: 'En lista att välja från',
+    pt: 'Uma lista para escolher',
   );
 
   // ── the settings hub ──────────────────────────────────────────────────────
@@ -4043,6 +4626,7 @@ abstract final class Str {
     de: 'Bedienungshilfen',
     fr: 'Accessibilité',
     sv: 'Tillgänglighet',
+    pt: 'Acessibilidade',
   );
   static const hapticsTitle = LocalizedText(
     nl: 'Trillingen',
@@ -4050,6 +4634,7 @@ abstract final class Str {
     de: 'Haptik',
     fr: 'Vibrations',
     sv: 'Vibrationer',
+    pt: 'Vibração',
   );
   static const hapticsBlurb = LocalizedText(
     nl: 'Een korte trilling bij afvinken en indrukken.',
@@ -4057,6 +4642,7 @@ abstract final class Str {
     de: 'Ein kurzes Vibrieren, wenn du etwas abhakst oder drückst.',
     fr: 'Une courte vibration quand tu coches ou touches quelque chose.',
     sv: 'En kort vibration när du bockar av eller trycker på något.',
+    pt: 'Uma vibração curta quando marcas ou carregas em algo.',
   );
   static const reduceMotionTitle = LocalizedText(
     nl: 'Minder beweging',
@@ -4064,6 +4650,7 @@ abstract final class Str {
     de: 'Bewegung reduzieren',
     fr: 'Réduire les animations',
     sv: 'Minska rörelse',
+    pt: 'Reduzir movimento',
   );
   static const reduceMotionBlurb = LocalizedText(
     nl:
@@ -4075,6 +4662,7 @@ abstract final class Str {
     de: 'Animationen werden zu einem sofortigen Wechsel. Auch an, wenn dein Handy das verlangt.',
     fr: 'Les animations deviennent un changement instantané. Activé aussi quand ton téléphone le demande.',
     sv: 'Animationer blir en direkt övergång. Är också på när din mobil ber om det.',
+    pt: 'As animações passam a ser uma mudança instantânea. Também ativo quando o teu telemóvel o pede.',
   );
   static const gardenProfile = LocalizedText(
     nl: 'Je tuin aanpassen',
@@ -4082,6 +4670,7 @@ abstract final class Str {
     de: 'Garten bearbeiten',
     fr: 'Modifier ton potager',
     sv: 'Redigera din odling',
+    pt: 'Editar a tua horta',
   );
   static const gardenProfileBlurb = LocalizedText(
     nl: 'Verhuisd, of meer ruimte gevonden?',
@@ -4089,6 +4678,7 @@ abstract final class Str {
     de: 'Umgezogen oder mehr Platz gefunden?',
     fr: 'Tu as déménagé, ou trouvé plus de place ?',
     sv: 'Har du flyttat, eller hittat mer plats?',
+    pt: 'Mudaste de casa ou arranjaste mais espaço?',
   );
   static const gardenSize = LocalizedText(
     nl: 'Oppervlakte',
@@ -4096,6 +4686,7 @@ abstract final class Str {
     de: 'Größe',
     fr: 'Surface',
     sv: 'Storlek',
+    pt: 'Tamanho',
   );
   static LocalizedText gardenSizeM2(int m2) => LocalizedText(
     nl: '$m2 m²',
@@ -4103,6 +4694,7 @@ abstract final class Str {
     de: '$m2 m²',
     fr: '$m2 m²',
     sv: '$m2 m²',
+    pt: '$m2 m²',
   );
   static const gardenSizeHint = LocalizedText(
     nl: 'Hoeveel vierkante meter heb je om te telen?',
@@ -4110,6 +4702,7 @@ abstract final class Str {
     de: 'Wie viele Quadratmeter hast du zum Anbauen?',
     fr: 'Combien de mètres carrés as-tu pour cultiver ?',
     sv: 'Hur många kvadratmeter har du att odla på?',
+    pt: 'Quantos metros quadrados tens para cultivar?',
   );
   static const sunHoursLabel = LocalizedText(
     nl: 'Uren zon',
@@ -4117,6 +4710,7 @@ abstract final class Str {
     de: 'Sonnenstunden',
     fr: 'Heures de soleil',
     sv: 'Soltimmar',
+    pt: 'Horas de sol',
   );
   static const sunHoursHint = LocalizedText(
     nl: 'Op een heldere dag in juni.',
@@ -4124,6 +4718,7 @@ abstract final class Str {
     de: 'An einem klaren Tag im Juni.',
     fr: 'Par une journée claire de juin.',
     sv: 'En klar dag i juni.',
+    pt: 'Num dia limpo de junho.',
   );
   static const gardenSaved = LocalizedText(
     nl: 'Tuin bijgewerkt',
@@ -4131,6 +4726,7 @@ abstract final class Str {
     de: 'Garten aktualisiert',
     fr: 'Potager mis à jour',
     sv: 'Odlingen är uppdaterad',
+    pt: 'Horta atualizada',
   );
   static const faq = LocalizedText(
     nl: 'Veelgestelde vragen',
@@ -4138,6 +4734,7 @@ abstract final class Str {
     de: 'Häufige Fragen',
     fr: 'Questions fréquentes',
     sv: 'Vanliga frågor',
+    pt: 'Perguntas frequentes',
   );
   static const helpAndSupport = LocalizedText(
     nl: 'Help en ondersteuning',
@@ -4145,6 +4742,7 @@ abstract final class Str {
     de: 'Hilfe & Support',
     fr: 'Aide et assistance',
     sv: 'Hjälp och support',
+    pt: 'Ajuda e apoio',
   );
   static const notSignedIn = LocalizedText(
     nl: 'Niet aangemeld',
@@ -4152,6 +4750,7 @@ abstract final class Str {
     de: 'Nicht angemeldet',
     fr: 'Aucun compte connecté',
     sv: 'Inte inloggad',
+    pt: 'Sem sessão iniciada',
   );
   static const onThisDevice = LocalizedText(
     nl: 'Op deze telefoon',
@@ -4159,6 +4758,7 @@ abstract final class Str {
     de: 'Auf diesem Handy',
     fr: 'Sur ce téléphone',
     sv: 'På den här mobilen',
+    pt: 'Neste telemóvel',
   );
 
   // ── searching the problems ────────────────────────────────────────────────
@@ -4168,6 +4768,7 @@ abstract final class Str {
     de: 'Problem suchen',
     fr: 'Chercher un problème',
     sv: 'Sök ett problem',
+    pt: 'Procurar um problema',
   );
   static LocalizedText problemsFound(int n) => LocalizedText(
     nl: '$n ${n == 1 ? 'probleem' : 'problemen'}',
@@ -4175,6 +4776,7 @@ abstract final class Str {
     de: '$n ${n == 1 ? 'Problem' : 'Probleme'}',
     fr: '$n ${n <= 1 ? 'problème' : 'problèmes'}',
     sv: '$n problem',
+    pt: '$n ${n == 1 ? 'problema' : 'problemas'}',
   );
   static const noProblemsFound = LocalizedText(
     nl: 'Niets gevonden. Probeer een ander woord.',
@@ -4182,6 +4784,7 @@ abstract final class Str {
     de: 'Nichts gefunden. Versuch ein anderes Wort.',
     fr: 'Rien trouvé. Essaie un autre mot.',
     sv: 'Inget hittades. Prova ett annat ord.',
+    pt: 'Nada encontrado. Tenta outra palavra.',
   );
 
   // ── the path's milestone stops (what the gardener already did) ────────────
@@ -4191,6 +4794,7 @@ abstract final class Str {
     de: 'Deine erste Aussaat',
     fr: 'Ton premier semis',
     sv: 'Din första sådd',
+    pt: 'A tua primeira sementeira',
   );
   static LocalizedText pathFirstSowCaption(LocalizedText crop) => LocalizedText(
     nl: 'Het seizoen begon met ${crop.nl}',
@@ -4198,6 +4802,7 @@ abstract final class Str {
     de: 'Die Saison begann mit ${crop.pick('de')}',
     fr: 'Premier semis de la saison : ${crop.pick('fr')}',
     sv: 'Säsongen började med ${crop.pick('sv').toLowerCase()}',
+    pt: 'A estação começou com ${crop.pick('pt').toLowerCase()}',
   );
   static LocalizedText pathHarvest(int n) => LocalizedText(
     nl: 'Oogst nummer $n',
@@ -4205,6 +4810,7 @@ abstract final class Str {
     de: 'Ernte Nummer $n',
     fr: 'Récolte n° $n',
     sv: 'Skörd nummer $n',
+    pt: 'Colheita número $n',
   );
   static LocalizedText pathHarvestCaption(LocalizedText crop) => LocalizedText(
     nl: 'Geplukt: ${crop.nl}',
@@ -4212,6 +4818,7 @@ abstract final class Str {
     de: 'Geerntet: ${crop.pick('de')}',
     fr: 'Récolté : ${crop.pick('fr')}',
     sv: 'Skördat: ${crop.pick('sv').toLowerCase()}',
+    pt: 'Colhido: ${crop.pick('pt').toLowerCase()}',
   );
   static LocalizedText pathStreak(int days) => LocalizedText(
     nl: '$days dagen op rij',
@@ -4219,6 +4826,7 @@ abstract final class Str {
     de: '$days Tage in Folge',
     fr: '$days ${days <= 1 ? 'jour' : 'jours'} d\'affilée',
     sv: '$days ${days == 1 ? 'dag' : 'dagar'} i rad',
+    pt: '$days ${days == 1 ? 'dia seguido' : 'dias seguidos'}',
   );
   static const pathStreakCaption = LocalizedText(
     nl: 'Je hield het vol',
@@ -4226,6 +4834,7 @@ abstract final class Str {
     de: 'Du bist drangeblieben',
     fr: 'Tu as tenu bon',
     sv: 'Du höll det igång',
+    pt: 'Mantiveste o ritmo',
   );
   static const pathPhotoCompare = LocalizedText(
     nl: 'Kijk hoe ver het is',
@@ -4233,6 +4842,7 @@ abstract final class Str {
     de: 'Sieh, wie weit sie gekommen ist',
     fr: 'Vois tout le chemin parcouru',
     sv: 'Se hur långt den har kommit',
+    pt: 'Vê o quanto já cresceu',
   );
   static LocalizedText pathPhotoCompareCaption(LocalizedText month) =>
       LocalizedText(
@@ -4241,6 +4851,7 @@ abstract final class Str {
         de: 'Neben deinem Foto vom ${month.pick('de')}',
         fr: 'À côté de ta photo prise en ${month.pick('fr')}',
         sv: 'Bredvid ditt foto från ${month.pick('sv')}',
+        pt: 'Ao lado da tua foto de ${month.pick('pt')}',
       );
 
   // ── reminders ─────────────────────────────────────────────────────────────
@@ -4250,6 +4861,7 @@ abstract final class Str {
     de: 'Heute steht eine Aufgabe an',
     fr: 'Une chose à faire aujourd\'hui',
     sv: 'En sak att göra idag',
+    pt: 'Uma coisa para fazer hoje',
   );
   static LocalizedText reminderThings(int n) => LocalizedText(
     nl: '$n dingen te doen vandaag',
@@ -4257,6 +4869,7 @@ abstract final class Str {
     de: 'Heute stehen $n Aufgaben an',
     fr: '$n choses à faire aujourd\'hui',
     sv: '$n saker att göra idag',
+    pt: n == 1 ? '1 coisa para fazer hoje' : '$n coisas para fazer hoje',
   );
 
   // ── task and step names (kindLine, nodeKindLine) ──────────────────────────
@@ -4266,6 +4879,7 @@ abstract final class Str {
     de: 'Gießen',
     fr: 'Arroser',
     sv: 'Vattna',
+    pt: 'Regar',
   );
   static const taskHarvest = LocalizedText(
     nl: 'Oogsten',
@@ -4273,6 +4887,7 @@ abstract final class Str {
     de: 'Ernten',
     fr: 'Récolter',
     sv: 'Skörda',
+    pt: 'Colher',
   );
   static const taskPotOn = LocalizedText(
     nl: 'Verpotten',
@@ -4280,6 +4895,7 @@ abstract final class Str {
     de: 'Umtopfen',
     fr: 'Rempoter',
     sv: 'Omplantera',
+    pt: 'Mudar de vaso',
   );
   static const taskThin = LocalizedText(
     nl: 'Uitdunnen',
@@ -4287,6 +4903,7 @@ abstract final class Str {
     de: 'Vereinzeln',
     fr: 'Éclaircir',
     sv: 'Gallra',
+    pt: 'Desbastar',
   );
   static const thinSeedlings = LocalizedText(
     nl: 'Uitdunnen',
@@ -4294,6 +4911,7 @@ abstract final class Str {
     de: 'Vereinzeln',
     fr: 'Éclaircir',
     sv: 'Gallra',
+    pt: 'Desbastar',
   );
   static const harvestWindow = LocalizedText(
     nl: 'Oogstvenster',
@@ -4301,6 +4919,7 @@ abstract final class Str {
     de: 'Erntefenster',
     fr: 'Période de récolte',
     sv: 'Skördefönster',
+    pt: 'Janela de colheita',
   );
 
   // ── difficulty (difficultyLine; easy is easyFilter) ───────────────────────
@@ -4310,6 +4929,7 @@ abstract final class Str {
     de: 'Mittel',
     fr: 'Moyen',
     sv: 'Medel',
+    pt: 'Média',
   );
   static const difficultyHard = LocalizedText(
     nl: 'Lastig',
@@ -4317,6 +4937,7 @@ abstract final class Str {
     de: 'Schwierig',
     fr: 'Difficile',
     sv: 'Svår',
+    pt: 'Difícil',
   );
 
   // ── skipping a step ───────────────────────────────────────────────────────
@@ -4326,6 +4947,7 @@ abstract final class Str {
     de: 'Es hat geregnet',
     fr: 'Il a plu',
     sv: 'Det regnade',
+    pt: 'Choveu',
   );
   static const skipNotNeeded = LocalizedText(
     nl: 'Niet nodig',
@@ -4333,6 +4955,7 @@ abstract final class Str {
     de: 'Nicht nötig',
     fr: 'Pas nécessaire',
     sv: 'Behövs inte',
+    pt: 'Não foi preciso',
   );
   static const skipNoTime = LocalizedText(
     nl: 'Geen tijd',
@@ -4340,6 +4963,7 @@ abstract final class Str {
     de: 'Keine Zeit',
     fr: 'Pas le temps',
     sv: 'Ingen tid',
+    pt: 'Sem tempo',
   );
 
   // ── streak freezes ────────────────────────────────────────────────────────
@@ -4349,6 +4973,7 @@ abstract final class Str {
     de: 'Unbegrenzt viele Pausentage.',
     fr: 'Jours de pause illimités.',
     sv: 'Obegränsat med pausdagar.',
+    pt: 'Dias de pausa ilimitados.',
   );
   static LocalizedText freezesLeft(int n) => LocalizedText(
     nl:
@@ -4362,6 +4987,9 @@ abstract final class Str {
     sv: n == 1
         ? '1 pausdag kvar den här månaden.'
         : '$n pausdagar kvar den här månaden.',
+    pt: n == 1
+        ? 'Resta 1 dia de pausa este mês.'
+        : 'Restam $n dias de pausa este mês.',
   );
 
   // ── weather adjustments (timing/weather_adjust.dart) ──────────────────────
@@ -4371,6 +4999,7 @@ abstract final class Str {
     de: 'Genug Regen rund um diesen Tag ($mm mm). Gießen fällt aus.',
     fr: 'Assez de pluie autour de ce jour ($mm mm). Pas d\'arrosage.',
     sv: 'Tillräckligt med regn runt den här dagen ($mm mm). Hoppa över vattningen.',
+    pt: 'Chuva suficiente por volta deste dia ($mm mm). Salta a rega.',
   );
   static LocalizedText adjustHeat(num t) => LocalizedText(
     nl: 'Hitte verwacht ($t°C). Eerder water geven.',
@@ -4378,6 +5007,7 @@ abstract final class Str {
     de: 'Hitze erwartet ($t °C). Früher gießen.',
     fr: 'Chaleur prévue ($t °C). Arrose plus tôt.',
     sv: 'Värme väntas ($t °C). Vattna tidigare.',
+    pt: 'Calor previsto ($t °C). Rega mais cedo.',
   );
   static LocalizedText adjustSoilCold(num gate) => LocalizedText(
     nl: 'Bodem nog te koud (< $gate°C). Uitgesteld tot het warmer is.',
@@ -4385,6 +5015,7 @@ abstract final class Str {
     de: 'Boden noch zu kalt (< $gate °C). Verschoben, bis es wärmer ist.',
     fr: 'Sol encore trop froid (< $gate °C). En attente jusqu\'à ce qu\'il se réchauffe.',
     sv: 'Jorden är fortfarande för kall (< $gate °C). Väntar tills det blir varmare.',
+    pt: 'Solo ainda demasiado frio (< $gate °C). Em espera até aquecer.',
   );
   static LocalizedText adjustSoilStaysCold(num gate) => LocalizedText(
     nl: 'Bodem blijft te koud (< $gate°C). Nog even wachten.',
@@ -4392,6 +5023,7 @@ abstract final class Str {
     de: 'Boden bleibt zu kalt (< $gate °C). Noch etwas warten.',
     fr: 'Le sol reste trop froid (< $gate °C). Encore un peu de patience.',
     sv: 'Jorden förblir för kall (< $gate °C). Vänta lite till.',
+    pt: 'O solo continua demasiado frio (< $gate °C). Espera mais um pouco.',
   );
   static const weatherMovedTask = LocalizedText(
     nl: 'Het weer heeft een taak verzet',
@@ -4399,6 +5031,7 @@ abstract final class Str {
     de: 'Das Wetter hat eine Aufgabe verschoben',
     fr: 'La météo a déplacé une tâche',
     sv: 'Vädret flyttade en uppgift',
+    pt: 'O tempo mudou a data de uma tarefa',
   );
 
   // ── replanning (timing/replan.dart) ───────────────────────────────────────
@@ -4410,6 +5043,7 @@ abstract final class Str {
     de: 'Die Aussaat',
     fr: 'le semis',
     sv: 'sådden',
+    pt: 'a sementeira',
   );
   static const stepPottingOn = LocalizedText(
     nl: 'verpotten',
@@ -4417,6 +5051,7 @@ abstract final class Str {
     de: 'Das Umtopfen',
     fr: 'le rempotage',
     sv: 'omplanteringen',
+    pt: 'a mudança de vaso',
   );
   static const stepPlantingOut = LocalizedText(
     nl: 'uitplanten',
@@ -4424,6 +5059,7 @@ abstract final class Str {
     de: 'Das Auspflanzen',
     fr: 'le repiquage',
     sv: 'utplanteringen',
+    pt: 'a transplantação',
   );
   static const stepThinning = LocalizedText(
     nl: 'uitdunnen',
@@ -4431,6 +5067,7 @@ abstract final class Str {
     de: 'Das Vereinzeln',
     fr: 'l\'éclaircissage',
     sv: 'gallringen',
+    pt: 'o desbaste',
   );
   static const stepFeeding = LocalizedText(
     nl: 'bemesten',
@@ -4438,6 +5075,7 @@ abstract final class Str {
     de: 'Das Düngen',
     fr: 'la fertilisation',
     sv: 'gödslingen',
+    pt: 'a adubação',
   );
   static const stepWatering = LocalizedText(
     nl: 'water geven',
@@ -4445,6 +5083,7 @@ abstract final class Str {
     de: 'Das Gießen',
     fr: 'l\'arrosage',
     sv: 'vattningen',
+    pt: 'a rega',
   );
   static const stepHarvest = LocalizedText(
     nl: 'oogsten',
@@ -4452,6 +5091,7 @@ abstract final class Str {
     de: 'Die Ernte',
     fr: 'la récolte',
     sv: 'skörden',
+    pt: 'a colheita',
   );
   static const stepHarvested = LocalizedText(
     nl: 'geoogst',
@@ -4459,6 +5099,7 @@ abstract final class Str {
     de: 'Die Ernte',
     fr: 'la récolte',
     sv: 'skörden',
+    pt: 'a colheita',
   );
   static LocalizedText replanMoved(
     String sign,
@@ -4481,6 +5122,9 @@ abstract final class Str {
     sv:
         'Flyttad ($sign$days ${days == 1 ? 'dag' : 'dagar'}): ${step.pick('sv')} blev av '
         '${later ? 'senare' : 'tidigare'} än planerat.',
+    pt:
+        'Mudou de data ($sign$days ${days == 1 ? 'dia' : 'dias'}): ${step.pick('pt')} foi '
+        '${later ? 'mais tarde' : 'mais cedo'} do que o previsto.',
   );
   static LocalizedText replanFrostWarning(
     String end,
@@ -4501,6 +5145,9 @@ abstract final class Str {
     sv:
         'Skörden pågår nu till $end, nära första frosten ($firstFrost). '
         'Odla den ändå, eller byt till en snabbare sort?',
+    pt:
+        'A colheita vai agora até $end, perto da primeira geada ($firstFrost). '
+        'Cultivar na mesma, ou trocar por uma variedade mais rápida?',
   );
 
   // ── succession (timing/season.dart) ───────────────────────────────────────
@@ -4520,6 +5167,9 @@ abstract final class Str {
     sv:
         'Platsen blir ledig efter ${after?.pick('sv').toLowerCase() ?? afterSlug} '
         '($freeFrom) – ${crop.pick('sv').toLowerCase()} kan fortfarande sås fram till $until.',
+    pt:
+        'O espaço fica livre depois de ${after?.pick('pt').toLowerCase() ?? afterSlug} '
+        '($freeFrom) – ainda dá para semear ${crop.pick('pt').toLowerCase()} até $until.',
   );
 
   // ── help: questions and answers ───────────────────────────────────────────
@@ -4529,6 +5179,7 @@ abstract final class Str {
     de: 'Woher kommen die Pflanztermine?',
     fr: 'D\'où viennent les dates de plantation ?',
     sv: 'Var kommer så- och planteringsdatumen ifrån?',
+    pt: 'De onde vêm as datas de plantação?',
   );
   static const faqDatesA = LocalizedText(
     nl:
@@ -4545,6 +5196,7 @@ abstract final class Str {
         'zwei niederländischen Aussaatkalendern abgeglichen sind.',
     fr: 'Des dates de gel de ta position (normales climatiques KNMI / Open-Meteo, arrondies à ~1 km) combinées à des règles de culture vérifiées dans au moins deux calendriers des semis néerlandais.',
     sv: 'Från frostdatumen för din plats (klimatnormaler från KNMI / Open-Meteo, avrundade till ~1 km) kombinerade med odlingsregler som kontrollerats mot minst två nederländska såkalendrar.',
+    pt: 'Das datas de geada da tua localização (normais climáticas KNMI / Open-Meteo, arredondadas a ~1 km), combinadas com regras de cultivo verificadas em pelo menos dois calendários de sementeira neerlandeses.',
   );
   static const faqBehindQ = LocalizedText(
     nl: 'Ik loop achter. Is mijn plan verpest?',
@@ -4552,6 +5204,7 @@ abstract final class Str {
     de: 'Ich hänge hinterher. Ist mein Plan jetzt hin?',
     fr: 'J\'ai pris du retard. Mon plan est fichu ?',
     sv: 'Jag har hamnat efter. Är min plan förstörd?',
+    pt: 'Fiquei para trás. O meu plano está estragado?',
   );
   static const faqBehindA = LocalizedText(
     nl:
@@ -4565,6 +5218,7 @@ abstract final class Str {
         'Schritt zieht mit. Nichts ist je „zu spät“, es ist „verschoben“.',
     fr: 'Non. Note ce que tu as vraiment fait et quand ; chaque étape suivante suit. Une tâche n\'est jamais « ratée » : elle est « déplacée ».',
     sv: 'Nej. Logga vad du faktiskt gjorde och när; varje senare steg flyttas med. En uppgift är aldrig ”missad”, den är ”flyttad”.',
+    pt: 'Não. Regista o que fizeste de facto e quando; cada passo seguinte acompanha. Nada fica “perdido”: só “muda de data”.',
   );
   static const faqWateringQ = LocalizedText(
     nl: 'Waarom is een waterbeurt verdwenen?',
@@ -4572,6 +5226,7 @@ abstract final class Str {
     de: 'Warum ist ein Gießtermin verschwunden?',
     fr: 'Pourquoi un arrosage a disparu ?',
     sv: 'Varför försvann en vattning?',
+    pt: 'Porque desapareceu uma rega?',
   );
   static const faqWateringA = LocalizedText(
     nl:
@@ -4585,6 +5240,7 @@ abstract final class Str {
         'vorhergesagt. Die Wetterzeile auf Home sagt dir, was sich geändert hat.',
     fr: 'Il a assez plu autour de ce jour-là, ou de la pluie est prévue. La ligne météo sur l\'Accueil dit ce qui a changé.',
     sv: 'Det regnade tillräckligt runt den dagen, eller så är det regn i prognosen. Väderraden på Hem visar vad som ändrades.',
+    pt: 'Choveu o suficiente nesse dia, ou há chuva prevista. A nota do tempo no Início diz o que mudou.',
   );
   static const faqOfflineQ = LocalizedText(
     nl: 'Werkt het offline?',
@@ -4592,6 +5248,7 @@ abstract final class Str {
     de: 'Funktioniert es offline?',
     fr: 'Ça marche hors ligne ?',
     sv: 'Fungerar det offline?',
+    pt: 'Funciona sem ligação?',
   );
   static const faqOfflineA = LocalizedText(
     nl:
@@ -4605,6 +5262,7 @@ abstract final class Str {
         'Handy. Wetterhinweise und Synchronisierung brauchen eine Verbindung.',
     fr: 'Oui. Plantes, dates, rappels et chronologie tournent sur le téléphone. Les infos météo et la synchro ont besoin d\'une connexion.',
     sv: 'Ja. Växter, datum, påminnelser och tidslinjen körs i mobilen. Vädertips och synk behöver en anslutning.',
+    pt: 'Sim. Plantas, datas, lembretes e a cronologia funcionam todos no telemóvel. As dicas do tempo e a sincronização precisam de ligação.',
   );
   static const faqFreeQ = LocalizedText(
     nl: 'Wat zit er in de gratis versie?',
@@ -4612,6 +5270,7 @@ abstract final class Str {
     de: 'Was ist in der Gratisversion drin?',
     fr: 'Que comprend la version gratuite ?',
     sv: 'Vad ingår i gratisversionen?',
+    pt: 'O que inclui a versão grátis?',
   );
   static const faqFreeA = LocalizedText(
     nl:
@@ -4625,6 +5284,7 @@ abstract final class Str {
         'Erinnerungen und alle Pflanzenarten, für immer. Lifetime gibt dir mehr Platz.',
     fr: 'Un potager, six plantes en culture, la chronologie complète, les rappels et toutes les plantes, pour toujours. Lifetime te donne plus de place.',
     sv: 'En odling, sex växter, hela tidslinjen, påminnelser och alla växtsorter, för alltid. Lifetime ger mer plats.',
+    pt: 'Uma horta, seis plantas a crescer, a cronologia completa, os lembretes e todas as plantas, para sempre. O Lifetime desbloqueia mais espaço.',
   );
   static const faqDeleteQ = LocalizedText(
     nl: 'Hoe verwijder ik mijn account?',
@@ -4632,6 +5292,7 @@ abstract final class Str {
     de: 'Wie lösche ich mein Konto?',
     fr: 'Comment supprimer mon compte ?',
     sv: 'Hur raderar jag mitt konto?',
+    pt: 'Como elimino a minha conta?',
   );
   static const faqDeleteA = LocalizedText(
     nl:
@@ -4648,6 +5309,7 @@ abstract final class Str {
         'die App löschst.',
     fr: 'Profil → Compte → Supprimer le compte. Ça supprime ton compte et chaque ligne synchronisée ; les données locales restent sur ce téléphone jusqu\'à ce que tu supprimes l\'app.',
     sv: 'Profil → Konto → Radera konto. Det tar bort ditt konto och varje synkad rad; lokal data finns kvar på den här mobilen tills du raderar appen.',
+    pt: 'Perfil → Conta → Eliminar conta. Remove a tua conta e todos os dados sincronizados; os dados locais ficam neste telemóvel até apagares a app.',
   );
 
   // ── months, for every sentence that names one ─────────────────────────────
@@ -4658,6 +5320,7 @@ abstract final class Str {
       de: 'Januar',
       fr: 'janvier',
       sv: 'januari',
+      pt: 'janeiro',
     ),
     LocalizedText(
       nl: 'februari',
@@ -4665,23 +5328,47 @@ abstract final class Str {
       de: 'Februar',
       fr: 'février',
       sv: 'februari',
+      pt: 'fevereiro',
     ),
-    LocalizedText(nl: 'maart', en: 'March', de: 'März', fr: 'mars', sv: 'mars'),
+    LocalizedText(
+      nl: 'maart',
+      en: 'March',
+      de: 'März',
+      fr: 'mars',
+      sv: 'mars',
+      pt: 'março',
+    ),
     LocalizedText(
       nl: 'april',
       en: 'April',
       de: 'April',
       fr: 'avril',
       sv: 'april',
+      pt: 'abril',
     ),
-    LocalizedText(nl: 'mei', en: 'May', de: 'Mai', fr: 'mai', sv: 'maj'),
-    LocalizedText(nl: 'juni', en: 'June', de: 'Juni', fr: 'juin', sv: 'juni'),
+    LocalizedText(
+      nl: 'mei',
+      en: 'May',
+      de: 'Mai',
+      fr: 'mai',
+      sv: 'maj',
+      pt: 'maio',
+    ),
+    LocalizedText(
+      nl: 'juni',
+      en: 'June',
+      de: 'Juni',
+      fr: 'juin',
+      sv: 'juni',
+      pt: 'junho',
+    ),
     LocalizedText(
       nl: 'juli',
       en: 'July',
       de: 'Juli',
       fr: 'juillet',
       sv: 'juli',
+      pt: 'julho',
     ),
     LocalizedText(
       nl: 'augustus',
@@ -4689,6 +5376,7 @@ abstract final class Str {
       de: 'August',
       fr: 'août',
       sv: 'augusti',
+      pt: 'agosto',
     ),
     LocalizedText(
       nl: 'september',
@@ -4696,6 +5384,7 @@ abstract final class Str {
       de: 'September',
       fr: 'septembre',
       sv: 'september',
+      pt: 'setembro',
     ),
     LocalizedText(
       nl: 'oktober',
@@ -4703,6 +5392,7 @@ abstract final class Str {
       de: 'Oktober',
       fr: 'octobre',
       sv: 'oktober',
+      pt: 'outubro',
     ),
     LocalizedText(
       nl: 'november',
@@ -4710,6 +5400,7 @@ abstract final class Str {
       de: 'November',
       fr: 'novembre',
       sv: 'november',
+      pt: 'novembro',
     ),
     LocalizedText(
       nl: 'december',
@@ -4717,6 +5408,7 @@ abstract final class Str {
       de: 'Dezember',
       fr: 'décembre',
       sv: 'december',
+      pt: 'dezembro',
     ),
   ];
 
@@ -4733,6 +5425,7 @@ abstract final class Str {
       de: m.pick('de'),
       fr: up(m.pick('fr')),
       sv: up(m.pick('sv')),
+      pt: up(m.pick('pt')),
     );
   }
 
@@ -4750,6 +5443,7 @@ abstract final class Str {
         _ => m.pick('fr').substring(0, 3).toUpperCase(),
       },
       sv: m.pick('sv').substring(0, 3).toUpperCase(),
+      pt: m.pick('pt').substring(0, 3).toUpperCase(),
     );
   }
 }

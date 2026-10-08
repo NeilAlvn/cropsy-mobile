@@ -10,17 +10,17 @@ void main() {
     expect(normalizeLang('NL'), 'nl');
     expect(normalizeLang('fr-FR'), 'fr');
     expect(normalizeLang('sv-SE'), 'sv');
-    // Planned but not shipped: English until the wave lands.
-    expect(normalizeLang('pt_PT'), 'en');
+    expect(normalizeLang('pt_PT'), 'pt');
+    // Not one of ours: English.
     expect(normalizeLang('it'), 'en');
     expect(normalizeLang(null), 'en');
   });
 
-  test('the stored language keeps a planned code the app does not speak yet', () {
-    expect(shippedLanguages, isNot(contains('pt')));
+  test('all six planned languages ship; an unsupported one falls back to English', () {
+    expect(shippedLanguages, appLanguages.map((l) => l.$1).toList());
     expect(plannedLang('pt-PT'), 'pt');
-    expect(normalizeLang('pt-PT'), 'en');
     expect(plannedLang('it'), 'en');
+    expect(normalizeLang('it'), 'en');
   });
 
   test('six languages planned, the picker offers only the shipped ones', () {

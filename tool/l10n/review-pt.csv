@@ -1,0 +1,1464 @@
+file,name,en,pt,note
+lib/l10n/strings.dart,tabHome,Home,Início,tab label
+lib/l10n/strings.dart,tabGarden,My garden,A minha horta,"tab label, deliberate: app garden entity = ""horta"" (""A minha horta"", brief); watch width (13 vs 9 chars)"
+lib/l10n/strings.dart,tabSeason,Season path,Estação,"tab label, deliberate: ""Estação"" (glossary ""percurso da estação"" too long for the tab bar; full term in titles)"
+lib/l10n/strings.dart,tabExplore,Explore,Explorar,tab label
+lib/l10n/strings.dart,tabDiagnose,Diagnose,Diagnóstico,tab label: watch width (11 vs 8 chars)
+lib/l10n/strings.dart,greeting,Hey there,Olá,
+lib/l10n/strings.dart,greetingNamed(String name),"FN: nl: 'Hoi, $name',
+    en: 'Hey, $name',
+    de: 'Hallo, $name',
+    fr: 'Salut, $name',
+    sv: 'Hej, $name',
+    pt: 'Olá, $name',","FN: 'Olá, $name'",hand-translated function
+lib/l10n/strings.dart,greetingSub,Here is your garden this week.,Esta é a tua horta esta semana.,
+lib/l10n/strings.dart,searchCrops,Search vegetables,Procurar legumes,
+lib/l10n/strings.dart,todaysCare(int open),"FN: nl: 'Vandaag te doen ($open)',
+    en: ""Today's care ($open)"",
+    de: 'Heute zu tun ($open)',
+    fr: 'À faire aujourd\'hui ($open)',
+    sv: 'Att göra idag ($open)',
+    pt: 'Cuidados de hoje ($open)',",FN: 'Cuidados de hoje ($open)',hand-translated function
+lib/l10n/strings.dart,upcomingHarvest(int n),"FN: nl: 'Binnenkort oogsten ($n)',
+    en: 'Upcoming harvest ($n)',
+    de: 'Bald ernten ($n)',
+    fr: 'Récolte bientôt ($n)',
+    sv: 'Snart skörd ($n)',
+    pt: 'Próximas colheitas ($n)',",FN: 'Próximas colheitas ($n)',hand-translated function
+lib/l10n/strings.dart,whatToGrow(LocalizedText month),"FN: nl: 'Wat te zaaien in ${month.nl}',
+    en: 'What to grow in ${month.en}',
+    de: 'Was anbauen im ${month.pick('de')}',
+    fr: 'Que cultiver en ${month.pick('fr')}',
+    sv: 'Vad du kan odla i ${month.pick('sv')}',
+    pt: 'O que cultivar em ${month.pick('pt')}',",FN: 'O que cultivar em ${month.pick(',hand-translated function
+lib/l10n/strings.dart,checklistFor(LocalizedText month),"FN: nl: 'Checklist voor ${month.nl}',
+    en: 'Checklist for ${month.en}',
+    de: 'Checkliste für ${month.pick('de')}',
+    fr: 'À faire en ${month.pick('fr')}',
+    sv: 'Att göra i ${month.pick('sv')}',
+    pt: 'Tarefas de ${month.pick('pt')}',",FN: 'Tarefas de ${month.pick(',hand-translated function
+lib/l10n/strings.dart,unlockLifetime,"Unlock lifetime, one price, forever","Desbloqueia o Lifetime: um só preço, para sempre","deliberate: plan name ""Lifetime"" kept"
+lib/l10n/strings.dart,startStreak,Start a streak today,Começa uma série hoje,"deliberate: streak = ""série"" throughout"
+lib/l10n/strings.dart,streakDays(int days),"FN: nl: '$days ${days == 1 ? 'dag' : 'dagen'} op rij',
+    en: '$days-day streak',
+    de: '$days ${days == 1 ? 'Tag' : 'Tage'} in Folge',
+    fr: '$days ${days <= 1 ? 'jour' : 'jours'} d\'affilée',
+    sv: '$days ${days == 1 ? 'dag' : 'dagar'} i rad',
+    pt: days == 1 ? '1 dia seguido' : '$days dias seguidos',",FN: ,hand-translated function
+lib/l10n/strings.dart,season,Season,Estação,
+lib/l10n/strings.dart,yearInGarden(int year),"FN: nl: '$year in jouw tuin',
+    en: '$year in your garden',
+    de: '$year in deinem Garten',
+    fr: '$year dans ton potager',
+    sv: '$year i din odling',
+    pt: '$year na tua horta',",FN: '$year na tua horta',hand-translated function
+lib/l10n/strings.dart,today,Today,Hoje,
+lib/l10n/strings.dart,tomorrow,Tomorrow,Amanhã,
+lib/l10n/strings.dart,"stepPlannedOn(LocalizedText step, String day)","FN: nl: '${step.nl} · gepland $day',
+        en: '${step.en} · planned $day',
+        de: '${step.pick('de')} · geplant am $day',
+        fr: '${step.pick('fr')} · pour le $day',
+        sv: '${step.pick('sv')} · planerat $day',
+        pt: '${step.pick('pt')} · planeado para $day',",FN: '${step.pick(',hand-translated function
+lib/l10n/strings.dart,nothingToDoToday,Nothing to do today. Enjoy it.,Nada para fazer hoje. Aproveita.,
+lib/l10n/strings.dart,thingsToDoToday(int n),"FN: nl: n == 1 ? 'Eén ding te doen vandaag.' : '$n dingen te doen vandaag.',
+    en: n == 1 ? '1 thing to do today.' : '$n things to do today.',
+    de: n == 1 ? 'Heute steht 1 Aufgabe an.' : 'Heute stehen $n Aufgaben an.',
+    fr: n <= 1
+        ? '$n chose à faire aujourd\'hui.'
+        : '$n choses à faire aujourd\'hui.',
+    sv: n == 1 ? '1 sak att göra idag.' : '$n saker att göra idag.',
+    pt: n == 1 ? '1 coisa para fazer hoje.' : '$n coisas para fazer hoje.',",FN: ,hand-translated function
+lib/l10n/strings.dart,removeKeepsYourHarvests(String name),"FN: nl:
+        'Dit haalt $name uit je tuin. Oogsten die je al logde blijven in '
+        'je seizoensgeschiedenis staan.',
+    en:
+        'This takes $name out of your garden. Any harvests you already '
+        'logged stay in your season history.',
+    de:
+        'Damit nimmst du $name aus deinem Garten. Ernten, die du schon '
+        'eingetragen hast, bleiben in deinem Saisonverlauf.',
+    fr:
+        'Ça retire $name de ton potager. Les récoltes que tu as déjà notées '
+        'restent dans l\'historique de ta saison.',
+    sv:
+        'Det här tar bort $name från din odling. Skördar du redan har '
+        'loggat finns kvar i din säsongshistorik.',
+    pt:
+        'Isto tira $name da tua horta. As colheitas que já registaste '
+        'ficam no histórico da estação.',","FN: 'Isto tira $name da tua horta. As colheitas que já registaste '
+        'ficam no histórico da estação.'",hand-translated function
+lib/l10n/strings.dart,symptoms,Symptoms,Sintomas,
+lib/l10n/strings.dart,pickSomething,Pick something ,Escolhe algo ,
+lib/l10n/strings.dart,toGrow,to grow,para cultivar,chip/button: watch width (13 vs 7 chars)
+lib/l10n/strings.dart,minSoilTemp,Min soil temp,Temp. mín. do solo,
+lib/l10n/strings.dart,minPotSize,Min pot size,Vaso mínimo,
+lib/l10n/strings.dart,containerFriendly,Container-friendly,Bom para vasos,
+lib/l10n/strings.dart,yes,Yes,Sim,
+lib/l10n/strings.dart,balconySuitability,NL balcony suitability,Adequação a varandas NL,
+lib/l10n/strings.dart,balconyGreat,Great,Ótimo,
+lib/l10n/strings.dart,balconyAfterIjsheiligen,Good after IJsheiligen,Bom após as últimas geadas,"deliberate: IJsheiligen = ""últimas geadas"" (brief)"
+lib/l10n/strings.dart,balconyNeedsBed,Needs a bed,Precisa de canteiro,chip/button: watch width (19 vs 11 chars)
+lib/l10n/strings.dart,moveBackToPlanning,Move back to planning,Voltar ao planeamento,
+lib/l10n/strings.dart,removeFromGarden,Remove from garden,Remover da horta,
+lib/l10n/strings.dart,removeKeepsHarvests(String name),"FN: nl:
+        'Dit haalt $name uit je tuin. Gelogde oogsten blijven in je '
+        'seizoensgeschiedenis staan.',
+    en:
+        'This takes $name out of your garden. Logged harvests stay in your '
+        'season history.',
+    de:
+        'Damit nimmst du $name aus deinem Garten. Eingetragene Ernten bleiben '
+        'in deinem Saisonverlauf.',
+    fr:
+        'Ça retire $name de ton potager. Les récoltes notées restent dans '
+        'l\'historique de ta saison.',
+    sv:
+        'Det här tar bort $name från din odling. Loggade skördar finns kvar '
+        'i din säsongshistorik.',
+    pt:
+        'Isto tira $name da tua horta. As colheitas registadas ficam no '
+        'histórico da estação.',","FN: 'Isto tira $name da tua horta. As colheitas registadas ficam no '
+        'histórico da estação.'",hand-translated function
+lib/l10n/strings.dart,tapPlanToGrow,"Tap ""Plan to grow"" on any crop to add it here.",Toca em “Planear” numa planta para a adicionares aqui.,"quotes the planToGrow button ""Planear"""
+lib/l10n/strings.dart,tapGrowingIt,"Tap ""Growing it"" on a crop, or start a planned one.","Toca em “Já plantei” numa planta, ou começa uma planeada.","quotes the growingIt button ""Já plantei"""
+lib/l10n/strings.dart,sowIndoors,Sow indoors,Semear em interior,"glossary ""semear em interior"": watch width where used as a chip/row label"
+lib/l10n/strings.dart,plantOut,Plant out,Transplantar,"glossary ""transplantar"""
+lib/l10n/strings.dart,sowOutdoors,Sow outdoors,Semear no exterior,chip/button: watch width (18 vs 12 chars)
+lib/l10n/strings.dart,treatmentOrganicFirst,Treatment (organic first),Tratamento (biológico primeiro),
+lib/l10n/strings.dart,prevention,Prevention,Prevenção,
+lib/l10n/strings.dart,lastFrostRow,Last frost,Última geada,
+lib/l10n/strings.dart,firstFrostRow,First frost,Primeira geada,
+lib/l10n/strings.dart,preferredSun,Preferred sun,Exposição solar,
+lib/l10n/strings.dart,frostTender,Frost tender,Sensível à geada,
+lib/l10n/strings.dart,yesWaitForLastFrost,"Yes, wait for last frost","Sim, espera pela última geada",
+lib/l10n/strings.dart,no,No,Não,
+lib/l10n/strings.dart,empty,,,
+lib/l10n/strings.dart,sow,Sow,Semear,
+lib/l10n/strings.dart,startIndoors,Start indoors,Semear em interior,"glossary ""semear em interior"": watch width"
+lib/l10n/strings.dart,plantOutside,Plant outside,Plantar no exterior,chip/button: watch width (19 vs 13 chars)
+lib/l10n/strings.dart,easyFilter,Easy,Fácil,
+lib/l10n/strings.dart,whatIsWrongHere,What is wrong here?,O que se passa aqui?,
+lib/l10n/strings.dart,whatWouldBeBetter,What would make this better?,O que tornaria isto melhor?,
+lib/l10n/strings.dart,climateNormals,KNMI/Open-Meteo climate normals,Normais climáticas KNMI/Open-Meteo,
+lib/l10n/strings.dart,regionalPreset,NL regional preset,Predefinição regional NL,
+lib/l10n/strings.dart,"daysToHarvest(num min, num max)","FN: nl: '$min-$max dagen',
+    en: '$min-$max days',
+    de: '$min-$max Tage',
+    fr: '$min-$max jours',
+    sv: '$min–$max dagar',
+    pt: '$min–$max dias',",FN: '$min–$max dias',hand-translated function
+lib/l10n/strings.dart,stageSprout,Sprout,Rebento,
+lib/l10n/strings.dart,dayOne,Day 1,Dia 1,
+lib/l10n/strings.dart,"dayRange(num from, num to)","FN: nl: 'Dag $from-$to',
+    en: 'Day $from-$to',
+    de: 'Tag $from-$to',
+    fr: 'Jour $from-$to',
+    sv: 'Dag $from–$to',
+    pt: 'Dia $from–$to',",FN: 'Dia $from–$to',hand-translated function
+lib/l10n/strings.dart,enoughRainBadge,Enough rain,Chuva suficiente,chip/button: watch width (16 vs 11 chars)
+lib/l10n/strings.dart,heatComingBadge,Heat coming,Vem aí calor,
+lib/l10n/strings.dart,soilTooColdBadge,Soil too cold,Solo demasiado frio,chip/button: watch width (19 vs 13 chars)
+lib/l10n/strings.dart,gardenKindBalcony,Balcony,Varanda,
+lib/l10n/strings.dart,gardenKindGarden,Garden,Jardim,"deliberate: ""Jardim"" = a yard (the space kind), not the app garden entity"
+lib/l10n/strings.dart,gardenKindAllotment,Allotment,Horta urbana,"chip, deliberate: allotment = ""Horta urbana"" (municipal plots in PT)"
+lib/l10n/strings.dart,contactUs,Contact us,Contacta-nos,
+lib/l10n/strings.dart,privacy,Privacy,Privacidade,chip/button: watch width (11 vs 7 chars)
+lib/l10n/strings.dart,terms,Terms,Termos,
+lib/l10n/strings.dart,yourHarvests,Your harvests,As tuas colheitas,
+lib/l10n/strings.dart,placeGround,In the ground,Na terra,
+lib/l10n/strings.dart,placeRaisedBed,Raised bed,Canteiro elevado,chip/button: watch width (16 vs 10 chars)
+lib/l10n/strings.dart,placePotOutside,Pot outside,Vaso no exterior,chip/button: watch width (16 vs 11 chars)
+lib/l10n/strings.dart,placePotInside,Pot inside,Vaso no interior,chip/button: watch width (16 vs 10 chars)
+lib/l10n/strings.dart,methodSowedIndoors,Sowed indoors,Semeei em interior,"chip, deliberate: method labels in first person (""Semeei…"", ""Plantei…""); watch width (18 vs 13 chars)"
+lib/l10n/strings.dart,methodSowedOutside,Sowed outside,Semeei no exterior,"chip, deliberate: first person; watch width (18 vs 13 chars)"
+lib/l10n/strings.dart,methodPlantedSeedling,Planted a seedling,Plantei uma muda,"chip, deliberate: first person"
+lib/l10n/strings.dart,methodPlantedSets,Planted (sets / tubers),Plantei (bolbilhos / tubérculos),"chip: watch width (32 vs 23 chars); sets = ""bolbilhos"""
+lib/l10n/strings.dart,sowDepth,Sow depth,Profundidade,"deliberate: shortened to ""Profundidade"" (row sits in the sowing block)"
+lib/l10n/strings.dart,germination,Germination,Germinação,
+lib/l10n/strings.dart,plantOutAfter,Plant out after,Transplantar após,
+lib/l10n/strings.dart,spacing,Spacing,Espaçamento,chip/button: watch width (11 vs 7 chars)
+lib/l10n/strings.dart,perSquare,Per 30 cm square,Por quadrado de 30 cm,
+lib/l10n/strings.dart,care,Care,Cuidados,chip/button: watch width (8 vs 4 chars)
+lib/l10n/strings.dart,waterSmallPot,Water (small pot),Rega (vaso pequeno),
+lib/l10n/strings.dart,waterInGround,Water (in ground),Rega (na terra),
+lib/l10n/strings.dart,feed,Feed,Adubar,
+lib/l10n/strings.dart,perennial,Perennial,Perene,
+lib/l10n/strings.dart,firstHarvest,First harvest,Primeira colheita,
+lib/l10n/strings.dart,aboutDays(int n),"FN: nl: '~$n dagen',
+    en: '~$n days',
+    de: '~$n Tage',
+    fr: '~$n ${n <= 1 ? 'jour' : 'jours'}',
+    sv: '~$n ${n == 1 ? 'dag' : 'dagar'}',
+    pt: '~$n ${n == 1 ? 'dia' : 'dias'}',",FN: '~$n ${n == 1 ? ',hand-translated function
+lib/l10n/strings.dart,daysIndoors(int n),"FN: nl: '~$n dagen binnen',
+    en: '~$n days indoors',
+    de: '~$n Tage drinnen',
+    fr: '~$n ${n <= 1 ? 'jour' : 'jours'} en intérieur',
+    sv: '~$n ${n == 1 ? 'dag' : 'dagar'} inomhus',
+    pt: '~$n ${n == 1 ? 'dia' : 'dias'} em interior',",FN: '~$n ${n == 1 ? ',hand-translated function
+lib/l10n/strings.dart,everyDays(int n),"FN: nl: n == 1 ? 'elke dag' : 'elke $n dagen',
+    en: n == 1 ? 'every 1 day' : 'every $n days',
+    de: n == 1 ? 'jeden Tag' : 'alle $n Tage',
+    fr: n <= 1 ? 'chaque jour' : 'tous les $n jours',
+    sv: _svEvery(n),
+    pt: n == 1 ? 'todos os dias' : 'a cada $n dias',",FN: ,hand-translated function
+lib/l10n/strings.dart,everyDaysEstablished(int n),"FN: nl: 'elke $n dagen zodra hij aanslaat',
+    en: 'every $n days once established',
+    de: 'alle $n Tage, sobald sie angewachsen ist',
+    fr: 'tous les $n jours une fois installée',
+    sv: '${_svEvery(n)} när den har etablerat sig',
+    pt: '${n == 1 ? 'todos os dias' : 'a cada $n dias'} depois de estabelecida',",FN: '${n == 1 ? ',hand-translated function
+lib/l10n/strings.dart,comesBackNextYear,comes back next year,volta no próximo ano,
+lib/l10n/strings.dart,"daysAfterPlantOut(num min, num max)","FN: nl: '$min-$max dagen na het uitplanten',
+    en: '$min-$max days after planting out',
+    de: '$min-$max Tage nach dem Auspflanzen',
+    fr: '$min-$max jours après le repiquage',
+    sv: '$min–$max dagar efter utplantering',
+    pt: '$min–$max dias após a transplantação',",FN: '$min–$max dias após a transplantação',hand-translated function
+lib/l10n/strings.dart,heroKnowWhatToDo,"Know what to do
+","Sabe o que fazer
+",
+lib/l10n/strings.dart,heroThisWeek,this week,esta semana,
+lib/l10n/strings.dart,heroInYourGarden, in your garden., na tua horta.,
+lib/l10n/strings.dart,heroSubtitle,"Planting dates and reminders tuned to Dutch and EU weather, built for balconies and containers.","Datas de plantação e lembretes ajustados ao clima dos Países Baixos e da UE, pensados para varandas e vasos.",
+lib/l10n/strings.dart,getStarted,Get started,Começar,"button, glossary ""Começar"""
+lib/l10n/strings.dart,continueLabel,Continue,Continuar,
+lib/l10n/strings.dart,datesCheckedTitle,Every date checked against Dutch seed calendars,Cada data verificada em calendários de sementeira neerlandeses,
+lib/l10n/strings.dart,datesCheckedBody,"Each crop is cross-checked against at least two NL sources, IVN, Tuinadvies, zaaitijden.nl and Groei & Bloei, before it reaches you. And when life gets in the way, the plan moves with you. Nothing is ever ""overdue"".","Cada planta é verificada em pelo menos duas fontes neerlandesas, IVN, Tuinadvies, zaaitijden.nl e Groei & Bloei, antes de chegar a ti. E quando a vida se mete pelo meio, o plano acompanha-te. Nada fica “perdido”: só muda de data.","deliberate: “perdido” / “muda de data”, never ""atrasado"" / ""em atraso"" (glossary)"
+lib/l10n/strings.dart,getToKnowTitle,Hi! Let's get to know each other,Olá! Vamos conhecer-nos,
+lib/l10n/strings.dart,getToKnowBody,"A few quick questions about your space and what you like to eat. Two minutes, then your plan is ready.",Algumas perguntas rápidas sobre o teu espaço e o que gostas de comer. Dois minutos e o teu plano fica pronto.,
+lib/l10n/strings.dart,whatSpace,What space do you have to grow in?,Que espaço tens para cultivar?,
+lib/l10n/strings.dart,experienceReassure,"Good — then we start at the beginning. You'll get every step as it comes, and the reason behind it.","Ótimo — então começamos do princípio. Recebes cada passo quando chega a altura, e a razão por trás dele.",
+lib/l10n/strings.dart,pickAllThatApply,Pick all that apply.,Escolhe todas as que se aplicam.,chip/button: watch width (32 vs 20 chars)
+lib/l10n/strings.dart,spaceBackyard,Garden,Jardim,"deliberate: ""Jardim"" = a yard"
+lib/l10n/strings.dart,spaceBalcony,Balcony,Varanda,
+lib/l10n/strings.dart,spaceIndoor,Indoors,Dentro de casa,chip/button: watch width (14 vs 7 chars)
+lib/l10n/strings.dart,spaceAllotment,Allotment,Horta urbana,"chip, deliberate: allotment = ""Horta urbana"""
+lib/l10n/strings.dart,spaceOther,Somewhere else,Outro sítio,
+lib/l10n/strings.dart,howMuchSpace,How much space?,Quanto espaço?,
+lib/l10n/strings.dart,howMuchSpaceSub,"Roughly, it sets how many plants fit.",Mais ou menos; define quantas plantas cabem.,
+lib/l10n/strings.dart,howMuchSun,How much sun?,Quanto sol?,
+lib/l10n/strings.dart,howMuchSunSub,"On a clear day, how long is it in direct sun?","Num dia limpo, quanto tempo apanha sol direto?",
+lib/l10n/strings.dart,sunFull,Full sun (6h+),Sol pleno (6 h+),
+lib/l10n/strings.dart,sunPartial,Partial (3-6h),Meia-sombra (3–6 h),
+lib/l10n/strings.dart,sunShade,Shade (< 3h),Sombra (< 3 h),
+lib/l10n/strings.dart,grownBefore,Grown anything before?,Já cultivaste alguma coisa?,
+lib/l10n/strings.dart,grownBeforeSub,So we pitch the advice right.,Para acertarmos nos conselhos.,
+lib/l10n/strings.dart,experienceNever,Never,Nunca,
+lib/l10n/strings.dart,experienceSome,A season or two,Uma ou duas estações,
+lib/l10n/strings.dart,experiencePlenty,Plenty,Muitas vezes,chip/button: watch width (12 vs 6 chars)
+lib/l10n/strings.dart,whatDoYouEat,What do you like to eat?,O que gostas de comer?,
+lib/l10n/strings.dart,foodVegetables,Vegetables,Legumes,
+lib/l10n/strings.dart,foodHerbs,Herbs,Ervas aromáticas,"chip, glossary ""ervas aromáticas"": watch width (16 vs 5 chars)"
+lib/l10n/strings.dart,foodSalad,Salad leaves,Folhas de salada,
+lib/l10n/strings.dart,foodFruit,Fruit,Fruta,
+lib/l10n/strings.dart,foodRoots,Root veg,Legumes de raiz,chip/button: watch width (15 vs 8 chars)
+lib/l10n/strings.dart,whatMattersMost,What's most important?,O que é mais importante?,
+lib/l10n/strings.dart,interestEasy,Easy to grow,Fácil de cultivar,chip/button: watch width (17 vs 12 chars)
+lib/l10n/strings.dart,interestFast,Fast harvest,Colheita rápida,
+lib/l10n/strings.dart,interestYield,High yield,Muita produção,
+lib/l10n/strings.dart,interestKids,Fun with kids,Com crianças,"deliberate: shortened to ""Com crianças"""
+lib/l10n/strings.dart,interestCost,Saves money,Poupa dinheiro,
+lib/l10n/strings.dart,buildMyPlan,Build my plan,Criar o meu plano,
+lib/l10n/strings.dart,yourLocationWord,your location,a tua localização,
+lib/l10n/strings.dart,planReady,Your plan is ready,O teu plano está pronto,
+lib/l10n/strings.dart,planBuilding,Creating your growing plan…,A criar o teu plano de cultivo…,
+lib/l10n/strings.dart,"planFrostLine(
+    String region,
+    String last,
+    String first,
+  )","FN: nl: 'Vorstdatums voor $region: laatste $last, eerste $first',
+    en: 'Frost dates for $region: last $last, first $first',
+    de: 'Frostdaten für $region: letzter $last, erster $first',
+    fr: 'Dates de gel pour $region : dernières $last, premières $first',
+    sv: 'Frostdatum för $region: sista $last, första $first',
+    pt: 'Datas de geada para $region: última $last, primeira $first',","FN: 'Datas de geada para $region: última $last, primeira $first'",hand-translated function
+lib/l10n/strings.dart,planMatches(int n),"FN: nl: n == 1
+        ? '1 gewas past deze maand in je ruimte'
+        : '$n gewassen passen deze maand in je ruimte',
+    en: n == 1
+        ? '1 crop fits your space this month'
+        : '$n crops fit your space this month',
+    de: n == 1
+        ? '1 Pflanze passt diesen Monat zu deinem Platz'
+        : '$n Pflanzen passen diesen Monat zu deinem Platz',
+    fr: n <= 1
+        ? '$n plante convient à ton espace ce mois-ci'
+        : '$n plantes conviennent à ton espace ce mois-ci',
+    sv: n == 1
+        ? '1 växt passar din plats den här månaden'
+        : '$n växter passar din plats den här månaden',
+    pt: n == 1
+        ? '1 planta é boa para o teu espaço este mês'
+        : '$n plantas são boas para o teu espaço este mês',",FN: ,hand-translated function
+lib/l10n/strings.dart,planMatching,Matching crops to your space…,A escolher plantas para o teu espaço…,
+lib/l10n/strings.dart,planFirstTaskWaits,First task lands as soon as a window opens,A primeira tarefa chega assim que se abrir uma janela,
+lib/l10n/strings.dart,planFirstTask(String task),"FN: nl: 'Eerste taak: $task',
+    en: 'First task: $task',
+    de: 'Erste Aufgabe: $task',
+    fr: 'Première tâche : $task',
+    sv: 'Första uppgiften: $task',
+    pt: 'Primeira tarefa: $task',",FN: 'Primeira tarefa: $task',hand-translated function
+lib/l10n/strings.dart,planFindingFirstTask,Finding your first task…,A procurar a tua primeira tarefa…,
+lib/l10n/strings.dart,noLocationPickRegion,"No location, enter a postcode or pick a region below.",Sem localização: introduz um código postal ou escolhe uma região abaixo.,
+lib/l10n/strings.dart,postcodeNotFoundPickRegion,"Postcode not found (1234AB), or you are offline. Pick a region below.","Código postal não encontrado (1234AB), ou estás sem ligação. Escolhe uma região abaixo.",
+lib/l10n/strings.dart,"foundFrostDates(
+    String last,
+    String first,
+  )","FN: nl: 'Gevonden. Laatste vorst rond $last, eerste vorst rond $first.',
+    en: 'Found it. Last frost around $last, first frost around $first.',
+    de: 'Gefunden. Letzter Frost etwa $last, erster Frost etwa $first.',
+    fr: 'Trouvé. Dernières gelées vers le $last, premières gelées vers le $first.',
+    sv: 'Hittat. Sista frosten runt $last, första frosten runt $first.',
+    pt:
+        'Encontrado. Última geada por volta de $last, primeira geada por '
+        'volta de $first.',","FN: 'Encontrado. Última geada por volta de $last, primeira geada por '
+        'volta de $first.'",hand-translated function
+lib/l10n/strings.dart,whatToDo,What to do ,O que fazer ,
+lib/l10n/strings.dart,inYourGarden,in your garden,na tua horta,
+lib/l10n/strings.dart,plotWord,plot,horta,"deliberate: ""horta""; code puts the region first (""Amsterdam horta""), same order as fr/sv"
+lib/l10n/strings.dart,yourLocation,Your location,A tua localização,
+lib/l10n/strings.dart,noLocationMatch(String query),"FN: nl:
+        'Geen match voor ""$query"". Probeer een stad in de buurt, een '
+        'postcode (1234AB), of kies een regio.',
+    en:
+        'No match for ""$query"". Try a nearby city, a postcode (1234AB), or '
+        'pick a region.',
+    de:
+        'Kein Treffer für „$query“. Versuch eine Stadt in der Nähe, eine '
+        'Postleitzahl (1234AB) oder wähl eine Region.',
+    fr:
+        'Aucun résultat pour « $query ». Essaie une ville proche, un code '
+        'postal (1234AB) ou choisis une région.',
+    sv:
+        'Ingen träff för ”$query”. Prova en stad i närheten, ett postnummer '
+        '(1234AB) eller välj en region.',
+    pt:
+        'Sem resultados para “$query”. Tenta uma cidade próxima, um código '
+        'postal (1234AB) ou escolhe uma região.',","FN: 'Sem resultados para “$query”. Tenta uma cidade próxima, um código '
+        'postal (1234AB) ou escolhe uma região.'",hand-translated function
+lib/l10n/strings.dart,useCurrentLocation,Use my current location,Usar a minha localização atual,
+lib/l10n/strings.dart,detectingLocation,Detecting your location…,A detetar a tua localização…,
+lib/l10n/strings.dart,renewsYearly,Renews yearly. Manage or cancel in the App Store / Play Store.,Renova anualmente. Gere ou cancela na App Store / Play Store.,
+lib/l10n/strings.dart,couldNotDeleteAccount,Could not delete the account. Try again later.,Não foi possível eliminar a conta. Tenta mais tarde.,
+lib/l10n/strings.dart,scanOpensWithBeta,Photo scanning is not available right now. The common-problems browser works offline.,A análise por fotografia não está disponível de momento. O guia de problemas comuns funciona sem ligação.,
+lib/l10n/strings.dart,scanQuotaReached,"Daily scan limit reached. Tomorrow again, or unlock lifetime for more.","Limite diário de análises atingido. Volta amanhã, ou desbloqueia o Lifetime para mais.",
+lib/l10n/strings.dart,scanFailed(String code),"FN: nl: 'Scannen mislukt ($code). Probeer opnieuw.',
+    en: 'Scan failed ($code). Try again.',
+    de: 'Scan fehlgeschlagen ($code). Versuch es noch einmal.',
+    fr: 'Échec du scan ($code). Réessaie.',
+    sv: 'Skanningen misslyckades ($code). Försök igen.',
+    pt: 'A análise falhou ($code). Tenta outra vez.',",FN: 'A análise falhou ($code). Tenta outra vez.',hand-translated function
+lib/l10n/strings.dart,snapTipsIdentify,"Snap tips: one plant, a leaf or flower filling the frame, daylight.","Dicas para a foto: uma planta, uma folha ou flor a encher o enquadramento, luz do dia.",
+lib/l10n/strings.dart,snapTipsDiagnose,"Snap tips: the damaged part sharp and close, plus one wider shot if unsure.","Dicas para a foto: a parte danificada nítida e de perto, e uma mais afastada se tiveres dúvidas.",
+lib/l10n/strings.dart,rainSkipsWatering(int mm),"FN: nl:
+        'Er viel $mm mm in de laatste drie dagen. Water geven rond vandaag '
+        'wordt overgeslagen.',
+    en:
+        'Rained $mm mm in the last three days. Waterings around today are '
+        'skipped.',
+    de:
+        'In den letzten drei Tagen sind $mm mm Regen gefallen. Das Gießen '
+        'rund um heute fällt aus.',
+    fr:
+        'Il est tombé $mm mm ces trois derniers jours. Les arrosages prévus '
+        'autour d\'aujourd\'hui sont annulés.',
+    sv:
+        'Det har regnat $mm mm de senaste tre dagarna. Vattningar runt idag '
+        'hoppas över.',
+    pt:
+        'Choveu $mm mm nos últimos três dias. As regas à volta de hoje '
+        'foram saltadas.',","FN: 'Choveu $mm mm nos últimos três dias. As regas à volta de hoje '
+        'foram saltadas.'",hand-translated function
+lib/l10n/strings.dart,heatAhead,"Heat ahead (30°C+). Containers dry out in a day, so waterings move earlier.","Vem aí calor (30 °C+). Os vasos secam num dia, por isso as regas passam para mais cedo.",deliberate: space before °C
+lib/l10n/strings.dart,forecastCalm,Nothing dramatic in the forecast. The plan stands.,Nada de dramático na previsão. O plano mantém-se.,
+lib/l10n/strings.dart,youAreHere,You are here,Estás aqui,
+lib/l10n/strings.dart,cropsSuitMonth(int n),"FN: nl: n == 1 ? '1 gewas past' : '$n gewassen passen',
+    en: n == 1 ? '1 crop suits it' : '$n crops suit it',
+    de: n == 1 ? '1 Pflanze passt' : '$n Pflanzen passen',
+    fr: n <= 1 ? '$n plante convient' : '$n plantes conviennent',
+    sv: n == 1 ? '1 växt passar' : '$n växter passar',
+    pt: n == 1 ? '1 planta adequada' : '$n plantas adequadas',",FN: ,hand-translated function
+lib/l10n/strings.dart,cropsCanGoIn(int n),"FN: nl: n == 1 ? 'Er kan nog 1 gewas in' : 'Er kunnen nog $n gewassen in',
+    en: n == 1 ? '1 crop can still go in' : '$n crops can still go in',
+    de: n == 1 ? '1 Pflanze kann noch rein' : '$n Pflanzen können noch rein',
+    fr: n <= 1
+        ? '$n plante peut encore aller en terre'
+        : '$n plantes peuvent encore aller en terre',
+    sv: n == 1
+        ? '1 växt kan fortfarande komma i jorden'
+        : '$n växter kan fortfarande komma i jorden',
+    pt: n == 1
+        ? '1 planta ainda pode ir para a terra'
+        : '$n plantas ainda podem ir para a terra',",FN: ,hand-translated function
+lib/l10n/strings.dart,nothingPlanned(LocalizedText month),"FN: nl: 'Nog niets gepland voor ${month.nl}',
+    en: 'Nothing planned for ${month.en}',
+    de: 'Nichts geplant im ${month.pick('de')}',
+    fr: 'Rien de planifié en ${month.pick('fr')}',
+    sv: 'Inget planerat i ${month.pick('sv')}',
+    pt: 'Nada planeado para ${month.pick('pt')}',",FN: 'Nada planeado para ${month.pick(',hand-translated function
+lib/l10n/strings.dart,stillSowable(LocalizedText month),"FN: nl: 'Nog te zaaien in ${month.nl}',
+    en: 'Still sowable in ${month.en}',
+    de: 'Im ${month.pick('de')} noch zu säen',
+    fr: 'Encore à semer en ${month.pick('fr')}',
+    sv: 'Går fortfarande att så i ${month.pick('sv')}',
+    pt: 'Ainda dá para semear em ${month.pick('pt')}',",FN: 'Ainda dá para semear em ${month.pick(',hand-translated function
+lib/l10n/strings.dart,"openAndDone(int open, int done)","FN: nl: '$open nu open · $done gedaan',
+    en: '$open open now · $done done',
+    de: '$open jetzt offen · $done erledigt',
+    fr: '$open à faire · $done ${done <= 1 ? 'faite' : 'faites'}',
+    sv: '$open att göra · $done ${done == 1 ? 'klar' : 'klara'}',
+    pt: '$open por fazer · $done ${done == 1 ? 'feita' : 'feitas'}',",FN: '$open por fazer · $done ${done == 1 ? ',hand-translated function
+lib/l10n/strings.dart,doneNothingOpen(int done),"FN: nl: '$done gedaan · niets open vandaag',
+    en: '$done done · nothing open today',
+    de: '$done erledigt · heute nichts offen',
+    fr: '$done ${done <= 1 ? 'faite' : 'faites'} · rien à faire aujourd\'hui',
+    sv: '$done ${done == 1 ? 'klar' : 'klara'} · inget kvar idag',
+    pt: '$done ${done == 1 ? 'feita' : 'feitas'} · nada por fazer hoje',",FN: '$done ${done == 1 ? ',hand-translated function
+lib/l10n/strings.dart,sowCrop(LocalizedText crop),"FN: nl: '${crop.nl} zaaien',
+    en: 'Sow ${crop.en}',
+    de: '${crop.pick('de')} säen',
+    fr: '${crop.pick('fr')} : semer',
+    sv: 'Så ${crop.pick('sv').toLowerCase()}',
+    pt: 'Semear ${crop.pick('pt').toLowerCase()}',",FN: 'Semear ${crop.pick(',hand-translated function
+lib/l10n/strings.dart,harvestCrop(LocalizedText crop),"FN: nl: '${crop.nl} oogsten',
+    en: 'Harvest ${crop.en}',
+    de: '${crop.pick('de')} ernten',
+    fr: '${crop.pick('fr')} : récolter',
+    sv: 'Skörda ${crop.pick('sv').toLowerCase()}',
+    pt: 'Colher ${crop.pick('pt').toLowerCase()}',",FN: 'Colher ${crop.pick(',hand-translated function
+lib/l10n/strings.dart,followOn(LocalizedText crop),"FN: nl: 'Daarna: ${crop.nl}',
+    en: 'Follow on: ${crop.en}',
+    de: 'Danach: ${crop.pick('de')}',
+    fr: 'Ensuite : ${crop.pick('fr')}',
+    sv: 'Sedan: ${crop.pick('sv').toLowerCase()}',
+    pt: 'A seguir: ${crop.pick('pt').toLowerCase()}',",FN: 'A seguir: ${crop.pick(',hand-translated function
+lib/l10n/strings.dart,"stepOnCrop(LocalizedText step, LocalizedText crop)","FN: nl: '${crop.nl} ${step.nl.toLowerCase()}',
+        en: '${step.en} ${crop.en}',
+        de: '${crop.pick('de')} ${step.pick('de').toLowerCase()}',
+        fr: '${crop.pick('fr')} : ${step.pick('fr').toLowerCase()}',
+        sv: '${step.pick('sv')} ${crop.pick('sv').toLowerCase()}',
+        pt: '${step.pick('pt')} ${crop.pick('pt').toLowerCase()}',",FN: '${step.pick(',hand-translated function
+lib/l10n/strings.dart,ijsheiligen,IJsheiligen,Últimas geadas,"deliberate: IJsheiligen / Ice Saints = ""últimas geadas"" (brief)"
+lib/l10n/strings.dart,ijsheiligenSub,Tender crops stay in until 15 May,As plantas sensíveis ficam abrigadas até 15 de maio,
+lib/l10n/strings.dart,lastFrost,"Last frost, on average","Última geada, em média",
+lib/l10n/strings.dart,lastFrostSub,"After this, tender crops can go out","Depois disto, as plantas sensíveis podem ir para fora",
+lib/l10n/strings.dart,firstFrost,"First frost, on average","Primeira geada, em média",
+lib/l10n/strings.dart,firstFrostSub,Bring tender crops in before this,Recolhe as plantas sensíveis antes disto,
+lib/l10n/strings.dart,orderSeed,Order your seed,Encomenda as sementes,
+lib/l10n/strings.dart,cropsOnList(int n),"FN: nl: n == 1 ? '1 gewas op je lijst' : '$n gewassen op je lijst',
+    en: n == 1 ? '1 crop on your list' : '$n crops on your list',
+    de: n == 1 ? '1 Pflanze auf deiner Liste' : '$n Pflanzen auf deiner Liste',
+    fr: n <= 1 ? '$n plante sur ta liste' : '$n plantes sur ta liste',
+    sv: n == 1 ? '1 växt på din lista' : '$n växter på din lista',
+    pt: n == 1 ? '1 planta na tua lista' : '$n plantas na tua lista',",FN: ,hand-translated function
+lib/l10n/strings.dart,monthPhoto,Snap this month's photo,Tira a foto deste mês,
+lib/l10n/strings.dart,seasonInPictures,"Your season, in pictures","A tua estação, em imagens",
+lib/l10n/strings.dart,seasonTally,Season tally,Balanço da estação,chip/button: watch width (18 vs 12 chars)
+lib/l10n/strings.dart,"tallySoFar(int euros, String kilos)","FN: nl: '€$euros en $kilos kg tot nu toe',
+    en: '€$euros and $kilos kg so far',
+    de: '$euros € und $kilos kg bisher',
+    fr: '$euros € et $kilos kg pour l\'instant',
+    sv: '$euros € och ${kilos.replaceAll('.', ',')} kg hittills',
+    pt: '$euros € e ${kilos.replaceAll('.', ',')} kg até agora',",FN: '$euros € e ${kilos.replaceAll(',hand-translated function
+lib/l10n/strings.dart,tallyEmpty,Log a harvest and it adds up here,Regista uma colheita e ela soma-se aqui,
+lib/l10n/strings.dart,recapTitle(int year),"FN: nl: 'Jouw $year, op één kaart',
+    en: 'Your $year, in one card',
+    de: 'Dein $year auf einer Karte',
+    fr: 'Ton $year, en une carte',
+    sv: 'Ditt $year, på ett kort',
+    pt: 'O teu $year, num só cartão',","FN: 'O teu $year, num só cartão'",hand-translated function
+lib/l10n/strings.dart,recapSub,"What you grew, picked and saved","O que cultivaste, colheste e poupaste",
+lib/l10n/strings.dart,recapPicked(int euros),"FN: nl: '€$euros geplukt tot nu toe',
+    en: '€$euros picked so far',
+    de: '$euros € bisher geerntet',
+    fr: '$euros € récoltés pour l\'instant',
+    sv: '$euros € skördat hittills',
+    pt: '$euros € colhidos até agora',",FN: '$euros € colhidos até agora',hand-translated function
+lib/l10n/strings.dart,plantsGrown,Plants grown,Plantas cultivadas,chip/button: watch width (18 vs 12 chars)
+lib/l10n/strings.dart,picked,Picked,Colhido,
+lib/l10n/strings.dart,saved,Saved,Poupado,
+lib/l10n/strings.dart,rainDidIt,Rain did the watering,A chuva regou por ti,
+lib/l10n/strings.dart,rainDidItSub,"Skipped for you, the streak still counts",Saltámos a rega por ti; a série continua a contar,
+lib/l10n/strings.dart,heatComing,Heat on the way,Vem aí calor,
+lib/l10n/strings.dart,heatComingSub,Water earlier than planned,Rega mais cedo do que o planeado,
+lib/l10n/strings.dart,soilCold,Soil still too cold,Solo ainda demasiado frio,
+lib/l10n/strings.dart,soilColdSub,Sowing held until it warms,A sementeira espera até o solo aquecer,
+lib/l10n/strings.dart,explore,Explore,Explorar,
+lib/l10n/strings.dart,findNextCrop,Find your next crop,Encontra a tua próxima planta,chip/button: watch width (29 vs 19 chars)
+lib/l10n/strings.dart,identifyFromPhoto,Identify a plant from a photo,Identifica uma planta por fotografia,
+lib/l10n/strings.dart,grow,Grow,Cultivar,chip/button: watch width (8 vs 4 chars)
+lib/l10n/strings.dart,searchCropCount(int n),"FN: nl: n == 1 ? 'Zoek in 1 gewas…' : 'Zoek in $n gewassen…',
+    en: n == 1 ? 'Search 1 crop…' : 'Search $n crops…',
+    de: n == 1 ? 'In 1 Pflanze suchen…' : 'In $n Pflanzen suchen…',
+    fr: n <= 1 ? 'Chercher parmi $n plante…' : 'Chercher parmi $n plantes…',
+    sv: n == 1 ? 'Sök bland 1 växt…' : 'Sök bland $n växter…',
+    pt: n == 1 ? 'Procurar em 1 planta…' : 'Procurar em $n plantas…',",FN: ,hand-translated function
+lib/l10n/strings.dart,results(int n),"FN: nl: n == 1 ? '1 resultaat' : '$n resultaten',
+    en: n == 1 ? '1 result' : '$n results',
+    de: n == 1 ? '1 Ergebnis' : '$n Ergebnisse',
+    fr: n <= 1 ? '$n résultat' : '$n résultats',
+    sv: '$n resultat',
+    pt: n == 1 ? '1 resultado' : '$n resultados',",FN: ,hand-translated function
+lib/l10n/strings.dart,profile,Profile,Perfil,
+lib/l10n/strings.dart,planToGrow,Plan to grow,Planear,"button, deliberate: same as planIt, glossary ""Planear"""
+lib/l10n/strings.dart,growingIt,Growing it,Já plantei,"button, deliberate: ""Já plantei"" (10 vs 10 chars)"
+lib/l10n/strings.dart,goodNeighbours,Good neighbours,Bons vizinhos,
+lib/l10n/strings.dart,badNeighbours,Bad neighbours,Maus vizinhos,
+lib/l10n/strings.dart,noCompanionData,No companion data yet.,Ainda sem dados de consociação.,"companion planting = ""consociação"""
+lib/l10n/strings.dart,draftMatrix,Draft. The verified matrix lands in the content update,Rascunho. A tabela verificada chega com a atualização de conteúdo,
+lib/l10n/strings.dart,verifiedAgainst(int n),"FN: nl: 'Gecontroleerd tegen $n NL-bronnen',
+    en: 'Verified against $n NL sources',
+    de: 'Geprüft mit $n NL-Quellen',
+    fr: 'Vérifié avec $n sources NL',
+    sv: n == 1
+        ? 'Kontrollerad mot 1 NL-källa'
+        : 'Kontrollerad mot $n NL-källor',
+    pt: n == 1 ? 'Verificado em 1 fonte NL' : 'Verificado em $n fontes NL',",FN: ,hand-translated function
+lib/l10n/strings.dart,basedOn(String region),"FN: nl: 'Op basis van: $region',
+    en: 'Based on: $region',
+    de: 'Grundlage: $region',
+    fr: 'Basé sur : $region',
+    sv: 'Baserat på: $region',
+    pt: 'Com base em: $region',",FN: 'Com base em: $region',hand-translated function
+lib/l10n/strings.dart,potLitres(num litres),"FN: nl: '$litres L pot',
+    en: '$litres L pot',
+    de: '$litres-L-Topf',
+    fr: 'Pot de $litres L',
+    sv: 'Kruka på $litres L',
+    pt: 'Vaso de $litres L',",FN: 'Vaso de $litres L',hand-translated function
+lib/l10n/strings.dart,harvestInDays(int days),"FN: nl: 'Oogst over $days dagen',
+    en: 'Harvest in $days days',
+    de: 'Ernte in $days ${days == 1 ? 'Tag' : 'Tagen'}',
+    fr: 'Récolte dans $days ${days <= 1 ? 'jour' : 'jours'}',
+    sv: 'Skörd om $days ${days == 1 ? 'dag' : 'dagar'}',
+    pt: 'Colheita daqui a $days ${days == 1 ? 'dia' : 'dias'}',",FN: 'Colheita daqui a $days ${days == 1 ? ',hand-translated function
+lib/l10n/strings.dart,readyToHarvest,Ready to harvest,Pronto a colher,
+lib/l10n/strings.dart,"harvestDays(int min, int max)","FN: nl: '$min–$max dagen',
+    en: '$min–$max days',
+    de: '$min–$max Tage',
+    fr: '$min–$max jours',
+    sv: '$min–$max dagar',
+    pt: '$min–$max dias',",FN: '$min–$max dias',hand-translated function
+lib/l10n/strings.dart,settings,Settings,Definições,
+lib/l10n/strings.dart,account,Account,Conta,
+lib/l10n/strings.dart,membership,Membership,Plano,"deliberate: ""Plano"" (settings row title)"
+lib/l10n/strings.dart,yourData,Your data,Os teus dados,chip/button: watch width (13 vs 9 chars)
+lib/l10n/strings.dart,appearance,Appearance,Aspeto,
+lib/l10n/strings.dart,language,Language,Idioma,
+lib/l10n/strings.dart,help,Help,Ajuda,
+lib/l10n/strings.dart,themeSystem,System,Sistema,
+lib/l10n/strings.dart,themeLight,Light,Claro,
+lib/l10n/strings.dart,themeDark,Dark,Escuro,
+lib/l10n/strings.dart,themeFollows,System follows your phone.,“Sistema” segue o teu telemóvel.,quotes the themeSystem option “Sistema”
+lib/l10n/strings.dart,langNote,"The interface speaks several languages. A growing guide that is not translated yet reads in English, and says so.","A interface fala vários idiomas. Um guia de cultivo que ainda não está traduzido aparece em inglês, e diz isso.",
+lib/l10n/strings.dart,signInBlurb,Sign in to back up and sync your garden. Everything keeps working offline without it.,"Inicia sessão para guardar e sincronizar a tua horta. Sem conta, tudo continua a funcionar sem ligação.","deliberate: offline = ""sem ligação"" (PT-PT) throughout"
+lib/l10n/strings.dart,email,E-mail,E-mail,
+lib/l10n/strings.dart,sendLink,Send me a sign-in link,Envia-me um link de acesso,
+lib/l10n/strings.dart,checkYourMail,Check your mail. The link signs you in.,Vê o teu e-mail. O link inicia a sessão.,
+lib/l10n/strings.dart,passwordOptional,Password (optional),Palavra-passe (opcional),
+lib/l10n/strings.dart,signIn,Sign in,Iniciar sessão,chip/button: watch width (14 vs 7 chars)
+lib/l10n/strings.dart,createAccount,Create account,Criar conta,
+lib/l10n/strings.dart,accountCreated,Account created. Confirm via the mail we sent.,Conta criada. Confirma através do e-mail que te enviámos.,
+lib/l10n/strings.dart,signedIn,Signed in,Sessão iniciada,chip/button: watch width (15 vs 9 chars)
+lib/l10n/strings.dart,syncNow,Sync now,Sincronizar,
+lib/l10n/strings.dart,signOut,Sign out,Terminar sessão,chip/button: watch width (15 vs 8 chars)
+lib/l10n/strings.dart,syncing,Syncing…,A sincronizar…,chip/button: watch width (14 vs 8 chars)
+lib/l10n/strings.dart,notSyncedYet,Not synced yet.,Ainda não sincronizado.,chip/button: watch width (23 vs 15 chars)
+lib/l10n/strings.dart,lastSync(String time),"FN: nl: 'Laatste sync $time',
+    en: 'Last sync $time',
+    de: 'Zuletzt synchronisiert $time',
+    fr: 'Dernière synchro $time',
+    sv: 'Senast synkat $time',
+    pt: 'Última sincronização: $time',",FN: 'Última sincronização: $time',hand-translated function
+lib/l10n/strings.dart,someTablesFailed, · some tables failed, · algumas tabelas falharam,
+lib/l10n/strings.dart,alreadyInStep,Everything was already in step.,Já estava tudo sincronizado.,
+lib/l10n/strings.dart,deleteAccount,Delete account,Eliminar conta,
+lib/l10n/strings.dart,deleteAccountAsk,Delete account?,Eliminar conta?,
+lib/l10n/strings.dart,deleteAccountBody,"Removes your account and every synced garden, plant and log. This cannot be undone.","Remove a tua conta e todas as hortas, plantas e registos sincronizados. Não pode ser desfeito.",
+lib/l10n/strings.dart,deleted,Account deleted. Your local data stays on this phone.,Conta eliminada. Os teus dados locais ficam neste telemóvel.,
+lib/l10n/strings.dart,cancel,Cancel,Cancelar,
+lib/l10n/strings.dart,delete,Delete,Eliminar,
+lib/l10n/strings.dart,exportData,Export my data (JSON),Exportar os meus dados (JSON),
+lib/l10n/strings.dart,seasonMailTitle,Seasonal email,E-mail sazonal,
+lib/l10n/strings.dart,seasonMailBlurb,"Two emails a year: in February when the sowing season starts, in October your harvest summary. Nothing else, and one click unsubscribes.","Dois e-mails por ano: em fevereiro, quando começa a época de sementeira, e em outubro, o resumo da tua colheita. Mais nada, e um clique cancela a subscrição.",
+lib/l10n/strings.dart,seasonMailNeedsAccount,Sign in with an email address to turn this on.,Inicia sessão com um endereço de e-mail para ativar isto.,
+lib/l10n/strings.dart,forgotPassword,Forgot your password?,Esqueceste a palavra-passe?,
+lib/l10n/strings.dart,resetMailSent,Check your mail for a link to choose a new password.,Vê o teu e-mail: tens lá um link para escolher uma nova palavra-passe.,
+lib/l10n/strings.dart,changePassword,Change password,Alterar palavra-passe,
+lib/l10n/strings.dart,changeEmail,Change email address,Alterar endereço de e-mail,
+lib/l10n/strings.dart,newPassword,New password,Nova palavra-passe,chip/button: watch width (18 vs 12 chars)
+lib/l10n/strings.dart,newEmail,New email address,Novo endereço de e-mail,
+lib/l10n/strings.dart,passwordChanged,Your password has been changed.,A tua palavra-passe foi alterada.,
+lib/l10n/strings.dart,emailChangeSent,Check both mailboxes: the old and the new address each have to confirm.,Vê as duas caixas de correio: o endereço antigo e o novo têm de confirmar.,
+lib/l10n/strings.dart,emailChangeBlurb,"Your garden, journal and harvests come along.","A tua horta, o diário e as colheitas vêm contigo.",
+lib/l10n/strings.dart,recoveryTitle,Choose a new password,Escolhe uma nova palavra-passe,chip/button: watch width (30 vs 21 chars)
+lib/l10n/strings.dart,recoveryBody,"You came in through the recovery link. Pick a new password now, so you are the only one with the key again.","Entraste pelo link de recuperação. Escolhe já uma nova palavra-passe, para que só tu tenhas a chave outra vez.","deliberate: ""para que só tu tenhas a chave"" (gender-neutral)"
+lib/l10n/strings.dart,analyticsTitle,Share anonymous usage data,Partilhar dados de utilização anónimos,
+lib/l10n/strings.dart,analyticsBlurb,"Which screens you open and when you add a plant — never your notes, photos or location. Leaving it off is fine; the app works the same.","Que ecrãs abres e quando adicionas uma planta — nunca as tuas notas, fotos ou localização. Deixar desligado não faz mal; a app funciona igual.",
+lib/l10n/strings.dart,analyticsAskTitle,Help make Cropsy better?,Ajudas a melhorar o Cropsy?,
+lib/l10n/strings.dart,analyticsAskBody,"We would like to see which screens get used and where people get stuck. Anonymous, processed in the EU, and never your notes, photos or location. You can change this any time in Settings.","Gostávamos de ver que ecrãs são usados e onde as pessoas ficam presas. Anónimo, tratado na UE, e nunca as tuas notas, fotos ou localização. Podes mudar isto quando quiseres nas Definições.",
+lib/l10n/strings.dart,analyticsAskYes,Sure,Claro,
+lib/l10n/strings.dart,analyticsAskNo,No thanks,Prefiro não,"deliberate: ""Prefiro não"" (gender-neutral; ""Não, obrigado"" is gendered)"
+lib/l10n/strings.dart,exportBlurb,Copies everything to the clipboard.,Copia tudo para a área de transferência.,
+lib/l10n/strings.dart,copied,Copied to clipboard.,Copiado para a área de transferência.,chip/button: watch width (37 vs 20 chars)
+lib/l10n/strings.dart,seePlans,See plans,Ver planos,
+lib/l10n/strings.dart,managePlan,Manage plan,Gerir plano,
+lib/l10n/strings.dart,restore,Restore,Restaurar,
+lib/l10n/strings.dart,checkedWithStore,Checked with the store.,Verificado com a loja.,
+lib/l10n/strings.dart,syncUnavailable,Sync is not available in this build.,A sincronização não está disponível nesta versão.,
+lib/l10n/strings.dart,planFree,Free,Grátis,"deliberate: ""Free"" = ""Grátis"" (brief, website)"
+lib/l10n/strings.dart,planLifetime,Lifetime,Lifetime,"deliberate: plan name ""Lifetime"" kept (brief, website)"
+lib/l10n/strings.dart,planYearly,Yearly,Anual,
+lib/l10n/strings.dart,lifetimeNothingToCancel,Lifetime. Nothing to cancel.,Lifetime. Nada para cancelar.,
+lib/l10n/strings.dart,freeTierBlurb,"1 garden · 6 growing plants · full timeline, reminders and every crop.","1 horta · 6 plantas a crescer · cronologia completa, lembretes e todas as plantas.","deliberate: timeline = ""cronologia"" (website)"
+lib/l10n/strings.dart,cropDataVersion(String version),"FN: nl: 'Cropsy · gewasdata $version',
+    en: 'Cropsy · crop data $version',
+    de: 'Cropsy · Pflanzendaten $version',
+    fr: 'Cropsy · données des plantes $version',
+    sv: 'Cropsy · växtdata $version',
+    pt: 'Cropsy · dados das plantas $version',",FN: 'Cropsy · dados das plantas $version',hand-translated function
+lib/l10n/strings.dart,"frostDates(String region, String source)","FN: nl: 'Vorstdatums: $region ($source)',
+        en: 'Frost dates: $region ($source)',
+        de: 'Frostdaten: $region ($source)',
+        fr: 'Dates de gel : $region ($source)',
+        sv: 'Frostdatum: $region ($source)',
+        pt: 'Datas de geada: $region ($source)',",FN: 'Datas de geada: $region ($source)',hand-translated function
+lib/l10n/strings.dart,thisWeek,This week,Esta semana,
+lib/l10n/strings.dart,nothingDueThisWeek,Nothing due this week,Nada para fazer esta semana,
+lib/l10n/strings.dart,addPlantsToSee,Add plants in Grow to see what to do.,Adiciona plantas em Cultivar para veres o que fazer.,
+lib/l10n/strings.dart,harvest,Harvest,Colheita,
+lib/l10n/strings.dart,thisSeason,THIS SEASON,ESTA ESTAÇÃO,
+lib/l10n/strings.dart,nothingYet,Nothing yet,Ainda nada,
+lib/l10n/strings.dart,savedAtPrices(String euros),"FN: nl: '≈ €$euros bespaard tegen NL supermarktprijzen',
+    en: '≈ €$euros saved at NL supermarket prices',
+    de: '≈ $euros € gespart nach NL-Supermarktpreisen',
+    fr: '≈ $euros € économisés aux prix des supermarchés NL',
+    sv: '≈ ${euros.replaceAll('.', ',')} € sparat enligt priser i NL-butiker',
+    pt: '≈ ${euros.replaceAll('.', ',')} € poupados a preços de supermercado NL',",FN: '≈ ${euros.replaceAll(',hand-translated function
+lib/l10n/strings.dart,unpricedCount(int n),"FN: nl: n == 1 ? '1 zonder prijs' : '$n zonder prijs',
+    en: n == 1 ? '1 unpriced' : '$n unpriced',
+    de: n == 1 ? '1 ohne Preis' : '$n ohne Preis',
+    fr: '$n sans prix',
+    sv: '$n utan pris',
+    pt: '$n sem preço',",FN: '$n sem preço',hand-translated function
+lib/l10n/strings.dart,harvestsLogged(int n),"FN: nl: n == 1 ? '1 oogst gelogd' : '$n oogsten gelogd',
+    en: n == 1 ? '1 harvest logged' : '$n harvests logged',
+    de: n == 1 ? '1 Ernte eingetragen' : '$n Ernten eingetragen',
+    fr: n <= 1 ? '$n récolte notée' : '$n récoltes notées',
+    sv: n == 1 ? '1 skörd loggad' : '$n skördar loggade',
+    pt: n == 1 ? '1 colheita registada' : '$n colheitas registadas',",FN: ,hand-translated function
+lib/l10n/strings.dart,planFreePrice,€0,0 €,deliberate: € after the amount (website writes €0)
+lib/l10n/strings.dart,planLifetimePrice,€49.99 once,"49,99 € uma vez","deliberate: decimal comma, € after the amount; paywall button"
+lib/l10n/strings.dart,planYearlyPrice,€29.99 / year,"29,99 € / ano","deliberate: decimal comma, € after the amount"
+lib/l10n/strings.dart,planFreeBlurb,"1 garden · 6 growing plants · full timeline, reminders and every crop · 20 photos · 2 streak freezes a month","1 horta · 6 plantas a crescer · cronologia completa, lembretes e todas as plantas · 20 fotos · 2 dias de pausa por mês","deliberate: streak freeze = ""dia de pausa"" (brief); timeline = ""cronologia"""
+lib/l10n/strings.dart,planLifetimeBlurb,Unlimited gardens and plants · planner grid · diagnose · unlimited photos and freezes · export,Hortas e plantas ilimitadas · grelha do planeador · diagnóstico · fotos e dias de pausa ilimitados · exportação,"deliberate: freezes = ""dias de pausa""; planner grid = ""grelha do planeador"""
+lib/l10n/strings.dart,planYearlyBlurb,"Everything in Lifetime, as a subscription. Cancel in the App Store any time.","Tudo o que o Lifetime tem, como subscrição. Cancela na App Store quando quiseres.",
+lib/l10n/strings.dart,noPriceForUnit,No price for this unit yet,Ainda sem preço para esta unidade,
+lib/l10n/strings.dart,diagnose,Diagnose,Diagnóstico,
+lib/l10n/strings.dart,autoDiagnose,Auto diagnose from a photo,Diagnóstico automático por foto,
+lib/l10n/strings.dart,autoDiagnoseSub,"Always a guess, never a verdict. Premium.","Sempre um palpite, nunca um veredicto. Premium.",
+lib/l10n/strings.dart,commonProblems,Common problems,Problemas comuns,
+lib/l10n/strings.dart,byPlantPart,By plant part,Por parte da planta,chip/button: watch width (19 vs 13 chars)
+lib/l10n/strings.dart,all,All,Todos,
+lib/l10n/strings.dart,nothingForThatPart,Nothing listed for that part yet.,Ainda nada listado para essa parte.,
+lib/l10n/strings.dart,partWhole,Whole plant,Planta inteira,
+lib/l10n/strings.dart,partLeaves,Leaves,Folhas,
+lib/l10n/strings.dart,partStems,Stems,Caules,
+lib/l10n/strings.dart,partFlowers,Flowers,Flores,
+lib/l10n/strings.dart,partFruits,Fruits,Frutos,
+lib/l10n/strings.dart,partRoots,Roots,Raízes,
+lib/l10n/strings.dart,myGarden,My garden,A minha horta,chip/button: watch width (13 vs 9 chars)
+lib/l10n/strings.dart,planning,Planning,Planeadas,
+lib/l10n/strings.dart,growing,Growing,A crescer,
+lib/l10n/strings.dart,reminders,Reminders,Lembretes,
+lib/l10n/strings.dart,start,Start,Começar,"button, glossary ""Começar"""
+lib/l10n/strings.dart,remove,Remove,Remover,
+lib/l10n/strings.dart,removeAsk(String name),"FN: nl: '$name verwijderen?',
+    en: 'Remove $name?',
+    de: '$name entfernen?',
+    fr: 'Retirer $name ?',
+    sv: 'Ta bort $name?',
+    pt: 'Remover $name?',",FN: 'Remover $name?',hand-translated function
+lib/l10n/strings.dart,removedFromGarden(String name),"FN: nl: '$name is uit je tuin gehaald',
+    en: '$name removed from your garden',
+    de: '$name wurde aus deinem Garten entfernt',
+    fr: '$name n\'est plus dans ton potager',
+    sv: '$name är borttagen från din odling',
+    pt: '$name saiu da tua horta',",FN: '$name saiu da tua horta',hand-translated function
+lib/l10n/strings.dart,editGarden,Edit garden,Editar horta,
+lib/l10n/strings.dart,gardenName,Garden name,Nome da horta,
+lib/l10n/strings.dart,growingSituation,Growing situation,Condições de cultivo,
+lib/l10n/strings.dart,sunHours(int hours),"FN: nl: 'Uren zon per dag: ${hours}u',
+    en: 'Hours of sun a day: ${hours}h',
+    de: 'Sonnenstunden pro Tag: ${hours}h',
+    fr: 'Heures de soleil par jour : $hours h',
+    sv: 'Soltimmar per dag: $hours h',
+    pt: 'Horas de sol por dia: $hours h',",FN: 'Horas de sol por dia: $hours h',hand-translated function
+lib/l10n/strings.dart,saveChanges,Save changes,Guardar alterações,chip/button: watch width (18 vs 12 chars)
+lib/l10n/strings.dart,nothingPlannedYet,Nothing planned yet,Ainda nada planeado,
+lib/l10n/strings.dart,nothingGrowingYet,Nothing growing yet,Ainda nada a crescer,
+lib/l10n/strings.dart,balcony,Balcony,Varanda,
+lib/l10n/strings.dart,gardenKind,Garden,Jardim,"deliberate: ""Jardim"" = a yard"
+lib/l10n/strings.dart,allotment,Allotment,Horta urbana,"deliberate: allotment = ""Horta urbana"""
+lib/l10n/strings.dart,growingGuide,Growing guide →,Guia de cultivo →,
+lib/l10n/strings.dart,growthLog,Growth log,Registo de crescimento,chip/button: watch width (22 vs 10 chars)
+lib/l10n/strings.dart,logHarvest,Log harvest,Registar colheita,chip/button: watch width (17 vs 11 chars)
+lib/l10n/strings.dart,harvestLogged,Harvest logged,Colheita registada,
+lib/l10n/strings.dart,movedToPlanning(String crop),"FN: nl: '$crop staat weer bij Gepland',
+    en: '$crop moved to planning',
+    de: '$crop ist wieder in der Planung',
+    fr: '$crop est de retour dans Planifié',
+    sv: '$crop är flyttad till Planerat',
+    pt: '$crop voltou para Planeadas',",FN: '$crop voltou para Planeadas',hand-translated function
+lib/l10n/strings.dart,noEntriesYet,No entries yet. Add one to start the timeline.,Ainda sem registos. Adiciona um para começar a cronologia.,"deliberate: timeline = ""cronologia"""
+lib/l10n/strings.dart,howMuch,How much?,Quanto?,
+lib/l10n/strings.dart,howMuchHint,e.g. 6 or 0.4,"ex. 6 ou 0,4",
+lib/l10n/strings.dart,pieces,pieces,unidades,
+lib/l10n/strings.dart,saveHarvest,Save harvest,Guardar colheita,
+lib/l10n/strings.dart,editPlant,Edit plant,Editar planta,
+lib/l10n/strings.dart,potSizeLitres,Pot size (litres),Tamanho do vaso (litros),chip/button: watch width (24 vs 17 chars)
+lib/l10n/strings.dart,leaveBlankInGround,leave blank for in-ground,deixa em branco se for na terra,
+lib/l10n/strings.dart,planted,Planted,Plantado,
+lib/l10n/strings.dart,growthStage,Growth stage,Fase de crescimento,chip/button: watch width (19 vs 12 chars)
+lib/l10n/strings.dart,yourPath,Your path,O teu percurso,chip/button: watch width (14 vs 9 chars)
+lib/l10n/strings.dart,journal,Journal,Diário,
+lib/l10n/strings.dart,yourSeason,Your season,A tua estação,
+lib/l10n/strings.dart,bedFreesUp,Bed frees up,Canteiro livre,
+lib/l10n/strings.dart,about,About,Sobre,
+lib/l10n/strings.dart,yourCrops,Your crops,As tuas plantas,chip/button: watch width (15 vs 10 chars)
+lib/l10n/strings.dart,plannedSection,Planned,Planeadas,
+lib/l10n/strings.dart,types,Types,Tipos,
+lib/l10n/strings.dart,plantingCalendar,Planting calendar,Calendário de plantação,
+lib/l10n/strings.dart,growthTimeline,Growth timeline,Cronologia de crescimento,chip/button: watch width (25 vs 15 chars)
+lib/l10n/strings.dart,suitableLocation,Suitable location,Local adequado,
+lib/l10n/strings.dart,soilPrep,Soil prep,Preparação do solo,chip/button: watch width (18 vs 9 chars)
+lib/l10n/strings.dart,whyGrowIt,Why grow it,Porquê cultivar,
+lib/l10n/strings.dart,comingSoil,Soil preparation,Preparação do solo,
+lib/l10n/strings.dart,comingHowTos,Step-by-step how-tos per stage,Guias passo a passo por fase,
+lib/l10n/strings.dart,comingFaq,Grower-reviewed FAQ,Perguntas revistas por horticultores,"deliberate: shortened (""FAQ"" not used in PT copy)"
+lib/l10n/strings.dart,comingBenefits,Nutrition and benefits (NEVO),Nutrição e benefícios (NEVO),
+lib/l10n/strings.dart,contentComing(LocalizedText what),"FN: nl:
+        '${what.nl}: wordt geschreven en nagekeken voor Nederlandse tuinen. '
+        'Komt in de contentupdate.',
+    en:
+        '${what.en}: being written and checked for Dutch gardens. '
+        'Coming in the content update.',
+    de:
+        '${what.pick('de')}: wird für niederländische Gärten geschrieben und '
+        'geprüft. Kommt mit dem Inhalts-Update.',
+    fr:
+        '${what.pick('fr')} : en cours d\'écriture et de vérification pour les '
+        'jardins néerlandais. Arrive avec la mise à jour du contenu.',
+    sv:
+        '${what.pick('sv')}: skrivs och kontrolleras för nederländska odlingar. '
+        'Kommer med innehållsuppdateringen.',
+    pt:
+        '${what.pick('pt')}: em escrita e verificação para hortas neerlandesas. '
+        'Chega com a atualização de conteúdo.',",FN: '${what.pick(',hand-translated function
+lib/l10n/strings.dart,atSupplier(String supplier),"FN: nl: 'bij $supplier',
+    en: 'at $supplier',
+    de: 'bei $supplier',
+    fr: 'chez $supplier',
+    sv: 'hos $supplier',
+    pt: 'em $supplier',",FN: 'em $supplier',hand-translated function
+lib/l10n/strings.dart,oftenOn,Often on,Comum em,
+lib/l10n/strings.dart,insightsForYou,Insights for you,Dicas para ti,
+lib/l10n/strings.dart,plantedOn(String day),"FN: nl: 'geplant $day',
+    en: 'planted $day',
+    de: 'gepflanzt am $day',
+    fr: 'planté le $day',
+    sv: 'planterad $day',
+    pt: 'plantado a $day',",FN: 'plantado a $day',hand-translated function
+lib/l10n/strings.dart,countsTowardsTally,Counts towards your season tally.,Conta para o balanço da estação.,
+lib/l10n/strings.dart,noShopPrice,"This crop has no shop price yet, so it counts towards the yield but not towards money saved.","Esta planta ainda não tem preço de loja, por isso conta para a produção mas não para o dinheiro poupado.",
+lib/l10n/strings.dart,pricedPerUnit(LocalizedText unit),"FN: nl:
+        'Je telling rekent dit gewas per ${unit.nl}, dus dit telt mee voor '
+        'de opbrengst maar niet voor het bespaarde bedrag.',
+    en:
+        'Your tally prices this crop per ${unit.en}, so this adds to the '
+        'yield but not to money saved.',
+    de:
+        'Deine Bilanz rechnet diese Pflanze pro ${unit.pick('de')}, darum '
+        'zählt das zum Ertrag, aber nicht zum gesparten Geld.',
+    fr:
+        'Ton bilan compte cette plante par ${unit.pick('fr')}, donc ça '
+        's\'ajoute au rendement mais pas à l\'argent économisé.',
+    sv:
+        'Din summering prissätter den här växten per ${unit.pick('sv')}, så det '
+        'här räknas in i skörden men inte i sparade pengar.',
+    pt:
+        'O teu balanço conta o preço desta planta por ${unit.pick('pt')}, por isso '
+        'isto soma à produção mas não ao dinheiro poupado.',",FN: 'O teu balanço conta o preço desta planta por ${unit.pick(',hand-translated function
+lib/l10n/strings.dart,unitKg,kg,kg,
+lib/l10n/strings.dart,howIsItDoing(LocalizedText crop),"FN: nl: 'Hoe gaat het met je ${crop.nl}?',
+    en: 'How is your ${crop.en} doing?',
+    de: '${crop.pick('de')}: Wie läuft es?',
+    fr: '${crop.pick('fr')} : comment ça pousse ?',
+    sv: '${crop.pick('sv')}: hur går det?',
+    pt: '${crop.pick('pt')}: como está a correr?',",FN: '${crop.pick(',hand-translated function
+lib/l10n/strings.dart,photosCount(int n),"FN: nl: ""Foto's ($n/9)"",
+    en: 'Photos ($n/9)',
+    de: 'Fotos ($n/9)',
+    fr: 'Photos ($n/9)',
+    sv: 'Foton ($n/9)',
+    pt: 'Fotos ($n/9)',",FN: 'Fotos ($n/9)',hand-translated function
+lib/l10n/strings.dart,noteOptional,Note (optional),Nota (opcional),
+lib/l10n/strings.dart,noteHint,"First flowers, aphids on the tips…","Primeiras flores, pulgões nas pontas…",
+lib/l10n/strings.dart,saveLog,Save log,Guardar registo,chip/button: watch width (15 vs 8 chars)
+lib/l10n/strings.dart,moodBad,Bad,Mau,
+lib/l10n/strings.dart,moodOkay,Okay,Razoável,deliberate: plant mood scale Mau / Razoável / Bom / Excelente
+lib/l10n/strings.dart,moodGood,Good,Bom,
+lib/l10n/strings.dart,moodExcellent,Excellent,Excelente,
+lib/l10n/strings.dart,stageStarting,Starting,A começar,
+lib/l10n/strings.dart,stageSeedling,Seedling,Plântula,
+lib/l10n/strings.dart,stageVegetative,Vegetative,Vegetativo,
+lib/l10n/strings.dart,stageFlowering,Flowering,Floração,
+lib/l10n/strings.dart,stageHarvesting,Harvesting,Em colheita,
+lib/l10n/strings.dart,stageHarvested,Harvested,Colhido,
+lib/l10n/strings.dart,setPlantDetails,Set plant details,Detalhes da planta,
+lib/l10n/strings.dart,plantDetailsSub,Your input sets the harvest timing and care reminders.,O que indicas define a altura da colheita e os lembretes de cuidados.,
+lib/l10n/strings.dart,plantingDate,Planting date,Data de plantação,
+lib/l10n/strings.dart,howDidItStart,How did it start?,Como começou?,
+lib/l10n/strings.dart,whereDoesItLive,Where does it live?,Onde está?,
+lib/l10n/strings.dart,atLeastLitres(int litres),"FN: nl: 'Minstens $litres L voor dit gewas',
+    en: 'At least $litres L for this crop',
+    de: 'Mindestens $litres L für diese Pflanze',
+    fr: 'Au moins $litres L pour cette plante',
+    sv: 'Minst $litres L för den här växten',
+    pt: 'Pelo menos $litres L para esta planta',",FN: 'Pelo menos $litres L para esta planta',hand-translated function
+lib/l10n/strings.dart,varietyOptional,Variety (optional),Variedade (opcional),
+lib/l10n/strings.dart,varietyHint,e.g. Moneymaker,ex. Moneymaker,
+lib/l10n/strings.dart,didItToday,Did it today,Feito hoje,
+lib/l10n/strings.dart,didItOn,I did this on…,Fiz isto em…,
+lib/l10n/strings.dart,skipThisOne,Skip this one,Saltar esta,
+lib/l10n/strings.dart,gotIt,Got it,Percebido,
+lib/l10n/strings.dart,now,Now,Agora,
+lib/l10n/strings.dart,skipped,Skipped,Saltado,
+lib/l10n/strings.dart,doneOn(String day),"FN: nl: 'Gedaan $day',
+    en: 'Done $day',
+    de: 'Erledigt am $day',
+    fr: 'Fait le $day',
+    sv: 'Klart $day',
+    pt: 'Feito a $day',",FN: 'Feito a $day',hand-translated function
+lib/l10n/strings.dart,"movedFrom(String day, LocalizedText reason)","FN: nl: 'Verzet vanaf $day · ${reason.nl}',
+        en: 'Moved from $day · ${reason.en}',
+        de: 'Verschoben vom $day · ${reason.pick('de')}',
+        fr: 'Déplacé du $day · ${reason.pick('fr')}',
+        sv: 'Flyttad från $day · ${reason.pick('sv')}',
+        pt: 'Movido de $day · ${reason.pick('pt')}',",FN: 'Movido de $day · ${reason.pick(',hand-translated function
+lib/l10n/strings.dart,gardenPlanner,Garden planner,Planeador de horta,"glossary ""planeador de horta"""
+lib/l10n/strings.dart,plannerBlurb,Lay out your bed in 30 cm squares.,Organiza o teu canteiro em quadrados de 30 cm.,
+lib/l10n/strings.dart,save,Save,Guardar,
+lib/l10n/strings.dart,layoutSaved,Layout saved,Disposição guardada,chip/button: watch width (19 vs 12 chars)
+lib/l10n/strings.dart,pickACrop,"Pick a crop below, then tap cells.",Escolhe uma planta abaixo e toca nas células.,
+lib/l10n/strings.dart,painting(LocalizedText crop),"FN: nl: '${crop.nl} plaatsen. Tik een gevuld vakje om het leeg te maken.',
+    en: 'Painting ${crop.en}. Tap a filled cell to clear it.',
+    de: '${crop.pick('de')} setzen. Tippe auf ein volles Feld, um es zu leeren.',
+    fr: 'Placement : ${crop.pick('fr')}. Touche une case remplie pour la vider.',
+    sv: 'Placerar ${crop.pick('sv').toLowerCase()}. Tryck på en fylld ruta för att tömma den.',
+    pt: 'A colocar ${crop.pick('pt').toLowerCase()}. Toca numa célula preenchida para a limpar.',",FN: 'A colocar ${crop.pick(',hand-translated function
+lib/l10n/strings.dart,redCells,Red cells sit next to a crop they dislike.,As células vermelhas estão ao lado de uma planta de que não gostam.,
+lib/l10n/strings.dart,planIt,Plan it,Planear,"button, glossary ""Planear"""
+lib/l10n/strings.dart,addedToPlanning(String crop),"FN: nl: '$crop staat bij Gepland',
+    en: '$crop added to Planning',
+    de: '$crop ist jetzt in der Planung',
+    fr: '$crop est maintenant dans Planifié',
+    sv: '$crop är tillagd i Planerat',
+    pt: '$crop está agora em Planeadas',",FN: '$crop está agora em Planeadas',hand-translated function
+lib/l10n/strings.dart,dayStreak,Day streak,Dias seguidos,"deliberate: streak counter = ""Dias seguidos"""
+lib/l10n/strings.dart,growingNow,Growing now,A crescer agora,
+lib/l10n/strings.dart,harvested,Harvested,Colhido,
+lib/l10n/strings.dart,yourGarden,Your garden,A tua horta,
+lib/l10n/strings.dart,region,Region,Região,
+lib/l10n/strings.dart,settingsAndSync,Settings and sync,Definições e sincronização,chip/button: watch width (26 vs 17 chars)
+lib/l10n/strings.dart,signInToSync,Sign in to sync,Inicia sessão para sincronizar,chip/button: watch width (30 vs 15 chars)
+lib/l10n/strings.dart,yourName,Your name,O teu nome,
+lib/l10n/strings.dart,gardener,Gardener,Mão verde,"deliberate: ""Mão verde"" as a gender-neutral fallback name (like fr ""Main verte""); ""Horticultor"" is masculine"
+lib/l10n/strings.dart,onThisDeviceOnly,On this device only,Só neste dispositivo,
+lib/l10n/strings.dart,identifyAPlant,Identify a plant,Identificar uma planta,
+lib/l10n/strings.dart,diagnoseAPlant,Diagnose a plant,Diagnosticar uma planta,chip/button: watch width (23 vs 16 chars)
+lib/l10n/strings.dart,whatIsIt,What is it?,O que é?,
+lib/l10n/strings.dart,isItOk,Is it OK?,Está saudável?,chip/button: watch width (14 vs 9 chars)
+lib/l10n/strings.dart,takePhoto,Take photo,Tirar foto,
+lib/l10n/strings.dart,fromPhotos,From photos,Galeria,"deliberate: ""Galeria"""
+lib/l10n/strings.dart,noConnectionScan,No connection. Scans need the network; everything else works offline.,Sem ligação. As análises precisam de rede; tudo o resto funciona sem ligação.,
+lib/l10n/strings.dart,notOneOfOurCrops,Not one of our crops yet,Ainda não é uma das nossas plantas,
+lib/l10n/strings.dart,noGuideYet,No guide for this one yet,Ainda sem guia para esta,
+lib/l10n/strings.dart,"scansUsed(int used, int limit)","FN: nl: '$used van $limit scans vandaag gebruikt',
+    en: '$used of $limit scans used today',
+    de: '$used von $limit Scans heute genutzt',
+    fr: 'Scans utilisés aujourd\'hui : $used/$limit',
+    sv: '$used av $limit skanningar använda idag',
+    pt: '$used de $limit análises usadas hoje',",FN: '$used de $limit análises usadas hoje',hand-translated function
+lib/l10n/strings.dart,payOnce,"Pay once for more room. No trial, no card, no auto-renew surprise.","Paga uma vez por mais espaço. Sem período experimental, sem cartão, sem surpresas de renovação automática.",
+lib/l10n/strings.dart,oneMoment,One moment…,Um momento…,
+lib/l10n/strings.dart,keepItFree,Keep it free,Continuar grátis,
+lib/l10n/strings.dart,continueWith(String plan),"FN: nl: 'Verder met $plan',
+    en: 'Continue with $plan',
+    de: 'Weiter mit $plan',
+    fr: 'Continuer avec $plan',
+    sv: 'Fortsätt med $plan',
+    pt: 'Continuar com $plan',",FN: 'Continuar com $plan',hand-translated function
+lib/l10n/strings.dart,purchasesOpenLater,Purchases are not available right now. Nothing is charged.,As compras não estão disponíveis de momento. Não é cobrado nada.,
+lib/l10n/strings.dart,purchasesRestored,Purchases restored.,Compras restauradas.,
+lib/l10n/strings.dart,nothingToRestore,No earlier purchases found for this Apple account.,Não foram encontradas compras anteriores nesta conta Apple.,
+lib/l10n/strings.dart,restorePurchases,Restore purchases,Restaurar compras,
+lib/l10n/strings.dart,lifetimeNothingEver,"Lifetime: nothing to cancel, ever.","Lifetime: nada para cancelar, nunca.",
+lib/l10n/strings.dart,whereDoYouGrow,Where do you grow?,Onde cultivas?,
+lib/l10n/strings.dart,townOrPostcode,"Town, region or postcode","Cidade, região ou código postal",
+lib/l10n/strings.dart,usePostcode(String code),"FN: nl: 'Gebruik postcode $code',
+    en: 'Use postcode $code',
+    de: 'Postleitzahl $code nutzen',
+    fr: 'Utiliser le code postal $code',
+    sv: 'Använd postnummer $code',
+    pt: 'Usar o código postal $code',",FN: 'Usar o código postal $code',hand-translated function
+lib/l10n/strings.dart,looksUpFrost,Looks up the frost dates for that cell.,Procura as datas de geada dessa zona.,
+lib/l10n/strings.dart,snapToRegion,Snap to the nearest growing region,Ajustar à região de cultivo mais próxima,
+lib/l10n/strings.dart,noLocation,Could not get a location. Pick a region or enter a postcode.,Não foi possível obter a localização. Escolhe uma região ou introduz um código postal.,
+lib/l10n/strings.dart,postcodeNotFound,"Postcode not found (expected 1234AB), or you are offline.","Código postal não encontrado (formato esperado 1234AB), ou estás sem ligação.",
+lib/l10n/strings.dart,useMyLocation,Use my location,Usar a minha localização,chip/button: watch width (24 vs 15 chars)
+lib/l10n/strings.dart,lookingUp,Looking up…,A procurar…,
+lib/l10n/strings.dart,postcodeHint,"Postcode, e.g. 1012AB","Código postal, ex. 1012AB",
+lib/l10n/strings.dart,lookUp,Look up,Procurar,
+lib/l10n/strings.dart,orPickRegion,Or pick a region,Ou escolhe uma região,
+lib/l10n/strings.dart,isThisUseful,Is this information useful?,Esta informação é útil?,
+lib/l10n/strings.dart,reportError,Report error,Reportar erro,"button: ""Reportar erro"""
+lib/l10n/strings.dart,whatIsWrong,What is wrong?,O que está errado?,
+lib/l10n/strings.dart,whatIsWrongHint,e.g. sowing window is too early for Groningen,ex. a janela de sementeira é cedo demais para Groningen,
+lib/l10n/strings.dart,send,Send,Enviar,
+lib/l10n/strings.dart,thanksChecked,Thanks. We check every report within a week.,Obrigado. Verificamos cada relato no prazo de uma semana.,
+lib/l10n/strings.dart,thanksFeedback,Thanks for the feedback.,Obrigado pelo feedback.,
+lib/l10n/strings.dart,thanksNoted,"Thanks, noted.","Obrigado, anotado.",
+lib/l10n/strings.dart,likeThis,I like this,Gosto disto,
+lib/l10n/strings.dart,errorInContent,Error in content,Erro no conteúdo,
+lib/l10n/strings.dart,suggestion,Suggestion,Sugestão,
+lib/l10n/strings.dart,overallDifficulty,Overall difficulty,Dificuldade geral,
+lib/l10n/strings.dart,draftBadge,Draft,Rascunho,
+lib/l10n/strings.dart,draftBadgeLong,"Draft, not verified yet","Rascunho, ainda não verificado",
+lib/l10n/strings.dart,skip,Skip,Saltar,
+lib/l10n/strings.dart,alreadyHaveAccount,Already have an account? Sign in,Já tens conta? Inicia sessão,
+lib/l10n/strings.dart,seasonAsOnePath,"Your season, as one path","A tua estação, num só percurso",
+lib/l10n/strings.dart,seasonAsOnePathBody,"Sowing, potting on, harvest, the frost dates that govern them, and the months when nothing is planned yet. Tick a step off and everything after it moves with you.","Sementeira, mudança de vaso, colheita, as datas de geada que as regem, e os meses em que ainda não há nada planeado. Marca um passo como feito e tudo o que vem depois acompanha-te.",
+lib/l10n/strings.dart,frostBackbone,"Sets your frost dates, the backbone of every planting date. Rounded to ~1 km, never tracked.","Define as tuas datas de geada, a base de todas as datas de plantação. Arredondado a ~1 km, nunca seguido.",
+lib/l10n/strings.dart,whatWillYouGrow,What will you grow?,O que vais cultivar?,
+lib/l10n/strings.dart,pickAFewToStart,Pick a few to start. Add more anytime.,Escolhe algumas para começar. Adiciona mais quando quiseres.,
+lib/l10n/strings.dart,remindBlurb,"Want a nudge on the day? One reminder a morning, only when there is something to do, and it stays quiet when it rained.","Queres um lembrete no dia? Um lembrete de manhã, só quando há algo para fazer, e fica em silêncio quando choveu.",
+lib/l10n/strings.dart,remindMe,Remind me,Lembra-me,
+lib/l10n/strings.dart,maybeLater,Maybe later,Talvez mais tarde,chip/button: watch width (17 vs 11 chars)
+lib/l10n/strings.dart,oneFreeGarden,"One free garden,
+free forever.","Uma horta grátis,
+para sempre.",
+lib/l10n/strings.dart,whatToGrowShort,What to grow in…,O que cultivar em…,
+lib/l10n/strings.dart,whichPlant,Which plant?,Que planta?,
+lib/l10n/strings.dart,plantIn(String months),"FN: nl: 'Planten in: $months',
+    en: 'Plant in: $months',
+    de: 'Pflanzzeit: $months',
+    fr: 'Planter en : $months',
+    sv: 'Plantera i: $months',
+    pt: 'Plantar em: $months',",FN: 'Plantar em: $months',hand-translated function
+lib/l10n/strings.dart,sources(String list),"FN: nl: 'Bronnen: $list',
+    en: 'Sources: $list',
+    de: 'Quellen: $list',
+    fr: 'Sources : $list',
+    sv: 'Källor: $list',
+    pt: 'Fontes: $list',",FN: 'Fontes: $list',hand-translated function
+lib/l10n/strings.dart,"frostRelative(
+    String anchor,
+    String region,
+  )","FN: nl:
+        'Deze data zijn vorst-relatief (gekoppeld aan $anchor voor $region), '
+        'dus ze schuiven mee met je regio in plaats van met een vaste kalender.',
+    en:
+        'These dates are frost-relative (anchored to $anchor for $region), '
+        'so they shift with your region, not a fixed calendar.',
+    de:
+        'Diese Daten richten sich nach dem Frost (verankert an $anchor für '
+        '$region), darum verschieben sie sich mit deiner Region statt mit '
+        'einem festen Kalender.',
+    fr:
+        'Ces dates dépendent du gel (calées sur $anchor pour $region), elles '
+        'se décalent donc avec ta région, pas avec un calendrier fixe.',
+    sv:
+        'De här datumen utgår från frosten (förankrade i $anchor för $region), '
+        'så de flyttar med din region, inte efter en fast kalender.',
+    pt:
+        'Estas datas dependem da geada (ancoradas em $anchor para $region), '
+        'por isso mudam com a tua região, não com um calendário fixo.',","FN: 'Estas datas dependem da geada (ancoradas em $anchor para $region), '
+        'por isso mudam com a tua região, não com um calendário fixo.'",hand-translated function
+lib/l10n/strings.dart,"firstHarvestAround(
+    String region,
+    String date,
+  )","FN: nl:
+        'In $region ligt je eerste oogst rond $date, berekend uit de '
+        'vorstdatums van de regio.',
+    en:
+        'At $region, your first harvest lands around $date, computed from '
+        ""the region's frost dates."",
+    de:
+        'In $region liegt deine erste Ernte um den $date, berechnet aus den '
+        'Frostdaten der Region.',
+    fr:
+        'Pour $region, ta première récolte tombe vers le $date, calculée à '
+        'partir des dates de gel de la région.',
+    sv:
+        'I $region hamnar din första skörd runt $date, beräknat från '
+        'regionens frostdatum.',
+    pt:
+        'Em $region, a tua primeira colheita chega por volta de $date, '
+        'calculada a partir das datas de geada da região.',","FN: 'Em $region, a tua primeira colheita chega por volta de $date, '
+        'calculada a partir das datas de geada da região.'",hand-translated function
+lib/l10n/strings.dart,weatherToday,Today's weather,O tempo hoje,
+lib/l10n/strings.dart,"weatherRange(int high, int low)","FN: nl: '$high° / $low°',
+    en: '$high° / $low°',
+    de: '$high° / $low°',
+    fr: '$high° / $low°',
+    sv: '$high° / $low°',
+    pt: '$high° / $low°',",FN: '$high° / $low°',hand-translated function
+lib/l10n/strings.dart,weatherRain(String mm),"FN: nl: '$mm mm regen',
+    en: '$mm mm rain',
+    de: '$mm mm Regen',
+    fr: '$mm mm de pluie',
+    sv: '$mm mm regn',
+    pt: '$mm mm de chuva',",FN: '$mm mm de chuva',hand-translated function
+lib/l10n/strings.dart,weatherDry,Dry,Seco,
+lib/l10n/strings.dart,weatherNothingMoved,The weather moves nothing today.,Hoje o tempo não muda nada.,
+lib/l10n/strings.dart,weatherUnavailable,No forecast. The base schedule stands.,Sem previsão. O plano base mantém-se.,
+lib/l10n/strings.dart,weatherClear,Clear,Céu limpo,chip/button: watch width (9 vs 5 chars)
+lib/l10n/strings.dart,weatherPartlyCloudy,Partly cloudy,Parcialmente nublado,chip/button: watch width (20 vs 13 chars)
+lib/l10n/strings.dart,weatherOvercast,Overcast,Encoberto,
+lib/l10n/strings.dart,weatherFog,Fog,Nevoeiro,chip/button: watch width (8 vs 3 chars)
+lib/l10n/strings.dart,weatherDrizzle,Drizzle,Chuvisco,
+lib/l10n/strings.dart,weatherRainy,Rain,Chuva,
+lib/l10n/strings.dart,weatherSnow,Snow,Neve,
+lib/l10n/strings.dart,weatherThunder,Thunder,Trovoada,
+lib/l10n/strings.dart,pathChecklistCaption,A job for this month,Uma tarefa para este mês,
+lib/l10n/strings.dart,pathCompanion(LocalizedText partner),"FN: nl: 'Zet ${partner.nl} erbij',
+    en: 'Plant ${partner.en} alongside',
+    de: '${partner.pick('de')} dazupflanzen',
+    fr: 'À planter à côté : ${partner.pick('fr')}',
+    sv: 'Plantera ${partner.pick('sv').toLowerCase()} bredvid',
+    pt: 'Plantar ${partner.pick('pt').toLowerCase()} ao lado',",FN: 'Plantar ${partner.pick(',hand-translated function
+lib/l10n/strings.dart,pathCompanionCaption(LocalizedText have),"FN: nl: 'Goede buur voor je ${have.nl}',
+        en: 'A good neighbour for your ${have.en}',
+        de: 'Ein guter Nachbar für ${have.pick('de')}',
+        fr: '${have.pick('fr')} : un bon voisin',
+        sv: '${have.pick('sv')}: en god granne',
+        pt: '${have.pick('pt')}: um bom vizinho',",FN: '${have.pick(',hand-translated function
+lib/l10n/strings.dart,pathCollectionCaption,A list to pick from,Uma lista para escolher,
+lib/l10n/strings.dart,accessibility,Accessibility,Acessibilidade,
+lib/l10n/strings.dart,hapticsTitle,Haptics,Vibração,"deliberate: ""Vibração"" (more familiar than ""Feedback háptico"")"
+lib/l10n/strings.dart,hapticsBlurb,A short buzz when you tick something off or press it.,Uma vibração curta quando marcas ou carregas em algo.,
+lib/l10n/strings.dart,reduceMotionTitle,Reduce motion,Reduzir movimento,
+lib/l10n/strings.dart,reduceMotionBlurb,Animations become an instant change. Also on when your phone asks for it.,As animações passam a ser uma mudança instantânea. Também ativo quando o teu telemóvel o pede.,
+lib/l10n/strings.dart,gardenProfile,Edit your garden,Editar a tua horta,
+lib/l10n/strings.dart,gardenProfileBlurb,"Moved house, or found more room?",Mudaste de casa ou arranjaste mais espaço?,
+lib/l10n/strings.dart,gardenSize,Size,Tamanho,
+lib/l10n/strings.dart,gardenSizeM2(int m2),"FN: nl: '$m2 m²',
+    en: '$m2 m²',
+    de: '$m2 m²',
+    fr: '$m2 m²',
+    sv: '$m2 m²',
+    pt: '$m2 m²',",FN: '$m2 m²',hand-translated function
+lib/l10n/strings.dart,gardenSizeHint,How many square metres do you have to grow in?,Quantos metros quadrados tens para cultivar?,
+lib/l10n/strings.dart,sunHoursLabel,Hours of sun,Horas de sol,
+lib/l10n/strings.dart,sunHoursHint,On a clear day in June.,Num dia limpo de junho.,
+lib/l10n/strings.dart,gardenSaved,Garden updated,Horta atualizada,
+lib/l10n/strings.dart,faq,Frequently asked questions,Perguntas frequentes,
+lib/l10n/strings.dart,helpAndSupport,Help & support,Ajuda e apoio,
+lib/l10n/strings.dart,notSignedIn,Not signed in,Sem sessão iniciada,chip/button: watch width (19 vs 13 chars)
+lib/l10n/strings.dart,onThisDevice,On this phone,Neste telemóvel,
+lib/l10n/strings.dart,searchProblems,Search a problem,Procurar um problema,
+lib/l10n/strings.dart,problemsFound(int n),"FN: nl: '$n ${n == 1 ? 'probleem' : 'problemen'}',
+    en: '$n problem${n == 1 ? '' : 's'}',
+    de: '$n ${n == 1 ? 'Problem' : 'Probleme'}',
+    fr: '$n ${n <= 1 ? 'problème' : 'problèmes'}',
+    sv: '$n problem',
+    pt: '$n ${n == 1 ? 'problema' : 'problemas'}',",FN: '$n ${n == 1 ? ',hand-translated function
+lib/l10n/strings.dart,noProblemsFound,Nothing found. Try another word.,Nada encontrado. Tenta outra palavra.,
+lib/l10n/strings.dart,pathFirstSow,Your first sowing,A tua primeira sementeira,chip/button: watch width (25 vs 17 chars)
+lib/l10n/strings.dart,pathFirstSowCaption(LocalizedText crop),"FN: nl: 'Het seizoen begon met ${crop.nl}',
+    en: 'The season began with ${crop.en}',
+    de: 'Die Saison begann mit ${crop.pick('de')}',
+    fr: 'Premier semis de la saison : ${crop.pick('fr')}',
+    sv: 'Säsongen började med ${crop.pick('sv').toLowerCase()}',
+    pt: 'A estação começou com ${crop.pick('pt').toLowerCase()}',",FN: 'A estação começou com ${crop.pick(',hand-translated function
+lib/l10n/strings.dart,pathHarvest(int n),"FN: nl: 'Oogst nummer $n',
+    en: 'Harvest number $n',
+    de: 'Ernte Nummer $n',
+    fr: 'Récolte n° $n',
+    sv: 'Skörd nummer $n',
+    pt: 'Colheita número $n',",FN: 'Colheita número $n',hand-translated function
+lib/l10n/strings.dart,pathHarvestCaption(LocalizedText crop),"FN: nl: 'Geplukt: ${crop.nl}',
+    en: 'Picked: ${crop.en}',
+    de: 'Geerntet: ${crop.pick('de')}',
+    fr: 'Récolté : ${crop.pick('fr')}',
+    sv: 'Skördat: ${crop.pick('sv').toLowerCase()}',
+    pt: 'Colhido: ${crop.pick('pt').toLowerCase()}',",FN: 'Colhido: ${crop.pick(',hand-translated function
+lib/l10n/strings.dart,pathStreak(int days),"FN: nl: '$days dagen op rij',
+    en: '$days days in a row',
+    de: '$days Tage in Folge',
+    fr: '$days ${days <= 1 ? 'jour' : 'jours'} d\'affilée',
+    sv: '$days ${days == 1 ? 'dag' : 'dagar'} i rad',
+    pt: '$days ${days == 1 ? 'dia seguido' : 'dias seguidos'}',",FN: '$days ${days == 1 ? ',hand-translated function
+lib/l10n/strings.dart,pathStreakCaption,You kept it going,Mantiveste o ritmo,
+lib/l10n/strings.dart,pathPhotoCompare,See how far it has come,Vê o quanto já cresceu,
+lib/l10n/strings.dart,pathPhotoCompareCaption(LocalizedText month),"FN: nl: 'Naast je foto van ${month.nl}',
+        en: 'Next to your photo from ${month.en}',
+        de: 'Neben deinem Foto vom ${month.pick('de')}',
+        fr: 'À côté de ta photo prise en ${month.pick('fr')}',
+        sv: 'Bredvid ditt foto från ${month.pick('sv')}',
+        pt: 'Ao lado da tua foto de ${month.pick('pt')}',",FN: 'Ao lado da tua foto de ${month.pick(',hand-translated function
+lib/l10n/strings.dart,reminderOneThing,One thing to do today,Uma coisa para fazer hoje,
+lib/l10n/strings.dart,reminderThings(int n),"FN: nl: '$n dingen te doen vandaag',
+    en: '$n things to do today',
+    de: 'Heute stehen $n Aufgaben an',
+    fr: '$n choses à faire aujourd\'hui',
+    sv: '$n saker att göra idag',
+    pt: n == 1 ? '1 coisa para fazer hoje' : '$n coisas para fazer hoje',",FN: ,hand-translated function
+lib/l10n/strings.dart,taskWater,Water,Regar,
+lib/l10n/strings.dart,taskHarvest,Harvest,Colher,
+lib/l10n/strings.dart,taskPotOn,Pot on,Mudar de vaso,chip/button: watch width (13 vs 6 chars)
+lib/l10n/strings.dart,taskThin,Thin,Desbastar,chip/button: watch width (9 vs 4 chars)
+lib/l10n/strings.dart,thinSeedlings,Thin seedlings,Desbastar,"deliberate: ""Desbastar"" so stepOnCrop reads ""Desbastar cenoura"""
+lib/l10n/strings.dart,harvestWindow,Harvest window,Janela de colheita,
+lib/l10n/strings.dart,difficultyMedium,Medium,Média,
+lib/l10n/strings.dart,difficultyHard,Hard,Difícil,
+lib/l10n/strings.dart,skipRained,It rained,Choveu,
+lib/l10n/strings.dart,skipNotNeeded,Not needed,Não foi preciso,chip/button: watch width (15 vs 10 chars)
+lib/l10n/strings.dart,skipNoTime,No time,Sem tempo,
+lib/l10n/strings.dart,freezesUnlimited,Unlimited freeze days.,Dias de pausa ilimitados.,"deliberate: freeze days = ""dias de pausa"""
+lib/l10n/strings.dart,freezesLeft(int n),"FN: nl:
+        'Nog $n '
+        '${n == 1 ? 'vriesdag' : 'vriesdagen'} deze maand.',
+    en:
+        '$n freeze '
+        'day${n == 1 ? '' : 's'} left this month.',
+    de: 'Noch $n ${n == 1 ? 'Pausentag' : 'Pausentage'} diesen Monat.',
+    fr: '${n <= 1 ? '$n jour de pause restant' : '$n jours de pause restants'} ce mois-ci.',
+    sv: n == 1
+        ? '1 pausdag kvar den här månaden.'
+        : '$n pausdagar kvar den här månaden.',
+    pt: n == 1
+        ? 'Resta 1 dia de pausa este mês.'
+        : 'Restam $n dias de pausa este mês.',",FN: ,hand-translated function
+lib/l10n/strings.dart,adjustRainSkip(num mm),"FN: nl: 'Genoeg regen rond deze dag ($mm mm). Overslaan.',
+    en: 'Enough rain around this day ($mm mm). Skip watering.',
+    de: 'Genug Regen rund um diesen Tag ($mm mm). Gießen fällt aus.',
+    fr: 'Assez de pluie autour de ce jour ($mm mm). Pas d\'arrosage.',
+    sv: 'Tillräckligt med regn runt den här dagen ($mm mm). Hoppa över vattningen.',
+    pt: 'Chuva suficiente por volta deste dia ($mm mm). Salta a rega.',",FN: 'Chuva suficiente por volta deste dia ($mm mm). Salta a rega.',hand-translated function
+lib/l10n/strings.dart,adjustHeat(num t),"FN: nl: 'Hitte verwacht ($t°C). Eerder water geven.',
+    en: 'Heat expected ($t°C). Water earlier.',
+    de: 'Hitze erwartet ($t °C). Früher gießen.',
+    fr: 'Chaleur prévue ($t °C). Arrose plus tôt.',
+    sv: 'Värme väntas ($t °C). Vattna tidigare.',
+    pt: 'Calor previsto ($t °C). Rega mais cedo.',",FN: 'Calor previsto ($t °C). Rega mais cedo.',hand-translated function
+lib/l10n/strings.dart,adjustSoilCold(num gate),"FN: nl: 'Bodem nog te koud (< $gate°C). Uitgesteld tot het warmer is.',
+    en: 'Soil still too cold (< $gate°C). Held until it warms up.',
+    de: 'Boden noch zu kalt (< $gate °C). Verschoben, bis es wärmer ist.',
+    fr: 'Sol encore trop froid (< $gate °C). En attente jusqu\'à ce qu\'il se réchauffe.',
+    sv: 'Jorden är fortfarande för kall (< $gate °C). Väntar tills det blir varmare.',
+    pt: 'Solo ainda demasiado frio (< $gate °C). Em espera até aquecer.',",FN: 'Solo ainda demasiado frio (< $gate °C). Em espera até aquecer.',hand-translated function
+lib/l10n/strings.dart,adjustSoilStaysCold(num gate),"FN: nl: 'Bodem blijft te koud (< $gate°C). Nog even wachten.',
+    en: 'Soil staying too cold (< $gate°C). Wait a little longer.',
+    de: 'Boden bleibt zu kalt (< $gate °C). Noch etwas warten.',
+    fr: 'Le sol reste trop froid (< $gate °C). Encore un peu de patience.',
+    sv: 'Jorden förblir för kall (< $gate °C). Vänta lite till.',
+    pt: 'O solo continua demasiado frio (< $gate °C). Espera mais um pouco.',",FN: 'O solo continua demasiado frio (< $gate °C). Espera mais um pouco.',hand-translated function
+lib/l10n/strings.dart,weatherMovedTask,The weather moved a task,O tempo mudou a data de uma tarefa,
+lib/l10n/strings.dart,stepSowing,sowing,a sementeira,deliberate: lowercase with article; used after the colon in replanMoved
+lib/l10n/strings.dart,stepPottingOn,potting on,a mudança de vaso,deliberate: lowercase with article (replanMoved)
+lib/l10n/strings.dart,stepPlantingOut,planting out,a transplantação,deliberate: lowercase with article (replanMoved)
+lib/l10n/strings.dart,stepThinning,thinning,o desbaste,deliberate: lowercase with article (replanMoved)
+lib/l10n/strings.dart,stepFeeding,feeding,a adubação,deliberate: lowercase with article (replanMoved)
+lib/l10n/strings.dart,stepWatering,watering,a rega,deliberate: lowercase with article (replanMoved)
+lib/l10n/strings.dart,stepHarvest,harvest,a colheita,deliberate: lowercase with article (replanMoved)
+lib/l10n/strings.dart,stepHarvested,harvested,a colheita,"same as stepHarvest (""a colheita""), as in de/fr"
+lib/l10n/strings.dart,"replanMoved(
+    String sign,
+    int days,
+    LocalizedText step,
+    bool later,
+  )","FN: nl:
+        'Verplaatst ($sign$days dagen): ${step.nl} was '
+        '${later ? 'later' : 'eerder'} dan gepland.',
+    en:
+        'Moved ($sign$days days): ${step.en} was '
+        '${later ? 'later' : 'earlier'} than planned.',
+    de:
+        'Verschoben ($sign$days Tage): ${step.pick('de')} war '
+        '${later ? 'später' : 'früher'} als geplant.',
+    fr:
+        'Déplacé ($sign$days ${days <= 1 ? 'jour' : 'jours'}) : ${step.pick('fr')} a eu lieu '
+        '${later ? 'plus tard' : 'plus tôt'} que prévu.',
+    sv:
+        'Flyttad ($sign$days ${days == 1 ? 'dag' : 'dagar'}): ${step.pick('sv')} blev av '
+        '${later ? 'senare' : 'tidigare'} än planerat.',
+    pt:
+        'Mudou de data ($sign$days ${days == 1 ? 'dia' : 'dias'}): ${step.pick('pt')} foi '
+        '${later ? 'mais tarde' : 'mais cedo'} do que o previsto.',",FN: 'Mudou de data ($sign$days ${days == 1 ? ',hand-translated function
+lib/l10n/strings.dart,"replanFrostWarning(
+    String end,
+    String firstFrost,
+  )","FN: nl:
+        'De oogst loopt nu tot $end, dicht bij de eerste vorst '
+        '($firstFrost). Toch doorgaan, of een sneller ras kiezen?',
+    en:
+        'Harvest now runs until $end, close to first frost '
+        '($firstFrost). Grow it anyway, or swap for a faster variety?',
+    de:
+        'Die Ernte läuft jetzt bis $end, nah am ersten Frost '
+        '($firstFrost). Trotzdem weitermachen oder eine schnellere Sorte wählen?',
+    fr:
+        'La récolte court maintenant jusqu\'au $end, près des premières gelées '
+        '($firstFrost). Continuer quand même, ou choisir une variété plus rapide ?',
+    sv:
+        'Skörden pågår nu till $end, nära första frosten ($firstFrost). '
+        'Odla den ändå, eller byt till en snabbare sort?',
+    pt:
+        'A colheita vai agora até $end, perto da primeira geada ($firstFrost). '
+        'Cultivar na mesma, ou trocar por uma variedade mais rápida?',","FN: 'A colheita vai agora até $end, perto da primeira geada ($firstFrost). '
+        'Cultivar na mesma, ou trocar por uma variedade mais rápida?'",hand-translated function
+lib/l10n/strings.dart,"successionNote(
+    LocalizedText? after,
+    String afterSlug,
+    String freeFrom,
+    LocalizedText crop,
+    String until,
+  )","FN: nl: 'Plek vrij na ${after?.nl ?? afterSlug} ($freeFrom) — ${crop.nl} zaaien kan nog tot $until.',
+    en: 'Space frees up after ${after?.en ?? afterSlug} ($freeFrom) — ${crop.en} can still be sown until $until.',
+    de: 'Platz frei nach ${after?.pick('de') ?? afterSlug} ($freeFrom) — ${crop.pick('de')} kannst du noch bis $until säen.',
+    fr: 'Place libre après ${after?.pick('fr') ?? afterSlug} ($freeFrom) — tu peux encore semer ${crop.pick('fr')} jusqu\'au $until.',
+    sv:
+        'Platsen blir ledig efter ${after?.pick('sv').toLowerCase() ?? afterSlug} '
+        '($freeFrom) – ${crop.pick('sv').toLowerCase()} kan fortfarande sås fram till $until.',
+    pt:
+        'O espaço fica livre depois de ${after?.pick('pt').toLowerCase() ?? afterSlug} '
+        '($freeFrom) – ainda dá para semear ${crop.pick('pt').toLowerCase()} até $until.',",FN: 'O espaço fica livre depois de ${after?.pick(',hand-translated function
+lib/l10n/strings.dart,faqDatesQ,Where do the planting dates come from?,De onde vêm as datas de plantação?,
+lib/l10n/strings.dart,faqDatesA,"From the frost dates for your location (KNMI / Open-Meteo climate normals, rounded to ~1 km) combined with crop rules cross-checked against at least two Dutch seed calendars.","Das datas de geada da tua localização (normais climáticas KNMI / Open-Meteo, arredondadas a ~1 km), combinadas com regras de cultivo verificadas em pelo menos dois calendários de sementeira neerlandeses.",
+lib/l10n/strings.dart,faqBehindQ,I fell behind. Is my plan ruined?,Fiquei para trás. O meu plano está estragado?,"user voice: ""Fiquei para trás"" (not mascot, not ""atrasado"")"
+lib/l10n/strings.dart,faqBehindA,"No. Log what you actually did and when; every later step moves with it. Nothing is ever ""overdue"", it is ""moved"".",Não. Regista o que fizeste de facto e quando; cada passo seguinte acompanha. Nada fica “perdido”: só “muda de data”.,"deliberate: “perdido” / “muda de data”, never ""em atraso"""
+lib/l10n/strings.dart,faqWateringQ,Why did a watering disappear?,Porque desapareceu uma rega?,
+lib/l10n/strings.dart,faqWateringA,"It rained enough around that day, or rain is forecast. The weather line on Home says what changed.","Choveu o suficiente nesse dia, ou há chuva prevista. A nota do tempo no Início diz o que mudou.",
+lib/l10n/strings.dart,faqOfflineQ,Does it work offline?,Funciona sem ligação?,"deliberate: offline = ""sem ligação"""
+lib/l10n/strings.dart,faqOfflineA,"Yes. Crops, dates, reminders and the timeline all run on the phone. Weather hints and sync need a connection.","Sim. Plantas, datas, lembretes e a cronologia funcionam todos no telemóvel. As dicas do tempo e a sincronização precisam de ligação.",
+lib/l10n/strings.dart,faqFreeQ,What does the free tier include?,O que inclui a versão grátis?,
+lib/l10n/strings.dart,faqFreeA,"One garden, six growing plants, the full timeline, reminders and every crop, forever. Lifetime unlocks more room.","Uma horta, seis plantas a crescer, a cronologia completa, os lembretes e todas as plantas, para sempre. O Lifetime desbloqueia mais espaço.",
+lib/l10n/strings.dart,faqDeleteQ,How do I delete my account?,Como elimino a minha conta?,
+lib/l10n/strings.dart,faqDeleteA,Profile → Account → Delete account. It removes your account and every synced row; local data stays on this phone until you delete the app.,Perfil → Conta → Eliminar conta. Remove a tua conta e todos os dados sincronizados; os dados locais ficam neste telemóvel até apagares a app.,
+lib/l10n/mascot_lines.dart,seasonEmpty,Add a plant and your season lays itself out here.,Adiciona uma planta e a tua estação organiza-se aqui.,
+lib/l10n/mascot_lines.dart,gardenPlanningEmpty,"Nothing planned yet. Tap ""Plan it"" on a crop and it lands here.",Ainda nada planeado. Toca em “Planear” numa planta e ela aparece aqui.,"quotes the planIt button ""Planear"""
+lib/l10n/mascot_lines.dart,gardenGrowingEmpty,Nothing growing yet. Start a planned crop and the path begins.,Ainda nada a crescer. Começa uma planta planeada e o percurso arranca.,
+lib/l10n/mascot_lines.dart,harvestEmpty,Nothing picked yet. Log a harvest and the tally starts.,Ainda nada colhido. Regista uma colheita e o balanço começa.,
+lib/l10n/mascot_lines.dart,pathEmpty,No path yet. Press Start when this plant goes in. The path builds itself.,Ainda sem percurso. Carrega em Começar quando esta planta for para a terra. O percurso constrói-se sozinho.,
+lib/l10n/mascot_lines.dart,notBehindNothingMoved,Logged. Nothing else needed to move.,Registado. Mais nada precisou de mudar.,
+lib/l10n/mascot_lines.dart,"notBehind({
+    required LocalizedText step,
+    required int days,
+    required bool later,
+    required int moved,
+  })","FN: nl:
+        'Je loopt niet achter. ${step.nl} was $days dagen '
+        '${later ? 'later' : 'eerder'} dan gepland, dus $moved volgende '
+        '${moved == 1 ? 'stap schuift' : 'stappen schuiven'} mee.',
+    en:
+        ""You're not behind. ${step.en} was $days days ""
+        '${later ? 'later' : 'earlier'} than planned, so $moved upcoming '
+        '${moved == 1 ? 'step moves' : 'steps move'} with it.',
+    de:
+        'Du hängst nicht hinterher. ${step.pick('de')} war $days '
+        '${days == 1 ? 'Tag' : 'Tage'} ${later ? 'später' : 'früher'} als '
+        'geplant, darum '
+        '${moved == 1 ? 'zieht 1 weiterer Schritt' : 'ziehen $moved weitere Schritte'} mit.',
+    fr:
+        'Rien n\'est perdu. L\'étape « ${step.pick('fr')} » a été faite $days '
+        '${days <= 1 ? 'jour' : 'jours'} ${later ? 'plus tard' : 'plus tôt'} que prévu, donc '
+        '${moved <= 1 ? '$moved étape suivante se décale' : '$moved étapes suivantes se décalent'} aussi.',
+    sv:
+        'Du ligger inte efter. Steget ”${step.pick('sv')}” gjordes $days '
+        '${days == 1 ? 'dag' : 'dagar'} ${later ? 'senare' : 'tidigare'} än planerat, så '
+        '$moved kommande steg flyttas med.',
+    pt:
+        'Não ficaste para trás. O passo “${step.pick('pt')}” foi feito $days '
+        '${days == 1 ? 'dia' : 'dias'} ${later ? 'mais tarde' : 'mais cedo'} do que o previsto, por isso '
+        '${moved == 1 ? '1 passo seguinte acompanha' : '$moved passos seguintes acompanham'}.',",FN: 'Não ficaste para trás. O passo “${step.pick(',hand-translated function
+lib/l10n/mascot_lines.dart,frostWarning,"Careful: the new harvest date lands near the first frost. Growing it anyway is fine, a faster variety is safer.",Atenção: a nova data de colheita fica perto da primeira geada. Podes cultivá-la na mesma; uma variedade mais rápida é mais segura.,
+lib/l10n/mascot_lines.dart,ijsheiligen,"The ice saints, 11 to 15 May. A late night frost in this week is common in the Netherlands, so tomatoes, courgettes and basil stay under cover until it passes.","As últimas geadas, de 11 a 15 de maio. Nos Países Baixos é comum uma geada noturna tardia nesta semana, por isso tomates, curgetes e manjericão ficam abrigados até ela passar.","deliberate: IJsheiligen / Ice Saints = ""últimas geadas"" (brief)"
+lib/l10n/mascot_lines.dart,lastFrost,"The average last spring frost for your region. Every sowing date in the app is counted from it, and an average is not a promise: watch the forecast either side of it.","A última geada da primavera, em média, na tua região. Todas as datas de sementeira da app contam a partir dela, e uma média não é uma promessa: vê a previsão nos dias à volta.",
+lib/l10n/mascot_lines.dart,firstFrost,"The average first autumn frost for your region. Harvest windows are counted back from it, so anything still ripening after this date is on borrowed time.","A primeira geada do outono, em média, na tua região. As janelas de colheita contam para trás a partir dela, por isso o que ainda estiver a amadurecer depois desta data está a viver de tempo emprestado.",
+lib/l10n/mascot_lines.dart,recap,"At the end of December the season adds up: what you grew, what you picked, and what it saved you.","No fim de dezembro a estação faz as contas: o que cultivaste, o que colheste e quanto poupaste.",
+lib/l10n/mascot_lines.dart,seedOrder,January is seed month. Order now and everything is ready when the soil warms up.,Janeiro é o mês das sementes. Encomenda agora e tudo fica pronto quando o solo aquecer.,
+lib/l10n/mascot_lines.dart,rainSkipped,"Rain did the watering. Skipped for you, and your streak still counts.","A chuva regou por ti. Saltei a rega, e a tua série continua a contar.",
+lib/l10n/mascot_lines.dart,heatAhead,"Heat on the way. Containers dry out in a day, so watering moves earlier.","Vem aí calor. Os vasos secam num dia, por isso a rega passa para mais cedo.",deliberate: space before °C
+lib/l10n/mascot_lines.dart,soilCold,"The soil is still too cold. Sowing waits until it warms up, which saves you a failed sowing.","O solo ainda está demasiado frio. A sementeira espera até ele aquecer, e assim poupas uma sementeira falhada.",
+lib/l10n/mascot_lines.dart,streakStart,"Tick one task, or skip one with a reason. Rain counts.","Marca uma tarefa, ou salta uma com um motivo. A chuva conta.",
+lib/l10n/mascot_lines.dart,streakGoing(int days),"FN: nl: '$days ${days == 1 ? 'dag' : 'dagen'} op rij. Mooi bezig.',
+    en: '$days ${days == 1 ? 'day' : 'days'} in a row. Nicely done.',
+    de: '$days ${days == 1 ? 'Tag' : 'Tage'} in Folge. Gut gemacht.',
+    fr: '$days ${days <= 1 ? 'jour' : 'jours'} d\'affilée. Bien joué.',
+    sv: '$days ${days == 1 ? 'dag' : 'dagar'} i rad. Snyggt jobbat.',
+    pt: '$days ${days == 1 ? 'dia seguido' : 'dias seguidos'}. Muito bem.',",FN: '$days ${days == 1 ? ',hand-translated function
+lib/l10n/mascot_lines.dart,streakBrokenBySeason,"There is little to do in winter, so your streak simply pauses. It picks up when the season does.","No inverno há pouco para fazer, por isso a tua série simplesmente faz uma pausa. Recomeça quando a estação recomeçar.",
+lib/l10n/mascot_lines.dart,scanNotAPlant,"That does not look like a plant. We know fruit and veg, so try a leaf or a fruit.","Isso não parece uma planta. Conhecemos fruta e legumes, por isso tenta uma folha ou um fruto.",
+lib/l10n/mascot_lines.dart,scanNoMatch,"No match. Try a closer shot of a leaf or flower, or search by name.","Sem correspondência. Tenta uma foto mais de perto de uma folha ou flor, ou procura pelo nome.",
+lib/l10n/mascot_lines.dart,scanHealthy,Looks healthy from here.,Daqui parece saudável.,
+lib/l10n/mascot_lines.dart,scanNothingRecognisable,Nothing recognisable. Browse the common problems below instead.,Nada reconhecível. Vê antes os problemas comuns abaixo.,
+lib/l10n/mascot_lines.dart,scanBestGuesses,"Best guesses, most likely first. Not this plant? Pick another or search by name.","Melhores palpites, o mais provável primeiro. Não é esta planta? Escolhe outra ou procura pelo nome.",
+lib/l10n/mascot_lines.dart,scanIsAGuess,"This is a guess from the photo, not a diagnosis.","Isto é um palpite a partir da foto, não um diagnóstico.",
+lib/l10n/mascot_lines.dart,problemsComing,"The 25 problems common on Dutch balconies, slakken, luizen, meeldauw, neusrot, are being written and checked. They land with the content update.","Os 25 problemas mais comuns nas varandas neerlandesas, lesmas, pulgões, oídio, podridão apical, estão a ser escritos e verificados. Chegam com a atualização de conteúdo.",
+lib/l10n/mascot_lines.dart,seasonLaysItselfOut,Add a plant and the season lays itself out here.,Adiciona uma planta e a estação organiza-se aqui.,
+lib/l10n/mascot_lines.dart,scanSignIn,"Sign in first, under Settings. Scans are counted per account.","Inicia sessão primeiro, nas Definições. As análises são contadas por conta.",
+lib/l10n/mascot_lines.dart,welcome,Hi! Let's get to know each other.,Olá! Vamos conhecer-nos.,
+lib/l10n/mascot_lines.dart,buildingPlan,Working out your season. One moment.,A preparar a tua estação. Um momento.,
+lib/l10n/mascot_lines.dart,planReady,Your plan is ready. From here I tell you what to do each week.,O teu plano está pronto. A partir daqui digo-te o que fazer todas as semanas.,
+lib/l10n/mascot_lines.dart,"insightHarvestPastFrost(
+    String firstFrost,
+  )","FN: nl:
+        'Het oogstvenster loopt door tot na de eerste vorst '
+        '($firstFrost). Doorgaan mag voor wat als eerste rijpt: '
+        'zet de pot binnen, of kies volgend jaar een snellere variëteit.',
+    en:
+        'The harvest window runs past the first frost '
+        '($firstFrost). Grow it anyway for what ripens first, '
+        'move the pot inside, or swap for a faster variety next time.',
+    de:
+        'Das Erntefenster reicht über den ersten Frost hinaus '
+        '($firstFrost). Für das, was zuerst reif wird, lohnt es sich trotzdem: '
+        'Hol den Topf rein, oder nimm nächstes Mal eine schnellere Sorte.',
+    fr:
+        'La période de récolte dépasse les premières gelées '
+        '($firstFrost). Continue pour ce qui mûrit en premier, '
+        'rentre le pot, ou choisis une variété plus rapide la prochaine fois.',
+    sv:
+        'Skördefönstret sträcker sig förbi första frosten ($firstFrost). '
+        'Odla den ändå för det som mognar först, flytta in krukan eller byt '
+        'till en snabbare sort nästa gång.',
+    pt:
+        'A janela de colheita passa da primeira geada ($firstFrost). '
+        'Cultiva na mesma pelo que amadurece primeiro, leva o vaso para dentro '
+        'ou escolhe uma variedade mais rápida da próxima vez.',","FN: 'A janela de colheita passa da primeira geada ($firstFrost). '
+        'Cultiva na mesma pelo que amadurece primeiro, leva o vaso para dentro '
+        'ou escolhe uma variedade mais rápida da próxima vez.'",hand-translated function
+lib/l10n/mascot_lines.dart,"insightFirstFrostSoon(
+    int days,
+    String firstFrost,
+    LocalizedText crop,
+  )","FN: nl:
+        'De eerste vorst wordt over ongeveer $days dagen verwacht '
+        '($firstFrost). ${crop.nl} overleeft dat niet. '
+        'Pluk wat rijp is en dek af of zet binnen.',
+    en:
+        'First frost is expected in about $days days '
+        '($firstFrost). ${crop.en} does not survive it. '
+        'Pick what is ripe and cover or move it in.',
+    de:
+        'Der erste Frost wird in etwa $days Tagen erwartet '
+        '($firstFrost). ${crop.pick('de')} übersteht ihn nicht. '
+        'Ernte, was reif ist, und deck ab oder hol es rein.',
+    fr:
+        'Les premières gelées sont attendues dans environ $days '
+        '${days <= 1 ? 'jour' : 'jours'} ($firstFrost). Cette plante n\'y résiste pas. '
+        'Récolte ce qui est mûr, puis couvre-la ou rentre-la.',
+    sv:
+        'Första frosten väntas om ungefär $days ${days == 1 ? 'dag' : 'dagar'} '
+        '($firstFrost). ${crop.pick('sv')} tål inte frost. Skörda det som är '
+        'moget och täck över eller flytta in växten.',
+    pt:
+        'A primeira geada é esperada daqui a cerca de $days ${days == 1 ? 'dia' : 'dias'} '
+        '($firstFrost). ${crop.pick('pt')} não sobrevive à geada. Colhe o que estiver '
+        'maduro e cobre a planta ou leva-a para dentro.',",FN: 'A primeira geada é esperada daqui a cerca de $days ${days == 1 ? ',hand-translated function
+lib/l10n/mascot_lines.dart,"insightLastFrostAhead(
+    int days,
+    String lastFrost,
+    LocalizedText crop,
+  )","FN: nl:
+        'De laatste vorst is nog ~$days dagen weg ($lastFrost). '
+        'Houd ${crop.nl.toLowerCase()} binnen tot na de ijsheiligen.',
+    en:
+        'Last frost is still ~$days days away ($lastFrost). '
+        'Keep ${crop.en.toLowerCase()} inside until after IJsheiligen.',
+    // German nouns keep their capital.
+    de:
+        'Der letzte Frost ist noch ~$days Tage entfernt ($lastFrost). '
+        'Lass ${crop.pick('de')} bis nach den Eisheiligen drinnen.',
+    fr:
+        'Les dernières gelées sont encore à ~$days ${days <= 1 ? 'jour' : 'jours'} ($lastFrost). '
+        '${crop.pick('fr')} : à garder à l\'intérieur jusqu\'après les saints de glace.',
+    sv:
+        'Sista frosten är fortfarande ~$days ${days == 1 ? 'dag' : 'dagar'} bort '
+        '($lastFrost). Håll ${crop.pick('sv').toLowerCase()} inne tills sista frosten är över.',
+    pt:
+        'A última geada ainda está a ~$days ${days == 1 ? 'dia' : 'dias'} ($lastFrost). '
+        'Mantém as plantas de ${crop.pick('pt').toLowerCase()} dentro de casa até passarem as últimas geadas.',",FN: 'A última geada ainda está a ~$days ${days == 1 ? ',hand-translated function
+lib/l10n/mascot_lines.dart,"insightColdNight(
+    int tempC,
+    String date,
+  )","FN: nl:
+        'Koude nacht op komst: $tempC°C op '
+        '$date. Dek af of zet de potten binnen.',
+    en:
+        'Cold night ahead: $tempC°C on '
+        '$date. Fleece or bring pots in.',
+    de:
+        'Kalte Nacht im Anmarsch: $tempC °C am '
+        '$date. Deck ab oder hol die Töpfe rein.',
+    fr:
+        'Nuit froide en vue : $tempC °C le '
+        '$date. Couvre d\'un voile ou rentre les pots.',
+    sv:
+        'Kall natt på väg: $tempC °C den $date. Täck med fiberduk eller ta in '
+        'krukorna.',
+    pt:
+        'Noite fria a caminho: $tempC °C a $date. Cobre com manta térmica ou '
+        'leva os vasos para dentro.',","FN: 'Noite fria a caminho: $tempC °C a $date. Cobre com manta térmica ou '
+        'leva os vasos para dentro.'",hand-translated function
+lib/l10n/mascot_lines.dart,"insightHeat(
+    int tempC,
+    String date,
+    int litres,
+  )","FN: nl:
+        '$tempC°C op '
+        '$date: een pot van $litres L '
+        'droogt in één dag uit. Geef water in de ochtend en zet de pot '
+        'in de schaduw als dat kan.',
+    en:
+        '$tempC°C on '
+        '$date: a $litres L pot dries out '
+        'in a day. Water in the morning, shade the pot if you can.',
+    de:
+        '$tempC °C am '
+        '$date: Ein Topf mit $litres L trocknet an einem Tag aus. Gieß '
+        'morgens und stell den Topf in den Schatten, wenn es geht.',
+    fr:
+        '$tempC °C le '
+        '$date : un pot de $litres L sèche en une journée. Arrose le '
+        'matin, et mets le pot à l\'ombre si tu peux.',
+    sv:
+        '$tempC °C den $date: en kruka på $litres L torkar ut på en dag. Vattna '
+        'på morgonen och ställ krukan i skugga om du kan.',
+    pt:
+        '$tempC °C a $date: um vaso de $litres L seca num dia. Rega de manhã '
+        'e põe o vaso à sombra se puderes.',","FN: '$tempC °C a $date: um vaso de $litres L seca num dia. Rega de manhã '
+        'e põe o vaso à sombra se puderes.'",hand-translated function
+lib/l10n/mascot_lines.dart,insightRain(int mm),"FN: nl:
+        '$mm mm regen in de komende drie dagen. Sla het '
+        'water geven over en controleer de gaatjes in de pot.',
+    en:
+        '$mm mm of rain in the next three days. Skip '
+        'watering and check the drainage holes.',
+    de:
+        '$mm mm Regen in den nächsten drei Tagen. Lass das '
+        'Gießen aus und prüf die Abzugslöcher.',
+    fr:
+        '$mm mm de pluie dans les trois prochains jours. Pas besoin '
+        'd\'arroser ; vérifie juste les trous de drainage.',
+    sv:
+        '$mm mm regn de närmaste tre dagarna. Hoppa över vattningen och kolla '
+        'dräneringshålen.',
+    pt:
+        '$mm mm de chuva nos próximos três dias. Salta a rega e verifica os '
+        'furos de drenagem.',","FN: '$mm mm de chuva nos próximos três dias. Salta a rega e verifica os '
+        'furos de drenagem.'",hand-translated function
