@@ -23,7 +23,7 @@ const appLanguages = <(String, String)>[
 ];
 
 /// Languages whose interface strings are complete. Waves append one code.
-const shippedLanguages = ['en', 'nl', 'de'];
+const shippedLanguages = ['en', 'nl', 'de', 'fr'];
 
 /// What the picker and MaterialApp offer: [appLanguages] that have shipped.
 final pickerLanguages = [for (final l in appLanguages) if (shippedLanguages.contains(l.$1)) l];

@@ -8,17 +8,18 @@ void main() {
   test('normalizeLang maps device tags onto shipped codes, English otherwise', () {
     expect(normalizeLang('de-AT'), 'de');
     expect(normalizeLang('NL'), 'nl');
+    expect(normalizeLang('fr-FR'), 'fr');
     // Planned but not shipped: English until the wave lands.
-    expect(normalizeLang('fr'), 'en');
+    expect(normalizeLang('sv'), 'en');
     expect(normalizeLang('pt_PT'), 'en');
     expect(normalizeLang('it'), 'en');
     expect(normalizeLang(null), 'en');
   });
 
   test('the stored language keeps a planned code the app does not speak yet', () {
-    expect(shippedLanguages, isNot(contains('fr')));
-    expect(plannedLang('fr-FR'), 'fr');
-    expect(normalizeLang('fr-FR'), 'en');
+    expect(shippedLanguages, isNot(contains('sv')));
+    expect(plannedLang('sv-SE'), 'sv');
+    expect(normalizeLang('sv-SE'), 'en');
     expect(plannedLang('it'), 'en');
   });
 
