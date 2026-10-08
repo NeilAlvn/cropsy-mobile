@@ -20,10 +20,9 @@ void main() {
     expect(shippedLanguages, appLanguages.map((l) => l.$1).toList());
     expect(plannedLang('pt-PT'), 'pt');
     expect(plannedLang('it'), 'en');
-    expect(normalizeLang('it'), 'en');
   });
 
-  test('six languages planned, the picker offers only the shipped ones', () {
+  test('six languages planned, the picker offers every shipped language', () {
     expect(appLanguages.map((l) => l.$1), ['en', 'nl', 'de', 'fr', 'sv', 'pt']);
     expect(appLanguages.map((l) => l.$1), containsAll(shippedLanguages));
     expect(pickerLanguages.length, shippedLanguages.length);

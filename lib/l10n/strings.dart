@@ -889,7 +889,7 @@ abstract final class Str {
     de: 'Wissen, was\n',
     fr: 'Ce qu\'il faut faire\n',
     sv: 'Vet vad du ska göra\n',
-    pt: 'Sabe o que fazer\n',
+    pt: 'Fica a saber o que fazer\n',
   );
   static const heroThisWeek = LocalizedText(
     nl: 'deze week',
@@ -957,7 +957,7 @@ abstract final class Str {
     de: 'Jede Pflanze wird mit mindestens zwei NL-Quellen abgeglichen, IVN, Tuinadvies, zaaitijden.nl und Groei & Bloei, bevor sie bei dir ankommt. Und wenn das Leben dazwischenkommt, zieht der Plan mit. Nichts ist je „zu spät“.',
     fr: 'Chaque plante est vérifiée auprès d\'au moins deux sources néerlandaises, IVN, Tuinadvies, zaaitijden.nl et Groei & Bloei, avant d\'arriver chez toi. Et quand la vie s\'en mêle, le plan bouge avec toi. Une tâche n\'est jamais « ratée » : elle est « déplacée ».',
     sv: 'Varje växt kontrolleras mot minst två nederländska källor – IVN, Tuinadvies, zaaitijden.nl och Groei & Bloei – innan den når dig. Och när livet kommer emellan flyttar planen med dig. En uppgift är aldrig ”missad”, den är bara ”flyttad”.',
-    pt: 'Cada planta é verificada em pelo menos duas fontes neerlandesas, IVN, Tuinadvies, zaaitijden.nl e Groei & Bloei, antes de chegar a ti. E quando a vida se mete pelo meio, o plano acompanha-te. Nada fica “perdido”: só muda de data.',
+    pt: 'Cada planta é verificada em pelo menos duas fontes neerlandesas, (IVN, Tuinadvies, zaaitijden.nl e Groei & Bloei) antes de chegar a ti. E quando a vida se mete pelo meio, o plano acompanha-te. Nada fica “perdido”: só muda de data.',
   );
   static const getToKnowTitle = LocalizedText(
     nl: 'Hoi! Even kennismaken',
@@ -1519,8 +1519,8 @@ abstract final class Str {
         'Det har regnat $mm mm de senaste tre dagarna. Vattningar runt idag '
         'hoppas över.',
     pt:
-        'Choveu $mm mm nos últimos três dias. As regas à volta de hoje '
-        'foram saltadas.',
+        'Choveu $mm mm nos últimos três dias. As regas previstas para estes '
+        'dias foram canceladas.',
   );
   static const heatAhead = LocalizedText(
     nl:
@@ -1995,7 +1995,7 @@ abstract final class Str {
     de: 'Erntereif',
     fr: 'À récolter',
     sv: 'Redo att skörda',
-    pt: 'Pronto a colher',
+    pt: 'Já dá para colher',
   );
   static LocalizedText harvestDays(int min, int max) => LocalizedText(
     nl: '$min–$max dagen',
@@ -2105,7 +2105,7 @@ abstract final class Str {
     de: 'Die App spricht mehrere Sprachen. Eine Anbauanleitung, die noch nicht übersetzt ist, erscheint auf Englisch und sagt das auch.',
     fr: 'L\'app parle plusieurs langues. Un guide de culture pas encore traduit s\'affiche en anglais, et le dit.',
     sv: 'Appen talar flera språk. En odlingsguide som inte är översatt än visas på engelska, och det står då tydligt.',
-    pt: 'A interface fala vários idiomas. Um guia de cultivo que ainda não está traduzido aparece em inglês, e diz isso.',
+    pt: 'A interface fala vários idiomas. Um guia de cultivo que ainda não está traduzido aparece em inglês, e avisa.',
   );
   static const signInBlurb = LocalizedText(
     nl:
@@ -2990,7 +2990,7 @@ abstract final class Str {
     de: 'Verlauf',
     fr: 'Historique',
     sv: 'Historik',
-    pt: 'Registo de crescimento',
+    pt: 'Histórico',
   );
   static const logHarvest = LocalizedText(
     nl: 'Oogst loggen',
@@ -3326,7 +3326,7 @@ abstract final class Str {
         '${what.pick('sv')}: skrivs och kontrolleras för nederländska odlingar. '
         'Kommer med innehållsuppdateringen.',
     pt:
-        '${what.pick('pt')}: em escrita e verificação para hortas neerlandesas. '
+        '${what.pick('pt')}: estamos a escrever e a verificar isto para hortas neerlandesas. '
         'Chega com a atualização de conteúdo.',
   );
 
@@ -3411,7 +3411,7 @@ abstract final class Str {
     de: 'gepflanzt am $day',
     fr: 'planté le $day',
     sv: 'planterad $day',
-    pt: 'plantado a $day',
+    pt: 'plantação: $day',
   );
   static const countsTowardsTally = LocalizedText(
     nl: 'Telt mee voor je seizoensoogst.',
@@ -4176,7 +4176,7 @@ abstract final class Str {
     de: 'Danke. Wir prüfen jede Meldung innerhalb einer Woche.',
     fr: 'Merci. On vérifie chaque signalement sous une semaine.',
     sv: 'Tack. Vi går igenom varje rapport inom en vecka.',
-    pt: 'Obrigado. Verificamos cada relato no prazo de uma semana.',
+    pt: 'Obrigado. Verificamos cada aviso no prazo de uma semana.',
   );
   static const thanksFeedback = LocalizedText(
     nl: 'Dank voor je feedback.',

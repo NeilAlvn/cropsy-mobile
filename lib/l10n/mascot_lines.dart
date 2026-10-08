@@ -112,7 +112,7 @@ abstract final class MascotLines {
     de: 'Achtung: Das neue Erntedatum liegt nah am ersten Frost. Weitermachen ist okay, eine schnellere Sorte ist sicherer.',
     fr: 'Attention : la nouvelle date de récolte tombe près des premières gelées. Tu peux continuer, une variété plus rapide est plus sûre.',
     sv: 'Se upp: det nya skördedatumet hamnar nära första frosten. Det går bra att odla den ändå, men en snabbare sort är säkrare.',
-    pt: 'Atenção: a nova data de colheita fica perto da primeira geada. Podes cultivá-la na mesma; uma variedade mais rápida é mais segura.',
+    pt: 'Atenção: a nova data de colheita fica perto da primeira geada. Podes avançar na mesma; uma variedade mais rápida é mais segura.',
   );
 
   // ── the season's own markers ──────────────────────────────────────────────
@@ -336,7 +336,7 @@ abstract final class MascotLines {
     de: 'Die 25 häufigsten Probleme auf niederländischen Balkonen, Schnecken, Läuse, Mehltau, Blütenendfäule, werden geschrieben und geprüft. Sie kommen mit dem Inhalts-Update.',
     fr: 'Les 25 problèmes les plus courants sur les balcons néerlandais, limaces, pucerons, oïdium, nécrose apicale, sont en cours d\'écriture et de vérification. Ils arrivent avec la mise à jour du contenu.',
     sv: 'De 25 vanligaste problemen på nederländska balkonger – sniglar, bladlöss, mjöldagg, pistillröta – skrivs och kontrolleras just nu. De kommer med innehållsuppdateringen.',
-    pt: 'Os 25 problemas mais comuns nas varandas neerlandesas, lesmas, pulgões, oídio, podridão apical, estão a ser escritos e verificados. Chegam com a atualização de conteúdo.',
+    pt: 'Os 25 problemas mais comuns nas varandas neerlandesas, (lesmas, pulgões, oídio, podridão apical) estão a ser escritos e verificados. Chegam com a atualização de conteúdo.',
   );
 
   static const seasonLaysItselfOut = LocalizedText(
@@ -411,8 +411,8 @@ abstract final class MascotLines {
         'till en snabbare sort nästa gång.',
     pt:
         'A janela de colheita passa da primeira geada ($firstFrost). '
-        'Cultiva na mesma pelo que amadurece primeiro, leva o vaso para dentro '
-        'ou escolhe uma variedade mais rápida da próxima vez.',
+        'Vale a pena na mesma pelo que amadurecer primeiro: leva o vaso para '
+        'dentro ou escolhe uma variedade mais rápida da próxima vez.',
   );
 
   static LocalizedText insightFirstFrostSoon(
