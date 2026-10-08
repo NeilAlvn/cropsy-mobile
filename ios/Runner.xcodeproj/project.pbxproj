@@ -64,6 +64,7 @@
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B026F85F5A2FAF1FB07B760F /* de */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D5CE5A118B7BE2B3D37453D4 /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F520050D4F2C97579E3D4004 /* sv */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +208,7 @@
 				nl,
 				de,
 				fr,
+				sv,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			packageReferences = (
@@ -315,6 +317,7 @@
 				563425ABEF4DE14C5D2BC559 /* nl */,
 				B026F85F5A2FAF1FB07B760F /* de */,
 				3692E2148C10403537D779FD /* fr */,
+				F520050D4F2C97579E3D4004 /* sv */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

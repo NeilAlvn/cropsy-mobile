@@ -12,6 +12,7 @@
 		<string>nl</string>
 		<string>de</string>
 		<string>fr</string>
+		<string>sv</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Cropsy uses the camera for growth-log photos and to identify or diagnose a plant from a photo.</string>
