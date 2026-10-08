@@ -9,17 +9,17 @@ void main() {
     expect(normalizeLang('de-AT'), 'de');
     expect(normalizeLang('NL'), 'nl');
     expect(normalizeLang('fr-FR'), 'fr');
+    expect(normalizeLang('sv-SE'), 'sv');
     // Planned but not shipped: English until the wave lands.
-    expect(normalizeLang('sv'), 'en');
     expect(normalizeLang('pt_PT'), 'en');
     expect(normalizeLang('it'), 'en');
     expect(normalizeLang(null), 'en');
   });
 
   test('the stored language keeps a planned code the app does not speak yet', () {
-    expect(shippedLanguages, isNot(contains('sv')));
-    expect(plannedLang('sv-SE'), 'sv');
-    expect(normalizeLang('sv-SE'), 'en');
+    expect(shippedLanguages, isNot(contains('pt')));
+    expect(plannedLang('pt-PT'), 'pt');
+    expect(normalizeLang('pt-PT'), 'en');
     expect(plannedLang('it'), 'en');
   });
 
