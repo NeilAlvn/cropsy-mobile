@@ -308,7 +308,7 @@ abstract final class Str {
     en: 'Needs a bed',
     de: 'Braucht ein Beet',
     fr: 'Demande un carré',
-    sv: 'Behöver en bädd',
+    sv: 'Behöver odlingsbädd',
     pt: 'Precisa de canteiro',
   );
   static const moveBackToPlanning = LocalizedText(
@@ -814,7 +814,7 @@ abstract final class Str {
     en: 'Perennial',
     de: 'Mehrjährig',
     fr: 'Vivace',
-    sv: 'Perenn',
+    sv: 'Flerårig',
     pt: 'Perene',
   );
   static const firstHarvest = LocalizedText(
@@ -1076,7 +1076,7 @@ abstract final class Str {
     en: 'On a clear day, how long is it in direct sun?',
     de: 'Wie lange scheint an einem klaren Tag die Sonne direkt hin?',
     fr: 'Par temps clair, combien de temps est-ce au soleil direct ?',
-    sv: 'En klar dag, hur länge står det i direkt sol?',
+    sv: 'Hur många timmar direkt sol får platsen en klar dag?',
     pt: 'Num dia limpo, quanto tempo apanha sol direto?',
   );
   static const sunFull = LocalizedText(
@@ -1812,7 +1812,7 @@ abstract final class Str {
     en: 'Skipped for you, the streak still counts',
     de: 'Für dich übersprungen, die Serie zählt trotzdem',
     fr: 'Sauté pour toi, la série compte quand même',
-    sv: 'Överhoppat åt dig, sviten räknas ändå',
+    sv: 'Hoppades över åt dig – sviten räknas ändå',
     pt: 'Saltámos a rega por ti; a série continua a contar',
   );
   static const heatComing = LocalizedText(
@@ -2140,7 +2140,7 @@ abstract final class Str {
     en: 'Check your mail. The link signs you in.',
     de: 'Schau in dein Postfach. Der Link meldet dich an.',
     fr: 'Regarde tes e-mails. Le lien te connecte.',
-    sv: 'Kolla din mejl. Länken loggar in dig.',
+    sv: 'Kolla mejlen. Länken loggar in dig.',
     pt: 'Vê o teu e-mail. O link inicia a sessão.',
   );
   static const passwordOptional = LocalizedText(
@@ -2337,7 +2337,7 @@ abstract final class Str {
     en: 'Check your mail for a link to choose a new password.',
     de: 'Schau in dein Postfach: Dort wartet ein Link, mit dem du ein neues Passwort wählst.',
     fr: 'Regarde tes e-mails : un lien t\'attend pour choisir un nouveau mot de passe.',
-    sv: 'Kolla din mejl efter en länk för att välja ett nytt lösenord.',
+    sv: 'Kolla mejlen efter en länk för att välja ett nytt lösenord.',
     pt: 'Vê o teu e-mail: tens lá um link para escolher uma nova palavra-passe.',
   );
   static const changePassword = LocalizedText(
@@ -2393,7 +2393,7 @@ abstract final class Str {
     en: 'Your garden, journal and harvests come along.',
     de: 'Dein Garten, dein Tagebuch und deine Ernten kommen mit.',
     fr: 'Ton potager, ton journal et tes récoltes suivent.',
-    sv: 'Din odling, dagbok och dina skördar följer med.',
+    sv: 'Din odling, din dagbok och dina skördar följer med.',
     pt: 'A tua horta, o diário e as colheitas vêm contigo.',
   );
   static const recoveryTitle = LocalizedText(
@@ -2539,7 +2539,7 @@ abstract final class Str {
     en: 'Yearly',
     de: 'Jährlich',
     fr: 'Annuel',
-    sv: 'Årsvis',
+    sv: 'Per år',
     pt: 'Anual',
   );
   static const lifetimeNothingToCancel = LocalizedText(
@@ -2634,7 +2634,7 @@ abstract final class Str {
     en: '≈ €$euros saved at NL supermarket prices',
     de: '≈ $euros € gespart nach NL-Supermarktpreisen',
     fr: '≈ $euros € économisés aux prix des supermarchés NL',
-    sv: '≈ ${euros.replaceAll('.', ',')} € sparat enligt priser i NL-butiker',
+    sv: '≈ ${euros.replaceAll('.', ',')} € sparat enligt nederländska butikspriser',
     pt: '≈ ${euros.replaceAll('.', ',')} € poupados a preços de supermercado NL',
   );
   static LocalizedText unpricedCount(int n) => LocalizedText(
@@ -2698,7 +2698,7 @@ abstract final class Str {
         'photos and freezes · export',
     de: 'Unbegrenzt viele Gärten und Pflanzen · Beetplaner · Diagnose · unbegrenzt viele Fotos und Pausentage · Export',
     fr: 'Potagers et plantes illimités · plan de carré · diagnostic · photos et jours de pause illimités · export',
-    sv: 'Obegränsat med odlingar och växter · odlingsplanerare · diagnos · obegränsat med foton och pausdagar · export',
+    sv: 'Obegränsat antal odlingar och växter · odlingsplanerare · diagnos · obegränsat antal foton och pausdagar · export',
     pt: 'Hortas e plantas ilimitadas · grelha do planeador · diagnóstico · fotos e dias de pausa ilimitados · exportação',
   );
   static const planYearlyBlurb = LocalizedText(
@@ -3045,7 +3045,7 @@ abstract final class Str {
     en: 'pieces',
     de: 'Stück',
     fr: 'pièces',
-    sv: 'stycken',
+    sv: 'styck',
     pt: 'unidades',
   );
   static const saveHarvest = LocalizedText(
@@ -3548,7 +3548,7 @@ abstract final class Str {
     en: 'Seedling',
     de: 'Sämling',
     fr: 'Jeune plant',
-    sv: 'Groddplanta',
+    sv: 'Småplanta',
     pt: 'Plântula',
   );
   static const stageVegetative = LocalizedText(
@@ -3696,7 +3696,7 @@ abstract final class Str {
     en: 'Skipped',
     de: 'Übersprungen',
     fr: 'Sauté',
-    sv: 'Överhoppad',
+    sv: 'Hoppades över',
     pt: 'Saltado',
   );
   static LocalizedText doneOn(String day) => LocalizedText(
@@ -4972,7 +4972,7 @@ abstract final class Str {
     en: 'Unlimited freeze days.',
     de: 'Unbegrenzt viele Pausentage.',
     fr: 'Jours de pause illimités.',
-    sv: 'Obegränsat med pausdagar.',
+    sv: 'Obegränsat antal pausdagar.',
     pt: 'Dias de pausa ilimitados.',
   );
   static LocalizedText freezesLeft(int n) => LocalizedText(

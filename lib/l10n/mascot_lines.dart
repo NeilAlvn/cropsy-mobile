@@ -127,7 +127,7 @@ abstract final class MascotLines {
         'under cover until it passes.',
     de: 'Die Eisheiligen, 11. bis 15. Mai. Ein später Nachtfrost in dieser Woche ist in den Niederlanden häufig, darum bleiben Tomaten, Zucchini und Basilikum geschützt, bis sie vorbei sind.',
     fr: 'Les saints de glace, du 11 au 15 mai. Une gelée nocturne tardive cette semaine-là est fréquente aux Pays-Bas, alors tomates, courgettes et basilic restent à l\'abri jusqu\'à la fin de cette période.',
-    sv: 'Sista frostnätterna, 11 till 15 maj. En sen nattfrost den här veckan är vanlig i Nederländerna, så tomater, zucchini och basilika står skyddat tills den är över.',
+    sv: 'Sista frostnätterna, 11 till 15 maj. En sen nattfrost den här veckan är vanlig i Nederländerna, så tomater, zucchini och basilika hålls skyddade tills den är över.',
     pt: 'As últimas geadas, de 11 a 15 de maio. Nos Países Baixos é comum uma geada noturna tardia nesta semana, por isso tomates, curgetes e manjericão ficam abrigados até ela passar.',
   );
 
@@ -195,7 +195,7 @@ abstract final class MascotLines {
     en: 'Rain did the watering. Skipped for you, and your streak still counts.',
     de: 'Der Regen hat gegossen. Für dich übersprungen, und deine Serie zählt trotzdem.',
     fr: 'La pluie a arrosé. Sauté pour toi, et ta série compte quand même.',
-    sv: 'Regnet vattnade åt dig. Överhoppat, och din svit räknas ändå.',
+    sv: 'Vattningen hoppades över, och din svit räknas ändå.',
     pt: 'A chuva regou por ti. Saltei a rega, e a tua série continua a contar.',
   );
 
