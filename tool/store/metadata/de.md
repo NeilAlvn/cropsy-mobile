@@ -16,7 +16,7 @@ EIN ORT FÜR DEN GANZEN GARTEN
 Start zeigt, was diese Woche ansteht. Mein Garten enthält jede Pflanze mit Fotos und Notizen. Der Saisonpfad zeigt das Jahr auf einen Blick. Entdecken findet die nächste Pflanze für den Platz, den du hast.
 
 ERINNERUNGEN, DIE DEINE TÖPFE KENNEN
-Gießerinnerungen richten sich nach der Größe des Gefäßes und der Wettervorhersage: Ein kleiner Topf in der Hitzewelle und ein Beet im April bekommen unterschiedliche Tipps.
+Gieß-Erinnerungen richten sich nach der Größe des Gefäßes und der Wettervorhersage: Ein kleiner Topf in der Hitzewelle und ein Beet im April bekommen unterschiedliche Tipps.
 
 DIAGNOSE PER FOTO
 Flecken auf einem Blatt? Mach ein Foto. Cropsy nennt das wahrscheinliche Problem, was du heute tun kannst und wie du es beim nächsten Mal vermeidest. Jede Antwort sagt dir, dass sie eine Vermutung ist, denn das ist sie.
@@ -25,8 +25,8 @@ EIN TAGEBUCH, DAS SICH SUMMIERT
 Trag jede Ernte in Gramm oder Stück ein und sieh zu, wie die Jahresbilanz wächst. Wachstumsfotos bleiben bei der Pflanze.
 
 KOSTENLOS AUSPROBIEREN
-Kostenlos: 1 Garten, 6 Pflanzen, der komplette Zeitplan mit Erinnerungen, alle Anbauanleitungen, 20 Tagebuchfotos.
-Premium (29,99 € pro Jahr): unbegrenzt viele Gärten und Pflanzen, der Gartenplaner, Diagnose, unbegrenzt Fotos und Export.
+Kostenlos: 1 Garten, 6 Pflanzen, die komplette Zeitleiste mit Erinnerungen, alle Anbauanleitungen, 20 Tagebuchfotos.
+Premium (29,99 € pro Jahr): unbegrenzt viele Gärten und Pflanzen, der Gartenplaner, Diagnose, unbegrenzt viele Fotos und Export.
 Lifetime (49,99 € einmalig): alles aus Premium, einmal bezahlt, alle künftigen Funktionen inklusive.
 
 Die Preise erscheinen im Store in deiner Landeswährung. Käufe laufen über den App Store.
