@@ -61,8 +61,11 @@ class Reminders {
       if (!at.isAfter(DateTime.now())) continue;
       final list = byDay[day]!;
       final body = list
-          .map((i) =>
-              '${_verb(i).pick(lang)} ${i.cropNames.pick(lang).toLowerCase()}')
+          .map((i) {
+            final crop = i.cropNames.pick(lang);
+            // German capitalises nouns, so the crop keeps its capital there.
+            return '${_verb(i).pick(lang)} ${lang == 'de' ? crop : crop.toLowerCase()}';
+          })
           .take(4)
           .join(', ');
       await _plugin.zonedSchedule(
