@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import '../config.dart';
+import '../l10n/app_lang.dart';
 
 class ScanSuggestion {
   const ScanSuggestion({required this.name, required this.score, this.latin, this.cropSlug, this.problemSlug});
@@ -42,9 +43,12 @@ class ScanException implements Exception {
   String toString() => 'ScanException($code, $status)';
 }
 
-Future<ScanResult> _post(String path, File photo, String? token) async {
+/// `/api/identify?lang=de` — the proxies ask the providers in this language.
+String scanPath(String path, String lang) => '$path?lang=${normalizeLang(lang)}';
+
+Future<ScanResult> _post(String path, File photo, String? token, String lang) async {
   if (token == null) throw ScanException('unauthorized', 401);
-  final req = http.MultipartRequest('POST', Uri.parse('$apiBaseUrl$path'))
+  final req = http.MultipartRequest('POST', Uri.parse('$apiBaseUrl${scanPath(path, lang)}'))
     ..headers['authorization'] = 'Bearer $token'
     ..files.add(await http.MultipartFile.fromPath('image', photo.path, filename: 'photo.jpg'));
   final res = await http.Response.fromStream(await req.send().timeout(const Duration(seconds: 40)));
@@ -70,5 +74,7 @@ Future<ScanResult> _post(String path, File photo, String? token) async {
   );
 }
 
-Future<ScanResult> identify(File photo, String? token) => _post('/api/identify', photo, token);
-Future<ScanResult> diagnose(File photo, String? token) => _post('/api/diagnose', photo, token);
+Future<ScanResult> identify(File photo, String? token, {String lang = 'en'}) =>
+    _post('/api/identify', photo, token, lang);
+Future<ScanResult> diagnose(File photo, String? token, {String lang = 'en'}) =>
+    _post('/api/diagnose', photo, token, lang);

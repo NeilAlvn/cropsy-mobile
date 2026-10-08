@@ -60,9 +60,12 @@ class _ScanScreenState extends State<ScanScreen> {
       setState(() => _message = MascotLines.scanSignIn.of(context));
       return;
     }
+    final lang = AppLangScope.of(context).code;
     setState(() => _busy = true);
     try {
-      final r = _mode == ScanMode.identify ? await api.identify(photo, token) : await api.diagnose(photo, token);
+      final r = _mode == ScanMode.identify
+          ? await api.identify(photo, token, lang: lang)
+          : await api.diagnose(photo, token, lang: lang);
       if (!mounted) return;
       setState(() => _result = r);
     } on api.ScanException catch (e) {
