@@ -19,13 +19,6 @@ void main() {
     expect(two.pick('xx'), 'Harvest');
   });
 
-  test('has reports which sides exist', () {
-    expect(two.has('en'), isTrue);
-    expect(two.has('nl'), isTrue);
-    expect(two.has('fr'), isFalse);
-    expect(full.has('fr'), isTrue);
-  });
-
   test('other gives the subtitle language and is empty when identical', () {
     expect(full.other('de'), 'Sow'); // non-English reader sees the English name
     expect(full.other('en'), 'Zaaien'); // English reader sees the Dutch name

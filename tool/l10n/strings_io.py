@@ -43,8 +43,11 @@ def export(lang: str):
             else:
                 w.writerow([f, m['name'] + m['sig'], 'FN: ' + body.strip(), 'FN: ' + (cur['val'].strip() if cur else '')])
 
+# Spreadsheets trim cells; give the translation the en side's edge whitespace back.
+same_edges = lambda en, t: en[:len(en) - len(en.lstrip())] + t.strip() + en[len(en.rstrip()):]
+
 def import_(lang: str, path: str):
-    rows = {(r['file'], r['name']): r[lang] for r in csv.DictReader(open(path)) if r[lang] and not r['en'].startswith('FN: ')}
+    rows = {(r['file'], r['name']): same_edges(r['en'], r[lang]) for r in csv.DictReader(open(path)) if r[lang] and not r['en'].startswith('FN: ')}
     for f in FILES:
         src = Path(f).read_text()
         out, pos = [], 0

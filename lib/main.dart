@@ -150,7 +150,7 @@ class CropsyApp extends StatelessWidget {
                     theme: _themeData(Brightness.light),
                     darkTheme: _themeData(Brightness.dark),
                     locale: Locale(lang.code),
-                    supportedLocales: [for (final (code, _) in appLanguages) Locale(code)],
+                    supportedLocales: [for (final (code, _) in pickerLanguages) Locale(code)],
                     localizationsDelegates: GlobalMaterialLocalizations.delegates,
                     home: _Root(),
                   ),

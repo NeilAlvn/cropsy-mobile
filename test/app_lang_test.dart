@@ -5,16 +5,21 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('normalizeLang maps device tags onto the six codes, English otherwise', () {
+  test('normalizeLang maps device tags onto shipped codes, English otherwise', () {
     expect(normalizeLang('de-AT'), 'de');
-    expect(normalizeLang('pt_PT'), 'pt');
-    expect(normalizeLang('SV'), 'sv');
+    expect(normalizeLang('NL'), 'nl');
+    // Planned but not shipped: English until the wave lands.
+    expect(normalizeLang('fr'), 'en');
+    expect(normalizeLang('pt_PT'), 'en');
     expect(normalizeLang('it'), 'en');
     expect(normalizeLang(null), 'en');
   });
 
-  test('the picker list is the six languages, English first', () {
-    expect(appLanguageCodes, ['en', 'nl', 'de', 'fr', 'sv', 'pt']);
+  test('six languages planned, the picker offers only the shipped ones', () {
+    expect(appLanguages.map((l) => l.$1), ['en', 'nl', 'de', 'fr', 'sv', 'pt']);
+    expect(appLanguages.map((l) => l.$1), containsAll(shippedLanguages));
+    expect(pickerLanguages.length, 3);
+    expect(pickerLanguages.first.$1, 'en');
     expect(languageName('sv'), 'Svenska');
     expect(languageName('xx'), 'English');
   });
@@ -48,7 +53,7 @@ void main() {
   });
 
   test('every picker entry is a code the app can speak', () {
-    for (final (code, name) in appLanguages) {
+    for (final (code, name) in pickerLanguages) {
       expect(normalizeLang(code), code);
       expect(name, isNotEmpty);
     }

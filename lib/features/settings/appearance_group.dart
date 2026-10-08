@@ -63,7 +63,7 @@ class _AppearanceGroupState extends State<AppearanceGroup> {
       title: Str.language.of(context),
       note: Str.langNote.of(context),
       selected: lang.code,
-      options: appLanguages,
+      options: pickerLanguages,
     );
     if (picked == null) return;
     lang.code = picked;

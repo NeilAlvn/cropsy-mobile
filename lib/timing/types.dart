@@ -86,16 +86,6 @@ class LocalizedText {
         _ => en,
       };
 
-  /// Whether this text was actually written in [lang] (not a fallback).
-  bool has(String lang) => switch (lang) {
-        'nl' || 'en' => true,
-        'de' => de != null,
-        'fr' => fr != null,
-        'sv' => sv != null,
-        'pt' => pt != null,
-        _ => false,
-      };
-
   /// The small name under a title: English for everyone except English
   /// readers, who see Dutch. Empty when it would repeat the title.
   String other(String lang) {

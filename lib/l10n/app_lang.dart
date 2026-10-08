@@ -1,6 +1,6 @@
 /// Which language the app speaks.
 ///
-/// Six codes, English as the fallback. The choice lives on the profile so it
+/// Six codes planned, [shippedLanguages] live, English as the fallback. The choice lives on the profile so it
 /// syncs with the account; this holds the live value and tells the widgets
 /// that read it when it changes.
 library;
@@ -22,15 +22,19 @@ const appLanguages = <(String, String)>[
   ('pt', 'Português'),
 ];
 
-const appLanguageCodes = ['en', 'nl', 'de', 'fr', 'sv', 'pt'];
+/// Languages whose interface strings are complete. Waves append one code.
+const shippedLanguages = ['en', 'nl', 'de'];
 
-/// `de-AT` → `de`, `pt_PT` → `pt`, anything unknown → `en`.
+/// What the picker and MaterialApp offer: [appLanguages] that have shipped.
+final pickerLanguages = [for (final l in appLanguages) if (shippedLanguages.contains(l.$1)) l];
+
+/// `de-AT` → `de`, `pt_PT` → `pt` once shipped; anything not shipped → `en`.
 String normalizeLang(String? code) {
   final c = code?.split(RegExp('[-_]')).first.toLowerCase();
-  return appLanguageCodes.contains(c) ? c! : 'en';
+  return shippedLanguages.contains(c) ? c! : 'en';
 }
 
-/// The phone's language, snapped onto the six codes.
+/// The phone's language, snapped onto the shipped codes.
 String deviceLang() => normalizeLang(ui.PlatformDispatcher.instance.locale.languageCode);
 
 String languageName(String code) =>
