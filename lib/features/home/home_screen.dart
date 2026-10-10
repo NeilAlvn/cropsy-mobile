@@ -60,13 +60,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
+    final lang = AppLangScope.of(context).code;
     final List<Crop> crops = _query.isNotEmpty
         ? (repo.crops
             .where((c) =>
                 c.names.en.toLowerCase().contains(_query.toLowerCase()) ||
-                c.names.nl.toLowerCase().contains(_query.toLowerCase()))
+                c.names.nl.toLowerCase().contains(_query.toLowerCase()) ||
+                c.names.pick(lang).toLowerCase().contains(_query.toLowerCase()))
             .toList()
-          ..sort((a, b) => a.names.en.compareTo(b.names.en)))
+          ..sort((a, b) => a.names.pick(lang).compareTo(b.names.pick(lang))))
         : repo.whatToGrowIn(_month!, filter: _filter);
 
     return SafeArea(
@@ -830,14 +832,8 @@ class _StreakCard extends StatelessWidget {
                       s.count == 0
                           ? MascotLines.streakStart.of(context)
                           : (premium
-                                  ? const LocalizedText(
-                                      nl: 'Onbeperkt vriesdagen.',
-                                      en: 'Unlimited freeze days.')
-                                  : LocalizedText(
-                                      nl: 'Nog $freezesLeft '
-                                          '${freezesLeft == 1 ? 'vriesdag' : 'vriesdagen'} deze maand.',
-                                      en: '$freezesLeft freeze '
-                                          'day${freezesLeft == 1 ? '' : 's'} left this month.'))
+                                  ? Str.freezesUnlimited
+                                  : Str.freezesLeft(freezesLeft))
                               .of(context),
                       style: AppText.caption(context),
                     ),

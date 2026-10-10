@@ -9,6 +9,8 @@ import 'dart:io';
 import 'package:cropsy/timing/weather_adjust.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'backend_sides.dart';
+
 void main() {
   test('weather adjustments match the backend fixture exactly', () {
     final fixture = jsonDecode(
@@ -24,7 +26,7 @@ void main() {
     final expected = (fixture['adjustments'] as List).cast<Map<String, dynamic>>();
 
     // Fixture uses DEFAULT_ADJUST with today = null (no past-clamp).
-    final produced = adjustTasks(tasks, observations).map((a) => a.toJson()).toList();
+    final produced = [for (final a in adjustTasks(tasks, observations)) backendSides(a.toJson()) as Map];
 
     expect(produced.length, expected.length,
         reason: 'adjustment count differs from fixture');

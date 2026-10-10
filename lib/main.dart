@@ -9,6 +9,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -75,7 +76,7 @@ Future<void> _boot() async {
   // reader's language too.
   await initializeDateFormatting();
   final profile = await repo.profile();
-  final lang = AppLang(profile?.lang ?? 'nl');
+  final lang = AppLang(profile?.lang ?? deviceLang());
   Intl.defaultLocale = lang.code;
   // Haptics and reduced motion are read at paint time, with no context and no
   // await to spare, so they are pulled out of the profile once, here.
@@ -86,7 +87,7 @@ Future<void> _boot() async {
   repo.addListener(() {
     debounce?.cancel();
     debounce = Timer(const Duration(seconds: 2), () async {
-      await Reminders.schedule(await repo.thisWeek(), today: repo.today, dutch: lang.isDutch);
+      await Reminders.schedule(await repo.thisWeek(), today: repo.today, lang: lang.code);
     });
   });
   runApp(CropsyApp(repository: repo, auth: auth, purchases: purchases, theme: theme, lang: lang));
@@ -128,25 +129,31 @@ class CropsyApp extends StatelessWidget {
               // palette through every widget.
               child: ValueListenableBuilder<AppPalette>(
                 valueListenable: AppColors.scheme,
-                builder: (context, palette, _) => MaterialApp(
-                  // Colour tokens are read during build, and a const widget that
-                  // was already built will not rebuild just because its ancestor
-                  // did, so a scheme change has to rebuild the app rather than
-                  // notify it. Keying the app on the scheme does that.
-                  key: ValueKey(palette.brightness),
-                  // That key would also throw away the navigation stack, which is
-                  // how changing the theme from a pushed screen used to dump you
-                  // back on Home. A global key re-parents the navigator into the
-                  // new tree instead: the routes survive, and being reactivated
-                  // is a dependency change, so each one rebuilds its page in the
-                  // scheme that just won.
-                  navigatorKey: _navigator,
-                  title: 'Cropsy',
-                  debugShowCheckedModeBanner: false,
-                  themeMode: theme.materialMode,
-                  theme: _themeData(Brightness.light),
-                  darkTheme: _themeData(Brightness.dark),
-                  home: _Root(),
+                builder: (context, palette, _) => ListenableBuilder(
+                  listenable: lang,
+                  builder: (context, _) => MaterialApp(
+                    // Colour tokens are read during build, and a const widget that
+                    // was already built will not rebuild just because its ancestor
+                    // did, so a scheme change has to rebuild the app rather than
+                    // notify it. Keying the app on the scheme does that.
+                    key: ValueKey(palette.brightness),
+                    // That key would also throw away the navigation stack, which is
+                    // how changing the theme from a pushed screen used to dump you
+                    // back on Home. A global key re-parents the navigator into the
+                    // new tree instead: the routes survive, and being reactivated
+                    // is a dependency change, so each one rebuilds its page in the
+                    // scheme that just won.
+                    navigatorKey: _navigator,
+                    title: 'Cropsy',
+                    debugShowCheckedModeBanner: false,
+                    themeMode: theme.materialMode,
+                    theme: _themeData(Brightness.light),
+                    darkTheme: _themeData(Brightness.dark),
+                    locale: Locale(lang.code),
+                    supportedLocales: [for (final (code, _) in pickerLanguages) Locale(code)],
+                    localizationsDelegates: GlobalMaterialLocalizations.delegates,
+                    home: _Root(),
+                  ),
                 ),
               ),
             ),

@@ -7,9 +7,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../design/components.dart' show kindLine;
 import '../features/garden/garden_repository.dart';
+import '../l10n/strings.dart';
 import '../timing/dates.dart';
-import '../timing/types.dart';
 
 class Reminders {
   static final _plugin = FlutterLocalNotificationsPlugin();
@@ -39,12 +40,12 @@ class Reminders {
 
   /// Replace every scheduled reminder with the next seven days of items.
   ///
-  /// [dutch] follows the profile's language: a notification is the one piece of
+  /// [lang] follows the profile's language: a notification is the one piece of
   /// the app that speaks while no screen is open, so it has to be told.
   static Future<void> schedule(
     List<ThisWeekItem> items, {
     required String today,
-    bool dutch = true,
+    String lang = 'en',
     int hour = 8,
   }) async {
     await _plugin.cancelAll();
@@ -60,17 +61,24 @@ class Reminders {
       if (!at.isAfter(DateTime.now())) continue;
       final list = byDay[day]!;
       final body = list
-          .map((i) =>
-              '${_verb(i).pick(dutch)} ${i.cropNames.pick(dutch).toLowerCase()}')
+          .map((i) {
+            final crop = i.cropNames.pick(lang);
+            final verb = kindLine(i.kind).pick(lang);
+            // German puts the verb last and keeps the noun's capital: "Tomate gießen".
+            // French reads as a label: "Tomate : arroser".
+            return switch (lang) {
+              'de' => '$crop ${verb.toLowerCase()}',
+              'fr' => '$crop : ${verb.toLowerCase()}',
+              _ => '$verb ${crop.toLowerCase()}',
+            };
+          })
           .take(4)
           .join(', ');
       await _plugin.zonedSchedule(
         id: id++,
         title: list.length == 1
-            ? (dutch ? 'Eén ding te doen vandaag' : 'One thing to do today')
-            : (dutch
-                ? '${list.length} dingen te doen vandaag'
-                : '${list.length} things to do today'),
+            ? Str.reminderOneThing.pick(lang)
+            : Str.reminderThings(list.length).pick(lang),
         body: body,
         scheduledDate: tz.TZDateTime.from(at.toUtc(), tz.UTC),
         notificationDetails: _details,
@@ -79,14 +87,4 @@ class Reminders {
     }
   }
 
-  static LocalizedText _verb(ThisWeekItem i) => switch (i.kind.name) {
-        'water' => const LocalizedText(nl: 'Water geven', en: 'Water'),
-        'sow' => const LocalizedText(nl: 'Zaaien', en: 'Sow'),
-        'transplant' => const LocalizedText(nl: 'Uitplanten', en: 'Plant out'),
-        'harvest' => const LocalizedText(nl: 'Oogsten', en: 'Harvest'),
-        'feed' => const LocalizedText(nl: 'Bijmesten', en: 'Feed'),
-        'potOn' => const LocalizedText(nl: 'Verpotten', en: 'Pot on'),
-        'thin' => const LocalizedText(nl: 'Uitdunnen', en: 'Thin'),
-        _ => const LocalizedText(nl: 'Checken', en: 'Check'),
-      };
 }

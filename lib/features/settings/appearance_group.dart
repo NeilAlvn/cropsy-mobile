@@ -63,7 +63,7 @@ class _AppearanceGroupState extends State<AppearanceGroup> {
       title: Str.language.of(context),
       note: Str.langNote.of(context),
       selected: lang.code,
-      options: const [('nl', 'Nederlands'), ('en', 'English')],
+      options: pickerLanguages,
     );
     if (picked == null) return;
     lang.code = picked;
@@ -88,7 +88,7 @@ class _AppearanceGroupState extends State<AppearanceGroup> {
           SettingsRow(
             icon: PhosphorIcons.globe,
             title: Str.language.of(context),
-            value: lang.isDutch ? 'Nederlands' : 'English',
+            value: languageName(lang.code),
             onTap: _pickLanguage,
           ),
         ]),

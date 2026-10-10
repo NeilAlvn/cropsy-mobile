@@ -42,21 +42,23 @@ List<Problem> filterProblems(
   List<Problem> all, {
   String? part,
   String query = '',
+  String? lang,
   required LocalizedText Function(String slug) cropNames,
 }) {
   final q = query.trim().toLowerCase();
   return all.where((p) {
     if (part != null && !p.parts.contains(part)) return false;
     if (q.isEmpty) return true;
-    return _matches(p.names, q) ||
-        _matches(p.symptoms, q) ||
-        p.affects.any((slug) => _matches(cropNames(slug), q));
+    return _matches(p.names, q, lang) ||
+        _matches(p.symptoms, q, lang) ||
+        p.affects.any((slug) => _matches(cropNames(slug), q, lang));
   }).toList();
 }
 
-bool _matches(LocalizedText text, String query) =>
+bool _matches(LocalizedText text, String query, String? lang) =>
     text.nl.toLowerCase().contains(query) ||
-    text.en.toLowerCase().contains(query);
+    text.en.toLowerCase().contains(query) ||
+    (lang != null && text.pick(lang).toLowerCase().contains(query));
 
 class DiagnoseScreen extends StatefulWidget {
   const DiagnoseScreen({super.key});
@@ -75,7 +77,10 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
     final all = repo.content.problems;
     final searching = _query.trim().isNotEmpty;
     final problems = filterProblems(all,
-        part: _part, query: _query, cropNames: repo.cropNames);
+        part: _part,
+        query: _query,
+        lang: AppLangScope.of(context).code,
+        cropNames: repo.cropNames);
     return SafeArea(
       bottom: false,
       child: ListView(
@@ -192,7 +197,7 @@ class ProblemScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
         children: [
-          Text(problem.names.other(AppLangScope.of(context).isDutch),
+          Text(problem.names.other(AppLangScope.of(context).code),
               style: AppText.bodyMuted(context)),
           if (problem.draft) const Padding(padding: EdgeInsets.only(top: 8), child: DraftBadge()),
           const SizedBox(height: 12),

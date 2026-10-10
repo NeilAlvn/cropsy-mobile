@@ -36,35 +36,75 @@ FrostAnchor anchorFromWire(String s) => switch (s) {
       _ => throw ArgumentError('unknown frost anchor: $s'),
     };
 
-/// A short piece of text with Dutch + English variants. Both are always present.
+/// A short piece of text in the app's languages. Dutch and English are always
+/// present; the other four are optional and fall back to English.
 class LocalizedText {
-  const LocalizedText({required this.nl, required this.en});
+  const LocalizedText({
+    required this.nl,
+    required this.en,
+    this.de,
+    this.fr,
+    this.sv,
+    this.pt,
+  });
 
   final String nl;
   final String en;
+  final String? de;
+  final String? fr;
+  final String? sv;
+  final String? pt;
 
-  factory LocalizedText.fromJson(Map<String, dynamic> j) =>
-      LocalizedText(nl: j['nl'] as String, en: j['en'] as String);
-
-  Map<String, dynamic> toJson() => {'nl': nl, 'en': en};
-
-  /// The side the reader is not reading, for a subtitle. Empty when both
-  /// languages say the same thing.
-  String other(bool dutch) {
-    final o = dutch ? en : nl;
-    return o == (dutch ? nl : en) ? '' : o;
+  factory LocalizedText.fromJson(Map<String, dynamic> j) {
+    final en = (j['en'] ?? j['nl']) as String;
+    return LocalizedText(
+      nl: (j['nl'] ?? en) as String,
+      en: en,
+      de: j['de'] as String?,
+      fr: j['fr'] as String?,
+      sv: j['sv'] as String?,
+      pt: j['pt'] as String?,
+    );
   }
 
-  /// The side a caller with no `BuildContext` needs: notifications, logs,
-  /// anything outside the widget tree. Screens use `.of(context)` instead.
-  String pick(bool dutch) => dutch ? nl : en;
+  Map<String, dynamic> toJson() => {
+        'nl': nl,
+        'en': en,
+        if (de != null) 'de': de,
+        if (fr != null) 'fr': fr,
+        if (sv != null) 'sv': sv,
+        if (pt != null) 'pt': pt,
+      };
+
+  /// The side a reader of [lang] gets. Missing languages read English.
+  String pick(String lang) => switch (lang) {
+        'nl' => nl,
+        'de' => de ?? en,
+        'fr' => fr ?? en,
+        'sv' => sv ?? en,
+        'pt' => pt ?? en,
+        _ => en,
+      };
+
+  /// The small name under a title: English for everyone except English
+  /// readers, who see Dutch. Empty when it would repeat the title.
+  String other(String lang) {
+    final o = lang == 'en' ? nl : en;
+    return o == pick(lang) ? '' : o;
+  }
 
   @override
   bool operator ==(Object other) =>
-      other is LocalizedText && other.nl == nl && other.en == en;
+      other is LocalizedText &&
+      other.nl == nl &&
+      other.en == en &&
+      other.de == de &&
+      other.fr == fr &&
+      other.sv == sv &&
+      other.pt == pt;
 
   @override
-  int get hashCode => Object.hash(nl, en);
+  int get hashCode => Object.hash(nl, en, de, fr, sv, pt);
 }
 
 /// One way to grow a crop, timed relative to a frost anchor.

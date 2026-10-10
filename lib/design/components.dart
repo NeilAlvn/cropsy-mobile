@@ -47,13 +47,13 @@ class KindMark extends StatelessWidget {
 
 /// The task kind in both languages, for anything the gardener reads.
 LocalizedText kindLine(TaskKind kind) => switch (kind) {
-      TaskKind.water => const LocalizedText(nl: 'Water geven', en: 'Water'),
-      TaskKind.sow => const LocalizedText(nl: 'Zaaien', en: 'Sow'),
-      TaskKind.transplant => const LocalizedText(nl: 'Uitplanten', en: 'Plant out'),
-      TaskKind.harvest => const LocalizedText(nl: 'Oogsten', en: 'Harvest'),
-      TaskKind.feed => const LocalizedText(nl: 'Bijmesten', en: 'Feed'),
-      TaskKind.potOn => const LocalizedText(nl: 'Verpotten', en: 'Pot on'),
-      TaskKind.thin => const LocalizedText(nl: 'Uitdunnen', en: 'Thin'),
+      TaskKind.water => Str.taskWater,
+      TaskKind.sow => Str.sow,
+      TaskKind.transplant => Str.plantOut,
+      TaskKind.harvest => Str.taskHarvest,
+      TaskKind.feed => Str.feed,
+      TaskKind.potOn => Str.taskPotOn,
+      TaskKind.thin => Str.taskThin,
     };
 
 String gardenKindEmoji(GardenKind k) => switch (k) {

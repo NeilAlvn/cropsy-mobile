@@ -13,6 +13,7 @@
 /// clock-free so the same rules can run on-device and stay fixture-reproducible.
 library;
 
+import '../l10n/strings.dart';
 import 'dates.dart';
 import 'types.dart';
 
@@ -247,7 +248,7 @@ const AdjustParams defaultAdjust = AdjustParams(
 Adjustment _none(Task task) => Adjustment(
       taskId: task.id,
       action: AdjustAction.none,
-      reason: const LocalizedText(nl: '', en: ''),
+      reason: Str.empty,
     );
 
 Adjustment _adjustTask(
@@ -274,10 +275,7 @@ Adjustment _adjustTask(
       return Adjustment(
         taskId: task.id,
         action: AdjustAction.skip,
-        reason: LocalizedText(
-          nl: 'Genoeg regen rond deze dag ($mm mm). Overslaan.',
-          en: 'Enough rain around this day ($mm mm). Skip watering.',
-        ),
+        reason: Str.adjustRainSkip(mm),
       );
     }
 
@@ -297,10 +295,7 @@ Adjustment _adjustTask(
         taskId: task.id,
         action: AdjustAction.bringForward,
         to: day,
-        reason: LocalizedText(
-          nl: 'Hitte verwacht ($t°C). Eerder water geven.',
-          en: 'Heat expected ($t°C). Water earlier.',
-        ),
+        reason: Str.adjustHeat(t),
       );
     }
     return _none(task);
@@ -321,10 +316,7 @@ Adjustment _adjustTask(
           taskId: task.id,
           action: AdjustAction.defer,
           to: obs.date,
-          reason: LocalizedText(
-            nl: 'Bodem nog te koud (< $gate°C). Uitgesteld tot het warmer is.',
-            en: 'Soil still too cold (< $gate°C). Held until it warms up.',
-          ),
+          reason: Str.adjustSoilCold(gate),
         );
       }
     }
@@ -333,10 +325,7 @@ Adjustment _adjustTask(
       taskId: task.id,
       action: AdjustAction.defer,
       to: toIso(addDays(due, p.maxDeferDays)),
-      reason: LocalizedText(
-        nl: 'Bodem blijft te koud (< $gate°C). Nog even wachten.',
-        en: 'Soil staying too cold (< $gate°C). Wait a little longer.',
-      ),
+      reason: Str.adjustSoilStaysCold(gate),
     );
   }
 

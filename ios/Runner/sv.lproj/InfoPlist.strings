@@ -1,0 +1,3 @@
+"NSCameraUsageDescription" = "Cropsy använder kameran för tillväxtfoton och för att känna igen eller diagnostisera en växt från ett foto.";
+"NSPhotoLibraryUsageDescription" = "Cropsy lägger till foton du väljer i en växts tillväxtdagbok, eller använder ett för att känna igen eller diagnostisera en växt.";
+"NSLocationWhenInUseUsageDescription" = "Cropsy använder din plats en gång för att hitta frostdatumen för din odling. Den avrundas till ungefär 1 km och spåras aldrig.";

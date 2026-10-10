@@ -5,6 +5,7 @@
 /// Port of `src/timing/season.ts`; parity in `test/season_test.dart`.
 library;
 
+import '../l10n/strings.dart';
 import 'dates.dart';
 import 'engine.dart';
 import 'types.dart';
@@ -112,10 +113,7 @@ List<SeasonNode> seasonPath(
         afterPlantId: p.plantId,
         start: c.start,
         end: c.end,
-        note: LocalizedText(
-          nl: 'Plek vrij na ${after?.names.nl ?? p.cropSlug} ($hEnd) — ${c.crop.names.nl} zaaien kan nog tot ${c.end}.',
-          en: 'Space frees up after ${after?.names.en ?? p.cropSlug} ($hEnd) — ${c.crop.names.en} can still be sown until ${c.end}.',
-        ),
+        note: Str.successionNote(after?.names, p.cropSlug, hEnd, c.crop.names, c.end),
       ));
     }
   }

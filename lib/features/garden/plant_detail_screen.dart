@@ -99,9 +99,10 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                         CategoryDot(repo.cropCategory(plant.cropSlug), size: 14),
                         const SizedBox(width: 8),
                         Text(
-                          plant.potLitres != null
-                              ? '${plant.potLitres} L pot'
-                              : 'in ground',
+                          (plant.potLitres != null
+                                  ? Str.potLitres(plant.potLitres!)
+                                  : Str.placeGround)
+                              .of(context),
                           style: AppText.bodyMuted(context),
                         ),
                         if (plant.plantedOn != null) ...[

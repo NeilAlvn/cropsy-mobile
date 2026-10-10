@@ -1,0 +1,3 @@
+"NSCameraUsageDescription" = "Cropsy gebruikt de camera voor groeifoto's en om een plant op een foto te herkennen of te diagnosticeren.";
+"NSPhotoLibraryUsageDescription" = "Cropsy voegt gekozen foto's toe aan het groeilogboek van een plant, of gebruikt er één om een plant te herkennen of te diagnosticeren.";
+"NSLocationWhenInUseUsageDescription" = "Cropsy gebruikt je locatie één keer om de vorstdata voor jouw tuin te vinden. Afgerond op ongeveer 1 km, en nooit gevolgd.";

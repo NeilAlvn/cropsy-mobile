@@ -1,0 +1,3 @@
+"NSCameraUsageDescription" = "A Cropsy usa a câmara para fotos de crescimento e para identificar ou diagnosticar uma planta a partir de uma foto.";
+"NSPhotoLibraryUsageDescription" = "A Cropsy adiciona as fotos que escolhes ao diário de crescimento de uma planta, ou usa uma para identificar ou diagnosticar uma planta.";
+"NSLocationWhenInUseUsageDescription" = "A Cropsy usa a tua localização uma vez para encontrar as datas de geada da tua horta. É arredondada a cerca de 1 km e nunca é seguida.";

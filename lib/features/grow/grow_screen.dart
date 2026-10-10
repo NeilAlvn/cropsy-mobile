@@ -27,13 +27,15 @@ class _GrowScreenState extends State<GrowScreen> {
   @override
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
+    final lang = AppLangScope.of(context).code;
     final crops = repo.crops
         .where((c) =>
             _query.isEmpty ||
             c.names.en.toLowerCase().contains(_query.toLowerCase()) ||
-            c.names.nl.toLowerCase().contains(_query.toLowerCase()))
+            c.names.nl.toLowerCase().contains(_query.toLowerCase()) ||
+            c.names.pick(lang).toLowerCase().contains(_query.toLowerCase()))
         .toList()
-      ..sort((a, b) => a.names.en.compareTo(b.names.en));
+      ..sort((a, b) => a.names.pick(lang).compareTo(b.names.pick(lang)));
 
     return SafeArea(
       bottom: false,

@@ -1,0 +1,3 @@
+"NSCameraUsageDescription" = "Cropsy uses the camera for growth-log photos and to identify or diagnose a plant from a photo.";
+"NSPhotoLibraryUsageDescription" = "Cropsy adds photos you pick to a plant's growth log, or uses one to identify or diagnose a plant.";
+"NSLocationWhenInUseUsageDescription" = "Cropsy uses your location once to find the frost dates for your garden. It is rounded to about 1 km and never tracked.";

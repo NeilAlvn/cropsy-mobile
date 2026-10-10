@@ -35,14 +35,14 @@ MascotPose poseForNode(NodeKind k) => switch (k) {
 
 /// The step's name in both languages, for the deck's own sentences.
 LocalizedText nodeKindLine(NodeKind k) => switch (k) {
-      NodeKind.sow => const LocalizedText(nl: 'Zaaien', en: 'Sow'),
-      NodeKind.potOn => const LocalizedText(nl: 'Verpotten', en: 'Pot on'),
-      NodeKind.transplant => const LocalizedText(nl: 'Uitplanten', en: 'Plant out'),
-      NodeKind.thin => const LocalizedText(nl: 'Uitdunnen', en: 'Thin seedlings'),
-      NodeKind.feed => const LocalizedText(nl: 'Bijmesten', en: 'Feed'),
-      NodeKind.water => const LocalizedText(nl: 'Water geven', en: 'Water'),
-      NodeKind.harvest => const LocalizedText(nl: 'Oogstvenster', en: 'Harvest window'),
-      NodeKind.harvested => const LocalizedText(nl: 'Geoogst', en: 'Harvested'),
+      NodeKind.sow => Str.sow,
+      NodeKind.potOn => Str.taskPotOn,
+      NodeKind.transplant => Str.plantOut,
+      NodeKind.thin => Str.thinSeedlings,
+      NodeKind.feed => Str.feed,
+      NodeKind.water => Str.taskWater,
+      NodeKind.harvest => Str.harvestWindow,
+      NodeKind.harvested => Str.stageHarvested,
     };
 
 String formatDay(String iso) => DateFormat('d MMM').format(parseIso(iso));
@@ -99,11 +99,7 @@ class _LogSkip extends _LogAction {
   final LocalizedText reason;
 }
 
-const _skipReasons = <LocalizedText>[
-  LocalizedText(nl: 'Het regende', en: 'It rained'),
-  LocalizedText(nl: 'Niet nodig', en: 'Not needed'),
-  LocalizedText(nl: 'Geen tijd', en: 'No time'),
-];
+const _skipReasons = <LocalizedText>[Str.skipRained, Str.skipNotNeeded, Str.skipNoTime];
 
 class _LogSheet extends StatelessWidget {
   const _LogSheet({required this.node, required this.today});

@@ -55,16 +55,23 @@ class _GardenScreenState extends State<GardenScreen> {
                         children: [
                           Text(Str.myGarden.of(context), style: AppText.kicker(context)),
                           const SizedBox(height: 2),
-                          Text.rich(TextSpan(
-                            style: AppText.display(context),
-                            children: [
-                              TextSpan(
-                                  text: '${repo.regionName.split(' ').first} '),
-                              TextSpan(
-                                  text: Str.plotWord.of(context),
-                                  style: TextStyle(color: AppColors.sprout)),
-                            ],
-                          )),
+                          Builder(builder: (context) {
+                            // The accent word sits last in nl/en/de, first in fr/sv/pt.
+                            final full = Str.regionPlot(repo.regionName.split(' ').first).of(context);
+                            final word = Str.regionPlotAccent.of(context);
+                            final atEnd = full.endsWith(word);
+                            final rest = atEnd
+                                ? full.substring(0, full.length - word.length)
+                                : full.substring(word.length);
+                            final accent = TextSpan(
+                                text: word, style: TextStyle(color: AppColors.sprout));
+                            return Text.rich(TextSpan(
+                              style: AppText.display(context),
+                              children: atEnd
+                                  ? [TextSpan(text: rest), accent]
+                                  : [accent, TextSpan(text: rest)],
+                            ));
+                          }),
                         ],
                       ),
                     ),
