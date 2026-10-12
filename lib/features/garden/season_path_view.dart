@@ -109,9 +109,9 @@ class _SeasonPathViewState extends State<SeasonPathView> {
               ),
             const SizedBox(height: 8),
             Row(children: [
-              _Legend(AppColors.bandSowOutdoor, 'sow / plant out'),
+              _Legend(AppColors.bandSowOutdoor, '${Str.sow.of(context)} / ${Str.plantOut.of(context)}'),
               const SizedBox(width: 12),
-              _Legend(AppColors.bandHarvest, 'harvest'),
+              _Legend(AppColors.bandHarvest, Str.harvest.of(context)),
             ]),
             if (prompts.isNotEmpty) ...[
               const SizedBox(height: 18),
