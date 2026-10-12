@@ -2621,10 +2621,10 @@ abstract final class Str {
   static const planLifetime = LocalizedText(
     nl: 'Levenslang',
     en: 'Lifetime',
-    de: 'Lifetime',
-    fr: 'Lifetime',
-    sv: 'Lifetime',
-    pt: 'Lifetime',
+    de: 'Lebenslang',
+    fr: 'À vie',
+    sv: 'Livstid',
+    pt: 'Vitalício',
   );
   static const planYearly = LocalizedText(
     nl: 'Jaarlijks',
