@@ -292,10 +292,12 @@ class _PaywallScreenState extends State<PaywallScreen> {
                   // App Review 3.1.2: renewal terms beside the button, plus the
                   // terms of use and the privacy policy.
                   Text(disclosure.of(context), style: AppText.caption(context), textAlign: TextAlign.center),
+                  // The way out on a line of its own: four links in one Wrap
+                  // left "Privacy" alone on a second row in most languages.
+                  if (!_hard) _link(Str.pwContinueFree.of(context), _dismiss),
                   Wrap(
                     alignment: WrapAlignment.center,
                     children: [
-                      if (!_hard) _link(Str.pwContinueFree.of(context), _dismiss),
                       _link(Str.restorePurchases.of(context), purchases?.configured == true ? _restore : null),
                       for (final (label, path) in const [(Str.terms, '/terms'), (Str.privacy, '/privacy')])
                         _link(
