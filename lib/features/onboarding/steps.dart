@@ -37,6 +37,8 @@ class StepFrame extends StatelessWidget {
     this.onBack,
     this.onSkip,
     this.progress,
+    this.secondaryLabel,
+    this.onSecondary,
   });
 
   final MascotPose pose;
@@ -57,6 +59,11 @@ class StepFrame extends StatelessWidget {
 
   /// 0 to 1. Null hides the bar, for the steps that are not questions.
   final double? progress;
+
+  /// A quiet second way on under the button, for the one step that asks for
+  /// something the gardener may say no to.
+  final LocalizedText? secondaryLabel;
+  final VoidCallback? onSecondary;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +99,11 @@ class StepFrame extends StatelessWidget {
                 onPressed: enabled ? onNext : null,
               ),
             ),
+            if (secondaryLabel != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+                child: SecondaryButton(label: secondaryLabel!.of(context), onPressed: onSecondary),
+              ),
           ],
         ),
       ),
@@ -262,6 +274,68 @@ class ChoiceList extends StatelessWidget {
         ),
     ],
   );
+}
+
+/// The same answers as [ChoiceList], as pills that wrap. For a second question
+/// on a screen that already has a list, so the page still fits.
+class ChipWrap extends StatelessWidget {
+  const ChipWrap({
+    super.key,
+    required this.options,
+    required this.selected,
+    required this.onToggle,
+  });
+
+  final List<(String, LocalizedText, IconData)> options;
+  final Set<String> selected;
+  final ValueChanged<String> onToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    final motion = Motion.of(context);
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        for (final (key, label, icon) in options)
+          Pressable(
+            onTap: () => onToggle(key),
+            haptic: Haptics.selection,
+            child: AnimatedContainer(
+              duration: motion[Motion.micro],
+              curve: Motion.easeEnter,
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              decoration: BoxDecoration(
+                color: selected.contains(key) ? AppColors.accentSoft : AppColors.tile,
+                borderRadius: BorderRadius.circular(Neo.radiusPill),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    icon,
+                    size: 18,
+                    color: selected.contains(key) ? AppColors.onAccentSoft : AppColors.accent,
+                  ),
+                  const SizedBox(width: 6),
+                  // Flexible so a long German label wraps inside the pill
+                  // instead of overflowing a narrow phone.
+                  Flexible(
+                    child: Text(
+                      label.of(context),
+                      style: AppText.label(
+                        context,
+                        color: selected.contains(key) ? AppColors.onAccentSoft : AppColors.ink,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
 }
 
 /// A smaller heading inside a step that asks two things at once.
