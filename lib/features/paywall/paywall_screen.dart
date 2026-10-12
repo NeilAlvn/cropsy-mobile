@@ -21,8 +21,14 @@ import '../../design/typography.dart';
 import '../../purchases/purchase_service.dart';
 import '../repository_scope.dart';
 
+/// Where the paywall was opened from. Drives the headline, the benefit order,
+/// analytics, and whether the exit offer may show (onboarding only).
+enum PaywallTrigger { onboarding, plantLimit, seasonView, planner, diagnose, gardenLimit, photoLimit, homeCard, settings }
+
 class PaywallScreen extends StatefulWidget {
-  const PaywallScreen({super.key});
+  const PaywallScreen({super.key, this.trigger = PaywallTrigger.settings});
+
+  final PaywallTrigger trigger;
 
   @override
   State<PaywallScreen> createState() => _PaywallScreenState();
