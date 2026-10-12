@@ -153,3 +153,22 @@ List<SeasonRow> seasonRows({
   if (!markedToday) rows.add(const SeasonRow.today());
   return rows;
 }
+
+/// Where a free path goes behind the paywall: the first row dated after this
+/// week and next, or null if the whole path fits inside them. Rows are in date
+/// order, so everything from the returned index on is further out.
+int? seasonLockFrom(List<SeasonRow> rows, DateTime today) {
+  final cutoff = DateTime.utc(today.year, today.month, today.day + 14);
+  for (var i = 0; i < rows.length; i++) {
+    final r = rows[i];
+    final on = switch (r.kind) {
+      SeasonRowKind.today => null,
+      SeasonRowKind.month || SeasonRowKind.suggestion => DateTime.utc(today.year, r.month),
+      SeasonRowKind.node => parseIso(r.node!.start),
+      SeasonRowKind.marker => parseIso(r.marker!.on),
+      SeasonRowKind.task => parseIso(r.task!.due),
+    };
+    if (on != null && !on.isBefore(cutoff)) return i;
+  }
+  return null;
+}
