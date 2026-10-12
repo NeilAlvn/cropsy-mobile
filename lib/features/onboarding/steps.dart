@@ -197,9 +197,39 @@ class SelectTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final motion = Motion.of(context);
     final fg = selected ? AppColors.onAccentSoft : AppColors.ink;
+    Widget check(double size) => AnimatedScale(
+      scale: selected ? 1 : 0.4,
+      duration: motion[Motion.micro],
+      curve: Motion.easeEnter,
+      child: AnimatedOpacity(
+        opacity: selected ? 1 : 0,
+        duration: motion[Motion.micro],
+        child: Icon(PhosphorIcons.checkCircle, size: size, color: AppColors.accent),
+      ),
+    );
+    // A thumbnail tile sits two to a row; the check rides on the picture so
+    // the name keeps the width and "Courgette" does not break mid-word.
     final art = icon != null
         ? Icon(icon, size: 22, color: selected ? AppColors.onAccentSoft : AppColors.accent)
-        : leading;
+        : leading == null
+        ? null
+        : Stack(
+            clipBehavior: Clip.none,
+            children: [
+              leading!,
+              Positioned(
+                right: -7,
+                bottom: -7,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: selected ? AppColors.accentSoft : Colors.transparent,
+                  ),
+                  child: check(18),
+                ),
+              ),
+            ],
+          );
     return Pressable(
       onTap: onTap,
       haptic: Haptics.selection,
@@ -222,17 +252,7 @@ class SelectTile extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(width: 8),
-            AnimatedScale(
-              scale: selected ? 1 : 0.4,
-              duration: motion[Motion.micro],
-              curve: Motion.easeEnter,
-              child: AnimatedOpacity(
-                opacity: selected ? 1 : 0,
-                duration: motion[Motion.micro],
-                child: Icon(PhosphorIcons.checkCircle, size: 22, color: AppColors.accent),
-              ),
-            ),
+            if (leading == null) ...[const SizedBox(width: 8), check(22)],
           ],
         ),
       ),
