@@ -118,14 +118,6 @@ abstract final class Str {
     sv: 'Att göra i ${month.pick('sv')}',
     pt: 'Tarefas de ${month.pick('pt')}',
   );
-  static const unlockLifetime = LocalizedText(
-    nl: 'Levenslang, één prijs, voorgoed',
-    en: 'Unlock lifetime, one price, forever',
-    de: 'Lifetime freischalten: ein Preis, für immer',
-    fr: 'Débloque Lifetime : un seul prix, pour toujours',
-    sv: 'Lås upp Lifetime – ett pris, för alltid',
-    pt: 'Desbloqueia o Lifetime: um só preço, para sempre',
-  );
   static const startStreak = LocalizedText(
     nl: 'Begin vandaag een reeks',
     en: 'Start a streak today',
@@ -942,22 +934,6 @@ abstract final class Str {
     fr: 'Chaque date calculée selon tes dates de gel locales et vérifiée dans des calendriers de semis',
     sv: 'Varje datum räknat från dina lokala frostdatum och kontrollerat mot såkalendrar',
     pt: 'Cada data calculada a partir das tuas datas de geada locais e verificada em calendários de sementeira',
-  );
-  static const datesCheckedBody = LocalizedText(
-    nl:
-        'Elk gewas is gelegd naast minstens twee NL-bronnen, IVN, Tuinadvies, '
-        'zaaitijden.nl en Groei & Bloei, voordat het bij jou komt. En als het '
-        'leven ertussen komt, schuift het plan met je mee. Niets is ooit "te '
-        'laat".',
-    en:
-        'Each crop is cross-checked against at least two NL sources, IVN, '
-        'Tuinadvies, zaaitijden.nl and Groei & Bloei, before it reaches you. '
-        'And when life gets in the way, the plan moves with you. Nothing is '
-        'ever "overdue".',
-    de: 'Jede Pflanze wird mit mindestens zwei NL-Quellen abgeglichen, IVN, Tuinadvies, zaaitijden.nl und Groei & Bloei, bevor sie bei dir ankommt. Und wenn das Leben dazwischenkommt, zieht der Plan mit. Nichts ist je „zu spät“.',
-    fr: 'Chaque plante est vérifiée auprès d\'au moins deux sources néerlandaises, IVN, Tuinadvies, zaaitijden.nl et Groei & Bloei, avant d\'arriver chez toi. Et quand la vie s\'en mêle, le plan bouge avec toi. Une tâche n\'est jamais « ratée » : elle est « déplacée ».',
-    sv: 'Varje växt kontrolleras mot minst två nederländska källor – IVN, Tuinadvies, zaaitijden.nl och Groei & Bloei – innan den når dig. Och när livet kommer emellan flyttar planen med dig. En uppgift är aldrig ”missad”, den är bara ”flyttad”.',
-    pt: 'Cada planta é verificada em pelo menos duas fontes neerlandesas (IVN, Tuinadvies, zaaitijden.nl e Groei & Bloei) antes de chegar a ti. E quando a vida se mete pelo meio, o plano acompanha-te. Nada fica “perdido”: só muda de data.',
   );
   static const getToKnowTitle = LocalizedText(
     nl: 'Hoi! Even kennismaken',
@@ -2973,16 +2949,6 @@ abstract final class Str {
     sv: 'Lifetime. Inget att säga upp.',
     pt: 'Lifetime. Nada para cancelar.',
   );
-  static const freeTierBlurb = LocalizedText(
-    nl:
-        '1 tuin · 6 groeiende planten · volledige tijdlijn, herinneringen en '
-        'elk gewas.',
-    en: '1 garden · 6 growing plants · full timeline, reminders and every crop.',
-    de: '1 Garten · 6 wachsende Pflanzen · ganze Zeitleiste, Erinnerungen und alle Pflanzenarten.',
-    fr: '1 potager · 6 plantes en culture · chronologie complète, rappels et toutes les plantes.',
-    sv: '1 odling · 6 växter · hela tidslinjen, påminnelser och alla växtsorter.',
-    pt: '1 horta · 6 plantas a crescer · cronologia completa, lembretes e todas as plantas.',
-  );
   static LocalizedText cropDataVersion(String version) => LocalizedText(
     nl: 'Cropsy · gewasdata $version',
     en: 'Cropsy · crop data $version',
@@ -4689,22 +4655,6 @@ abstract final class Str {
     sv: 'Vill du bli påmind samma dag? En påminnelse på morgonen, bara när det finns något att göra, och den håller tyst när det har regnat.',
     pt: 'Queres um lembrete no dia? Um lembrete de manhã, só quando há algo para fazer, e fica em silêncio quando choveu.',
   );
-  static const remindMe = LocalizedText(
-    nl: 'Herinner me',
-    en: 'Remind me',
-    de: 'Erinnere mich',
-    fr: 'Me le rappeler',
-    sv: 'Påminn mig',
-    pt: 'Lembra-me',
-  );
-  static const maybeLater = LocalizedText(
-    nl: 'Misschien later',
-    en: 'Maybe later',
-    de: 'Vielleicht später',
-    fr: 'Plus tard',
-    sv: 'Kanske senare',
-    pt: 'Talvez mais tarde',
-  );
 
   // ── odds and ends ─────────────────────────────────────────────────────────
   static const whatToGrowShort = LocalizedText(
@@ -5699,17 +5649,29 @@ abstract final class Str {
   );
   static const faqFreeA = LocalizedText(
     nl:
-        'Eén tuin, zes groeiende planten, de volledige tijdlijn, '
-        'herinneringen en elk gewas, voorgoed. Lifetime geeft meer ruimte.',
+        'Eén tuin met drie groeiende planten tegelijk, de taken voor deze en '
+        'volgende week, herinneringen en alle teeltinfo. Premium opent het hele '
+        'seizoen, onbeperkt planten, de tuinplanner en diagnose.',
     en:
-        'One garden, six growing plants, the full timeline, reminders and '
-        'every crop, forever. Lifetime unlocks more room.',
+        'One garden with three growing plants at a time, this week\'s and next '
+        'week\'s tasks, reminders and every growing guide. Premium opens the '
+        'whole season, unlimited plants, the planner and diagnosis.',
     de:
-        'Ein Garten, sechs wachsende Pflanzen, die ganze Zeitleiste, '
-        'Erinnerungen und alle Pflanzenarten, für immer. Lifetime gibt dir mehr Platz.',
-    fr: 'Un potager, six plantes en culture, la chronologie complète, les rappels et toutes les plantes, pour toujours. Lifetime te donne plus de place.',
-    sv: 'En odling, sex växter, hela tidslinjen, påminnelser och alla växtsorter, för alltid. Lifetime ger mer plats.',
-    pt: 'Uma horta, seis plantas a crescer, a cronologia completa, os lembretes e todas as plantas, para sempre. O Lifetime desbloqueia mais espaço.',
+        'Ein Garten mit drei wachsenden Pflanzen gleichzeitig, die Aufgaben für '
+        'diese und nächste Woche, Erinnerungen und alle Anbauinfos. Premium '
+        'öffnet die ganze Saison, unbegrenzt Pflanzen, den Planer und die Diagnose.',
+    fr:
+        'Un jardin avec trois plantes en culture à la fois, les tâches de cette '
+        'semaine et de la suivante, les rappels et tous les guides. Premium '
+        'ouvre toute la saison, les plantes illimitées, le planificateur et le diagnostic.',
+    sv:
+        'En trädgård med tre växande plantor åt gången, veckans och nästa veckas '
+        'uppgifter, påminnelser och alla odlingsguider. Premium öppnar hela '
+        'säsongen, obegränsat med plantor, planeraren och diagnosen.',
+    pt:
+        'Uma horta com três plantas a crescer de cada vez, as tarefas desta '
+        'semana e da próxima, lembretes e todos os guias. O Premium abre a '
+        'época inteira, plantas ilimitadas, o planeador e o diagnóstico.',
   );
   static const faqDeleteQ = LocalizedText(
     nl: 'Hoe verwijder ik mijn account?',

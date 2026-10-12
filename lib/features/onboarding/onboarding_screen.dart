@@ -134,7 +134,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final _interests = <String>{};
   final _pains = <String>{};
   // Crops
-  late final Set<String> _picked = {...starterCrops.keys};
+  // Three, not all five starters: the free garden grows three, and a
+  // plant-limit paywall should follow a choice the person made, not ours.
+  late final Set<String> _picked = {...starterCrops.keys.take(3)};
   // The payoff
   bool _built = false;
   LocalizedText? _firstTask;
