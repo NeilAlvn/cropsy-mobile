@@ -19,14 +19,27 @@ class Reminders {
     android: AndroidNotificationDetails('care', 'Care reminders', importance: Importance.defaultImportance),
   );
 
-  static Future<void> init() async {
+  /// Care reminders own ids `0 .. careIds - 1`; everything above belongs to
+  /// someone else (lifecycle uses 1000+) and survives a re-schedule.
+  static const careIds = 100;
+  static bool isCareId(int id) => id >= 0 && id < careIds;
+
+  /// [onTap] gets the payload of a notification tapped while the app runs.
+  static Future<void> init({void Function(String? payload)? onTap}) async {
     tzdata.initializeTimeZones();
     await _plugin.initialize(
       settings: const InitializationSettings(
         iOS: DarwinInitializationSettings(requestAlertPermission: false, requestBadgePermission: false, requestSoundPermission: false),
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       ),
+      onDidReceiveNotificationResponse: onTap == null ? null : (r) => onTap(r.payload),
     );
+  }
+
+  /// The payload of the notification that cold-started the app, if one did.
+  static Future<String?> launchPayload() async {
+    final d = await _plugin.getNotificationAppLaunchDetails();
+    return d?.didNotificationLaunchApp == true ? d?.notificationResponse?.payload : null;
   }
 
   /// Asked after the first task is shown (PRD 1.8), never on launch.
@@ -38,7 +51,7 @@ class Reminders {
     return false;
   }
 
-  /// Replace every scheduled reminder with the next seven days of items.
+  /// Replace every scheduled care reminder with the next seven days of items.
   ///
   /// [lang] follows the profile's language: a notification is the one piece of
   /// the app that speaks while no screen is open, so it has to be told.
@@ -48,7 +61,9 @@ class Reminders {
     String lang = 'en',
     int hour = 8,
   }) async {
-    await _plugin.cancelAll();
+    for (final p in await _plugin.pendingNotificationRequests()) {
+      if (isCareId(p.id)) await _plugin.cancel(id: p.id);
+    }
     final byDay = <String, List<ThisWeekItem>>{};
     for (final i in items) {
       if (i.completed || i.due.compareTo(today) < 0) continue;
@@ -58,7 +73,7 @@ class Reminders {
     for (final day in byDay.keys.toList()..sort()) {
       final d = parseIso(day);
       final at = DateTime(d.year, d.month, d.day, hour);
-      if (!at.isAfter(DateTime.now())) continue;
+      if (!at.isAfter(DateTime.now()) || !isCareId(id)) continue;
       final list = byDay[day]!;
       final body = list
           .map((i) {

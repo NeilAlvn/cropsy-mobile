@@ -5191,6 +5191,112 @@ abstract final class Str {
     pt: n == 1 ? '1 coisa para fazer hoje' : '$n coisas para fazer hoje',
   );
 
+  // ── gating + lifecycle (conversion) ──
+  static LocalizedText freePlantLimit(int n) => LocalizedText(
+    nl: 'De gratis tuin laat $n planten tegelijk groeien. Oogst of verwijder er een om een nieuwe te starten.',
+    en: 'The free garden grows $n plants at a time. Harvest or remove one to start another.',
+    de: 'Im kostenlosen Garten wachsen $n Pflanzen gleichzeitig. Ernte oder entferne eine, um eine neue zu starten.',
+    fr: 'Le potager gratuit fait pousser $n plantes à la fois. Récolte ou retire-en une pour en lancer une autre.',
+    sv: 'Den gratis odlingen rymmer $n växter åt gången. Skörda eller ta bort en för att starta en ny.',
+    pt: 'A horta grátis cultiva $n plantas de cada vez. Colhe ou remove uma para começar outra.',
+  );
+  static const unlockFullSeason = LocalizedText(
+    nl: 'Ontgrendel je hele seizoen',
+    en: 'Unlock your full season',
+    de: 'Schalte deine ganze Saison frei',
+    fr: 'Débloque toute ta saison',
+    sv: 'Lås upp hela din säsong',
+    pt: 'Desbloqueia a tua estação inteira',
+  );
+  static const unlockFullSeasonSub = LocalizedText(
+    nl: 'Elk zaai- en oogstmoment dat eraan komt. 7 dagen gratis.',
+    en: 'Every sowing and harvest ahead. Free for 7 days.',
+    de: 'Jede Aussaat und Ernte im Voraus. 7 Tage gratis.',
+    fr: 'Chaque semis et chaque récolte à venir. 7 jours gratuits.',
+    sv: 'Varje sådd och skörd framöver. Gratis i 7 dagar.',
+    pt: 'Cada sementeira e colheita pela frente. 7 dias grátis.',
+  );
+  static const homeTrialCard = LocalizedText(
+    nl: 'Probeer het hele seizoen 7 dagen gratis',
+    en: 'Try the full season free for 7 days',
+    de: 'Teste die ganze Saison 7 Tage gratis',
+    fr: 'Essaie toute la saison gratuitement pendant 7 jours',
+    sv: 'Prova hela säsongen gratis i 7 dagar',
+    pt: 'Experimenta a estação inteira grátis durante 7 dias',
+  );
+  static const trialPlanReadyTitle = LocalizedText(
+    nl: 'Je seizoensplan staat klaar',
+    en: 'Your season plan is ready',
+    de: 'Dein Saisonplan ist fertig',
+    fr: 'Ton plan de saison est prêt',
+    sv: 'Din säsongsplan är klar',
+    pt: 'O teu plano da estação está pronto',
+  );
+  static const trialPlanReadyBody = LocalizedText(
+    nl: 'Kijk wat je deze maand zaait en wat daarna komt.',
+    en: 'See what to sow this month and what comes next.',
+    de: 'Sieh nach, was du diesen Monat säst und was danach kommt.',
+    fr: 'Découvre quoi semer ce mois-ci et la suite.',
+    sv: 'Se vad du sår den här månaden och vad som kommer sen.',
+    pt: 'Vê o que semear este mês e o que vem a seguir.',
+  );
+  static const trialEndsTitle = LocalizedText(
+    nl: 'Je proefperiode eindigt over 2 dagen',
+    en: 'Your free trial ends in 2 days',
+    de: 'Dein Probezeitraum endet in 2 Tagen',
+    fr: 'Ton essai gratuit se termine dans 2 jours',
+    sv: 'Din provperiod slutar om 2 dagar',
+    pt: 'O teu teste grátis termina daqui a 2 dias',
+  );
+  static const trialEndsBodyIos = LocalizedText(
+    nl: 'Opzeggen kan altijd via Instellingen → Abonnementen.',
+    en: 'Cancel anytime in Settings → Subscriptions.',
+    de: 'Jederzeit kündbar unter Einstellungen → Abonnements.',
+    fr: 'Résiliable à tout moment dans Réglages → Abonnements.',
+    sv: 'Avsluta när du vill under Inställningar → Prenumerationer.',
+    pt: 'Cancela quando quiseres em Definições → Subscrições.',
+  );
+  static const trialEndsBodyAndroid = LocalizedText(
+    nl: 'Opzeggen kan altijd via Google Play → Abonnementen.',
+    en: 'Cancel anytime in Google Play → Subscriptions.',
+    de: 'Jederzeit kündbar unter Google Play → Abos.',
+    fr: 'Résiliable à tout moment dans Google Play → Abonnements.',
+    sv: 'Avsluta när du vill under Google Play → Prenumerationer.',
+    pt: 'Cancela quando quiseres em Google Play → Subscrições.',
+  );
+  static const nudgeAutumnTitle = LocalizedText(
+    nl: 'Plan volgend seizoen',
+    en: 'Plan next season',
+    de: 'Plane die nächste Saison',
+    fr: 'Prépare la saison prochaine',
+    sv: 'Planera nästa säsong',
+    pt: 'Planeia a próxima estação',
+  );
+  static const nudgeAutumnBody = LocalizedText(
+    nl: 'De bakken raken leeg. Leg vast wat werkte, nu je het nog weet.',
+    en: 'The beds are emptying. Note what worked while you still remember.',
+    de: 'Die Beete leeren sich. Halte fest, was geklappt hat, solange du es noch weißt.',
+    fr: 'Les bacs se vident. Note ce qui a marché tant que c\'est frais.',
+    sv: 'Bäddarna töms. Skriv ner vad som funkade medan du minns.',
+    pt: 'Os canteiros estão a esvaziar. Anota o que resultou enquanto te lembras.',
+  );
+  static const nudgeSpringTitle = LocalizedText(
+    nl: 'Het seizoen begint, plan je zaaimomenten',
+    en: 'Season starts — plan your sowings',
+    de: 'Die Saison beginnt – plane deine Aussaat',
+    fr: 'La saison commence : planifie tes semis',
+    sv: 'Säsongen börjar – planera dina sådder',
+    pt: 'A estação começa: planeia as tuas sementeiras',
+  );
+  static const nudgeSpringBody = LocalizedText(
+    nl: 'De eerste zaaiingen komen eraan. Kies wat waar komt.',
+    en: 'The first sowings are weeks away. Pick what goes where.',
+    de: 'Die ersten Aussaaten stehen bald an. Leg fest, was wohin kommt.',
+    fr: 'Les premiers semis approchent. Choisis quoi mettre où.',
+    sv: 'De första sådderna är nära. Bestäm vad som ska var.',
+    pt: 'As primeiras sementeiras estão a chegar. Escolhe o que vai para onde.',
+  );
+
   // ── task and step names (kindLine, nodeKindLine) ──────────────────────────
   static const taskWater = LocalizedText(
     nl: 'Water geven',

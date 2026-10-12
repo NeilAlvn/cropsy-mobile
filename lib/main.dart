@@ -26,7 +26,9 @@ import 'l10n/app_lang.dart';
 import 'features/app_shell.dart';
 import 'features/garden/garden_repository.dart';
 import 'features/onboarding/onboarding_screen.dart';
+import 'features/paywall/paywall_screen.dart';
 import 'features/repository_scope.dart';
+import 'notifications/lifecycle.dart';
 import 'notifications/reminders.dart';
 import 'purchases/purchase_service.dart';
 import 'sync/auth_service.dart';
@@ -53,7 +55,7 @@ Future<void> main() async {
 Future<void> _boot() async {
   final repo = await GardenRepository.create(db: openAppDatabase());
   await AuthService.init();
-  await Reminders.init();
+  await Reminders.init(onTap: _openFromNotification);
   final auth = AuthService(repo);
   final purchases = PurchaseService();
   await purchases.init();
@@ -91,6 +93,26 @@ Future<void> _boot() async {
     });
   });
   runApp(CropsyApp(repository: repo, auth: auth, purchases: purchases, theme: theme, lang: lang));
+
+  // A notification that cold-started the app is answered once there is a
+  // navigator to answer it with.
+  final launched = await Reminders.launchPayload();
+  WidgetsBinding.instance.addPostFrameCallback((_) => _openFromNotification(launched));
+
+  // Seasonal nudges for free gardeners, re-aimed on launch, on resume and
+  // whenever the plan changes (buying clears them).
+  Future<void> nudges() => Lifecycle.syncSeasonal(premium: purchases.premium, lang: lang.code);
+  unawaited(nudges());
+  purchases.addListener(nudges);
+  AppLifecycleListener(onResume: nudges);
+}
+
+void _openFromNotification(String? payload) {
+  if (payload != Lifecycle.paywallPayload) return;
+  CropsyApp.navigator.currentState?.push(MaterialPageRoute(
+    builder: (_) => const PaywallScreen(trigger: PaywallTrigger.homeCard),
+    fullscreenDialog: true,
+  ));
 }
 
 class CropsyApp extends StatelessWidget {
@@ -110,7 +132,7 @@ class CropsyApp extends StatelessWidget {
   final PurchaseService? purchases;
 
   /// One per app, so the navigator outlives the scheme it was built under.
-  static final _navigator = GlobalKey<NavigatorState>();
+  static final navigator = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +165,7 @@ class CropsyApp extends StatelessWidget {
                     // new tree instead: the routes survive, and being reactivated
                     // is a dependency change, so each one rebuilds its page in the
                     // scheme that just won.
-                    navigatorKey: _navigator,
+                    navigatorKey: navigator,
                     title: 'Cropsy',
                     debugShowCheckedModeBanner: false,
                     themeMode: theme.materialMode,

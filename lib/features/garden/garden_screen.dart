@@ -20,6 +20,7 @@ import '../../design/widgets.dart';
 import '../harvest/harvest_screen.dart';
 import '../this_week/this_week_screen.dart';
 import 'garden_repository.dart';
+import 'gating.dart';
 import 'plant_detail_screen.dart';
 import 'season_path_view.dart';
 import '../repository_scope.dart';
@@ -196,7 +197,9 @@ class _PlantList extends StatelessWidget {
                         SizedBox(
                           height: 34,
                           child: TextButton(
-                            onPressed: () => repo.startGrowing(p.id),
+                            onPressed: () async {
+                              if (await roomToGrow(context)) await repo.startGrowing(p.id);
+                            },
                             style: TextButton.styleFrom(
                                 foregroundColor: AppColors.sprout),
                             child: Text(Str.start.of(context), style: AppText.label(context, color: AppColors.sprout)),

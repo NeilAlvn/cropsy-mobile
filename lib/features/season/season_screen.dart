@@ -12,6 +12,7 @@
 library;
 
 import 'dart:convert';
+import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
 import '../../l10n/mascot_lines.dart';
@@ -37,6 +38,7 @@ import '../garden/log_node_flow.dart';
 import '../garden/plant_detail_screen.dart';
 import '../grow/crop_detail_screen.dart';
 import '../harvest/harvest_screen.dart';
+import '../paywall/paywall_screen.dart';
 import '../repository_scope.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/strings.dart';
@@ -334,6 +336,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
                     data.logged,
                     today,
                     repo,
+                    premium: PurchaseScope.maybeOf(context)?.premium ?? false,
                   );
                   if (data.nodes.isEmpty) {
                     return const Center(
@@ -382,8 +385,9 @@ class _SeasonScreenState extends State<SeasonScreen> {
     List<SeasonTask> tasks,
     Set<String> logged,
     DateTime today,
-    GardenRepository repo,
-  ) {
+    GardenRepository repo, {
+    required bool premium,
+  }) {
     final shape = seasonRows(
       nodes: nodes,
       today: today,
@@ -484,7 +488,15 @@ class _SeasonScreenState extends State<SeasonScreen> {
           );
       }
     }
-    return rows;
+    // Free paths show this week and next; further out is a blurred preview
+    // behind one bar. Today's tasks and reminders never sit past the line.
+    final lock = premium ? null : seasonLockFrom(shape, today);
+    if (lock == null) return rows;
+    return [
+      ...rows.take(lock),
+      const _UnlockItem(),
+      for (final r in rows.skip(lock)) _LockedItem(r),
+    ];
   }
 
   /// After a log, the path's states and every downstream date can have moved,
@@ -655,6 +667,78 @@ class _MonthDisc extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The line where a free path stops: one bar, not a lock on every node.
+class _UnlockItem implements _Item {
+  const _UnlockItem();
+
+  @override
+  double get height => 96;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    height: height,
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(Neo.radiusTile),
+          onTap: () => Navigator.of(context).push<bool>(
+            MaterialPageRoute(
+              builder: (_) => const PaywallScreen(trigger: PaywallTrigger.seasonView),
+              fullscreenDialog: true,
+            ),
+          ),
+          child: Ink(
+            decoration: Neo.box(color: AppColors.ink),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Icon(PhosphorIcons.lock, color: AppColors.onInk, size: 22),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(Str.unlockFullSeason.of(context), style: AppText.label(context, color: AppColors.onInk)),
+                      Text(
+                        Str.unlockFullSeasonSub.of(context),
+                        style: AppText.caption(context).copyWith(color: AppColors.onInk.withValues(alpha: 0.75)),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(PhosphorIcons.caretRight, color: AppColors.onInk),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/// A row past the free line: drawn, so the season reads as full, but blurred
+/// and inert.
+class _LockedItem implements _Item {
+  const _LockedItem(this.row);
+  final _Item row;
+
+  @override
+  double get height => row.height;
+
+  @override
+  Widget build(BuildContext context) => ExcludeSemantics(
+    child: IgnorePointer(
+      child: ImageFiltered(
+        imageFilter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
+        child: Opacity(opacity: 0.6, child: row.build(context)),
+      ),
+    ),
+  );
 }
 
 class _TodayItem implements _Item {

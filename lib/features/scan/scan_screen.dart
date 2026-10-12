@@ -71,7 +71,7 @@ class _ScanScreenState extends State<ScanScreen> {
     } on api.ScanException catch (e) {
       if (!mounted) return;
       if (e.premiumRequired) {
-        final bought = await Navigator.of(context).push<bool>(MaterialPageRoute(builder: (_) => const PaywallScreen(), fullscreenDialog: true));
+        final bought = await Navigator.of(context).push<bool>(MaterialPageRoute(builder: (_) => const PaywallScreen(trigger: PaywallTrigger.diagnose), fullscreenDialog: true));
         if (bought == true && mounted) await _send();
         return;
       }
