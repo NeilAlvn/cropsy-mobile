@@ -25,9 +25,10 @@ A JOURNAL THAT ADDS UP
 Log every harvest in grams or pieces and watch the yearly tally grow. Growth photos stay with the plant.
 
 FREE TO TRY
-Free: 1 garden, 6 plants, the full timeline and reminders, all crop guides, 20 journal photos.
-Premium (€29.99 a year): unlimited gardens and plants, the garden planner, Diagnose, unlimited photos and export.
-Lifetime (€49.99 once): everything in Premium, paid once, all future features included.
+Free: 1 garden with 3 growing plants at a time (plan as many as you like), this week's and next week's tasks, daily care reminders, every crop guide, 20 journal photos and 2 freeze days a month.
+Premium: unlimited gardens and plants, the full-season plan, the garden planner grid, photo diagnosis, unlimited photos and freeze days, and export. €39.99 a year with a 7-day free trial (cancel any time before it ends; we remind you 2 days before), or €7.99 a month.
+Lifetime (€99.99 once): everything in Premium, all future features included.
+Subscriptions renew automatically unless you cancel at least 24 hours before the period ends.
 
 Prices are shown in your local currency in the store. Purchases go through the App Store.
 

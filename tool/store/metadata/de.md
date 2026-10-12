@@ -25,9 +25,10 @@ EIN TAGEBUCH, DAS SICH SUMMIERT
 Trag jede Ernte in Gramm oder Stück ein und sieh zu, wie die Jahresbilanz wächst. Wachstumsfotos bleiben bei der Pflanze.
 
 KOSTENLOS AUSPROBIEREN
-Kostenlos: 1 Garten, 6 Pflanzen, die komplette Zeitleiste mit Erinnerungen, alle Anbauanleitungen, 20 Tagebuchfotos.
-Premium (29,99 € pro Jahr): unbegrenzt viele Gärten und Pflanzen, der Gartenplaner, Diagnose, unbegrenzt viele Fotos und Export.
-Lifetime (49,99 € einmalig): alles aus Premium, einmal bezahlt, alle künftigen Funktionen inklusive.
+Kostenlos: 1 Garten mit 3 wachsenden Pflanzen gleichzeitig (planen kannst du unbegrenzt), die Aufgaben für diese und nächste Woche, tägliche Pflege-Erinnerungen, alle Anbauanleitungen, 20 Tagebuchfotos und 2 Pausentage pro Monat.
+Premium: unbegrenzt viele Gärten und Pflanzen, der Plan für die ganze Saison, der Gartenplaner mit Raster, Diagnose per Foto, unbegrenzt viele Fotos und Pausentage sowie Export. 39,99 € im Jahr mit 7 Tagen gratis (vorher jederzeit kündbar; wir erinnern dich 2 Tage vor Ablauf) oder 7,99 € im Monat.
+Lifetime (99,99 € einmalig): alles aus Premium, alle künftigen Funktionen inklusive.
+Abos verlängern sich automatisch, wenn du nicht mindestens 24 Stunden vor Ablauf des Zeitraums kündigst.
 
 Die Preise erscheinen im Store in deiner Landeswährung. Käufe laufen über den App Store.
 
