@@ -25,9 +25,10 @@ EN DAGBOK SOM SUMMERAR
 Logga varje skörd i gram eller styck och se årssumman växa. Tillväxtfotona stannar hos växten.
 
 GRATIS ATT PROVA
-Gratis: 1 odling, 6 växter, hela tidslinjen med påminnelser, alla odlingsguider, 20 dagboksfoton.
-Premium (29,99 € per år): obegränsat antal odlingar och växter, odlingsplanerare, diagnos, obegränsat antal foton och export.
-Lifetime (49,99 € en gång): allt i Premium, betalas en gång, alla framtida funktioner ingår.
+Gratis: 1 odling med 3 växter åt gången (planera hur många du vill), uppgifterna för den här och nästa vecka, dagliga skötselpåminnelser, alla odlingsguider, 20 dagboksfoton och 2 pausdagar i månaden.
+Premium: obegränsat antal odlingar och växter, planen för hela säsongen, odlingsplaneraren med rutnät, diagnos från foto, obegränsat antal foton och pausdagar samt export. 39,99 € per år med 7 dagar gratis (säg upp när du vill innan de är slut; vi påminner dig 2 dagar innan), eller 7,99 € i månaden.
+Lifetime (99,99 € en gång): allt i Premium, alla framtida funktioner ingår.
+Prenumerationer förnyas automatiskt om du inte säger upp dem senast 24 timmar innan perioden tar slut.
 
 Priserna visas i din lokala valuta i butiken. Köpen går via App Store.
 

@@ -25,9 +25,10 @@ UN JOURNAL QUI S'ADDITIONNE
 Note chaque récolte en grammes ou en pièces et regarde le total de l'année grandir. Les photos de croissance restent avec la plante.
 
 À ESSAYER GRATUITEMENT
-Gratuit : 1 potager, 6 plantes, la chronologie complète avec les rappels, tous les guides de culture, 20 photos de journal.
-Premium (29,99 € par an) : potagers et plantes en nombre illimité, le planificateur de potager, le diagnostic, photos illimitées et export.
-À vie (49,99 € en une fois) : tout Premium, payé une seule fois, toutes les futures fonctionnalités incluses.
+Gratuit : 1 potager avec 3 plantes en culture à la fois (planifie autant que tu veux), les tâches de cette semaine et de la suivante, des rappels d'entretien quotidiens, tous les guides de culture, 20 photos de journal et 2 jours de pause par mois.
+Premium : potagers et plantes en nombre illimité, le plan de toute la saison, le planificateur de potager en grille, le diagnostic par photo, photos et jours de pause illimités, et l'export. 39,99 € par an avec 7 jours gratuits (résiliable à tout moment avant la fin ; on te le rappelle 2 jours avant), ou 7,99 € par mois.
+À vie (99,99 € en une fois) : tout Premium, toutes les futures fonctionnalités incluses.
+Les abonnements se renouvellent automatiquement, sauf résiliation au moins 24 heures avant la fin de la période.
 
 Les prix s'affichent dans ta monnaie locale sur le store. Les achats passent par l'App Store.
 

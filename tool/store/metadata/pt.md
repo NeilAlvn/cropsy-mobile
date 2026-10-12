@@ -25,9 +25,10 @@ UM DIÁRIO QUE VAI SOMANDO
 Regista cada colheita em gramas ou unidades e vê o total do ano crescer. As fotos de crescimento ficam com a planta, na cronologia.
 
 GRÁTIS PARA EXPERIMENTAR
-Grátis: 1 horta, 6 plantas, a cronologia completa e os lembretes, todos os guias de culturas, 20 fotos no diário.
-Premium (29,99 € por ano): hortas e plantas ilimitadas, o planeador de horta, o Diagnóstico, fotos ilimitadas e exportação.
-Lifetime (49,99 € uma só vez): tudo o que está no Premium, pago uma única vez, com todas as funcionalidades futuras incluídas.
+Grátis: 1 horta com 3 plantas a crescer de cada vez (planeia quantas quiseres), as tarefas desta semana e da próxima, lembretes diários de cuidados, todos os guias de culturas, 20 fotos no diário e 2 dias de pausa por mês.
+Premium: hortas e plantas ilimitadas, o plano da época inteira, a grelha do planeador de horta, o Diagnóstico por foto, fotos e dias de pausa ilimitados e exportação. 39,99 € por ano com 7 dias grátis (cancela quando quiseres antes do fim; avisamos-te 2 dias antes), ou 7,99 € por mês.
+Lifetime (99,99 € uma só vez): tudo o que está no Premium, com todas as funcionalidades futuras incluídas.
+As subscrições renovam-se automaticamente, a menos que as canceles pelo menos 24 horas antes do fim do período.
 
 Os preços aparecem na tua moeda local na loja. As compras são feitas através da App Store.
 
