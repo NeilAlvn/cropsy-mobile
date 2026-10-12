@@ -909,15 +909,15 @@ abstract final class Str {
   );
   static const heroSubtitle = LocalizedText(
     nl:
-        'Plantdata en herinneringen afgestemd op het Nederlandse en Europese '
-        'weer, gemaakt voor balkons en potten.',
+        'Plantdata en herinneringen op basis van de vorstdata bij jou in de '
+        'buurt, gemaakt voor balkons en potten.',
     en:
-        'Planting dates and reminders tuned to Dutch and EU weather, built for '
-        'balconies and containers.',
-    de: 'Pflanztermine und Erinnerungen, abgestimmt auf niederländisches und EU-Wetter, gemacht für Balkone und Töpfe.',
-    fr: 'Des dates de plantation et des rappels adaptés à la météo des Pays-Bas et de l\'UE, pensés pour les balcons et les pots.',
-    sv: 'Så- och planteringsdatum och påminnelser anpassade efter vädret i Nederländerna och EU, gjorda för balkonger och krukor.',
-    pt: 'Datas de plantação e lembretes ajustados ao clima dos Países Baixos e da UE, pensados para varandas e vasos.',
+        'Planting dates and reminders built from your local frost dates, made '
+        'for balconies and containers.',
+    de: 'Pflanztermine und Erinnerungen nach den Frostterminen bei dir vor Ort, gemacht für Balkone und Töpfe.',
+    fr: 'Des dates de plantation et des rappels calculés selon les gelées de chez toi, pensés pour les balcons et les pots.',
+    sv: 'Så- och planteringsdatum och påminnelser utifrån frostdatumen där du bor, gjorda för balkonger och krukor.',
+    pt: 'Datas de plantação e lembretes com base nas datas de geada da tua zona, pensados para varandas e vasos.',
   );
   static const getStarted = LocalizedText(
     nl: 'Beginnen',
@@ -936,12 +936,12 @@ abstract final class Str {
     pt: 'Continuar',
   );
   static const datesCheckedTitle = LocalizedText(
-    nl: 'Elke datum gelegd naast Nederlandse zaaikalenders',
-    en: 'Every date checked against Dutch seed calendars',
-    de: 'Jedes Datum mit niederländischen Aussaatkalendern abgeglichen',
-    fr: 'Chaque date vérifiée dans des calendriers des semis néerlandais',
-    sv: 'Varje datum kontrollerat mot nederländska såkalendrar',
-    pt: 'Cada data verificada em calendários de sementeira neerlandeses',
+    nl: 'Elke datum berekend op jouw lokale vorstdata en gelegd naast zaaikalenders',
+    en: 'Every date built from your local frost dates and checked against seed calendars',
+    de: 'Jedes Datum aus deinen lokalen Frostterminen berechnet und mit Aussaatkalendern abgeglichen',
+    fr: 'Chaque date calculée selon tes dates de gel locales et vérifiée dans des calendriers de semis',
+    sv: 'Varje datum räknat från dina lokala frostdatum och kontrollerat mot såkalendrar',
+    pt: 'Cada data calculada a partir das tuas datas de geada locais e verificada em calendários de sementeira',
   );
   static const datesCheckedBody = LocalizedText(
     nl:
@@ -979,6 +979,121 @@ abstract final class Str {
     sv: 'Några snabba frågor om din plats och vad du gillar att äta. Två minuter, sedan är din plan klar.',
     pt: 'Algumas perguntas rápidas sobre o teu espaço e o que gostas de comer. Dois minutos e o teu plano fica pronto.',
   );
+
+  // ── onboarding (conversion) ──────────────────────────────────────────────
+  static const painTitle = LocalizedText(
+    nl: 'Klinkt dit bekend?',
+    en: 'Does this sound like you?',
+    de: 'Kommt dir das bekannt vor?',
+    fr: 'Ça te parle ?',
+    sv: 'Känner du igen dig?',
+    pt: 'Isto soa-te familiar?',
+  );
+  static const painSub = LocalizedText(
+    nl: 'Tik aan wat klopt. Daar bouwen we je plan omheen.',
+    en: "Tap the ones that are true. We'll plan around them.",
+    de: 'Tipp an, was stimmt. Darauf bauen wir deinen Plan.',
+    fr: 'Touche ce qui est vrai. On construit ton plan autour.',
+    sv: 'Tryck på det som stämmer. Vi bygger planen runt det.',
+    pt: 'Toca no que for verdade. Fazemos o plano à volta disso.',
+  );
+  static const painTiming = LocalizedText(
+    nl: 'Ik weet nooit wanneer ik moet zaaien of uitplanten',
+    en: 'I never know when to sow or plant out',
+    de: 'Ich weiß nie, wann ich säen oder auspflanzen soll',
+    fr: 'Je ne sais jamais quand semer ou repiquer',
+    sv: 'Jag vet aldrig när jag ska så eller plantera ut',
+    pt: 'Nunca sei quando semear ou transplantar',
+  );
+  static const painMidsummer = LocalizedText(
+    nl: 'Mijn planten geven het halverwege de zomer op',
+    en: 'My plants give up halfway through summer',
+    de: 'Meine Pflanzen geben mitten im Sommer auf',
+    fr: 'Mes plantes abandonnent en plein été',
+    sv: 'Mina växter ger upp mitt i sommaren',
+    pt: 'As minhas plantas desistem a meio do verão',
+  );
+  static const painOverload = LocalizedText(
+    nl: 'Er is online te veel tegenstrijdig advies',
+    en: "There's too much conflicting advice online",
+    de: 'Im Netz gibt es zu viele widersprüchliche Tipps',
+    fr: 'Il y a trop de conseils contradictoires en ligne',
+    sv: 'Det finns för många motstridiga råd på nätet',
+    pt: 'Há demasiados conselhos contraditórios na internet',
+  );
+  static const echoTiming = LocalizedText(
+    nl: 'Elke zaaidatum, op de dag zelf.',
+    en: 'Every sowing date, on the day.',
+    de: 'Jeder Aussaattermin, am richtigen Tag.',
+    fr: 'Chaque date de semis, le jour même.',
+    sv: 'Varje sådatum, på rätt dag.',
+    pt: 'Cada data de sementeira, no próprio dia.',
+  );
+  static const echoMidsummer = LocalizedText(
+    nl: 'Bijvoeren, dunnen en verpotten, elk op zijn dag.',
+    en: 'Feeding, thinning and potting on, each on its day.',
+    de: 'Düngen, Ausdünnen und Umtopfen, jedes an seinem Tag.',
+    fr: 'Nourrir, éclaircir et rempoter, chacun à son jour.',
+    sv: 'Gödsling, gallring och omplantering, var sak på sin dag.',
+    pt: 'Adubar, desbastar e mudar de vaso, cada coisa no seu dia.',
+  );
+  static const echoOverload = LocalizedText(
+    nl: 'Eén plan voor jouw plek. Verder hoef je niets te lezen.',
+    en: 'One plan for your spot. Nothing else to read.',
+    de: 'Ein Plan für deinen Ort. Sonst musst du nichts lesen.',
+    fr: 'Un seul plan pour chez toi. Rien d\'autre à lire.',
+    sv: 'En plan för din plats. Inget annat att läsa.',
+    pt: 'Um plano para o teu sítio. Mais nada para ler.',
+  );
+  static LocalizedText freeGrowsAtATime(int n) => LocalizedText(
+    nl: 'De gratis tuin laat er $n tegelijk groeien. De rest wacht in je plan.',
+    en: 'Free garden grows $n at a time. The rest wait in your plan.',
+    de: 'Der Gratis-Garten lässt $n gleichzeitig wachsen. Der Rest wartet in deinem Plan.',
+    fr: 'Le jardin gratuit en fait pousser $n à la fois. Les autres attendent dans ton plan.',
+    sv: 'Gratisträdgården odlar $n åt gången. Resten väntar i din plan.',
+    pt: 'A horta grátis cultiva $n de cada vez. As outras esperam no teu plano.',
+  );
+  static const fullSeasonPlan = LocalizedText(
+    nl: 'Je volledige seizoensplan',
+    en: 'Your full season plan',
+    de: 'Dein ganzer Saisonplan',
+    fr: 'Ton plan complet de la saison',
+    sv: 'Hela din säsongsplan',
+    pt: 'O teu plano completo da época',
+  );
+  static const notifPrimingTitle = LocalizedText(
+    nl: 'Mis nooit de juiste dag',
+    en: 'Never miss the right day',
+    de: 'Verpass nie den richtigen Tag',
+    fr: 'Ne rate jamais le bon jour',
+    sv: 'Missa aldrig rätt dag',
+    pt: 'Nunca percas o dia certo',
+  );
+  static const notifPrimingTrial = LocalizedText(
+    nl: 'En we laten het je weten voordat een proefperiode afloopt. Geen verrassingen op je rekening.',
+    en: "And we'll remind you before any trial ends. No surprise charges.",
+    de: 'Und wir erinnern dich, bevor ein Probezeitraum endet. Keine überraschenden Abbuchungen.',
+    fr: 'Et on te prévient avant la fin de tout essai. Aucun prélèvement surprise.',
+    sv: 'Och vi påminner dig innan en provperiod tar slut. Inga oväntade dragningar.',
+    pt: 'E avisamos-te antes de qualquer período experimental acabar. Sem cobranças surpresa.',
+  );
+  static const turnOnReminders = LocalizedText(
+    nl: 'Herinneringen aanzetten',
+    en: 'Turn on reminders',
+    de: 'Erinnerungen einschalten',
+    fr: 'Activer les rappels',
+    sv: 'Slå på påminnelser',
+    pt: 'Ativar lembretes',
+  );
+  static const notNow = LocalizedText(
+    nl: 'Niet nu',
+    en: 'Not now',
+    de: 'Nicht jetzt',
+    fr: 'Pas maintenant',
+    sv: 'Inte nu',
+    pt: 'Agora não',
+  );
+
   static const whatSpace = LocalizedText(
     nl: 'Welke ruimte heb je om te telen?',
     en: 'What space do you have to grow in?',
