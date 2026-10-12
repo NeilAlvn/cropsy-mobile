@@ -25,7 +25,7 @@ import '../../design/widgets.dart';
 import '../../timing/dates.dart';
 import '../../timing/types.dart';
 import '../repository_scope.dart';
-import '../paywall/paywall_screen.dart';
+import '../garden/gating.dart';
 import 'add_plant_sheet.dart';
 import 'planting_calendar_bar.dart';
 
@@ -704,13 +704,7 @@ class _Cta extends StatelessWidget {
       if (gardens.isEmpty) return;
       PlantDetails? details;
       if (growing) {
-        if (!context.mounted) return;
-        final limit = PurchaseScope.maybeOf(context)?.maxGrowingPlants ?? 6;
-        if ((await repo.growingPlants()).length >= limit) {
-          if (!context.mounted) return;
-          final bought = await Navigator.of(context).push<bool>(MaterialPageRoute(builder: (_) => const PaywallScreen(), fullscreenDialog: true));
-          if (bought != true) return;
-        }
+        if (!context.mounted || !await roomToGrow(context)) return;
         if (!context.mounted) return;
         details = await showAddPlantSheet(context, crop: crop, today: repo.today);
         if (details == null) return;

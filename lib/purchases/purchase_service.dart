@@ -22,7 +22,7 @@ class PurchaseService extends ChangeNotifier {
 
   /// Free-tier limits (PRD §9). Unlimited when premium.
   int get maxGardens => premium ? 1 << 30 : 1;
-  int get maxGrowingPlants => premium ? 1 << 30 : 6;
+  int get maxGrowingPlants => premium ? 1 << 30 : 3;
   int get maxPhotos => premium ? 1 << 30 : 20;
   int? get freezesPerMonth => premium ? null : 2;
 
