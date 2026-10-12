@@ -117,6 +117,7 @@ class _GardenGroupState extends State<GardenGroup> {
                 value: switch (plan) {
                   Plan.free => Str.planFree,
                   Plan.lifetime => Str.planLifetime,
+                  Plan.monthly => Str.planMonthly,
                   Plan.yearly => Str.planYearly,
                 }
                     .of(context),
@@ -127,7 +128,7 @@ class _GardenGroupState extends State<GardenGroup> {
               // Only a subscription can be managed, and only Apple can manage
               // it; lifetime has nothing to cancel and free has nothing to
               // manage, so neither gets a row that leads to a dead end.
-              if (plan == Plan.yearly)
+              if (plan == Plan.yearly || plan == Plan.monthly)
                 SettingsRow(
                   icon: PhosphorIcons.arrowClockwise,
                   title: Str.managePlan.of(context),
