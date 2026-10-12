@@ -909,15 +909,15 @@ abstract final class Str {
   );
   static const heroSubtitle = LocalizedText(
     nl:
-        'Plantdata en herinneringen afgestemd op het Nederlandse en Europese '
-        'weer, gemaakt voor balkons en potten.',
+        'Plantdata en herinneringen op basis van de vorstdata bij jou in de '
+        'buurt, gemaakt voor balkons en potten.',
     en:
-        'Planting dates and reminders tuned to Dutch and EU weather, built for '
-        'balconies and containers.',
-    de: 'Pflanztermine und Erinnerungen, abgestimmt auf niederländisches und EU-Wetter, gemacht für Balkone und Töpfe.',
-    fr: 'Des dates de plantation et des rappels adaptés à la météo des Pays-Bas et de l\'UE, pensés pour les balcons et les pots.',
-    sv: 'Så- och planteringsdatum och påminnelser anpassade efter vädret i Nederländerna och EU, gjorda för balkonger och krukor.',
-    pt: 'Datas de plantação e lembretes ajustados ao clima dos Países Baixos e da UE, pensados para varandas e vasos.',
+        'Planting dates and reminders built from your local frost dates, made '
+        'for balconies and containers.',
+    de: 'Pflanztermine und Erinnerungen nach den Frostterminen bei dir vor Ort, gemacht für Balkone und Töpfe.',
+    fr: 'Des dates de plantation et des rappels calculés selon les gelées de chez toi, pensés pour les balcons et les pots.',
+    sv: 'Så- och planteringsdatum och påminnelser utifrån frostdatumen där du bor, gjorda för balkonger och krukor.',
+    pt: 'Datas de plantação e lembretes com base nas datas de geada da tua zona, pensados para varandas e vasos.',
   );
   static const getStarted = LocalizedText(
     nl: 'Beginnen',
@@ -936,12 +936,12 @@ abstract final class Str {
     pt: 'Continuar',
   );
   static const datesCheckedTitle = LocalizedText(
-    nl: 'Elke datum gelegd naast Nederlandse zaaikalenders',
-    en: 'Every date checked against Dutch seed calendars',
-    de: 'Jedes Datum mit niederländischen Aussaatkalendern abgeglichen',
-    fr: 'Chaque date vérifiée dans des calendriers des semis néerlandais',
-    sv: 'Varje datum kontrollerat mot nederländska såkalendrar',
-    pt: 'Cada data verificada em calendários de sementeira neerlandeses',
+    nl: 'Elke datum berekend op jouw lokale vorstdata en gelegd naast zaaikalenders',
+    en: 'Every date built from your local frost dates and checked against seed calendars',
+    de: 'Jedes Datum aus deinen lokalen Frostterminen berechnet und mit Aussaatkalendern abgeglichen',
+    fr: 'Chaque date calculée selon tes dates de gel locales et vérifiée dans des calendriers de semis',
+    sv: 'Varje datum räknat från dina lokala frostdatum och kontrollerat mot såkalendrar',
+    pt: 'Cada data calculada a partir das tuas datas de geada locais e verificada em calendários de sementeira',
   );
   static const datesCheckedBody = LocalizedText(
     nl:
