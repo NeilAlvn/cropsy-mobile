@@ -101,13 +101,15 @@ class StepFrame extends StatelessWidget {
             ),
             if (secondaryLabel != null)
               // Quiet on purpose: an ink pill here outweighed the green "yes".
-              Pressable(
-                onTap: onSecondary,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
-                  child: Text(
-                    secondaryLabel!.of(context),
-                    style: AppText.label(context, color: AppColors.inkMuted),
+              Center(
+                child: Pressable(
+                  onTap: onSecondary,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
+                    child: Text(
+                      secondaryLabel!.of(context),
+                      style: AppText.label(context, color: AppColors.inkMuted),
+                    ),
                   ),
                 ),
               ),
