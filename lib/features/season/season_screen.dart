@@ -705,7 +705,7 @@ class _UnlockItem implements _Item {
                     children: [
                       Text(Str.unlockFullSeason.of(context), style: AppText.label(context, color: AppColors.onInk)),
                       Text(
-                        Str.unlockFullSeasonSub.of(context),
+                        Str.unlockFullSeasonSub(PurchaseScope.maybeOf(context)?.trialDaysOffered ?? 0).of(context),
                         style: AppText.caption(context).copyWith(color: AppColors.onInk.withValues(alpha: 0.75)),
                       ),
                     ],

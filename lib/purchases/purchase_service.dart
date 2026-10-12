@@ -139,6 +139,13 @@ class PurchaseService extends ChangeNotifier {
     return live.isEmpty ? fallbackOffers : live;
   }
 
+  /// The free trial this person would get on yearly, in days; 0 when the
+  /// store has none for them. Copy outside the paywall promises only this.
+  int get trialDaysOffered {
+    final yearly = offers.where((o) => o.plan == Plan.yearly).firstOrNull;
+    return trialEligible ? (yearly?.trialDays ?? 0) : 0;
+  }
+
   /// Offering metadata `dismissible: false` turns the onboarding paywall hard,
   /// so a RevenueCat Experiment can test it without a new build.
   bool get dismissible => offerings?.current?.metadata['dismissible'] != false;

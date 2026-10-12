@@ -5158,21 +5158,24 @@ abstract final class Str {
     sv: 'Lås upp hela din säsong',
     pt: 'Desbloqueia a tua estação inteira',
   );
-  static const unlockFullSeasonSub = LocalizedText(
-    nl: 'Elk zaai- en oogstmoment dat eraan komt. 7 dagen gratis.',
-    en: 'Every sowing and harvest ahead. Free for 7 days.',
-    de: 'Jede Aussaat und Ernte im Voraus. 7 Tage gratis.',
-    fr: 'Chaque semis et chaque récolte à venir. 7 jours gratuits.',
-    sv: 'Varje sådd och skörd framöver. Gratis i 7 dagar.',
-    pt: 'Cada sementeira e colheita pela frente. 7 dias grátis.',
+  /// [days] is the trial the store will actually give this person; 0 when
+  /// there is none (not configured, or already used), so no free week is
+  /// promised that the paywall cannot deliver.
+  static LocalizedText unlockFullSeasonSub(int days) => LocalizedText(
+    nl: days > 0 ? 'Elk zaai- en oogstmoment dat eraan komt. $days dagen gratis.' : 'Elk zaai- en oogstmoment dat eraan komt.',
+    en: days > 0 ? 'Every sowing and harvest ahead. Free for $days days.' : 'Every sowing and harvest ahead.',
+    de: days > 0 ? 'Jede Aussaat und Ernte im Voraus. $days Tage gratis.' : 'Jede Aussaat und Ernte im Voraus.',
+    fr: days > 0 ? 'Chaque semis et chaque récolte à venir. $days jours gratuits.' : 'Chaque semis et chaque récolte à venir.',
+    sv: days > 0 ? 'Varje sådd och skörd framöver. Gratis i $days dagar.' : 'Varje sådd och skörd framöver.',
+    pt: days > 0 ? 'Cada sementeira e colheita pela frente. $days dias grátis.' : 'Cada sementeira e colheita pela frente.',
   );
-  static const homeTrialCard = LocalizedText(
-    nl: 'Probeer het hele seizoen 7 dagen gratis',
-    en: 'Try the full season free for 7 days',
-    de: 'Teste die ganze Saison 7 Tage gratis',
-    fr: 'Essaie toute la saison gratuitement pendant 7 jours',
-    sv: 'Prova hela säsongen gratis i 7 dagar',
-    pt: 'Experimenta a estação inteira grátis durante 7 dias',
+  static LocalizedText homeTrialCard(int days) => LocalizedText(
+    nl: days > 0 ? 'Probeer het hele seizoen $days dagen gratis' : 'Zie je hele seizoen vooruit',
+    en: days > 0 ? 'Try the full season free for $days days' : 'See your whole season ahead',
+    de: days > 0 ? 'Teste die ganze Saison $days Tage gratis' : 'Sieh deine ganze Saison im Voraus',
+    fr: days > 0 ? 'Essaie toute la saison gratuitement pendant $days jours' : 'Vois toute ta saison à l\'avance',
+    sv: days > 0 ? 'Prova hela säsongen gratis i $days dagar' : 'Se hela din säsong i förväg',
+    pt: days > 0 ? 'Experimenta a estação inteira grátis durante $days dias' : 'Vê a tua estação inteira com antecedência',
   );
   static const trialPlanReadyTitle = LocalizedText(
     nl: 'Je seizoensplan staat klaar',

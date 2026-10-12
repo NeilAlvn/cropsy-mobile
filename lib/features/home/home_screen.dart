@@ -406,7 +406,7 @@ class _TrialCardState extends State<_TrialCard> {
             Expanded(
               child: GestureDetector(
                 onTap: widget.onTap,
-                child: Text(Str.homeTrialCard.of(context),
+                child: Text(Str.homeTrialCard(PurchaseScope.maybeOf(context)?.trialDaysOffered ?? 0).of(context),
                     style: AppText.label(context, color: AppColors.onInk)),
               ),
             ),
