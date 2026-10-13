@@ -48,9 +48,11 @@ int? savingsPercent(double yearly, double monthly) {
 String formatPrice(double amount, String currency, String locale) =>
     NumberFormat.simpleCurrency(locale: locale, name: currency).format(amount);
 
-/// The trial timeline's middle row: the reminder goes out two days before the
-/// charge, never before day 1.
-int reminderDay(int trialDays) => trialDays - 2 < 1 ? 1 : trialDays - 2;
+/// The paywall's cards, left to right: monthly, yearly, lifetime, so the plan
+/// it leads with sits raised in the middle. Missing packages simply drop out.
+List<PlanOffer> cardOrder(List<PlanOffer> offers) => [
+      for (final p in const [Plan.monthly, Plan.yearly, Plan.lifetime]) ...offers.where((o) => o.plan == p),
+    ];
 
 /// One row on the paywall: a store package, or a fallback price before the
 /// store answers. [package] null means "can't be bought from here".
@@ -220,13 +222,14 @@ class PurchaseService extends ChangeNotifier {
   }
 
   /// Buy any package (the exit offer's included). A purchase that started a
-  /// trial schedules the trial reminders in the person's language.
-  Future<bool> buyPackage(Package package, {String lang = 'en'}) async {
+  /// trial schedules the trial reminders in the person's language, unless the
+  /// paywall's "remind me" switch was turned off.
+  Future<bool> buyPackage(Package package, {String lang = 'en', bool remindTrial = true}) async {
     lastError = null;
     try {
       final info = (await Purchases.purchase(PurchaseParams.package(package))).customerInfo;
       _apply(info);
-      if (info.entitlements.active[premiumEntitlement]?.periodType == PeriodType.trial) {
+      if (remindTrial && info.entitlements.active[premiumEntitlement]?.periodType == PeriodType.trial) {
         await Lifecycle.scheduleTrialReminders(DateTime.now(), lang: lang);
       }
       return premium;

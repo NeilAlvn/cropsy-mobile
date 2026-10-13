@@ -2716,20 +2716,20 @@ abstract final class Str {
     pt: 'Plantas e hortas ilimitadas',
   );
   static LocalizedText pwSeasonFor(String region) => LocalizedText(
-    nl: 'Elke zaai- en oogstdatum, afgestemd op $region',
-    en: 'Every sowing and harvest date, tuned to $region',
-    de: 'Jeder Saat- und Erntetermin, passend zu $region',
-    fr: 'Chaque date de semis et de récolte, calée sur $region',
-    sv: 'Varje sådd- och skördedatum, anpassat efter $region',
-    pt: 'Cada data de sementeira e colheita, ajustada a $region',
+    nl: 'Seizoensplan voor $region',
+    en: 'Whole-season plan for $region',
+    de: 'Saisonplan für $region',
+    fr: 'Plan de saison pour $region',
+    sv: 'Säsongsplan för $region',
+    pt: 'Plano da estação para $region',
   );
   static const pwFirstSeason = LocalizedText(
-    nl: 'Elke stap van je eerste seizoen, op tijd',
-    en: 'Every step of your first season, on time',
-    de: 'Jeder Schritt deiner ersten Saison, rechtzeitig',
-    fr: 'Chaque étape de ta première saison, au bon moment',
-    sv: 'Varje steg i din första säsong, i tid',
-    pt: 'Cada passo da tua primeira estação, a tempo',
+    nl: 'Je eerste seizoen, stap voor stap',
+    en: 'Your first season, step by step',
+    de: 'Deine erste Saison, Schritt für Schritt',
+    fr: 'Ta première saison, pas à pas',
+    sv: 'Din första säsong, steg för steg',
+    pt: 'A tua primeira estação, passo a passo',
   );
   static const pwPlanner = LocalizedText(
     nl: 'Het plannerraster voor elk bed',
@@ -2763,22 +2763,6 @@ abstract final class Str {
     sv: 'Bäst värde',
     pt: 'Melhor valor',
   );
-  static LocalizedText pwSave(int pct) => LocalizedText(
-    nl: 'Beste deal · $pct% voordeliger',
-    en: 'Best value · save $pct%',
-    de: 'Bestes Angebot · $pct % sparen',
-    fr: 'Meilleure offre · −$pct %',
-    sv: 'Bäst värde · spara $pct %',
-    pt: 'Melhor valor · poupa $pct%',
-  );
-  static LocalizedText pwPerYear(String p) => LocalizedText(
-    nl: '$p / jaar',
-    en: '$p / year',
-    de: '$p / Jahr',
-    fr: '$p / an',
-    sv: '$p / år',
-    pt: '$p / ano',
-  );
   static LocalizedText pwPerMonth(String p) => LocalizedText(
     nl: '$p / maand',
     en: '$p / month',
@@ -2786,22 +2770,6 @@ abstract final class Str {
     fr: '$p / mois',
     sv: '$p / månad',
     pt: '$p / mês',
-  );
-  static LocalizedText pwOnce(String p) => LocalizedText(
-    nl: '$p eenmalig',
-    en: '$p once',
-    de: '$p einmalig',
-    fr: '$p une fois',
-    sv: '$p en gång',
-    pt: '$p uma vez',
-  );
-  static LocalizedText pwTrialThen(int days, String p) => LocalizedText(
-    nl: '$days dagen gratis, daarna $p / jaar',
-    en: '$days days free, then $p / year',
-    de: '$days Tage gratis, dann $p / Jahr',
-    fr: '$days jours offerts, puis $p / an',
-    sv: '$days dagar gratis, sedan $p / år',
-    pt: '$days dias grátis, depois $p / ano',
   );
   static LocalizedText pwCtaTrial(int days) => days == 7
       ? const LocalizedText(
@@ -2820,53 +2788,77 @@ abstract final class Str {
           sv: 'Starta $days dagar gratis',
           pt: 'Começar $days dias grátis',
         );
-  static const pwHowTrialWorks = LocalizedText(
-    nl: 'Zo werkt je gratis proefperiode',
-    en: 'How your free trial works',
-    de: 'So funktioniert dein Gratis-Test',
-    fr: 'Comment marche ton essai gratuit',
-    sv: 'Så fungerar din gratisperiod',
-    pt: 'Como funciona o teu período grátis',
+  static LocalizedText pwHeadCrops(int n) => LocalizedText(
+    nl: 'Je $n gewassen,\nhet hele seizoen.',
+    en: 'Your $n crops,\nyour whole season.',
+    de: 'Deine $n Pflanzen,\ndeine ganze Saison.',
+    fr: 'Tes $n plantes,\ntoute ta saison.',
+    sv: 'Dina $n växter,\nhela din säsong.',
+    pt: 'As tuas $n plantas,\na estação inteira.',
   );
-  static const pwToday = LocalizedText(
-    nl: 'Vandaag',
-    en: 'Today',
-    de: 'Heute',
-    fr: 'Aujourd\'hui',
-    sv: 'Idag',
-    pt: 'Hoje',
+  static const pwPremiumCol = LocalizedText(
+    nl: 'Premium',
+    en: 'Premium',
+    de: 'Premium',
+    fr: 'Premium',
+    sv: 'Premium',
+    pt: 'Premium',
   );
-  static const pwTodaySub = LocalizedText(
-    nl: 'Alles staat voor je open.',
-    en: 'Full access to everything.',
-    de: 'Voller Zugriff auf alles.',
-    fr: 'Accès complet à tout.',
-    sv: 'Full tillgång till allt.',
-    pt: 'Acesso total a tudo.',
+  static const pwRowGuides = LocalizedText(
+    nl: 'Teeltgidsen en herinneringen',
+    en: 'Crop guides and reminders',
+    de: 'Anbautipps und Erinnerungen',
+    fr: 'Fiches plantes et rappels',
+    sv: 'Odlingsguider och påminnelser',
+    pt: 'Guias de cultivo e lembretes',
   );
-  static LocalizedText pwDay(int n) => LocalizedText(
-    nl: 'Dag $n',
-    en: 'Day $n',
-    de: 'Tag $n',
-    fr: 'Jour $n',
-    sv: 'Dag $n',
-    pt: 'Dia $n',
+  static LocalizedText pwBannerTrial(int days) => LocalizedText(
+    nl: '$days dagen gratis · altijd opzegbaar',
+    en: '$days days free · cancel anytime',
+    de: '$days Tage gratis · jederzeit kündbar',
+    fr: '$days jours offerts · sans engagement',
+    sv: '$days dagar gratis · säg upp när du vill',
+    pt: '$days dias grátis · cancela quando quiseres',
   );
-  static const pwRemindSub = LocalizedText(
-    nl: 'We laten je weten dat je proefperiode bijna afloopt.',
-    en: 'We remind you that your trial is ending.',
-    de: 'Wir erinnern dich, dass dein Test bald endet.',
-    fr: 'On te prévient que ton essai se termine.',
-    sv: 'Vi påminner dig om att perioden snart tar slut.',
-    pt: 'Avisamos-te de que o período grátis está a acabar.',
+  static LocalizedText pwBannerSave(int pct) => LocalizedText(
+    nl: 'Bespaar $pct% met jaarlijks',
+    en: 'Save $pct% with yearly',
+    de: 'Jährlich $pct % sparen',
+    fr: 'Économise $pct % avec l\'annuel',
+    sv: 'Spara $pct % med årsplanen',
+    pt: 'Poupa $pct% com o anual',
   );
-  static const pwChargeSub = LocalizedText(
-    nl: 'Je betaalt pas nu. Daarvoor kun je altijd opzeggen.',
-    en: 'You\'re charged. Cancel anytime before.',
-    de: 'Erst jetzt wird abgebucht. Vorher jederzeit kündbar.',
-    fr: 'Tu es débité. Résiliable à tout moment avant.',
-    sv: 'Nu dras pengarna. Säg upp när du vill innan dess.',
-    pt: 'És cobrado. Cancela quando quiseres antes disso.',
+  static LocalizedText pwTrialBadge(int days) => LocalizedText(
+    nl: '$days dagen gratis',
+    en: '$days days free',
+    de: '$days Tage gratis',
+    fr: '$days jours offerts',
+    sv: '$days dagar gratis',
+    pt: '$days dias grátis',
+  );
+  static const pwBilledMonthly = LocalizedText(
+    nl: 'per maand',
+    en: 'billed monthly',
+    de: 'monatlich abgerechnet',
+    fr: 'facturé chaque mois',
+    sv: 'debiteras månadsvis',
+    pt: 'cobrado mensalmente',
+  );
+  static const pwPayOnce = LocalizedText(
+    nl: 'eenmalig',
+    en: 'pay once',
+    de: 'einmalig',
+    fr: 'paiement unique',
+    sv: 'betala en gång',
+    pt: 'pagamento único',
+  );
+  static const pwRemindMe = LocalizedText(
+    nl: 'Herinner me voor mijn proefperiode afloopt',
+    en: 'Remind me before my trial ends',
+    de: 'Erinnere mich vor Ende des Tests',
+    fr: 'Me prévenir avant la fin de l\'essai',
+    sv: 'Påminn mig innan perioden tar slut',
+    pt: 'Avisar-me antes do fim do período grátis',
   );
   static const pwContinueFree = LocalizedText(
     nl: 'Verder met gratis',

@@ -1,3 +1,4 @@
+import 'package:cropsy/features/paywall/paywall_screen.dart';
 import 'package:cropsy/purchases/purchase_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:purchases_flutter/purchases_flutter.dart' show PeriodUnit;
@@ -35,11 +36,15 @@ void main() {
     expect(store.billed('de'), '€39.99'); // the store's own string wins
   });
 
-  test('the reminder lands two days before the charge, never before day 1', () {
-    expect(reminderDay(7), 5);
-    expect(reminderDay(14), 12);
-    expect(reminderDay(3), 1);
-    expect(reminderDay(1), 1);
+  test('the paywall cards put yearly in the middle and drop missing plans', () {
+    expect(cardOrder(fallbackOffers).map((o) => o.plan), [Plan.monthly, Plan.yearly, Plan.lifetime]);
+    expect(cardOrder(fallbackOffers.sublist(0, 2)).map((o) => o.plan), [Plan.monthly, Plan.yearly]);
+  });
+
+  test('the banner promises a free week only when the selected plan has one', () {
+    expect(paywallBanner(trialDays: 7, savePercent: 58)?.en, '7 days free · cancel anytime');
+    expect(paywallBanner(trialDays: 0, savePercent: 58)?.en, 'Save 58% with yearly');
+    expect(paywallBanner(trialDays: 0), isNull);
   });
 
   test('the fallback leads with a yearly trial', () {
