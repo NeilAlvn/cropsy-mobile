@@ -277,11 +277,14 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         ],
                       ),
                       SizedBox(height: gap),
+                      // The slack on a tall phone goes a third above the
+                      // table, two thirds between the table and the plans.
+                      const Spacer(),
                       _CompareTable(
                         rows: [for (final (t, free) in _rows(RepositoryScope.of(context).regionName)) (t.of(context), free)],
                         compact: compact,
                       ),
-                      const Spacer(),
+                      const Spacer(flex: 2),
                       SizedBox(height: gap),
                       AnimatedSwitcher(
                         duration: motion[Motion.standard],
@@ -363,11 +366,16 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       const SizedBox(height: 6),
                       // App Review 3.1.2: renewal terms beside the button, plus the
                       // terms of use and the privacy policy.
-                      Text(
-                        disclosure.of(context),
-                        style: AppText.caption(context).copyWith(fontSize: 11.5, height: 1.3),
-                        textAlign: TextAlign.center,
-                        maxLines: 3,
+                      // Three lines reserved whatever the plan says, so the
+                      // shorter monthly terms do not shift the cards.
+                      SizedBox(
+                        height: 3 * 11.5 * 1.3 * MediaQuery.textScalerOf(context).scale(1),
+                        child: Text(
+                          disclosure.of(context),
+                          style: AppText.caption(context).copyWith(fontSize: 11.5, height: 1.3),
+                          textAlign: TextAlign.center,
+                          maxLines: 3,
+                        ),
                       ),
                       // One row, shrunk rather than wrapped: a wrap left
                       // "Privacy" alone on a second line in most languages.
@@ -422,7 +430,7 @@ class _CompareTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rowHeight = compact ? 32.0 : 38.0;
+    final rowHeight = compact ? 34.0 : 42.0;
     final style = AppText.bodySm(context).copyWith(fontSize: compact ? 13 : 14, height: 1.2);
     Widget cell(double width, Widget child) => SizedBox(width: width, child: Center(child: child));
     return Container(
