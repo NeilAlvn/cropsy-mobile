@@ -412,7 +412,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
 /// The strip between the table and the plans: the free week when the selected
 /// plan really carries one, else what yearly saves, else nothing.
 LocalizedText? paywallBanner({required int trialDays, int? savePercent}) => trialDays > 0
-    ? Str.pwBannerTrial(trialDays)
+    ? Str.pwBannerTrial
     : savePercent == null
         ? null
         : Str.pwBannerSave(savePercent);
@@ -574,6 +574,9 @@ class _PlanCard extends StatelessWidget {
               duration: motion[Motion.standard],
               curve: Motion.easeEnter,
               height: height,
+              // Full cell width: a Stack sizes to this box, and without it each
+              // card would shrink to its own text and the row would go ragged.
+              width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
                 color: selected ? AppColors.accentSoft : AppColors.surface,

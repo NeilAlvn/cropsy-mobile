@@ -2740,17 +2740,17 @@ abstract final class Str {
     pt: 'A grelha do planeador para cada canteiro',
   );
   static const pwDiagnose = LocalizedText(
-    nl: 'Diagnose van een foto',
-    en: 'Diagnose problems from a photo',
-    de: 'Diagnose per Foto',
-    fr: 'Diagnostic à partir d\'une photo',
-    sv: 'Diagnos från ett foto',
-    pt: 'Diagnóstico a partir de uma foto',
+    nl: 'Fotodiagnose',
+    en: 'Photo diagnosis',
+    de: 'Foto-Diagnose',
+    fr: 'Diagnostic photo',
+    sv: 'Fotodiagnos',
+    pt: 'Diagnóstico por foto',
   );
   static const pwUnlimited = LocalizedText(
     nl: 'Onbeperkt foto\'s en streakbevriezingen',
     en: 'Unlimited photos and streak freezes',
-    de: 'Unbegrenzt viele Fotos und Pausentage',
+    de: 'Unbegrenzt Fotos und Pausentage',
     fr: 'Photos et jours de pause illimités',
     sv: 'Obegränsat med foton och pausdagar',
     pt: 'Fotos e dias de pausa ilimitados',
@@ -2812,13 +2812,15 @@ abstract final class Str {
     sv: 'Odlingsguider och påminnelser',
     pt: 'Guias de cultivo e lembretes',
   );
-  static LocalizedText pwBannerTrial(int days) => LocalizedText(
-    nl: '$days dagen gratis · altijd opzegbaar',
-    en: '$days days free · cancel anytime',
-    de: '$days Tage gratis · jederzeit kündbar',
-    fr: '$days jours offerts · sans engagement',
-    sv: '$days dagar gratis · säg upp när du vill',
-    pt: '$days dias grátis · cancela quando quiseres',
+  /// The strip under the table. The free week itself is on yearly's badge,
+  /// so the strip answers the fear behind a trial instead.
+  static const pwBannerTrial = LocalizedText(
+    nl: 'Vandaag niets betalen · altijd opzegbaar',
+    en: 'Nothing to pay today · cancel anytime',
+    de: 'Heute nichts bezahlen · jederzeit kündbar',
+    fr: 'Rien à payer aujourd\'hui · sans engagement',
+    sv: 'Inget att betala i dag · säg upp när du vill',
+    pt: 'Nada a pagar hoje · cancela quando quiseres',
   );
   static LocalizedText pwBannerSave(int pct) => LocalizedText(
     nl: 'Bespaar $pct% met jaarlijks',
