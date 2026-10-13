@@ -109,43 +109,48 @@ Future<T?> _pickOne<T>({
 }) =>
     showAppSheet<T>(
       context: context,
+      // Six languages plus the note outgrow the default 9/16 height cap: size
+      // to the content, and scroll only on a phone too short for it.
+      isScrollControlled: true,
       backgroundColor: AppColors.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (context) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 10),
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.hairline,
-                  borderRadius: BorderRadius.circular(999),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppColors.hairline,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-              child: Text(title, style: AppText.title(context)),
-            ),
-            for (final (value, label) in options)
-              ListTile(
-                title: Text(label, style: AppText.body(context)),
-                trailing: value == selected
-                    ? Icon(PhosphorIcons.check, color: AppColors.accent)
-                    : null,
-                onTap: () => Navigator.pop(context, value),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                child: Text(title, style: AppText.title(context)),
               ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-              child: Text(note, style: AppText.caption(context)),
-            ),
-          ],
+              for (final (value, label) in options)
+                ListTile(
+                  title: Text(label, style: AppText.body(context)),
+                  trailing: value == selected
+                      ? Icon(PhosphorIcons.check, color: AppColors.accent)
+                      : null,
+                  onTap: () => Navigator.pop(context, value),
+                ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
+                child: Text(note, style: AppText.caption(context)),
+              ),
+            ],
+          ),
         ),
       ),
     );
