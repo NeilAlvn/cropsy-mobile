@@ -363,15 +363,15 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       const SizedBox(height: 6),
                       // App Review 3.1.2: renewal terms beside the button, plus the
                       // terms of use and the privacy policy.
-                      // Three lines reserved whatever the plan says, so the
-                      // shorter monthly terms do not shift the cards.
-                      SizedBox(
-                        height: 3 * 11.5 * 1.3 * MediaQuery.textScalerOf(context).scale(1),
+                      // At least three lines reserved, so the shorter monthly
+                      // terms do not shift the cards; never capped, because the
+                      // Portuguese trial terms need a fourth on an iPhone SE.
+                      ConstrainedBox(
+                        constraints: BoxConstraints(minHeight: 3 * 11.5 * 1.3 * MediaQuery.textScalerOf(context).scale(1)),
                         child: Text(
                           disclosure.of(context),
                           style: AppText.caption(context).copyWith(fontSize: 11.5, height: 1.3),
                           textAlign: TextAlign.center,
-                          maxLines: 3,
                         ),
                       ),
                       // One row, shrunk rather than wrapped: a wrap left
