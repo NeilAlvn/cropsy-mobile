@@ -2855,12 +2855,12 @@ abstract final class Str {
     pt: 'pagamento único',
   );
   static const pwRemindMe = LocalizedText(
-    nl: 'Herinner me voor mijn proefperiode afloopt',
-    en: 'Remind me before my trial ends',
-    de: 'Erinnere mich vor Ende des Tests',
-    fr: 'Me prévenir avant la fin de l\'essai',
-    sv: 'Påminn mig innan perioden tar slut',
-    pt: 'Avisar-me antes do fim do período grátis',
+    nl: 'We sturen je een herinnering 2 dagen voor je proefperiode afloopt',
+    en: "We'll remind you 2 days before your trial ends",
+    de: 'Wir erinnern dich 2 Tage vor Ende des Tests',
+    fr: 'On te prévient 2 jours avant la fin de l\'essai',
+    sv: 'Vi påminner dig 2 dagar innan perioden tar slut',
+    pt: 'Avisamos-te 2 dias antes do fim do período grátis',
   );
   static const pwContinueFree = LocalizedText(
     nl: 'Verder met gratis',
@@ -2901,6 +2901,14 @@ abstract final class Str {
     fr: '$p une seule fois. Pas d\'abonnement, rien à résilier.',
     sv: '$p en gång. Ingen prenumeration, inget att säga upp.',
     pt: '$p uma vez. Sem subscrição, nada para cancelar.',
+  );
+  static LocalizedText pwTermsExit(String intro, String regular, String store) => LocalizedText(
+    nl: '$intro voor het eerste jaar, daarna $regular per jaar. Verlengt automatisch, tenzij je minstens 24 uur voor het einde van de periode opzegt in je $store-instellingen.',
+    en: '$intro for the first year, then $regular per year. Renews automatically unless you cancel at least 24 hours before the period ends, in your $store settings.',
+    de: '$intro im ersten Jahr, danach $regular pro Jahr. Verlängert sich automatisch, wenn du nicht mindestens 24 Stunden vor Ende des Zeitraums in deinen $store-Einstellungen kündigst.',
+    fr: '$intro la première année, puis $regular par an. Renouvellement automatique sauf résiliation au moins 24 h avant la fin de la période, dans les réglages $store.',
+    sv: '$intro första året, sedan $regular per år. Förnyas automatiskt om du inte säger upp minst 24 timmar innan perioden slutar, i inställningarna för $store.',
+    pt: '$intro no primeiro ano, depois $regular por ano. Renova automaticamente, a menos que canceles pelo menos 24 horas antes do fim do período, nas definições da $store.',
   );
   static LocalizedText pwExitTitle(String p) => LocalizedText(
     nl: 'Wacht — je eerste jaar voor $p',

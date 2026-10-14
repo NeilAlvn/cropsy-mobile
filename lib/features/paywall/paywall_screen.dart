@@ -7,8 +7,9 @@
 /// way out of onboarding the exit offer may show once. Prices come from the
 /// store; without it the launch prices show and buying explains.
 ///
-/// No "free trial" on/off switch: App Review 3.1.2 rejects those. The switch
-/// under the cards is the trial-end reminder, which is what it says.
+/// No switches at all: App Review 3.1.2 rejects a "free trial" toggle, and a
+/// reminder toggle reads like one. The trial-end reminder is a plain line,
+/// shown only when notifications are allowed to deliver it.
 library;
 
 import 'dart:async';
@@ -30,6 +31,7 @@ import '../../design/motion.dart';
 import '../../design/typography.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/strings.dart';
+import '../../notifications/lifecycle.dart';
 import '../../purchases/purchase_service.dart';
 import '../../timing/types.dart';
 import '../repository_scope.dart';
@@ -51,7 +53,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
   Plan? _plan; // null until the first build picks the leading offer
   bool _busy = false;
   bool _closeVisible = false;
-  bool _remind = true; // schedule the trial-end reminder after a trial purchase
+  bool _canRemind = false; // notifications allowed, so the trial reminder will arrive
   Timer? _closeTimer;
 
   // What the person already has, for the benefit list.
@@ -68,6 +70,9 @@ class _PaywallScreenState extends State<PaywallScreen> {
       if (mounted) setState(() => _closeVisible = true);
     });
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadGarden());
+    Lifecycle.permitted().then((ok) {
+      if (mounted && ok) setState(() => _canRemind = true);
+    });
   }
 
   @override
@@ -148,7 +153,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
     final take = await showModalBottomSheet<bool>(
       context: context,
       backgroundColor: AppColors.surface,
-      builder: (context) => _ExitOfferSheet(offer: offer),
+      builder: (context) => _ExitOfferSheet(offer: offer, lang: _lang),
     );
     if (take != true || !mounted) return false;
     Analytics.capture('exit_offer_accepted');
@@ -169,10 +174,10 @@ class _PaywallScreenState extends State<PaywallScreen> {
 
   Future<bool> _purchase(Package package, {required Plan plan, required bool trial}) async {
     final purchases = _purchases!;
-    final props = <String, Object>{'plan': plan.name, 'trial': trial, if (trial) 'remind': _remind};
+    final props = <String, Object>{'plan': plan.name, 'trial': trial};
     Analytics.capture('paywall_purchase_started', properties: props);
     setState(() => _busy = true);
-    final ok = await purchases.buyPackage(package, lang: _lang, remindTrial: _remind);
+    final ok = await purchases.buyPackage(package, lang: _lang);
     if (!mounted) return ok;
     setState(() => _busy = false);
     if (ok) {
@@ -204,7 +209,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
     final monthly = offers.where((o) => o.plan == Plan.monthly).firstOrNull;
     final save = yearly == null || monthly == null ? null : savingsPercent(yearly.price, monthly.price);
     final banner = paywallBanner(trialDays: trial, savePercent: save);
-    final store = Platform.isIOS ? 'App Store' : 'Google Play';
+    final store = _storeName;
     final price = selected.billed(lang);
     final disclosure = switch (selected.plan) {
       Plan.lifetime => Str.pwTermsLifetime(price),
@@ -327,31 +332,23 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       ),
                       SizedBox(height: compact ? 2 : 6),
                       // Kept in the layout when there is no trial, so picking
-                      // monthly does not make the button jump.
-                      IgnorePointer(
-                        ignoring: trial == 0,
-                        child: AnimatedOpacity(
-                          opacity: trial > 0 ? 1 : 0,
-                          duration: motion[Motion.standard],
-                          child: SizedBox(
-                            height: compact ? 40 : 44,
-                            child: Row(children: [
-                              Icon(PhosphorIcons.bell, color: AppColors.accent, size: 18),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(Str.pwRemindMe.of(context), style: AppText.label(context)),
-                                ),
+                      // monthly does not make the button jump. Hidden too when
+                      // notifications are off: then the reminder would not come.
+                      AnimatedOpacity(
+                        opacity: trial > 0 && _canRemind ? 1 : 0,
+                        duration: motion[Motion.standard],
+                        child: SizedBox(
+                          height: compact ? 28 : 32,
+                          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                            Icon(PhosphorIcons.bell, color: AppColors.accent, size: 16),
+                            const SizedBox(width: 6),
+                            Flexible(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(Str.pwRemindMe.of(context), style: AppText.caption(context)),
                               ),
-                              Switch.adaptive(
-                                value: _remind,
-                                activeTrackColor: AppColors.accent,
-                                onChanged: (v) => setState(() => _remind = v),
-                              ),
-                            ]),
-                          ),
+                            ),
+                          ]),
                         ),
                       ),
                       SizedBox(height: compact ? 2 : 6),
@@ -382,13 +379,9 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Row(mainAxisSize: MainAxisSize.min, children: [
-                          if (!_hard) _link(Str.pwContinueFree.of(context), _dismiss),
-                          _link(Str.restorePurchases.of(context), purchases?.configured == true ? _restore : null),
-                          for (final (label, path) in const [(Str.terms, '/terms'), (Str.privacy, '/privacy')])
-                            _link(
-                              label.of(context),
-                              () => launchUrl(Uri.parse('$websiteUrl/$lang$path'), mode: LaunchMode.externalApplication),
-                            ),
+                          if (!_hard) _link(context, Str.pwContinueFree.of(context), _dismiss),
+                          _link(context, Str.restorePurchases.of(context), purchases?.configured == true ? _restore : null),
+                          ..._legalLinks(context, lang),
                         ]),
                       ),
                     ],
@@ -402,12 +395,26 @@ class _PaywallScreenState extends State<PaywallScreen> {
     );
   }
 
-  Widget _link(String label, VoidCallback? onTap) => TextButton(
-        onPressed: onTap,
-        style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8), minimumSize: const Size(0, 34)),
-        child: Text(label, style: AppText.caption(context)),
-      );
 }
+
+String get _storeName => Platform.isIOS ? 'App Store' : 'Google Play';
+
+Widget _link(BuildContext context, String label, VoidCallback? onTap) => TextButton(
+      onPressed: onTap,
+      style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8), minimumSize: const Size(0, 34)),
+      child: Text(label, style: AppText.caption(context)),
+    );
+
+/// Terms of use and privacy policy. App Review wants both on every screen
+/// that sells, the exit offer included.
+List<Widget> _legalLinks(BuildContext context, String lang) => [
+      for (final (label, path) in const [(Str.terms, '/terms'), (Str.privacy, '/privacy')])
+        _link(
+          context,
+          label.of(context),
+          () => launchUrl(Uri.parse('$websiteUrl/$lang$path'), mode: LaunchMode.externalApplication),
+        ),
+    ];
 
 /// The strip between the table and the plans: the free week when the selected
 /// plan really carries one, else what yearly saves, else nothing.
@@ -659,9 +666,10 @@ class _PulseState extends State<_Pulse> with SingleTickerProviderStateMixin {
 }
 
 class _ExitOfferSheet extends StatelessWidget {
-  const _ExitOfferSheet({required this.offer});
+  const _ExitOfferSheet({required this.offer, required this.lang});
 
   final ExitOffer offer;
+  final String lang;
 
   @override
   Widget build(BuildContext context) {
@@ -679,10 +687,24 @@ class _ExitOfferSheet extends StatelessWidget {
           Text(Str.pwExitBody(offer.regular).of(context), style: AppText.bodyMuted(context)),
           const SizedBox(height: 20),
           PrimaryButton(label: Str.pwExitCta.of(context), onPressed: () => Navigator.of(context).pop(true)),
+          const SizedBox(height: 8),
+          // Its own purchase screen, so the same App Review 3.1.2 disclosure
+          // as the paywall: what renews, at what price, how to cancel.
+          Text(
+            (offer.intro
+                    ? Str.pwTermsExit(offer.price, offer.regular, _storeName)
+                    : Str.pwTermsYearly(offer.price, _storeName))
+                .of(context),
+            style: AppText.caption(context).copyWith(fontSize: 11.5, height: 1.3),
+            textAlign: TextAlign.center,
+          ),
           Center(
-            child: TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(Str.pwExitNo.of(context), style: AppText.caption(context)),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Row(mainAxisSize: MainAxisSize.min, children: [
+                _link(context, Str.pwExitNo.of(context), () => Navigator.of(context).pop(false)),
+                ..._legalLinks(context, lang),
+              ]),
             ),
           ),
         ]),

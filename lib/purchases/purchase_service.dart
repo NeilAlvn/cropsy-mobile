@@ -108,8 +108,10 @@ const fallbackOffers = [
   PlanOffer(plan: Plan.lifetime, price: 99.99, currency: 'EUR'),
 ];
 
-/// The onboarding exit offer: a discounted first year, then [regular].
-typedef ExitOffer = ({Package package, String price, String regular});
+/// The onboarding exit offer: a discounted first year, then [regular]. [intro]
+/// is false when the product's own price is the deal (no intro phase), so the
+/// terms must say it renews at [price], not [regular].
+typedef ExitOffer = ({Package package, String price, String regular, bool intro});
 
 class PurchaseService extends ChangeNotifier {
   bool configured = false;
@@ -161,9 +163,9 @@ class PurchaseService extends ChangeNotifier {
     if (p == null) return null;
     final s = p.storeProduct;
     final intro = s.introductoryPrice;
-    if (intro != null && intro.price > 0) return (package: p, price: intro.priceString, regular: s.priceString);
+    if (intro != null && intro.price > 0) return (package: p, price: intro.priceString, regular: s.priceString, intro: true);
     final regular = offerings?.current?.annual?.storeProduct.priceString;
-    return regular == null ? null : (package: p, price: s.priceString, regular: regular);
+    return regular == null ? null : (package: p, price: s.priceString, regular: regular, intro: false);
   }
 
   Future<void> init() async {
@@ -222,14 +224,13 @@ class PurchaseService extends ChangeNotifier {
   }
 
   /// Buy any package (the exit offer's included). A purchase that started a
-  /// trial schedules the trial reminders in the person's language, unless the
-  /// paywall's "remind me" switch was turned off.
-  Future<bool> buyPackage(Package package, {String lang = 'en', bool remindTrial = true}) async {
+  /// trial schedules the trial reminders in the person's language.
+  Future<bool> buyPackage(Package package, {String lang = 'en'}) async {
     lastError = null;
     try {
       final info = (await Purchases.purchase(PurchaseParams.package(package))).customerInfo;
       _apply(info);
-      if (remindTrial && info.entitlements.active[premiumEntitlement]?.periodType == PeriodType.trial) {
+      if (info.entitlements.active[premiumEntitlement]?.periodType == PeriodType.trial) {
         await Lifecycle.scheduleTrialReminders(DateTime.now(), lang: lang);
       }
       return premium;

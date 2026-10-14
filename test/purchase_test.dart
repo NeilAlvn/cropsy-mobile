@@ -1,4 +1,5 @@
 import 'package:cropsy/features/paywall/paywall_screen.dart';
+import 'package:cropsy/l10n/strings.dart';
 import 'package:cropsy/purchases/purchase_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:purchases_flutter/purchases_flutter.dart' show PeriodUnit;
@@ -10,6 +11,14 @@ void main() {
     expect(planForProduct('cropsy.premium.Month'), Plan.monthly);
     expect(planForProduct('cropsy_yearly'), Plan.yearly);
     expect(planForProduct('cropsy_yearly_exit'), Plan.yearly);
+  });
+
+  test('exit offer terms name both prices, the store and renewal in every language', () {
+    final terms = Str.pwTermsExit('€24.99', '€39.99', 'App Store');
+    for (final lang in ['nl', 'en', 'de', 'fr', 'sv', 'pt']) {
+      final t = terms.pick(lang);
+      expect(t, allOf(contains('€24.99'), contains('€39.99'), contains('App Store'), contains('24')), reason: lang);
+    }
   });
 
   test('store periods become trial days', () {

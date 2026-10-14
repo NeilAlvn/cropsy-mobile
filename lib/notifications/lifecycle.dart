@@ -64,7 +64,7 @@ class Lifecycle {
   /// "season starts" on 15 February, 10:00. Safe to call on every launch and
   /// resume; premium or no permission clears them.
   static Future<void> syncSeasonal({required bool premium, String lang = 'en'}) async {
-    if (premium || !await _permitted()) {
+    if (premium || !await permitted()) {
       await _plugin.cancel(id: _autumn);
       await _plugin.cancel(id: _spring);
       return;
@@ -74,7 +74,9 @@ class Lifecycle {
     await _at(_spring, nextYearly(now, 2, 15), Str.nudgeSpringTitle, Str.nudgeSpringBody, lang, payload: paywallPayload);
   }
 
-  static Future<bool> _permitted() async {
+  /// Whether notifications may show; the paywall only promises a trial
+  /// reminder when this is true.
+  static Future<bool> permitted() async {
     final ios = _plugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>();
     if (ios != null) return (await ios.checkPermissions())?.isEnabled ?? false;
     final android = _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
