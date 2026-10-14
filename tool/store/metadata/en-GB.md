@@ -3,7 +3,7 @@ Cropsy: Garden Planner
 ## subtitle
 Allotment & veg patch journal
 ## keywords
-herbs,pots,garden journal,homegrown,watering reminder,harvest tracker,sowing calendar,veggie garden
+herbs,pots,homegrown,watering,reminder,harvest,tracker,pests,transplant,sowing,calendar,veggie
 ## short
 Plan, sow and harvest your own vegetables. Reminders that move with the weather.
 ## description
