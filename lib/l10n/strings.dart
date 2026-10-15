@@ -118,14 +118,6 @@ abstract final class Str {
     sv: 'Att göra i ${month.pick('sv')}',
     pt: 'Tarefas de ${month.pick('pt')}',
   );
-  static const unlockLifetime = LocalizedText(
-    nl: 'Levenslang, één prijs, voorgoed',
-    en: 'Unlock lifetime, one price, forever',
-    de: 'Lifetime freischalten: ein Preis, für immer',
-    fr: 'Débloque Lifetime : un seul prix, pour toujours',
-    sv: 'Lås upp Lifetime – ett pris, för alltid',
-    pt: 'Desbloqueia o Lifetime: um só preço, para sempre',
-  );
   static const startStreak = LocalizedText(
     nl: 'Begin vandaag een reeks',
     en: 'Start a streak today',
@@ -909,15 +901,15 @@ abstract final class Str {
   );
   static const heroSubtitle = LocalizedText(
     nl:
-        'Plantdata en herinneringen afgestemd op het Nederlandse en Europese '
-        'weer, gemaakt voor balkons en potten.',
+        'Plantdata en herinneringen op basis van de vorstdata bij jou in de '
+        'buurt, gemaakt voor balkons en potten.',
     en:
-        'Planting dates and reminders tuned to Dutch and EU weather, built for '
-        'balconies and containers.',
-    de: 'Pflanztermine und Erinnerungen, abgestimmt auf niederländisches und EU-Wetter, gemacht für Balkone und Töpfe.',
-    fr: 'Des dates de plantation et des rappels adaptés à la météo des Pays-Bas et de l\'UE, pensés pour les balcons et les pots.',
-    sv: 'Så- och planteringsdatum och påminnelser anpassade efter vädret i Nederländerna och EU, gjorda för balkonger och krukor.',
-    pt: 'Datas de plantação e lembretes ajustados ao clima dos Países Baixos e da UE, pensados para varandas e vasos.',
+        'Planting dates and reminders built from your local frost dates, made '
+        'for balconies and containers.',
+    de: 'Pflanztermine und Erinnerungen nach den Frostterminen bei dir vor Ort, gemacht für Balkone und Töpfe.',
+    fr: 'Des dates de plantation et des rappels calculés selon les gelées de chez toi, pensés pour les balcons et les pots.',
+    sv: 'Så- och planteringsdatum och påminnelser utifrån frostdatumen där du bor, gjorda för balkonger och krukor.',
+    pt: 'Datas de plantação e lembretes com base nas datas de geada da tua zona, pensados para varandas e vasos.',
   );
   static const getStarted = LocalizedText(
     nl: 'Beginnen',
@@ -936,28 +928,12 @@ abstract final class Str {
     pt: 'Continuar',
   );
   static const datesCheckedTitle = LocalizedText(
-    nl: 'Elke datum gelegd naast Nederlandse zaaikalenders',
-    en: 'Every date checked against Dutch seed calendars',
-    de: 'Jedes Datum mit niederländischen Aussaatkalendern abgeglichen',
-    fr: 'Chaque date vérifiée dans des calendriers des semis néerlandais',
-    sv: 'Varje datum kontrollerat mot nederländska såkalendrar',
-    pt: 'Cada data verificada em calendários de sementeira neerlandeses',
-  );
-  static const datesCheckedBody = LocalizedText(
-    nl:
-        'Elk gewas is gelegd naast minstens twee NL-bronnen, IVN, Tuinadvies, '
-        'zaaitijden.nl en Groei & Bloei, voordat het bij jou komt. En als het '
-        'leven ertussen komt, schuift het plan met je mee. Niets is ooit "te '
-        'laat".',
-    en:
-        'Each crop is cross-checked against at least two NL sources, IVN, '
-        'Tuinadvies, zaaitijden.nl and Groei & Bloei, before it reaches you. '
-        'And when life gets in the way, the plan moves with you. Nothing is '
-        'ever "overdue".',
-    de: 'Jede Pflanze wird mit mindestens zwei NL-Quellen abgeglichen, IVN, Tuinadvies, zaaitijden.nl und Groei & Bloei, bevor sie bei dir ankommt. Und wenn das Leben dazwischenkommt, zieht der Plan mit. Nichts ist je „zu spät“.',
-    fr: 'Chaque plante est vérifiée auprès d\'au moins deux sources néerlandaises, IVN, Tuinadvies, zaaitijden.nl et Groei & Bloei, avant d\'arriver chez toi. Et quand la vie s\'en mêle, le plan bouge avec toi. Une tâche n\'est jamais « ratée » : elle est « déplacée ».',
-    sv: 'Varje växt kontrolleras mot minst två nederländska källor – IVN, Tuinadvies, zaaitijden.nl och Groei & Bloei – innan den når dig. Och när livet kommer emellan flyttar planen med dig. En uppgift är aldrig ”missad”, den är bara ”flyttad”.',
-    pt: 'Cada planta é verificada em pelo menos duas fontes neerlandesas (IVN, Tuinadvies, zaaitijden.nl e Groei & Bloei) antes de chegar a ti. E quando a vida se mete pelo meio, o plano acompanha-te. Nada fica “perdido”: só muda de data.',
+    nl: 'Elke datum berekend op jouw lokale vorstdata en gelegd naast zaaikalenders',
+    en: 'Every date built from your local frost dates and checked against seed calendars',
+    de: 'Jedes Datum aus deinen lokalen Frostterminen berechnet und mit Aussaatkalendern abgeglichen',
+    fr: 'Chaque date calculée selon tes dates de gel locales et vérifiée dans des calendriers de semis',
+    sv: 'Varje datum räknat från dina lokala frostdatum och kontrollerat mot såkalendrar',
+    pt: 'Cada data calculada a partir das tuas datas de geada locais e verificada em calendários de sementeira',
   );
   static const getToKnowTitle = LocalizedText(
     nl: 'Hoi! Even kennismaken',
@@ -979,6 +955,121 @@ abstract final class Str {
     sv: 'Några snabba frågor om din plats och vad du gillar att äta. Två minuter, sedan är din plan klar.',
     pt: 'Algumas perguntas rápidas sobre o teu espaço e o que gostas de comer. Dois minutos e o teu plano fica pronto.',
   );
+
+  // ── onboarding (conversion) ──────────────────────────────────────────────
+  static const painTitle = LocalizedText(
+    nl: 'Klinkt dit bekend?',
+    en: 'Does this sound like you?',
+    de: 'Kommt dir das bekannt vor?',
+    fr: 'Ça te parle ?',
+    sv: 'Känner du igen dig?',
+    pt: 'Isto soa-te familiar?',
+  );
+  static const painSub = LocalizedText(
+    nl: 'Tik aan wat klopt. Daar bouwen we je plan omheen.',
+    en: "Tap the ones that are true. We'll plan around them.",
+    de: 'Tipp an, was stimmt. Darauf bauen wir deinen Plan.',
+    fr: 'Touche ce qui est vrai. On construit ton plan autour.',
+    sv: 'Tryck på det som stämmer. Vi bygger planen runt det.',
+    pt: 'Toca no que for verdade. Fazemos o plano à volta disso.',
+  );
+  static const painTiming = LocalizedText(
+    nl: 'Ik weet nooit wanneer ik moet zaaien of uitplanten',
+    en: 'I never know when to sow or plant out',
+    de: 'Ich weiß nie, wann ich säen oder auspflanzen soll',
+    fr: 'Je ne sais jamais quand semer ou repiquer',
+    sv: 'Jag vet aldrig när jag ska så eller plantera ut',
+    pt: 'Nunca sei quando semear ou transplantar',
+  );
+  static const painMidsummer = LocalizedText(
+    nl: 'Mijn planten geven het halverwege de zomer op',
+    en: 'My plants give up halfway through summer',
+    de: 'Meine Pflanzen geben mitten im Sommer auf',
+    fr: 'Mes plantes abandonnent en plein été',
+    sv: 'Mina växter ger upp mitt i sommaren',
+    pt: 'As minhas plantas desistem a meio do verão',
+  );
+  static const painOverload = LocalizedText(
+    nl: 'Er is online te veel tegenstrijdig advies',
+    en: "There's too much conflicting advice online",
+    de: 'Im Netz gibt es zu viele widersprüchliche Tipps',
+    fr: 'Il y a trop de conseils contradictoires en ligne',
+    sv: 'Det finns för många motstridiga råd på nätet',
+    pt: 'Há demasiados conselhos contraditórios na internet',
+  );
+  static const echoTiming = LocalizedText(
+    nl: 'Elke zaaidatum, op de dag zelf.',
+    en: 'Every sowing date, on the day.',
+    de: 'Jeder Aussaattermin, am richtigen Tag.',
+    fr: 'Chaque date de semis, le jour même.',
+    sv: 'Varje sådatum, på rätt dag.',
+    pt: 'Cada data de sementeira, no próprio dia.',
+  );
+  static const echoMidsummer = LocalizedText(
+    nl: 'Bijvoeren, dunnen en verpotten, elk op zijn dag.',
+    en: 'Feeding, thinning and potting on, each on its day.',
+    de: 'Düngen, Ausdünnen und Umtopfen, jedes an seinem Tag.',
+    fr: 'Nourrir, éclaircir et rempoter, chacun à son jour.',
+    sv: 'Gödsling, gallring och omplantering, var sak på sin dag.',
+    pt: 'Adubar, desbastar e mudar de vaso, cada coisa no seu dia.',
+  );
+  static const echoOverload = LocalizedText(
+    nl: 'Eén plan voor jouw plek. Verder hoef je niets te lezen.',
+    en: 'One plan for your spot. Nothing else to read.',
+    de: 'Ein Plan für deinen Ort. Sonst musst du nichts lesen.',
+    fr: 'Un seul plan pour chez toi. Rien d\'autre à lire.',
+    sv: 'En plan för din plats. Inget annat att läsa.',
+    pt: 'Um plano para o teu sítio. Mais nada para ler.',
+  );
+  static LocalizedText freeGrowsAtATime(int n) => LocalizedText(
+    nl: 'De gratis tuin laat er $n tegelijk groeien. De rest wacht in je plan.',
+    en: 'Free garden grows $n at a time. The rest wait in your plan.',
+    de: 'Der Gratis-Garten lässt $n gleichzeitig wachsen. Der Rest wartet in deinem Plan.',
+    fr: 'Le jardin gratuit en fait pousser $n à la fois. Les autres attendent dans ton plan.',
+    sv: 'Gratisträdgården odlar $n åt gången. Resten väntar i din plan.',
+    pt: 'A horta grátis cultiva $n de cada vez. As outras esperam no teu plano.',
+  );
+  static const fullSeasonPlan = LocalizedText(
+    nl: 'Je volledige seizoensplan',
+    en: 'Your full season plan',
+    de: 'Dein ganzer Saisonplan',
+    fr: 'Ton plan complet de la saison',
+    sv: 'Hela din säsongsplan',
+    pt: 'O teu plano completo da época',
+  );
+  static const notifPrimingTitle = LocalizedText(
+    nl: 'Mis nooit de juiste dag',
+    en: 'Never miss the right day',
+    de: 'Verpass nie den richtigen Tag',
+    fr: 'Ne rate jamais le bon jour',
+    sv: 'Missa aldrig rätt dag',
+    pt: 'Nunca percas o dia certo',
+  );
+  static const notifPrimingTrial = LocalizedText(
+    nl: 'En we laten het je weten voordat een proefperiode afloopt. Geen verrassingen op je rekening.',
+    en: "And we'll remind you before any trial ends. No surprise charges.",
+    de: 'Und wir erinnern dich, bevor ein Probezeitraum endet. Keine überraschenden Abbuchungen.',
+    fr: 'Et on te prévient avant la fin de tout essai. Aucun prélèvement surprise.',
+    sv: 'Och vi påminner dig innan en provperiod tar slut. Inga oväntade dragningar.',
+    pt: 'E avisamos-te antes de qualquer período experimental acabar. Sem cobranças surpresa.',
+  );
+  static const turnOnReminders = LocalizedText(
+    nl: 'Herinneringen aanzetten',
+    en: 'Turn on reminders',
+    de: 'Erinnerungen einschalten',
+    fr: 'Activer les rappels',
+    sv: 'Slå på påminnelser',
+    pt: 'Ativar lembretes',
+  );
+  static const notNow = LocalizedText(
+    nl: 'Niet nu',
+    en: 'Not now',
+    de: 'Nicht jetzt',
+    fr: 'Pas maintenant',
+    sv: 'Inte nu',
+    pt: 'Agora não',
+  );
+
   static const whatSpace = LocalizedText(
     nl: 'Welke ruimte heb je om te telen?',
     en: 'What space do you have to grow in?',
@@ -1444,16 +1535,6 @@ abstract final class Str {
     fr: 'On cherche ta position…',
     sv: 'Hittar din plats…',
     pt: 'A detetar a tua localização…',
-  );
-  static const renewsYearly = LocalizedText(
-    nl:
-        'Verlengt jaarlijks. Beheren of opzeggen doe je in de App Store / Play '
-        'Store.',
-    en: 'Renews yearly. Manage or cancel in the App Store / Play Store.',
-    de: 'Verlängert sich jährlich. Verwalten oder kündigen im App Store / Play Store.',
-    fr: 'Renouvellement annuel. Gère ou résilie dans l\'App Store / le Play Store.',
-    sv: 'Förnyas varje år. Hantera eller säg upp i App Store / Google Play.',
-    pt: 'Renova anualmente. Gere ou cancela na App Store / Play Store.',
   );
   static const couldNotDeleteAccount = LocalizedText(
     nl: 'Account verwijderen lukte niet. Probeer het later opnieuw.',
@@ -2540,10 +2621,10 @@ abstract final class Str {
   static const planLifetime = LocalizedText(
     nl: 'Levenslang',
     en: 'Lifetime',
-    de: 'Lifetime',
-    fr: 'Lifetime',
-    sv: 'Lifetime',
-    pt: 'Lifetime',
+    de: 'Lebenslang',
+    fr: 'À vie',
+    sv: 'Livstid',
+    pt: 'Vitalício',
   );
   static const planYearly = LocalizedText(
     nl: 'Jaarlijks',
@@ -2553,6 +2634,315 @@ abstract final class Str {
     sv: 'Per år',
     pt: 'Anual',
   );
+  // ── paywall (conversion) ──────────────────────────────────────────────────
+  static const planMonthly = LocalizedText(
+    nl: 'Maandelijks',
+    en: 'Monthly',
+    de: 'Monatlich',
+    fr: 'Mensuel',
+    sv: 'Per månad',
+    pt: 'Mensal',
+  );
+  static const pwHeadSeason = LocalizedText(
+    nl: 'Je hele seizoen,\ngepland.',
+    en: 'Your whole season,\nplanned.',
+    de: 'Deine ganze Saison,\ngeplant.',
+    fr: 'Toute ta saison,\nplanifiée.',
+    sv: 'Hela din säsong,\nplanerad.',
+    pt: 'A tua estação inteira,\nplaneada.',
+  );
+  static const pwHeadPlants = LocalizedText(
+    nl: 'Ruimte voor elke plant die je koos.',
+    en: 'Room for every plant you picked.',
+    de: 'Platz für jede Pflanze, die du gewählt hast.',
+    fr: 'De la place pour chaque plante choisie.',
+    sv: 'Plats för varje växt du valt.',
+    pt: 'Espaço para todas as plantas que escolheste.',
+  );
+  static const pwHeadSeeSeason = LocalizedText(
+    nl: 'Zie je hele seizoen.',
+    en: 'See your whole season.',
+    de: 'Sieh deine ganze Saison.',
+    fr: 'Vois toute ta saison.',
+    sv: 'Se hela din säsong.',
+    pt: 'Vê a tua estação inteira.',
+  );
+  static const pwHeadPlanner = LocalizedText(
+    nl: 'Plan elk bed, vak voor vak.',
+    en: 'Plan every bed, square by square.',
+    de: 'Plane jedes Beet, Feld für Feld.',
+    fr: 'Planifie chaque carré, case par case.',
+    sv: 'Planera varje bädd, ruta för ruta.',
+    pt: 'Planeia cada canteiro, quadrado a quadrado.',
+  );
+  static const pwHeadDiagnose = LocalizedText(
+    nl: 'Weet wat er mis is, met één foto.',
+    en: 'Know what\'s wrong, from one photo.',
+    de: 'Erkenne das Problem mit einem Foto.',
+    fr: 'Comprends le problème en une photo.',
+    sv: 'Se vad som är fel, med ett foto.',
+    pt: 'Descobre o problema com uma foto.',
+  );
+  static const pwHeadGardens = LocalizedText(
+    nl: 'Ruimte voor elke tuin.',
+    en: 'Room for every garden.',
+    de: 'Platz für jeden Garten.',
+    fr: 'De la place pour chaque potager.',
+    sv: 'Plats för varje odling.',
+    pt: 'Espaço para todas as hortas.',
+  );
+  static const pwHeadPhotos = LocalizedText(
+    nl: 'Bewaar elke foto van je seizoen.',
+    en: 'Keep every photo of your season.',
+    de: 'Behalte jedes Foto deiner Saison.',
+    fr: 'Garde chaque photo de ta saison.',
+    sv: 'Spara varje foto från din säsong.',
+    pt: 'Guarda todas as fotos da tua estação.',
+  );
+  static LocalizedText pwCrops(int n) => LocalizedText(
+    nl: 'Alle $n gewassen die je koos',
+    en: 'All $n crops you picked',
+    de: 'Alle $n Pflanzen, die du gewählt hast',
+    fr: 'Les $n plantes que tu as choisies',
+    sv: 'Alla $n växter du valt',
+    pt: 'As $n plantas que escolheste',
+  );
+  static const pwUnlimitedPlants = LocalizedText(
+    nl: 'Onbeperkt planten en tuinen',
+    en: 'Unlimited plants and gardens',
+    de: 'Unbegrenzt viele Pflanzen und Gärten',
+    fr: 'Plantes et potagers illimités',
+    sv: 'Obegränsat med växter och odlingar',
+    pt: 'Plantas e hortas ilimitadas',
+  );
+  static LocalizedText pwSeasonFor(String region) => LocalizedText(
+    nl: 'Seizoensplan voor $region',
+    en: 'Whole-season plan for $region',
+    de: 'Saisonplan für $region',
+    fr: 'Plan de saison pour $region',
+    sv: 'Säsongsplan för $region',
+    pt: 'Plano da estação para $region',
+  );
+  static const pwFirstSeason = LocalizedText(
+    nl: 'Je eerste seizoen, stap voor stap',
+    en: 'Your first season, step by step',
+    de: 'Deine erste Saison, Schritt für Schritt',
+    fr: 'Ta première saison, pas à pas',
+    sv: 'Din första säsong, steg för steg',
+    pt: 'A tua primeira estação, passo a passo',
+  );
+  static const pwPlanner = LocalizedText(
+    nl: 'Het plannerraster voor elk bed',
+    en: 'The planner grid for every bed',
+    de: 'Der Beetplaner für jedes Beet',
+    fr: 'Le plan de carré pour chaque bac',
+    sv: 'Odlingsplaneraren för varje bädd',
+    pt: 'A grelha do planeador para cada canteiro',
+  );
+  static const pwDiagnose = LocalizedText(
+    nl: 'Fotodiagnose',
+    en: 'Photo diagnosis',
+    de: 'Foto-Diagnose',
+    fr: 'Diagnostic photo',
+    sv: 'Fotodiagnos',
+    pt: 'Diagnóstico por foto',
+  );
+  static const pwUnlimited = LocalizedText(
+    nl: 'Onbeperkt foto\'s en streakbevriezingen',
+    en: 'Unlimited photos and streak freezes',
+    de: 'Unbegrenzt Fotos und Pausentage',
+    fr: 'Photos et jours de pause illimités',
+    sv: 'Obegränsat med foton och pausdagar',
+    pt: 'Fotos e dias de pausa ilimitados',
+  );
+  static const pwBestValue = LocalizedText(
+    nl: 'Beste deal',
+    en: 'Best value',
+    de: 'Bestes Angebot',
+    fr: 'Meilleure offre',
+    sv: 'Bäst värde',
+    pt: 'Melhor valor',
+  );
+  static LocalizedText pwPerMonth(String p) => LocalizedText(
+    nl: '$p / maand',
+    en: '$p / month',
+    de: '$p / Monat',
+    fr: '$p / mois',
+    sv: '$p / månad',
+    pt: '$p / mês',
+  );
+  static LocalizedText pwCtaTrial(int days) => days == 7
+      ? const LocalizedText(
+          nl: 'Start mijn gratis week',
+          en: 'Start my free week',
+          de: 'Meine Gratiswoche starten',
+          fr: 'Commencer ma semaine offerte',
+          sv: 'Starta min gratisvecka',
+          pt: 'Começar a minha semana grátis',
+        )
+      : LocalizedText(
+          nl: 'Start $days dagen gratis',
+          en: 'Start my $days-day free trial',
+          de: '$days Tage gratis starten',
+          fr: 'Commencer mes $days jours offerts',
+          sv: 'Starta $days dagar gratis',
+          pt: 'Começar $days dias grátis',
+        );
+  static LocalizedText pwHeadCrops(int n) => LocalizedText(
+    nl: 'Je $n gewassen,\nhet hele seizoen.',
+    en: 'Your $n crops,\nyour whole season.',
+    de: 'Deine $n Pflanzen,\ndeine ganze Saison.',
+    fr: 'Tes $n plantes,\ntoute ta saison.',
+    sv: 'Dina $n växter,\nhela din säsong.',
+    pt: 'As tuas $n plantas,\na estação inteira.',
+  );
+  static const pwPremiumCol = LocalizedText(
+    nl: 'Premium',
+    en: 'Premium',
+    de: 'Premium',
+    fr: 'Premium',
+    sv: 'Premium',
+    pt: 'Premium',
+  );
+  static const pwRowGuides = LocalizedText(
+    nl: 'Teeltgidsen en herinneringen',
+    en: 'Crop guides and reminders',
+    de: 'Anbautipps und Erinnerungen',
+    fr: 'Fiches plantes et rappels',
+    sv: 'Odlingsguider och påminnelser',
+    pt: 'Guias de cultivo e lembretes',
+  );
+  /// The strip under the table. The free week itself is on yearly's badge,
+  /// so the strip answers the fear behind a trial instead.
+  static const pwBannerTrial = LocalizedText(
+    nl: 'Vandaag niets betalen · altijd opzegbaar',
+    en: 'Nothing to pay today · cancel anytime',
+    de: 'Heute nichts bezahlen · jederzeit kündbar',
+    fr: 'Rien à payer aujourd\'hui · sans engagement',
+    sv: 'Inget att betala i dag · säg upp när du vill',
+    pt: 'Nada a pagar hoje · cancela quando quiseres',
+  );
+  static LocalizedText pwBannerSave(int pct) => LocalizedText(
+    nl: 'Bespaar $pct% met jaarlijks',
+    en: 'Save $pct% with yearly',
+    de: 'Jährlich $pct % sparen',
+    fr: 'Économise $pct % avec l\'annuel',
+    sv: 'Spara $pct % med årsplanen',
+    pt: 'Poupa $pct% com o anual',
+  );
+  static LocalizedText pwTrialBadge(int days) => LocalizedText(
+    nl: '$days dagen gratis',
+    en: '$days days free',
+    de: '$days Tage gratis',
+    fr: '$days jours offerts',
+    sv: '$days dagar gratis',
+    pt: '$days dias grátis',
+  );
+  static const pwBilledMonthly = LocalizedText(
+    nl: 'per maand',
+    en: 'billed monthly',
+    de: 'monatlich abgerechnet',
+    fr: 'facturé chaque mois',
+    sv: 'debiteras månadsvis',
+    pt: 'cobrado mensalmente',
+  );
+  static const pwPayOnce = LocalizedText(
+    nl: 'eenmalig',
+    en: 'pay once',
+    de: 'einmalig',
+    fr: 'paiement unique',
+    sv: 'betala en gång',
+    pt: 'pagamento único',
+  );
+  static const pwRemindMe = LocalizedText(
+    nl: 'We sturen je een herinnering 2 dagen voor je proefperiode afloopt',
+    en: "We'll remind you 2 days before your trial ends",
+    de: 'Wir erinnern dich 2 Tage vor Ende des Tests',
+    fr: 'On te prévient 2 jours avant la fin de l\'essai',
+    sv: 'Vi påminner dig 2 dagar innan perioden tar slut',
+    pt: 'Avisamos-te 2 dias antes do fim do período grátis',
+  );
+  static const pwContinueFree = LocalizedText(
+    nl: 'Verder met gratis',
+    en: 'Continue with free',
+    de: 'Gratis weitermachen',
+    fr: 'Continuer gratuitement',
+    sv: 'Fortsätt gratis',
+    pt: 'Continuar grátis',
+  );
+  static LocalizedText pwTermsTrial(int days, String p, String store) => LocalizedText(
+    nl: '$days dagen gratis, daarna $p per jaar. Verlengt automatisch, tenzij je minstens 24 uur voor het einde van de proefperiode opzegt in je $store-instellingen.',
+    en: '$days days free, then $p per year. Renews automatically unless you cancel at least 24 hours before the trial ends, in your $store settings.',
+    de: '$days Tage gratis, dann $p pro Jahr. Verlängert sich automatisch, wenn du nicht mindestens 24 Stunden vor Testende in deinen $store-Einstellungen kündigst.',
+    fr: '$days jours offerts, puis $p par an. Renouvellement automatique sauf résiliation au moins 24 h avant la fin de l\'essai, dans les réglages $store.',
+    sv: '$days dagar gratis, sedan $p per år. Förnyas automatiskt om du inte säger upp minst 24 timmar innan perioden slutar, i inställningarna för $store.',
+    pt: '$days dias grátis, depois $p por ano. Renova automaticamente, a menos que canceles pelo menos 24 horas antes do fim do período grátis, nas definições da $store.',
+  );
+  static LocalizedText pwTermsYearly(String p, String store) => LocalizedText(
+    nl: '$p per jaar, verlengt automatisch. Zeg op wanneer je wilt in je $store-instellingen.',
+    en: '$p per year, renews automatically. Cancel anytime in your $store settings.',
+    de: '$p pro Jahr, verlängert sich automatisch. Jederzeit in deinen $store-Einstellungen kündbar.',
+    fr: '$p par an, renouvellement automatique. Résiliable à tout moment dans les réglages $store.',
+    sv: '$p per år, förnyas automatiskt. Säg upp när du vill i inställningarna för $store.',
+    pt: '$p por ano, renova automaticamente. Cancela quando quiseres nas definições da $store.',
+  );
+  static LocalizedText pwTermsMonthly(String p, String store) => LocalizedText(
+    nl: '$p per maand, verlengt automatisch. Zeg op wanneer je wilt in je $store-instellingen.',
+    en: '$p per month, renews automatically. Cancel anytime in your $store settings.',
+    de: '$p pro Monat, verlängert sich automatisch. Jederzeit in deinen $store-Einstellungen kündbar.',
+    fr: '$p par mois, renouvellement automatique. Résiliable à tout moment dans les réglages $store.',
+    sv: '$p per månad, förnyas automatiskt. Säg upp när du vill i inställningarna för $store.',
+    pt: '$p por mês, renova automaticamente. Cancela quando quiseres nas definições da $store.',
+  );
+  static LocalizedText pwTermsLifetime(String p) => LocalizedText(
+    nl: '$p eenmalig. Geen abonnement, niets op te zeggen.',
+    en: '$p once. No subscription, nothing to cancel.',
+    de: '$p einmalig. Kein Abo, nichts zu kündigen.',
+    fr: '$p une seule fois. Pas d\'abonnement, rien à résilier.',
+    sv: '$p en gång. Ingen prenumeration, inget att säga upp.',
+    pt: '$p uma vez. Sem subscrição, nada para cancelar.',
+  );
+  static LocalizedText pwTermsExit(String intro, String regular, String store) => LocalizedText(
+    nl: '$intro voor het eerste jaar, daarna $regular per jaar. Verlengt automatisch, tenzij je minstens 24 uur voor het einde van de periode opzegt in je $store-instellingen.',
+    en: '$intro for the first year, then $regular per year. Renews automatically unless you cancel at least 24 hours before the period ends, in your $store settings.',
+    de: '$intro im ersten Jahr, danach $regular pro Jahr. Verlängert sich automatisch, wenn du nicht mindestens 24 Stunden vor Ende des Zeitraums in deinen $store-Einstellungen kündigst.',
+    fr: '$intro la première année, puis $regular par an. Renouvellement automatique sauf résiliation au moins 24 h avant la fin de la période, dans les réglages $store.',
+    sv: '$intro första året, sedan $regular per år. Förnyas automatiskt om du inte säger upp minst 24 timmar innan perioden slutar, i inställningarna för $store.',
+    pt: '$intro no primeiro ano, depois $regular por ano. Renova automaticamente, a menos que canceles pelo menos 24 horas antes do fim do período, nas definições da $store.',
+  );
+  static LocalizedText pwExitTitle(String p) => LocalizedText(
+    nl: 'Wacht — je eerste jaar voor $p',
+    en: 'Wait — your first year for $p',
+    de: 'Moment — dein erstes Jahr für $p',
+    fr: 'Attends — ta première année à $p',
+    sv: 'Vänta — ditt första år för $p',
+    pt: 'Espera — o teu primeiro ano por $p',
+  );
+  static LocalizedText pwExitBody(String regular) => LocalizedText(
+    nl: 'Alleen nu. Daarna $regular per jaar, altijd op te zeggen.',
+    en: 'Only right now. After that $regular a year, cancel anytime.',
+    de: 'Nur jetzt. Danach $regular pro Jahr, jederzeit kündbar.',
+    fr: 'Seulement maintenant. Ensuite $regular par an, résiliable à tout moment.',
+    sv: 'Bara just nu. Sedan $regular per år, säg upp när du vill.',
+    pt: 'Só agora. Depois $regular por ano, cancela quando quiseres.',
+  );
+  static const pwExitCta = LocalizedText(
+    nl: 'Pak deze deal',
+    en: 'Claim my offer',
+    de: 'Angebot sichern',
+    fr: 'Profiter de l\'offre',
+    sv: 'Ta erbjudandet',
+    pt: 'Aproveitar a oferta',
+  );
+  static const pwExitNo = LocalizedText(
+    nl: 'Nee, bedankt',
+    en: 'No thanks',
+    de: 'Nein danke',
+    fr: 'Non merci',
+    sv: 'Nej tack',
+    pt: 'Não, obrigado',
+  );
+
   static const lifetimeNothingToCancel = LocalizedText(
     nl: 'Levenslang. Niets op te zeggen.',
     en: 'Lifetime. Nothing to cancel.',
@@ -2560,16 +2950,6 @@ abstract final class Str {
     fr: 'Achat unique. Rien à résilier.',
     sv: 'Lifetime. Inget att säga upp.',
     pt: 'Lifetime. Nada para cancelar.',
-  );
-  static const freeTierBlurb = LocalizedText(
-    nl:
-        '1 tuin · 6 groeiende planten · volledige tijdlijn, herinneringen en '
-        'elk gewas.',
-    en: '1 garden · 6 growing plants · full timeline, reminders and every crop.',
-    de: '1 Garten · 6 wachsende Pflanzen · ganze Zeitleiste, Erinnerungen und alle Pflanzenarten.',
-    fr: '1 potager · 6 plantes en culture · chronologie complète, rappels et toutes les plantes.',
-    sv: '1 odling · 6 växter · hela tidslinjen, påminnelser och alla växtsorter.',
-    pt: '1 horta · 6 plantas a crescer · cronologia completa, lembretes e todas as plantas.',
   );
   static LocalizedText cropDataVersion(String version) => LocalizedText(
     nl: 'Cropsy · gewasdata $version',
@@ -2663,66 +3043,6 @@ abstract final class Str {
     fr: n <= 1 ? '$n récolte notée' : '$n récoltes notées',
     sv: n == 1 ? '1 skörd loggad' : '$n skördar loggade',
     pt: n == 1 ? '1 colheita registada' : '$n colheitas registadas',
-  );
-  static const planFreePrice = LocalizedText(
-    nl: '€0',
-    en: '€0',
-    de: '0 €',
-    fr: '0 €',
-    sv: '0 €',
-    pt: '0 €',
-  );
-  static const planLifetimePrice = LocalizedText(
-    nl: '€49,99 eenmalig',
-    en: '€49.99 once',
-    de: '49,99 € einmalig',
-    fr: '49,99 € une fois',
-    sv: '49,99 € en gång',
-    pt: '49,99 € uma vez',
-  );
-  static const planYearlyPrice = LocalizedText(
-    nl: '€29,99 / jaar',
-    en: '€29.99 / year',
-    de: '29,99 € / Jahr',
-    fr: '29,99 €/an',
-    sv: '29,99 € / år',
-    pt: '29,99 € / ano',
-  );
-  static const planFreeBlurb = LocalizedText(
-    nl:
-        '1 tuin · 6 planten in de grond · volledige tijdlijn, herinneringen en '
-        'alle gewassen · 20 fotos · 2 streakbevriezingen per maand',
-    en:
-        '1 garden · 6 growing plants · full timeline, reminders and every crop '
-        '· 20 photos · 2 streak freezes a month',
-    de: '1 Garten · 6 wachsende Pflanzen · ganze Zeitleiste, Erinnerungen und alle Pflanzenarten · 20 Fotos · 2 Pausentage pro Monat',
-    fr: '1 potager · 6 plantes en culture · chronologie complète, rappels et toutes les plantes · 20 photos · 2 jours de pause par mois',
-    sv: '1 odling · 6 växter · hela tidslinjen, påminnelser och alla växtsorter · 20 foton · 2 pausdagar i månaden',
-    pt: '1 horta · 6 plantas a crescer · cronologia completa, lembretes e todas as plantas · 20 fotos · 2 dias de pausa por mês',
-  );
-  static const planLifetimeBlurb = LocalizedText(
-    nl:
-        'Onbeperkt tuinen en planten · plannerraster · diagnose · onbeperkt '
-        "fotos en bevriezingen · export",
-    en:
-        'Unlimited gardens and plants · planner grid · diagnose · unlimited '
-        'photos and freezes · export',
-    de: 'Unbegrenzt viele Gärten und Pflanzen · Beetplaner · Diagnose · unbegrenzt viele Fotos und Pausentage · Export',
-    fr: 'Potagers et plantes illimités · plan de carré · diagnostic · photos et jours de pause illimités · export',
-    sv: 'Obegränsat antal odlingar och växter · odlingsplanerare · diagnos · obegränsat antal foton och pausdagar · export',
-    pt: 'Hortas e plantas ilimitadas · grelha do planeador · diagnóstico · fotos e dias de pausa ilimitados · exportação',
-  );
-  static const planYearlyBlurb = LocalizedText(
-    nl:
-        'Alles uit Levenslang, als abonnement. Zeg elk moment op in de App '
-        'Store.',
-    en:
-        'Everything in Lifetime, as a subscription. Cancel in the App Store '
-        'any time.',
-    de: 'Alles aus Lifetime, als Abo. Jederzeit im App Store kündbar.',
-    fr: 'Tout ce qu\'offre Lifetime, en abonnement. Résiliable à tout moment dans l\'App Store.',
-    sv: 'Allt i Lifetime, som prenumeration. Säg upp i App Store när du vill.',
-    pt: 'Tudo o que o Lifetime tem, como subscrição. Cancela na App Store quando quiseres.',
   );
   static const noPriceForUnit = LocalizedText(
     nl: 'Nog geen prijs voor deze eenheid',
@@ -3967,16 +4287,6 @@ abstract final class Str {
   );
 
   // ── the paywall ───────────────────────────────────────────────────────────
-  static const payOnce = LocalizedText(
-    nl:
-        'Betaal één keer voor meer ruimte. Geen proefperiode, geen kaart, geen '
-        'verrassing bij verlenging.',
-    en: 'Pay once for more room. No trial, no card, no auto-renew surprise.',
-    de: 'Einmal zahlen für mehr Platz. Kein Probe-Abo, keine Karte, keine Verlängerungs-Überraschung.',
-    fr: 'Paie une fois pour plus de place. Pas d\'essai, pas de carte, pas de renouvellement surprise.',
-    sv: 'Betala en gång för mer plats. Ingen provperiod, inget kort, ingen överraskande förnyelse.',
-    pt: 'Paga uma vez por mais espaço. Sem período experimental, sem cartão, sem surpresas de renovação automática.',
-  );
   static const oneMoment = LocalizedText(
     nl: 'Momentje…',
     en: 'One moment…',
@@ -3984,22 +4294,6 @@ abstract final class Str {
     fr: 'Un instant…',
     sv: 'Ett ögonblick…',
     pt: 'Um momento…',
-  );
-  static const keepItFree = LocalizedText(
-    nl: 'Hou het gratis',
-    en: 'Keep it free',
-    de: 'Gratis bleiben',
-    fr: 'Rester sur Gratuit',
-    sv: 'Fortsätt gratis',
-    pt: 'Continuar grátis',
-  );
-  static LocalizedText continueWith(String plan) => LocalizedText(
-    nl: 'Verder met $plan',
-    en: 'Continue with $plan',
-    de: 'Weiter mit $plan',
-    fr: 'Continuer avec $plan',
-    sv: 'Fortsätt med $plan',
-    pt: 'Continuar com $plan',
   );
   static const purchasesOpenLater = LocalizedText(
     nl: 'Kopen is nu niet mogelijk. Er wordt niets afgeschreven.',
@@ -4032,14 +4326,6 @@ abstract final class Str {
     fr: 'Restaurer les achats',
     sv: 'Återställ köp',
     pt: 'Restaurar compras',
-  );
-  static const lifetimeNothingEver = LocalizedText(
-    nl: 'Levenslang: nooit iets op te zeggen.',
-    en: 'Lifetime: nothing to cancel, ever.',
-    de: 'Einmalkauf: nie etwas zu kündigen.',
-    fr: 'Achat unique : jamais rien à résilier.',
-    sv: 'Lifetime: inget att säga upp, någonsin.',
-    pt: 'Lifetime: nada para cancelar, nunca.',
   );
 
   // ── where you grow ────────────────────────────────────────────────────────
@@ -4370,32 +4656,6 @@ abstract final class Str {
     fr: 'Un petit coup de pouce le jour J ? Un rappel le matin, seulement s\'il y a quelque chose à faire, et rien quand il a plu.',
     sv: 'Vill du bli påmind samma dag? En påminnelse på morgonen, bara när det finns något att göra, och den håller tyst när det har regnat.',
     pt: 'Queres um lembrete no dia? Um lembrete de manhã, só quando há algo para fazer, e fica em silêncio quando choveu.',
-  );
-  static const remindMe = LocalizedText(
-    nl: 'Herinner me',
-    en: 'Remind me',
-    de: 'Erinnere mich',
-    fr: 'Me le rappeler',
-    sv: 'Påminn mig',
-    pt: 'Lembra-me',
-  );
-  static const maybeLater = LocalizedText(
-    nl: 'Misschien later',
-    en: 'Maybe later',
-    de: 'Vielleicht später',
-    fr: 'Plus tard',
-    sv: 'Kanske senare',
-    pt: 'Talvez mais tarde',
-  );
-
-  // ── the paywall's headline ────────────────────────────────────────────────
-  static const oneFreeGarden = LocalizedText(
-    nl: 'Eén gratis tuin,\nvoor altijd.',
-    en: 'One free garden,\nfree forever.',
-    de: 'Ein Garten gratis,\nfür immer.',
-    fr: 'Un potager gratuit,\npour toujours.',
-    sv: 'En gratis odling,\nför alltid.',
-    pt: 'Uma horta grátis,\npara sempre.',
   );
 
   // ── odds and ends ─────────────────────────────────────────────────────────
@@ -4883,6 +5143,115 @@ abstract final class Str {
     pt: n == 1 ? '1 coisa para fazer hoje' : '$n coisas para fazer hoje',
   );
 
+  // ── gating + lifecycle (conversion) ──
+  static LocalizedText freePlantLimit(int n) => LocalizedText(
+    nl: 'De gratis tuin laat $n planten tegelijk groeien. Oogst of verwijder er een om een nieuwe te starten.',
+    en: 'The free garden grows $n plants at a time. Harvest or remove one to start another.',
+    de: 'Im kostenlosen Garten wachsen $n Pflanzen gleichzeitig. Ernte oder entferne eine, um eine neue zu starten.',
+    fr: 'Le potager gratuit fait pousser $n plantes à la fois. Récolte ou retire-en une pour en lancer une autre.',
+    sv: 'Den gratis odlingen rymmer $n växter åt gången. Skörda eller ta bort en för att starta en ny.',
+    pt: 'A horta grátis cultiva $n plantas de cada vez. Colhe ou remove uma para começar outra.',
+  );
+  static const unlockFullSeason = LocalizedText(
+    nl: 'Ontgrendel je hele seizoen',
+    en: 'Unlock your full season',
+    de: 'Schalte deine ganze Saison frei',
+    fr: 'Débloque toute ta saison',
+    sv: 'Lås upp hela din säsong',
+    pt: 'Desbloqueia a tua estação inteira',
+  );
+  /// [days] is the trial the store will actually give this person; 0 when
+  /// there is none (not configured, or already used), so no free week is
+  /// promised that the paywall cannot deliver.
+  static LocalizedText unlockFullSeasonSub(int days) => LocalizedText(
+    nl: days > 0 ? 'Elk zaai- en oogstmoment dat eraan komt. $days dagen gratis.' : 'Elk zaai- en oogstmoment dat eraan komt.',
+    en: days > 0 ? 'Every sowing and harvest ahead. Free for $days days.' : 'Every sowing and harvest ahead.',
+    de: days > 0 ? 'Jede Aussaat und Ernte im Voraus. $days Tage gratis.' : 'Jede Aussaat und Ernte im Voraus.',
+    fr: days > 0 ? 'Chaque semis et chaque récolte à venir. $days jours gratuits.' : 'Chaque semis et chaque récolte à venir.',
+    sv: days > 0 ? 'Varje sådd och skörd framöver. Gratis i $days dagar.' : 'Varje sådd och skörd framöver.',
+    pt: days > 0 ? 'Cada sementeira e colheita pela frente. $days dias grátis.' : 'Cada sementeira e colheita pela frente.',
+  );
+  static LocalizedText homeTrialCard(int days) => LocalizedText(
+    nl: days > 0 ? 'Probeer het hele seizoen $days dagen gratis' : 'Zie je hele seizoen vooruit',
+    en: days > 0 ? 'Try the full season free for $days days' : 'See your whole season ahead',
+    de: days > 0 ? 'Teste die ganze Saison $days Tage gratis' : 'Sieh deine ganze Saison im Voraus',
+    fr: days > 0 ? 'Essaie toute la saison gratuitement pendant $days jours' : 'Vois toute ta saison à l\'avance',
+    sv: days > 0 ? 'Prova hela säsongen gratis i $days dagar' : 'Se hela din säsong i förväg',
+    pt: days > 0 ? 'Experimenta a estação inteira grátis durante $days dias' : 'Vê a tua estação inteira com antecedência',
+  );
+  static const trialPlanReadyTitle = LocalizedText(
+    nl: 'Je seizoensplan staat klaar',
+    en: 'Your season plan is ready',
+    de: 'Dein Saisonplan ist fertig',
+    fr: 'Ton plan de saison est prêt',
+    sv: 'Din säsongsplan är klar',
+    pt: 'O teu plano da estação está pronto',
+  );
+  static const trialPlanReadyBody = LocalizedText(
+    nl: 'Kijk wat je deze maand zaait en wat daarna komt.',
+    en: 'See what to sow this month and what comes next.',
+    de: 'Sieh nach, was du diesen Monat säst und was danach kommt.',
+    fr: 'Découvre quoi semer ce mois-ci et la suite.',
+    sv: 'Se vad du sår den här månaden och vad som kommer sen.',
+    pt: 'Vê o que semear este mês e o que vem a seguir.',
+  );
+  static const trialEndsTitle = LocalizedText(
+    nl: 'Je proefperiode eindigt over 2 dagen',
+    en: 'Your free trial ends in 2 days',
+    de: 'Dein Probezeitraum endet in 2 Tagen',
+    fr: 'Ton essai gratuit se termine dans 2 jours',
+    sv: 'Din provperiod slutar om 2 dagar',
+    pt: 'O teu teste grátis termina daqui a 2 dias',
+  );
+  static const trialEndsBodyIos = LocalizedText(
+    nl: 'Opzeggen kan altijd via Instellingen → Abonnementen.',
+    en: 'Cancel anytime in Settings → Subscriptions.',
+    de: 'Jederzeit kündbar unter Einstellungen → Abonnements.',
+    fr: 'Résiliable à tout moment dans Réglages → Abonnements.',
+    sv: 'Avsluta när du vill under Inställningar → Prenumerationer.',
+    pt: 'Cancela quando quiseres em Definições → Subscrições.',
+  );
+  static const trialEndsBodyAndroid = LocalizedText(
+    nl: 'Opzeggen kan altijd via Google Play → Abonnementen.',
+    en: 'Cancel anytime in Google Play → Subscriptions.',
+    de: 'Jederzeit kündbar unter Google Play → Abos.',
+    fr: 'Résiliable à tout moment dans Google Play → Abonnements.',
+    sv: 'Avsluta när du vill under Google Play → Prenumerationer.',
+    pt: 'Cancela quando quiseres em Google Play → Subscrições.',
+  );
+  static const nudgeAutumnTitle = LocalizedText(
+    nl: 'Plan volgend seizoen',
+    en: 'Plan next season',
+    de: 'Plane die nächste Saison',
+    fr: 'Prépare la saison prochaine',
+    sv: 'Planera nästa säsong',
+    pt: 'Planeia a próxima estação',
+  );
+  static const nudgeAutumnBody = LocalizedText(
+    nl: 'De bakken raken leeg. Leg vast wat werkte, nu je het nog weet.',
+    en: 'The beds are emptying. Note what worked while you still remember.',
+    de: 'Die Beete leeren sich. Halte fest, was geklappt hat, solange du es noch weißt.',
+    fr: 'Les bacs se vident. Note ce qui a marché tant que c\'est frais.',
+    sv: 'Bäddarna töms. Skriv ner vad som funkade medan du minns.',
+    pt: 'Os canteiros estão a esvaziar. Anota o que resultou enquanto te lembras.',
+  );
+  static const nudgeSpringTitle = LocalizedText(
+    nl: 'Het seizoen begint, plan je zaaimomenten',
+    en: 'Season starts — plan your sowings',
+    de: 'Die Saison beginnt – plane deine Aussaat',
+    fr: 'La saison commence : planifie tes semis',
+    sv: 'Säsongen börjar – planera dina sådder',
+    pt: 'A estação começa: planeia as tuas sementeiras',
+  );
+  static const nudgeSpringBody = LocalizedText(
+    nl: 'De eerste zaaiingen komen eraan. Kies wat waar komt.',
+    en: 'The first sowings are weeks away. Pick what goes where.',
+    de: 'Die ersten Aussaaten stehen bald an. Leg fest, was wohin kommt.',
+    fr: 'Les premiers semis approchent. Choisis quoi mettre où.',
+    sv: 'De första sådderna är nära. Bestäm vad som ska var.',
+    pt: 'As primeiras sementeiras estão a chegar. Escolhe o que vai para onde.',
+  );
+
   // ── task and step names (kindLine, nodeKindLine) ──────────────────────────
   static const taskWater = LocalizedText(
     nl: 'Water geven',
@@ -5285,17 +5654,29 @@ abstract final class Str {
   );
   static const faqFreeA = LocalizedText(
     nl:
-        'Eén tuin, zes groeiende planten, de volledige tijdlijn, '
-        'herinneringen en elk gewas, voorgoed. Lifetime geeft meer ruimte.',
+        'Eén tuin met drie groeiende planten tegelijk, de taken voor deze en '
+        'volgende week, herinneringen en alle teeltinfo. Premium opent het hele '
+        'seizoen, onbeperkt planten, de tuinplanner en diagnose.',
     en:
-        'One garden, six growing plants, the full timeline, reminders and '
-        'every crop, forever. Lifetime unlocks more room.',
+        'One garden with three growing plants at a time, this week\'s and next '
+        'week\'s tasks, reminders and every growing guide. Premium opens the '
+        'whole season, unlimited plants, the planner and diagnosis.',
     de:
-        'Ein Garten, sechs wachsende Pflanzen, die ganze Zeitleiste, '
-        'Erinnerungen und alle Pflanzenarten, für immer. Lifetime gibt dir mehr Platz.',
-    fr: 'Un potager, six plantes en culture, la chronologie complète, les rappels et toutes les plantes, pour toujours. Lifetime te donne plus de place.',
-    sv: 'En odling, sex växter, hela tidslinjen, påminnelser och alla växtsorter, för alltid. Lifetime ger mer plats.',
-    pt: 'Uma horta, seis plantas a crescer, a cronologia completa, os lembretes e todas as plantas, para sempre. O Lifetime desbloqueia mais espaço.',
+        'Ein Garten mit drei wachsenden Pflanzen gleichzeitig, die Aufgaben für '
+        'diese und nächste Woche, Erinnerungen und alle Anbauinfos. Premium '
+        'öffnet die ganze Saison, unbegrenzt Pflanzen, den Planer und die Diagnose.',
+    fr:
+        'Un jardin avec trois plantes en culture à la fois, les tâches de cette '
+        'semaine et de la suivante, les rappels et tous les guides. Premium '
+        'ouvre toute la saison, les plantes illimitées, le planificateur et le diagnostic.',
+    sv:
+        'En trädgård med tre växande plantor åt gången, veckans och nästa veckas '
+        'uppgifter, påminnelser och alla odlingsguider. Premium öppnar hela '
+        'säsongen, obegränsat med plantor, planeraren och diagnosen.',
+    pt:
+        'Uma horta com três plantas a crescer de cada vez, as tarefas desta '
+        'semana e da próxima, lembretes e todos os guias. O Premium abre a '
+        'época inteira, plantas ilimitadas, o planeador e o diagnóstico.',
   );
   static const faqDeleteQ = LocalizedText(
     nl: 'Hoe verwijder ik mijn account?',

@@ -37,6 +37,8 @@ class StepFrame extends StatelessWidget {
     this.onBack,
     this.onSkip,
     this.progress,
+    this.secondaryLabel,
+    this.onSecondary,
   });
 
   final MascotPose pose;
@@ -57,6 +59,11 @@ class StepFrame extends StatelessWidget {
 
   /// 0 to 1. Null hides the bar, for the steps that are not questions.
   final double? progress;
+
+  /// A quiet second way on under the button, for the one step that asks for
+  /// something the gardener may say no to.
+  final LocalizedText? secondaryLabel;
+  final VoidCallback? onSecondary;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +99,20 @@ class StepFrame extends StatelessWidget {
                 onPressed: enabled ? onNext : null,
               ),
             ),
+            if (secondaryLabel != null)
+              // Quiet on purpose: an ink pill here outweighed the green "yes".
+              Center(
+                child: Pressable(
+                  onTap: onSecondary,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
+                    child: Text(
+                      secondaryLabel!.of(context),
+                      style: AppText.label(context, color: AppColors.inkMuted),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -185,9 +206,39 @@ class SelectTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final motion = Motion.of(context);
     final fg = selected ? AppColors.onAccentSoft : AppColors.ink;
+    Widget check(double size) => AnimatedScale(
+      scale: selected ? 1 : 0.4,
+      duration: motion[Motion.micro],
+      curve: Motion.easeEnter,
+      child: AnimatedOpacity(
+        opacity: selected ? 1 : 0,
+        duration: motion[Motion.micro],
+        child: Icon(PhosphorIcons.checkCircle, size: size, color: AppColors.accent),
+      ),
+    );
+    // A thumbnail tile sits two to a row; the check rides on the picture so
+    // the name keeps the width and "Courgette" does not break mid-word.
     final art = icon != null
         ? Icon(icon, size: 22, color: selected ? AppColors.onAccentSoft : AppColors.accent)
-        : leading;
+        : leading == null
+        ? null
+        : Stack(
+            clipBehavior: Clip.none,
+            children: [
+              leading!,
+              Positioned(
+                right: -7,
+                bottom: -7,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: selected ? AppColors.accentSoft : Colors.transparent,
+                  ),
+                  child: check(18),
+                ),
+              ),
+            ],
+          );
     return Pressable(
       onTap: onTap,
       haptic: Haptics.selection,
@@ -210,17 +261,7 @@ class SelectTile extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(width: 8),
-            AnimatedScale(
-              scale: selected ? 1 : 0.4,
-              duration: motion[Motion.micro],
-              curve: Motion.easeEnter,
-              child: AnimatedOpacity(
-                opacity: selected ? 1 : 0,
-                duration: motion[Motion.micro],
-                child: Icon(PhosphorIcons.checkCircle, size: 22, color: AppColors.accent),
-              ),
-            ),
+            if (leading == null) ...[const SizedBox(width: 8), check(22)],
           ],
         ),
       ),
@@ -262,6 +303,68 @@ class ChoiceList extends StatelessWidget {
         ),
     ],
   );
+}
+
+/// The same answers as [ChoiceList], as pills that wrap. For a second question
+/// on a screen that already has a list, so the page still fits.
+class ChipWrap extends StatelessWidget {
+  const ChipWrap({
+    super.key,
+    required this.options,
+    required this.selected,
+    required this.onToggle,
+  });
+
+  final List<(String, LocalizedText, IconData)> options;
+  final Set<String> selected;
+  final ValueChanged<String> onToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    final motion = Motion.of(context);
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        for (final (key, label, icon) in options)
+          Pressable(
+            onTap: () => onToggle(key),
+            haptic: Haptics.selection,
+            child: AnimatedContainer(
+              duration: motion[Motion.micro],
+              curve: Motion.easeEnter,
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              decoration: BoxDecoration(
+                color: selected.contains(key) ? AppColors.accentSoft : AppColors.tile,
+                borderRadius: BorderRadius.circular(Neo.radiusPill),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    icon,
+                    size: 18,
+                    color: selected.contains(key) ? AppColors.onAccentSoft : AppColors.accent,
+                  ),
+                  const SizedBox(width: 6),
+                  // Flexible so a long German label wraps inside the pill
+                  // instead of overflowing a narrow phone.
+                  Flexible(
+                    child: Text(
+                      label.of(context),
+                      style: AppText.label(
+                        context,
+                        color: selected.contains(key) ? AppColors.onAccentSoft : AppColors.ink,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
 }
 
 /// A smaller heading inside a step that asks two things at once.

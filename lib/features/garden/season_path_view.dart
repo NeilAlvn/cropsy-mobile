@@ -52,7 +52,7 @@ class _SeasonPathViewState extends State<SeasonPathView> {
               onTap: () async {
                 final gardens = await repo.gardens();
                 if (gardens.isEmpty || !context.mounted) return;
-                // §9: premium feature with a silent 7-day preview for free users.
+                // Premium, after a 7-day planner preview for free users; then the paywall.
                 final premium = PurchaseScope.maybeOf(context)?.premium ?? false;
                 if (!premium) {
                   const key = 'planner_preview_started_on';
@@ -61,7 +61,7 @@ class _SeasonPathViewState extends State<SeasonPathView> {
                   final days = parseIso(repo.today).difference(parseIso(started)).inDays;
                   if (days > 7) {
                     if (!context.mounted) return;
-                    final bought = await Navigator.of(context).push<bool>(MaterialPageRoute(builder: (_) => const PaywallScreen(), fullscreenDialog: true));
+                    final bought = await Navigator.of(context).push<bool>(MaterialPageRoute(builder: (_) => const PaywallScreen(trigger: PaywallTrigger.planner), fullscreenDialog: true));
                     if (bought != true) return;
                   }
                 }
@@ -109,9 +109,9 @@ class _SeasonPathViewState extends State<SeasonPathView> {
               ),
             const SizedBox(height: 8),
             Row(children: [
-              _Legend(AppColors.bandSowOutdoor, 'sow / plant out'),
+              _Legend(AppColors.bandSowOutdoor, '${Str.sow.of(context)} / ${Str.plantOut.of(context)}'),
               const SizedBox(width: 12),
-              _Legend(AppColors.bandHarvest, 'harvest'),
+              _Legend(AppColors.bandHarvest, Str.harvest.of(context)),
             ]),
             if (prompts.isNotEmpty) ...[
               const SizedBox(height: 18),

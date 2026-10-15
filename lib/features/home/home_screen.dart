@@ -1,5 +1,5 @@
 /// Home — the catalogue browse (GrowIt-shaped): region header, search + Add
-/// plant, a mock premium banner, and "What to grow in [month]" with filter chips
+/// plant, a weekly trial card for free users, and "What to grow in [month]" with filter chips
 /// and a photo-card grid. Our differentiator: the recommendations come from the
 /// real frost-relative engine for the user's region.
 library;
@@ -30,6 +30,7 @@ import '../../timing/streak.dart';
 import '../../timing/types.dart';
 import '../../timing/weather_adjust.dart';
 import '../garden/garden_repository.dart';
+import '../garden/gating.dart';
 import '../garden/plant_detail_screen.dart';
 import '../grow/crop_detail_screen.dart';
 import '../location/location_sheet.dart';
@@ -85,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverToBoxAdapter(
             child: ArriveIn(
               index: 0,
-              child: _LifetimeCard(onTap: () => _openPaywall(context)),
+              child: _TrialCard(onTap: () => _openPaywall(context)),
             ),
           ),
           if (_query.isEmpty) ...[
@@ -142,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _openPaywall(BuildContext context) => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => const PaywallScreen(), fullscreenDialog: true),
+        MaterialPageRoute(builder: (_) => const PaywallScreen(trigger: PaywallTrigger.homeCard), fullscreenDialog: true),
       );
 
   Future<void> _pickMonth() async {
@@ -363,16 +364,18 @@ class _ProfileButton extends StatelessWidget {
 
 
 /// PRD 2.8: shown at most once a week, dismissible, never a trial pitch.
-class _LifetimeCard extends StatefulWidget {
-  const _LifetimeCard({required this.onTap});
+/// The upsell (PRD 2.8): free users only, at most once per seven days. The day
+/// it appears is stored, so it stays up for that visit and then rests a week.
+class _TrialCard extends StatefulWidget {
+  const _TrialCard({required this.onTap});
   final VoidCallback onTap;
 
   @override
-  State<_LifetimeCard> createState() => _LifetimeCardState();
+  State<_TrialCard> createState() => _TrialCardState();
 }
 
-class _LifetimeCardState extends State<_LifetimeCard> {
-  static const _key = 'lifetime_card_dismissed_on';
+class _TrialCardState extends State<_TrialCard> {
+  static const _key = 'home_card_shown_on';
   bool? _show;
 
   @override
@@ -380,16 +383,17 @@ class _LifetimeCardState extends State<_LifetimeCard> {
     super.didChangeDependencies();
     if (_show != null) return;
     final repo = RepositoryScope.of(context);
-    repo.meta(_key).then((v) {
-      final hide = v != null && parseIso(repo.today).difference(parseIso(v)).inDays < 7;
-      if (mounted) setState(() => _show = !hide);
+    final premium = PurchaseScope.maybeOf(context)?.premium ?? false;
+    repo.meta(_key).then((v) async {
+      final due = !premium && homeCardDue(v, repo.today);
+      if (due) await repo.setMeta(_key, repo.today);
+      if (mounted) setState(() => _show = due);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_show != true) return const SizedBox.shrink();
-    final repo = RepositoryScope.of(context);
+    if (_show != true || (PurchaseScope.maybeOf(context)?.premium ?? false)) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 6, 20, 6),
       child: Container(
@@ -402,16 +406,13 @@ class _LifetimeCardState extends State<_LifetimeCard> {
             Expanded(
               child: GestureDetector(
                 onTap: widget.onTap,
-                child: Text(Str.unlockLifetime.of(context),
+                child: Text(Str.homeTrialCard(PurchaseScope.maybeOf(context)?.trialDaysOffered ?? 0).of(context),
                     style: AppText.label(context, color: AppColors.onInk)),
               ),
             ),
             IconButton(
               icon: Icon(PhosphorIcons.x, color: AppColors.onInk.withValues(alpha: 0.7), size: 20),
-              onPressed: () async {
-                await repo.setMeta(_key, repo.today);
-                if (mounted) setState(() => _show = false);
-              },
+              onPressed: () => setState(() => _show = false),
             ),
           ],
         ),

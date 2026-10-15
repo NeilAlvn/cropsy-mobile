@@ -5,6 +5,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
@@ -20,6 +21,7 @@ import '../../design/widgets.dart';
 import '../harvest/harvest_screen.dart';
 import '../this_week/this_week_screen.dart';
 import 'garden_repository.dart';
+import 'gating.dart';
 import 'plant_detail_screen.dart';
 import 'season_path_view.dart';
 import '../repository_scope.dart';
@@ -196,7 +198,9 @@ class _PlantList extends StatelessWidget {
                         SizedBox(
                           height: 34,
                           child: TextButton(
-                            onPressed: () => repo.startGrowing(p.id),
+                            onPressed: () async {
+                              if (await roomToGrow(context)) await repo.startGrowing(p.id);
+                            },
                             style: TextButton.styleFrom(
                                 foregroundColor: AppColors.sprout),
                             child: Text(Str.start.of(context), style: AppText.label(context, color: AppColors.sprout)),
@@ -396,7 +400,6 @@ class _HarvestCountdown extends StatelessWidget {
   }
 }
 
-const _monthAbbr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 /// GrowIt 5.2 "Plant in: Mar, Apr, May" — from the engine, for this region.
 class _PlantIn extends StatelessWidget {
@@ -412,7 +415,7 @@ class _PlantIn extends StatelessWidget {
     if (months.isEmpty) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.only(top: 4),
-      child: Text(Str.plantIn(months.map((m) => _monthAbbr[m - 1]).join(', ')).of(context),
+      child: Text(Str.plantIn(months.map((m) => DateFormat.MMM().format(DateTime(2000, m))).join(', ')).of(context),
           style: AppText.caption(context, color: AppColors.sprout)),
     );
   }
