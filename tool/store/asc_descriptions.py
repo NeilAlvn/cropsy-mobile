@@ -14,7 +14,7 @@ KEY_ID, ISSUER, APP = 'HYH97DCL82', '47f95e96-b09e-48b1-85e1-37886c9c2177', '681
 KEY = Path.home() / f'.appstoreconnect/private_keys/AuthKey_{KEY_ID}.p8'
 # metadata file -> ASC locale
 LOCALES = {'en-GB': 'en-GB', 'en-US': 'en-US', 'nl': 'nl-NL', 'de': 'de-DE', 'fr': 'fr-FR', 'sv': 'sv', 'pt': 'pt-PT'}
-EDITABLE = {'PREPARE_FOR_SUBMISSION', 'DEVELOPER_REJECTED', 'REJECTED', 'METADATA_REJECTED', 'INVALID_BINARY'}
+EDITABLE = {'PREPARE_FOR_SUBMISSION', 'DEVELOPER_REJECTED', 'REJECTED', 'METADATA_REJECTED', 'INVALID_BINARY', 'READY_FOR_REVIEW'}
 
 
 def b64(b): return base64.urlsafe_b64encode(b).rstrip(b'=').decode()
