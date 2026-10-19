@@ -33,5 +33,9 @@ Abos verlängern sich automatisch, wenn du nicht mindestens 24 Stunden vor Ablau
 Die Preise erscheinen im Store in deiner Landeswährung. Käufe laufen über den App Store.
 
 Cropsy spricht Englisch, Niederländisch, Deutsch, Französisch, Schwedisch und Portugiesisch.
+
+Nutzungsbedingungen: https://www.cropsyapp.com/de/terms
+Standard-EULA von Apple: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Datenschutzerklärung: https://www.cropsyapp.com/de/privacy
 ## whats_new
 Cropsy spricht jetzt Englisch, Niederländisch, Deutsch, Französisch, Schwedisch und Portugiesisch.

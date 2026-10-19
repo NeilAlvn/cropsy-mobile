@@ -33,5 +33,9 @@ Subscriptions renew automatically unless you cancel at least 24 hours before the
 Prices are shown in your local currency in the store. Purchases go through the App Store.
 
 Cropsy speaks English, Dutch, German, French, Swedish and Portuguese.
+
+Terms of Use: https://www.cropsyapp.com/en/terms
+Apple's standard EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy Policy: https://www.cropsyapp.com/en/privacy
 ## whats_new
 Cropsy now speaks English, Dutch, German, French, Swedish and Portuguese.

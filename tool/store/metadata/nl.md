@@ -33,5 +33,9 @@ Abonnementen verlengen automatisch tenzij je uiterlijk 24 uur voor het einde van
 Prijzen staan in de store in je eigen valuta. Aankopen lopen via de App Store.
 
 Cropsy spreekt Nederlands, Engels, Duits, Frans, Zweeds en Portugees.
+
+Gebruiksvoorwaarden: https://www.cropsyapp.com/nl/terms
+Standaard-EULA van Apple: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacybeleid: https://www.cropsyapp.com/nl/privacy
 ## whats_new
 Cropsy spreekt nu Nederlands, Engels, Duits, Frans, Zweeds en Portugees.
