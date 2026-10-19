@@ -3,7 +3,7 @@ Cropsy : Planificateur potager
 ## subtitle
 Semis, récolte, légumes
 ## keywords
-permaculture,compost,jardinage,serre,calendrier semis,arrosage rappel,carré potager,maladies plantes
+plantation,permaculture,compost,jardinage,serre,calendrier,arrosage,rappel,maladies,plantes
 ## short
 Planifie, sème et récolte tes légumes. Des rappels qui suivent la météo.
 ## description
@@ -33,5 +33,9 @@ Les abonnements se renouvellent automatiquement, sauf résiliation au moins 24 h
 Les prix s'affichent dans ta monnaie locale sur le store. Les achats passent par l'App Store.
 
 Cropsy parle anglais, néerlandais, allemand, français, suédois et portugais.
+
+Conditions d'utilisation: https://www.cropsyapp.com/fr/terms
+CLUF standard d'Apple: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Politique de confidentialité: https://www.cropsyapp.com/fr/privacy
 ## whats_new
 Cropsy parle maintenant anglais, néerlandais, allemand, français, suédois et portugais.

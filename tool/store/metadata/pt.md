@@ -33,5 +33,9 @@ As subscrições renovam-se automaticamente, a menos que as canceles pelo menos 
 Os preços aparecem na tua moeda local na loja. As compras são feitas através da App Store.
 
 A Cropsy fala inglês, neerlandês, alemão, francês, sueco e português.
+
+Termos de utilização: https://www.cropsyapp.com/pt/terms
+EULA padrão da Apple: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Política de privacidade: https://www.cropsyapp.com/pt/privacy
 ## whats_new
 A Cropsy passa a falar inglês, neerlandês, alemão, francês, sueco e português.

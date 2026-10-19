@@ -33,5 +33,9 @@ Prenumerationer förnyas automatiskt om du inte säger upp dem senast 24 timmar 
 Priserna visas i din lokala valuta i butiken. Köpen går via App Store.
 
 Cropsy talar engelska, nederländska, tyska, franska, svenska och portugisiska.
+
+Användarvillkor: https://www.cropsyapp.com/sv/terms
+Apples standard-EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Integritetspolicy: https://www.cropsyapp.com/sv/privacy
 ## whats_new
 Cropsy talar nu engelska, nederländska, tyska, franska, svenska och portugisiska.
