@@ -21,6 +21,7 @@ import '../../timing/dates.dart';
 import '../../timing/replan.dart';
 import '../repository_scope.dart';
 import 'garden_repository.dart';
+import 'review_prompt.dart';
 import '../../sync/photo_uploader.dart';
 import 'growth_log_sheet.dart';
 import 'insights.dart';
@@ -217,6 +218,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
           SnackBar(content: Text(Str.harvestLogged.of(context))),
         );
       }
+      await ReviewPrompt.recordWin(repo, ReviewPrompt.harvestWin);
     }
   }
 

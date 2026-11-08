@@ -21,6 +21,7 @@ import '../../timing/replan.dart';
 import '../../timing/types.dart';
 import '../../l10n/mascot_lines.dart';
 import 'garden_repository.dart';
+import 'review_prompt.dart';
 
 MascotPose poseForNode(NodeKind k) => switch (k) {
       NodeKind.sow => MascotPose.holdingSeedling,
@@ -79,6 +80,10 @@ Future<bool> openNodeLog(
           ),
           builder: (_) => _NotBehindSheet(result: result, anchor: node),
         );
+      } else {
+        // On schedule is the win. A shifted plan gets reassurance, not a rating ask.
+        final harvest = node.kind == NodeKind.harvest || node.kind == NodeKind.harvested;
+        await ReviewPrompt.recordWin(repo, harvest ? ReviewPrompt.harvestWin : ReviewPrompt.stepWin);
       }
       return true;
     case _LogSkip(:final reason):
