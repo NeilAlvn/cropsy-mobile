@@ -54,6 +54,7 @@ dependencies:
   posthog_flutter: ^5.44.2
   http: ^1.6.0
   in_app_review: ^2.0.12
+  geocoding: ^5.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

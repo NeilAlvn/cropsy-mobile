@@ -8,6 +8,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../data/crop_content.dart';
 import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 
@@ -86,20 +87,10 @@ class PlantingCalendarBar extends StatelessWidget {
           );
       }
     }
-    // Harvest band: from the earliest establishment date + harvest days.
-    if (windows.isNotEmpty) {
-      final establish = windows
-          .map((w) => parseIso(w.start))
-          .reduce((a, b) => a.isBefore(b) ? a : b);
-      final hs = establish.add(Duration(days: crop.harvestDaysMin.toInt()));
-      final he = establish.add(Duration(days: crop.harvestDaysMax.toInt()));
+    // Harvest bands: harvest days count from planting out, per outdoor window.
+    for (final h in harvestSpans(crop, frost)) {
       bands.add(
-        _Band(
-          _Lane.harvest,
-          _frac(hs, start),
-          _frac(he, start),
-          AppColors.bandHarvest,
-        ),
+        _Band(_Lane.harvest, _frac(h.start, start), _frac(h.end, start), AppColors.bandHarvest),
       );
     }
     return bands;

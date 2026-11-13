@@ -17,16 +17,24 @@ class TimelineStage {
   final LocalizedText dayRange;
 }
 
-/// When the first harvest lands, from the engine's own windows. Null when the
-/// crop has no window in this region.
-String? firstHarvestDate(Crop crop, FrostProfile frost) {
-  final windows = scheduleCrop(crop, frost);
-  final establish = windows.isEmpty
-      ? null
-      : (windows.map((w) => parseIso(w.start)).reduce((a, b) => a.isBefore(b) ? a : b));
-  final harvest = establish?.add(Duration(days: crop.harvestDaysMin.toInt()));
+/// Harvest spans, one per outdoor window (plant out, plant, sow direct):
+/// window start + harvest days_min .. window end + harvest days_max. Harvest
+/// days count from planting out, so indoor sowing never anchors a harvest.
+List<({DateTime start, DateTime end})> harvestSpans(Crop crop, FrostProfile frost) => [
+      for (final w in scheduleCrop(crop, frost))
+        if (w.method != MethodType.sowIndoor)
+          (
+            start: parseIso(w.start).add(Duration(days: crop.harvestDaysMin.toInt())),
+            end: parseIso(w.end).add(Duration(days: crop.harvestDaysMax.toInt())),
+          ),
+    ];
 
-  return harvest == null ? null : toIso(harvest);
+/// When the first harvest lands, from the engine's own windows. Null when the
+/// crop has no outdoor window in this region.
+String? firstHarvestDate(Crop crop, FrostProfile frost) {
+  final spans = harvestSpans(crop, frost);
+  if (spans.isEmpty) return null;
+  return toIso(spans.map((s) => s.start).reduce((a, b) => a.isBefore(b) ? a : b));
 }
 
 /// GrowIt-style horizontal day-staged strip. Day ranges scale with the crop's

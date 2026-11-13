@@ -113,6 +113,23 @@ void main() {
     expect(repo.country, 'NL');
   });
 
+  test('a GPS lookup stores the country where the user is, not the phone region', () async {
+    final db = AppDatabase.memory();
+    addTearDown(db.close);
+    final repo = await GardenRepository.create(db: db, today: demoToday, observations: (_, _) async => null);
+    const austin = FrostLookup(
+      profile: FrostProfile(lastFrost: '2026-02-18', firstFrost: '2026-12-08'),
+      lat: 30.3,
+      lon: -97.7,
+      source: 'open-meteo',
+      country: 'AU',
+    );
+    await repo.createGarden(region: defaultRegion, kind: GardenKind.garden, lookup: austin);
+    expect(repo.country, 'AU');
+    await repo.setLocation(name: 'Your location', lookup: austin);
+    expect(repo.country, 'AU');
+  });
+
   test('needsClimate: looked-up places without a climate curve only', () {
     const base = FrostProfile(lastFrost: '2026-02-18', firstFrost: '2026-12-08');
     expect(needsClimate(const SavedLocation(name: 'Austin', profile: base, source: 'open-meteo', lat: 30.3, lon: -97.7)), isTrue);
