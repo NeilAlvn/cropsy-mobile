@@ -1859,7 +1859,8 @@ abstract final class Str {
     fr: '$mass pour l\'instant',
     sv: '$mass hittills',
     pt: '$mass até agora',
-  );  static const tallyEmpty = LocalizedText(
+  );
+  static const tallyEmpty = LocalizedText(
     nl: 'Log een oogst en het telt hier op',
     en: 'Log a harvest and it adds up here',
     de: 'Trag eine Ernte ein, dann summiert sie sich hier',
@@ -5882,6 +5883,24 @@ abstract final class Str {
       fr: up(m.pick('fr')),
       sv: up(m.pick('sv')),
       pt: up(m.pick('pt')),
+    );
+  }
+
+  /// Three letters, for a marker on the path.
+  static LocalizedText monthShort(int month1to12) {
+    final m = months[month1to12 - 1];
+    return LocalizedText(
+      nl: m.nl.substring(0, 3).toUpperCase(),
+      en: m.en.substring(0, 3).toUpperCase(),
+      de: m.pick('de').substring(0, 3).toUpperCase(),
+      // juin and juillet share JUI; French markers use JUN / JUL.
+      fr: switch (month1to12) {
+        6 => 'JUN',
+        7 => 'JUL',
+        _ => m.pick('fr').substring(0, 3).toUpperCase(),
+      },
+      sv: m.pick('sv').substring(0, 3).toUpperCase(),
+      pt: m.pick('pt').substring(0, 3).toUpperCase(),
     );
   }
 }

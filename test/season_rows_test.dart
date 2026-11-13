@@ -1,4 +1,7 @@
 import 'package:cropsy/features/season/season_markers.dart';
+import 'package:cropsy/features/season/season_screen.dart' show pathDay;
+import 'package:cropsy/l10n/region.dart';
+import 'package:cropsy/l10n/strings.dart';
 import 'package:cropsy/features/season/season_rows.dart';
 import 'package:cropsy/timing/season.dart';
 import 'package:cropsy/timing/types.dart';
@@ -105,5 +108,17 @@ void main() {
     final months = rows.where((r) => r.kind == SeasonRowKind.month).map((r) => r.month).toList();
     expect(months, [9, 12, 1]);
     expect(rows.indexWhere((r) => r.kind == SeasonRowKind.today), lessThan(rows.indexWhere((r) => r.month == 12)));
+  });
+
+  test('path day labels keep the upper-case style; US puts the month first', () {
+    final d = DateTime.utc(2026, 11, 13);
+    AppRegion.apply(lang: 'nl', country: 'NL');
+    expect(pathDay(d, Str.monthShort(11).pick('nl')), '13 NOV');
+    expect(pathDay(DateTime.utc(2026, 3, 2), Str.monthShort(3).pick('nl')), '2 MAA');
+    AppRegion.apply(lang: 'en', country: 'GB');
+    expect(pathDay(d, Str.monthShort(11).pick('en')), '13 NOV');
+    AppRegion.apply(lang: 'en', country: 'US');
+    expect(pathDay(d, Str.monthShort(11).pick('en')), 'NOV 13');
+    AppRegion.apply(lang: 'nl', country: 'NL');
   });
 }

@@ -56,9 +56,9 @@ List<Insight> insightsFor({
     out.add(Insight(
         MascotPose.frost,
         (AppRegion.nlBe
-            ? MascotLines.insightLastFrostAhead(toLast, frost.lastFrost, crop.names)
+            ? MascotLines.insightLastFrostAhead(toLast, dayMonthIso(frost.lastFrost), crop.names)
             : MascotLines.insightLastFrostAheadGeneric(
-                toLast, frost.lastFrost, crop.names))));
+                toLast, dayMonthIso(frost.lastFrost), crop.names))));
   }
   if (obs != null) {
     final ahead = obs.where((o) => o.date.compareTo(today) >= 0).toList();

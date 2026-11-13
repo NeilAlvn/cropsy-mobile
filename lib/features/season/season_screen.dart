@@ -666,7 +666,7 @@ class _MonthDisc extends StatelessWidget {
         boxShadow: [BoxShadow(color: rim, offset: const Offset(0, 4), blurRadius: 0)],
       ),
       child: Text(
-        monthShort(month).toUpperCase(),
+        Str.monthShort(month).of(context),
         style: AppText.kicker(context, color: current ? AppColors.onAmber : AppColors.amberDeep),
       ),
     );
@@ -1733,12 +1733,19 @@ class _CropOptions extends StatelessWidget {
   );
 }
 
+/// "13 NOV", or "NOV 13" for US English: the upper-case path style keeps its
+/// look in every language.
+@visibleForTesting
+String pathDay(DateTime d, String month) =>
+    AppRegion.isUS ? '$month ${d.day}' : '${d.day} $month';
+
 String _day(String iso, BuildContext context) {
-  return dayMonth(parseIso(iso));
+  final d = parseIso(iso);
+  return pathDay(d, Str.monthShort(d.month).of(context));
 }
 
 String _window(String start, String end, BuildContext context) {
-  final fmt = dayMonth;
+  String fmt(DateTime d) => pathDay(d, Str.monthShort(d.month).of(context));
   final s = parseIso(start);
   final e = parseIso(end);
   return start == end ? fmt(s) : '${fmt(s)} – ${fmt(e)}';
