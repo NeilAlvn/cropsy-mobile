@@ -8,9 +8,9 @@ library;
 import 'dart:ui' as ui;
 
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 
 import '../timing/types.dart';
+import 'region.dart';
 
 /// Picker order: English first, then the launch market, then the rest.
 const appLanguages = <(String, String)>[
@@ -62,7 +62,7 @@ class AppLang extends ChangeNotifier {
     _code = v;
     // Every DateFormat in the app is built without an explicit locale, so this
     // is the one switch that makes dates follow the language.
-    Intl.defaultLocale = v;
+    AppRegion.apply(lang: v, country: AppRegion.country);
     notifyListeners();
   }
 }
