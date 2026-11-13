@@ -5,6 +5,8 @@
 /// `crops-snapshot.json`, so this stays plain-data and framework-free.
 library;
 
+import 'season_year.dart';
+
 enum MethodType { sowIndoor, sowDirect, transplant, plant }
 
 const _methodFromWire = <String, MethodType>{
@@ -268,27 +270,51 @@ class Crop {
 
 /// The two dates that turn frost-relative rules into real calendar windows.
 class FrostProfile {
-  const FrostProfile({required this.lastFrost, required this.firstFrost});
+  const FrostProfile({
+    required this.lastFrost,
+    required this.firstFrost,
+    this.south = false,
+    this.regime = 'frost',
+  });
 
-  /// Average last spring frost for the user's location (ISO `yyyy-mm-dd`).
+  /// Median last spring frost for the user's location (ISO `yyyy-mm-dd`).
   final String lastFrost;
 
-  /// Average first autumn frost (ISO `yyyy-mm-dd`).
+  /// Median first autumn frost (ISO `yyyy-mm-dd`). In the south this is in the
+  /// calendar year after [lastFrost].
   final String firstFrost;
+
+  /// Southern hemisphere: the season runs 1 Jul – 30 Jun.
+  final bool south;
+
+  /// `frost` | `frost_free` (backend `analyseFrost`). For `frost_free` the two
+  /// dates are anchors around the coldest day, not frosts.
+  final String regime;
 
   factory FrostProfile.fromJson(Map<String, dynamic> j) => FrostProfile(
         lastFrost: j['last_frost'] as String,
         firstFrost: j['first_frost'] as String,
+        south: j['hemisphere'] == 'south',
+        regime: j['regime'] as String? ?? 'frost',
       );
 
-  /// Same month/day, a different year. Presets and cached profiles carry the
-  /// year they were computed for; the engine wants this season's.
-  // ponytail: one year for both anchors; a garden in autumn planning next
-  // spring gets next year's last frost only when the caller passes year + 1.
-  FrostProfile withYear(int year) => FrostProfile(
-        lastFrost: '$year${lastFrost.substring(4)}',
-        firstFrost: '$year${firstFrost.substring(4)}',
-      );
+  Map<String, dynamic> toJson() => {
+        'last_frost': lastFrost,
+        'first_frost': firstFrost,
+        'hemisphere': south ? 'south' : 'north',
+        'regime': regime,
+      };
+
+  /// The same month/days, moved to the season [today] falls in.
+  FrostProfile forSeason(String today) {
+    final season = seasonYearOf(today, south: south);
+    return FrostProfile(
+      lastFrost: isoForSeason(lastFrost.substring(5), season, south: south),
+      firstFrost: isoForSeason(firstFrost.substring(5), season, south: south),
+      south: south,
+      regime: regime,
+    );
+  }
 }
 
 /// A concrete, dated window the app can show and remind on.

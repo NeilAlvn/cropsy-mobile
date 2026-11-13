@@ -187,7 +187,6 @@ class GardenRepository extends ChangeNotifier {
 
   final String? _fixedToday;
   String get today => _fixedToday ?? _localToday();
-  int get _year => parseIso(today).year;
 
   static String _localToday() {
     final n = DateTime.now();
@@ -231,7 +230,7 @@ class GardenRepository extends ChangeNotifier {
       db, snapshot, defaultRegion.profile, owner, today,
       observations ?? WeatherService(db).observations,
     )..content = content;
-    repo.frost = defaultRegion.profile.withYear(repo._year);
+    repo.frost = defaultRegion.profile.forSeason(repo.today);
     return repo;
   }
 
@@ -513,7 +512,7 @@ class GardenRepository extends ChangeNotifier {
   /// month", and reminder is computed from — and persists the coordinate on the
   /// current garden so it round-trips like the real (frost-API-backed) value.
   Future<void> setRegion(FrostRegion region) async {
-    frost = region.profile.withYear(_year);
+    frost = region.profile.forSeason(today);
     regionName = region.name;
     final existing = await gardens();
     if (existing.isNotEmpty) {
@@ -535,7 +534,7 @@ class GardenRepository extends ChangeNotifier {
     required double lon,
     String? postcode,
   }) async {
-    frost = profile.withYear(_year);
+    frost = profile.forSeason(today);
     regionName = name;
     frostSource = 'open-meteo';
     final existing = await gardens();
@@ -565,7 +564,7 @@ class GardenRepository extends ChangeNotifier {
     double? lat,
     double? lon,
   }) async {
-    frost = (profile ?? region.profile).withYear(_year);
+    frost = (profile ?? region.profile).forSeason(today);
     regionName = region.name;
     final id = newUuid();
     await db.into(db.gardens).insert(GardensCompanion.insert(
