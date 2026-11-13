@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../config.dart';
+import '../l10n/region.dart';
 import '../notifications/lifecycle.dart';
 
 enum Plan { free, monthly, yearly, lifetime }
@@ -46,7 +47,7 @@ int? savingsPercent(double yearly, double monthly) {
 }
 
 String formatPrice(double amount, String currency, String locale) =>
-    NumberFormat.simpleCurrency(locale: locale, name: currency).format(amount);
+    NumberFormat.simpleCurrency(locale: Intl.defaultLocale ?? locale, name: currency).format(amount);
 
 /// The paywall's cards, left to right: monthly, yearly, lifetime, so the plan
 /// it leads with sits raised in the middle. Missing packages simply drop out.
@@ -64,6 +65,7 @@ class PlanOffer {
     this.priceString,
     this.trialDays = 0,
     this.package,
+    this.isFallback = false,
   });
 
   factory PlanOffer.of(Plan plan, Package p) {
@@ -85,10 +87,16 @@ class PlanOffer {
   final int trialDays;
   final Package? package;
 
-  /// The billed amount, as the store writes it when it has spoken.
-  String billed(String locale) => priceString ?? formatPrice(price, currency, locale);
+  /// A hard-coded price from [fallbackOffers], before the store has answered.
+  final bool isFallback;
 
-  String perMonth(String locale) => formatPrice(price / 12, currency, locale);
+  /// Outside the eurozone a euro fallback would be a lie, so show a placeholder.
+  bool get _hidden => isFallback && !AppRegion.euro;
+
+  /// The billed amount, as the store writes it when it has spoken.
+  String billed(String locale) => priceString ?? (_hidden ? '…' : formatPrice(price, currency, locale));
+
+  String perMonth(String locale) => _hidden ? '…' : formatPrice(price / 12, currency, locale);
 }
 
 /// A free intro offer, in days. iOS says it with `introductoryPrice`; on
@@ -103,9 +111,9 @@ int _trialDays(StoreProduct s) {
 /// What the paywall shows before (or without) RevenueCat. Euros, the launch
 /// prices; the store's own numbers replace these the moment offerings load.
 const fallbackOffers = [
-  PlanOffer(plan: Plan.yearly, price: 39.99, currency: 'EUR', trialDays: 7),
-  PlanOffer(plan: Plan.monthly, price: 7.99, currency: 'EUR'),
-  PlanOffer(plan: Plan.lifetime, price: 99.99, currency: 'EUR'),
+  PlanOffer(plan: Plan.yearly, price: 39.99, currency: 'EUR', trialDays: 7, isFallback: true),
+  PlanOffer(plan: Plan.monthly, price: 7.99, currency: 'EUR', isFallback: true),
+  PlanOffer(plan: Plan.lifetime, price: 99.99, currency: 'EUR', isFallback: true),
 ];
 
 /// The onboarding exit offer: a discounted first year, then [regular]. [intro]
