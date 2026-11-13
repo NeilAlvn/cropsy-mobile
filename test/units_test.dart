@@ -41,4 +41,18 @@ void main() {
     expect([massUnit, volumeUnit], ['kg', 'L']);
     expect(kgFromInput(1.5), 1.5);
   });
+
+  test('temperature rounding, exact gates, spacing', () {
+    AppRegion.apply(lang: 'en', country: 'GB');
+    expect(tempC(20.5), '21°C');
+    expect(tempC(-0.2), '0°C');
+    AppRegion.apply(lang: 'nl', country: 'NL');
+    expect(tempC(8.5, exact: true), '8,5°C');
+    expect(tempC(8, exact: true, spaced: true), '8 °C');
+    expect(tempBare(30), '30°');
+    AppRegion.apply(lang: 'de', country: 'DE');
+    expect(tempC(30), '30 °C');
+    AppRegion.apply(lang: 'en', country: 'US');
+    expect(tempC(8.5, exact: true), '47°F');
+  });
 }

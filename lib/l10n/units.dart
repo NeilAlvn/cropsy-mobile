@@ -7,7 +7,11 @@ import 'package:intl/intl.dart';
 
 import 'region.dart';
 
-String _n(num v, {int decimals = 0}) {
+String _n(num v, {int decimals = 0, bool upToOne = false}) {
+  if (upToOne) {
+    return NumberFormat('#,##0.#', Intl.defaultLocale).format(v.abs() < 0.05 ? 0 : v);
+  }
+  if (decimals == 0) v = v.round(); // half away from zero, as the old code
   // Values that round to zero print as 0, never "-0".
   final x = v.abs() <= (decimals == 0 ? 0.5 : 0.05) ? 0 : v;
   return NumberFormat(decimals == 0 ? '#,##0' : '#,##0.${'#' * decimals}', Intl.defaultLocale).format(x);
@@ -15,7 +19,12 @@ String _n(num v, {int decimals = 0}) {
 
 bool get _imp => AppRegion.imperial;
 
-String tempC(num c) => _imp ? '${_n(c * 9 / 5 + 32)}°F' : '${_n(c)}°C';
+/// [exact]: metric keeps one decimal (soil gates like 8.5). [spaced]: always put
+/// a space before the unit. de/fr/sv/pt always do, as their old templates did.
+String tempC(num c, {bool exact = false, bool spaced = false}) {
+  final sp = spaced || const ['de', 'fr', 'sv', 'pt'].contains((Intl.defaultLocale ?? '').split('_').first) ? ' ' : '';
+  return _imp ? '${_n(c * 9 / 5 + 32)}$sp°F' : '${_n(c, upToOne: exact)}$sp°C';
+}
 String tempBare(num c) => _imp ? '${_n(c * 9 / 5 + 32)}°' : '${_n(c)}°';
 String rainMm(num mm) => _imp ? '${_n(mm / 25.4, decimals: 1)} in' : '${_n(mm, decimals: 1)} mm';
 String lengthCm(num cm) => _imp ? '${_n(cm / 2.54)} in' : '${_n(cm)} cm';

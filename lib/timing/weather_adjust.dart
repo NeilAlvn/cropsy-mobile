@@ -323,7 +323,7 @@ Adjustment _adjustTask(
           taskId: task.id,
           action: AdjustAction.defer,
           to: obs.date,
-          reason: Str.adjustSoilCold(tempC(gate)),
+          reason: Str.adjustSoilCold(tempC(gate, exact: true)),
         );
       }
     }
@@ -332,7 +332,7 @@ Adjustment _adjustTask(
       taskId: task.id,
       action: AdjustAction.defer,
       to: toIso(addDays(due, p.maxDeferDays)),
-      reason: Str.adjustSoilStaysCold(tempC(gate)),
+      reason: Str.adjustSoilStaysCold(tempC(gate, exact: true)),
     );
   }
 

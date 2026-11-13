@@ -5578,22 +5578,22 @@ abstract final class Str {
     sv: 'Var kommer så- och planteringsdatumen ifrån?',
     pt: 'De onde vêm as datas de plantação?',
   );
-  static const faqDatesA = LocalizedText(
+  static LocalizedText faqDatesA(String distance) => LocalizedText(
     nl:
         'Uit de vorstdatums voor jouw locatie (KNMI / Open-Meteo '
-        'klimaatnormalen, afgerond op ~1 km), gecombineerd met teeltregels '
+        'klimaatnormalen, afgerond op ~$distance), gecombineerd met teeltregels '
         'die tegen minstens twee Nederlandse zaaikalenders zijn gelegd.',
     en:
         'From the frost dates for your location (KNMI / Open-Meteo climate '
-        'normals, rounded to ~1 km) combined with crop rules cross-checked '
+        'normals, rounded to ~$distance) combined with crop rules cross-checked '
         'against at least two Dutch seed calendars.',
     de:
         'Aus den Frostdaten für deinen Standort (KNMI-/Open-Meteo-Klimamittel, '
-        'auf ~1 km gerundet), kombiniert mit Anbauregeln, die mit mindestens '
+        'auf ~$distance gerundet), kombiniert mit Anbauregeln, die mit mindestens '
         'zwei niederländischen Aussaatkalendern abgeglichen sind.',
-    fr: 'Des dates de gel de ta position (normales climatiques KNMI / Open-Meteo, arrondies à ~1 km) combinées à des règles de culture vérifiées dans au moins deux calendriers des semis néerlandais.',
-    sv: 'Från frostdatumen för din plats (klimatnormaler från KNMI / Open-Meteo, avrundade till ~1 km) kombinerade med odlingsregler som kontrollerats mot minst två nederländska såkalendrar.',
-    pt: 'Das datas de geada da tua localização (normais climáticas KNMI / Open-Meteo, arredondadas a ~1 km), combinadas com regras de cultivo verificadas em pelo menos dois calendários de sementeira neerlandeses.',
+    fr: 'Des dates de gel de ta position (normales climatiques KNMI / Open-Meteo, arrondies à ~$distance) combinées à des règles de culture vérifiées dans au moins deux calendriers des semis néerlandais.',
+    sv: 'Från frostdatumen för din plats (klimatnormaler från KNMI / Open-Meteo, avrundade till ~$distance) kombinerade med odlingsregler som kontrollerats mot minst två nederländska såkalendrar.',
+    pt: 'Das datas de geada da tua localização (normais climáticas KNMI / Open-Meteo, arredondadas a ~$distance), combinadas com regras de cultivo verificadas em pelo menos dois calendários de sementeira neerlandeses.',
   );
   static const faqBehindQ = LocalizedText(
     nl: 'Ik loop achter. Is mijn plan verpest?',

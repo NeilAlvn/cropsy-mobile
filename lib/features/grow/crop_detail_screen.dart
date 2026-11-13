@@ -370,7 +370,7 @@ class _Location extends StatelessWidget {
           (crop.frostTender ? Str.yesWaitForLastFrost : Str.no).of(context)),
       if (minSoil != null)
         row(PhosphorIcons.thermometer, Str.minSoilTemp.of(context),
-            tempC(minSoil)),
+            tempC(minSoil, exact: true, spaced: true)),
       if (crop.minPotLitres != null)
         row(PhosphorIcons.square, Str.minPotSize.of(context),
             volumeL(crop.minPotLitres!)),

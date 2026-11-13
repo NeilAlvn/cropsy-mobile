@@ -17,6 +17,8 @@ void main() {
     expect(Str.adjustSoilCold(tempC(8)).pick('nl'), 'Bodem nog te koud (< 8°C). Uitgesteld tot het warmer is.');
     expect(Str.heatAhead(tempC(30)).pick('nl'),
         'Hitte op komst (30°C+). Potten drogen in een dag uit, dus water geven schuift naar voren.');
+    expect(Str.adjustSoilCold(tempC(8.5, exact: true)).pick('nl'), 'Bodem nog te koud (< 8,5°C). Uitgesteld tot het warmer is.');
+    expect(Str.faqDatesA(distanceKm(1)).pick('nl'), contains('afgerond op ~1 km'));
     expect(Str.potLitres(volumeL(10)).pick('en'), '10 L pot');
     expect(Str.potLitres(volumeL(10)).pick('nl'), '10 L pot');
     expect(Str.weatherRange(tempBare(21.4), tempBare(9.6)).pick('nl'), '21° / 10°');
