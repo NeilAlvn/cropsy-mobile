@@ -6,6 +6,18 @@ library;
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
+import '../../config.dart';
+
+@visibleForTesting
+Uri placesUri(String q, String lang) => Uri.parse('$apiBaseUrl/api/places').replace(queryParameters: {
+      'name': q,
+      'count': '6',
+      'language': lang,
+      'format': 'json',
+    });
+
 class PlaceHit {
   const PlaceHit({required this.name, required this.label, required this.countryCode, required this.lat, required this.lon});
   final String name;
@@ -43,12 +55,7 @@ Future<List<PlaceHit>> searchPlaces(String query, {String lang = 'en'}) async {
   if (q.length < 2) return const [];
   final client = HttpClient()..connectionTimeout = const Duration(seconds: 8);
   try {
-    final uri = Uri.https('geocoding-api.open-meteo.com', '/v1/search', {
-      'name': q,
-      'count': '6',
-      'language': lang,
-      'format': 'json',
-    });
+    final uri = placesUri(q, lang);
     const limit = Duration(seconds: 15);
     final res = await (await client.getUrl(uri)).close().timeout(limit);
     if (res.statusCode != 200) return const [];

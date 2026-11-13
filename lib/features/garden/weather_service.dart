@@ -8,9 +8,21 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:drift/drift.dart';
+import 'package:flutter/foundation.dart';
 
+import '../../config.dart';
 import '../../db/database.dart';
 import '../../timing/weather_adjust.dart';
+
+@visibleForTesting
+Uri weatherUri(double lat, double lon) => Uri.parse('$apiBaseUrl/api/weather').replace(queryParameters: {
+      'latitude': lat.toStringAsFixed(2),
+      'longitude': lon.toStringAsFixed(2),
+      'daily': 'precipitation_sum,temperature_2m_min,temperature_2m_max,weathercode',
+      'past_days': '7',
+      'forecast_days': '7',
+      'timezone': 'auto',
+    });
 
 class WeatherService {
   WeatherService(this.db);
@@ -34,14 +46,7 @@ class WeatherService {
   Future<List<DayObservation>?> _fetch(double lat, double lon) async {
     final client = HttpClient()..connectionTimeout = const Duration(seconds: 8);
     try {
-      final uri = Uri.https('api.open-meteo.com', '/v1/forecast', {
-        'latitude': lat.toStringAsFixed(2),
-        'longitude': lon.toStringAsFixed(2),
-        'daily': 'precipitation_sum,temperature_2m_min,temperature_2m_max,weathercode',
-        'past_days': '7',
-        'forecast_days': '7',
-        'timezone': 'auto',
-      });
+      final uri = weatherUri(lat, lon);
       final res = await (await client.getUrl(uri)).close();
       if (res.statusCode != 200) return null;
       final j = jsonDecode(await res.transform(utf8.decoder).join()) as Map<String, dynamic>;
