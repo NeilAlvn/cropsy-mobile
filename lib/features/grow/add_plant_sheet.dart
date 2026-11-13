@@ -70,7 +70,7 @@ class _SheetState extends State<_Sheet> {
   late MethodType _method = _methods.first;
   late String _place = widget.crop.containerOk ? 'outdoor_container' : 'ground';
   late final _pot = TextEditingController(
-      text: widget.crop.minPotLitres == null ? '' : potInputText(widget.crop.minPotLitres!.toInt()));
+      text: widget.crop.minPotLitres == null ? '' : potInputText(widget.crop.minPotLitres!));
 
   int? _potLitres() {
     final v = double.tryParse(_pot.text.trim().replaceAll(',', '.'));
@@ -163,7 +163,7 @@ class _SheetState extends State<_Sheet> {
                 style: AppText.body(context),
                 decoration: InputDecoration(
                   labelText: (AppRegion.imperial ? Str.potSizeGallons : Str.potSizeLitres).of(context),
-                  helperText: widget.crop.minPotLitres == null ? null : Str.atLeastPot(volumeL(widget.crop.minPotLitres!.toInt())).of(context),
+                  helperText: widget.crop.minPotLitres == null ? null : Str.atLeastPot(volumeL(widget.crop.minPotLitres!)).of(context),
                 ),
               ),
             ],

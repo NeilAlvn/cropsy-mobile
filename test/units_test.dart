@@ -81,4 +81,13 @@ void main() {
       expect(litresFromInput(double.parse(potInputText(l))).round(), l, reason: '$l L');
     }
   });
+
+  test('fractional pot sizes are rounded, not truncated', () {
+    AppRegion.apply(lang: 'nl', country: 'NL');
+    expect([1.5, 7.5, 0.2].map(potInputText).toList(), ['2', '8', '0']);
+    AppRegion.apply(lang: 'en', country: 'US');
+    for (final l in [1.5, 7.5, 0.2]) {
+      expect(litresFromInput(double.parse(potInputText(l))).round(), l.round(), reason: '$l L');
+    }
+  });
 }
