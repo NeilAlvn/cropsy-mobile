@@ -16,6 +16,7 @@ class FrostRegion {
     required this.lat,
     required this.lon,
     this.cities = const [],
+    this.country = 'NL',
   });
 
   final String name;
@@ -29,6 +30,9 @@ class FrostRegion {
   /// Searchable place names that belong to this region, so a user can type their
   /// own town (e.g. "Rotterdam", "Antwerp") instead of picking a broad region.
   final List<String> cities;
+
+  /// ISO 3166-1 alpha-2.
+  final String country;
 
   /// True if [query] matches this region's name or one of its cities.
   bool matches(String query) {
@@ -60,7 +64,8 @@ const frostRegions = <FrostRegion>[
   FrostRegion('Belgium (Antwerp/Brussels)',
       FrostProfile(lastFrost: '2026-04-12', firstFrost: '2026-11-05'),
       lat: 51.05, lon: 4.40,
-      cities: ['Antwerp', 'Antwerpen', 'Brussels', 'Brussel', 'Gent', 'Ghent', 'Leuven']),
+      cities: ['Antwerp', 'Antwerpen', 'Brussels', 'Brussel', 'Gent', 'Ghent', 'Leuven'],
+      country: 'BE'),
 ];
 
 final defaultRegion = frostRegions.first;

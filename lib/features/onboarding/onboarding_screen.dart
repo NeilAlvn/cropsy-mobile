@@ -191,11 +191,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       name: gardenKindLabel(_kind).pick(AppLangScope.of(context).code),
       sizeM2: _sizeBuckets[_sizeBucket].$2,
       postcode: _postcode,
-      profile: _lookup?.profile,
-      lat: _lookup?.lat,
-      lon: _lookup?.lon,
+      lookup: _lookup,
     );
-    if (_lookup != null) repo.frostSource = _lookup!.source;
     // `methods` and `companions` are no longer asked here: the place belongs to
     // the plant, and companions default on. The jsonb shape is unchanged, so
     // anything reading it keeps working — it just sees fewer keys on first run.

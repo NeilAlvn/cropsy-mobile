@@ -9,11 +9,13 @@
 /// `today` is injectable (tests pin a spring date); production reads the clock.
 library;
 
+import 'dart:async' show unawaited;
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:drift/drift.dart';
+import 'package:intl/intl.dart' show Intl;
 import '../../timing/replan.dart' as engine show logNode;
 
 import '../../analytics/analytics.dart';
@@ -24,6 +26,7 @@ import '../../data/seed.dart';
 import '../../db/database.dart';
 import '../../db/uuid.dart';
 import '../../l10n/app_lang.dart';
+import '../../l10n/strings.dart';
 import '../../timing/content_snapshot.dart';
 import '../../timing/crop_snapshot.dart';
 import '../../timing/dates.dart';
@@ -34,6 +37,8 @@ import '../../timing/types.dart';
 import '../../timing/watering.dart';
 import '../../timing/streak.dart';
 import '../../timing/weather_adjust.dart';
+import '../location/frost_lookup.dart';
+import '../location/saved_location.dart';
 import 'weather_service.dart';
 
 /// A single row in the "This Week" list — a concrete, dated thing to do, with an
@@ -231,6 +236,16 @@ class GardenRepository extends ChangeNotifier {
       observations ?? WeatherService(db).observations,
     )..content = content;
     repo.frost = defaultRegion.profile.forSeason(repo.today);
+    final saved = SavedLocation.decode(await repo.meta(SavedLocation.metaKey));
+    if (saved != null) {
+      repo
+        ..frost = saved.profile.forSeason(repo.today)
+        ..regionName = saved.name
+        ..frostSource = saved.source
+        ..country = saved.country;
+    } else {
+      unawaited(repo._recoverLocation());
+    }
     return repo;
   }
 
@@ -512,8 +527,14 @@ class GardenRepository extends ChangeNotifier {
   /// month", and reminder is computed from — and persists the coordinate on the
   /// current garden so it round-trips like the real (frost-API-backed) value.
   Future<void> setRegion(FrostRegion region) async {
-    frost = region.profile.forSeason(today);
-    regionName = region.name;
+    await _remember(SavedLocation(
+      name: region.name,
+      profile: region.profile,
+      source: 'preset',
+      country: region.country,
+      lat: region.lat,
+      lon: region.lon,
+    ));
     final existing = await gardens();
     if (existing.isNotEmpty) {
       await (db.update(db.gardens)..where((t) => t.id.equals(existing.first.id)))
@@ -526,23 +547,28 @@ class GardenRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// A resolved location (GPS / postcode → frost API) rather than a preset.
+  /// A resolved location (GPS / place search / postcode → frost API).
   Future<void> setLocation({
     required String name,
-    required FrostProfile profile,
-    required double lat,
-    required double lon,
+    required FrostLookup lookup,
+    String? country,
     String? postcode,
   }) async {
-    frost = profile.forSeason(today);
-    regionName = name;
-    frostSource = 'open-meteo';
+    await _remember(SavedLocation(
+      name: name,
+      profile: lookup.profile,
+      source: lookup.source,
+      country: country ?? deviceCountry(),
+      lat: lookup.lat,
+      lon: lookup.lon,
+      postcode: postcode,
+    ));
     final existing = await gardens();
     if (existing.isNotEmpty) {
       await (db.update(db.gardens)..where((t) => t.id.equals(existing.first.id)))
           .write(GardensCompanion(
-        lat: Value(lat),
-        lon: Value(lon),
+        lat: Value(lookup.lat),
+        lon: Value(lookup.lon),
         postcode: Value(postcode),
         dirty: const Value(true),
       ));
@@ -553,6 +579,43 @@ class GardenRepository extends ChangeNotifier {
   /// Where the current frost dates came from, for the "based on" row (3.3).
   String frostSource = 'preset';
 
+  /// The user's country (ISO-2). null = not known yet; see [effectiveCountry].
+  String? country;
+
+  /// Country for region-specific behaviour: the saved one, else the device's.
+  String? get effectiveCountry => country ?? deviceCountry();
+
+  String get _yourLocation => Str.yourLocation.pick(Intl.defaultLocale ?? 'en');
+
+  /// Applies and persists a location. The single write path for frost,
+  /// regionName, frostSource and country.
+  Future<void> _remember(SavedLocation l) async {
+    frost = l.profile.forSeason(today);
+    regionName = l.name;
+    frostSource = l.source;
+    country = l.country;
+    await setMeta(SavedLocation.metaKey, l.encode());
+  }
+
+  /// 1.0.x stored only the garden's coordinate. Rebuild the saved location from
+  /// it once, so an upgrade does not drop users back to Randstad.
+  Future<void> _recoverLocation() async {
+    final g = await gardens();
+    // Onboarding or a test may have saved a place while we were reading.
+    if (g.isEmpty || await meta(SavedLocation.metaKey) != null) return;
+    final lat = g.first.lat;
+    final lon = g.first.lon;
+    if (lat == null || lon == null) return;
+    final preset = frostRegions.where((r) => r.lat == lat && r.lon == lon).firstOrNull;
+    if (preset != null) {
+      await setRegion(preset);
+      return;
+    }
+    final hit = await frostForCoordinate(lat, lon);
+    if (hit == null) return;
+    await setLocation(name: g.first.postcode?.toUpperCase() ?? _yourLocation, lookup: hit, postcode: g.first.postcode);
+  }
+
   Future<String> createGarden({
     required FrostRegion region,
     required GardenKind kind,
@@ -560,12 +623,30 @@ class GardenRepository extends ChangeNotifier {
     String name = 'My garden',
     int? sizeM2,
     String? postcode,
-    FrostProfile? profile,
-    double? lat,
-    double? lon,
+    FrostLookup? lookup,
+    String? placeName,
+    String? country,
   }) async {
-    frost = (profile ?? region.profile).forSeason(today);
-    regionName = region.name;
+    final loc = lookup == null
+        ? SavedLocation(
+            name: region.name,
+            profile: region.profile,
+            source: 'preset',
+            country: region.country,
+            lat: region.lat,
+            lon: region.lon,
+            postcode: postcode,
+          )
+        : SavedLocation(
+            name: placeName ?? postcode?.toUpperCase() ?? _yourLocation,
+            profile: lookup.profile,
+            source: lookup.source,
+            country: country ?? deviceCountry(),
+            lat: lookup.lat,
+            lon: lookup.lon,
+            postcode: postcode,
+          );
+    await _remember(loc);
     final id = newUuid();
     await db.into(db.gardens).insert(GardensCompanion.insert(
           id: id,
@@ -573,8 +654,8 @@ class GardenRepository extends ChangeNotifier {
           name: name,
           kind: kind,
           sunHours: Value(sunHours),
-          lat: Value(lat ?? region.lat),
-          lon: Value(lon ?? region.lon),
+          lat: Value(loc.lat),
+          lon: Value(loc.lon),
           sizeM2: Value(sizeM2),
           postcode: Value(postcode),
           dirty: const Value(true),

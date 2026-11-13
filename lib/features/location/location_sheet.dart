@@ -61,7 +61,7 @@ class _LocationSheetState extends State<_LocationSheet> {
     final hit = await frostForDevice();
     if (!mounted) return;
     if (hit != null) {
-      await repo.setLocation(name: here, profile: hit.profile, lat: hit.lat, lon: hit.lon);
+      await repo.setLocation(name: here, lookup: hit);
       if (mounted) Navigator.pop(context);
       return;
     }
@@ -77,7 +77,7 @@ class _LocationSheetState extends State<_LocationSheet> {
     final hit = await frostForPostcode(pc);
     if (!mounted) return;
     if (hit != null) {
-      await repo.setLocation(name: pc.toUpperCase(), profile: hit.profile, lat: hit.lat, lon: hit.lon, postcode: pc);
+      await repo.setLocation(name: pc.toUpperCase(), lookup: hit, postcode: pc, country: 'NL');
       if (mounted) Navigator.pop(context);
       return;
     }
