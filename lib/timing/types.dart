@@ -33,10 +33,10 @@ String methodToWire(MethodType m) => _methodToWire[m]!;
 enum FrostAnchor { lastFrost, firstFrost }
 
 FrostAnchor anchorFromWire(String s) => switch (s) {
-      'last_frost' => FrostAnchor.lastFrost,
-      'first_frost' => FrostAnchor.firstFrost,
-      _ => throw ArgumentError('unknown frost anchor: $s'),
-    };
+  'last_frost' => FrostAnchor.lastFrost,
+  'first_frost' => FrostAnchor.firstFrost,
+  _ => throw ArgumentError('unknown frost anchor: $s'),
+};
 
 /// A short piece of text in the app's languages. Dutch and English are always
 /// present; the other four are optional and fall back to English.
@@ -70,23 +70,23 @@ class LocalizedText {
   }
 
   Map<String, dynamic> toJson() => {
-        'nl': nl,
-        'en': en,
-        if (de != null) 'de': de,
-        if (fr != null) 'fr': fr,
-        if (sv != null) 'sv': sv,
-        if (pt != null) 'pt': pt,
-      };
+    'nl': nl,
+    'en': en,
+    if (de != null) 'de': de,
+    if (fr != null) 'fr': fr,
+    if (sv != null) 'sv': sv,
+    if (pt != null) 'pt': pt,
+  };
 
   /// The side a reader of [lang] gets. Missing languages read English.
   String pick(String lang) => switch (lang) {
-        'nl' => nl,
-        'de' => de ?? en,
-        'fr' => fr ?? en,
-        'sv' => sv ?? en,
-        'pt' => pt ?? en,
-        _ => en,
-      };
+    'nl' => nl,
+    'de' => de ?? en,
+    'fr' => fr ?? en,
+    'sv' => sv ?? en,
+    'pt' => pt ?? en,
+    _ => en,
+  };
 
   /// The small name under a title: English for everyone except English
   /// readers, who see Dutch. Empty when it would repeat the title.
@@ -118,6 +118,7 @@ class CropMethod {
     required this.endWeeks,
     required this.minSoilC,
     required this.note,
+    this.needsClimate = false,
   });
 
   final MethodType type;
@@ -133,16 +134,21 @@ class CropMethod {
   final num? minSoilC;
   final LocalizedText? note;
 
+  /// Only scheduled with a climate curve, and then also needs the lookahead
+  /// at or above `autumnMinC` (frost-relative autumn sowings).
+  final bool needsClimate;
+
   factory CropMethod.fromJson(Map<String, dynamic> j) => CropMethod(
-        type: methodFromWire(j['type'] as String),
-        anchor: anchorFromWire(j['anchor'] as String),
-        startWeeks: j['start_weeks'] as num,
-        endWeeks: j['end_weeks'] as num,
-        minSoilC: j['min_soil_c'] as num?,
-        note: j['note'] == null
-            ? null
-            : LocalizedText.fromJson(j['note'] as Map<String, dynamic>),
-      );
+    type: methodFromWire(j['type'] as String),
+    anchor: anchorFromWire(j['anchor'] as String),
+    startWeeks: j['start_weeks'] as num,
+    endWeeks: j['end_weeks'] as num,
+    minSoilC: j['min_soil_c'] as num?,
+    needsClimate: j['needs_climate'] as bool? ?? false,
+    note: j['note'] == null
+        ? null
+        : LocalizedText.fromJson(j['note'] as Map<String, dynamic>),
+  );
 }
 
 /// Days between waterings per container bucket (see `watering.dart`).
@@ -167,11 +173,11 @@ class WaterCadence {
   final int ground;
 
   factory WaterCadence.fromJson(Map<String, dynamic> j) => WaterCadence(
-        small: (j['small'] as num).toInt(),
-        medium: (j['medium'] as num).toInt(),
-        large: (j['large'] as num).toInt(),
-        ground: (j['ground'] as num).toInt(),
-      );
+    small: (j['small'] as num).toInt(),
+    medium: (j['medium'] as num).toInt(),
+    large: (j['large'] as num).toInt(),
+    ground: (j['ground'] as num).toInt(),
+  );
 }
 
 /// A crop and every way to grow it. Frost-relative data the client evaluates.
@@ -200,6 +206,7 @@ class Crop {
     this.perennial = false,
     this.image,
     this.draft = false,
+    this.maxC,
   });
 
   final String slug;
@@ -233,6 +240,10 @@ class Crop {
   /// Beta snapshots only: timing not yet grower-verified (badge in-app).
   final bool draft;
 
+  /// Heat limit (°C): highest mean daily max over the six weeks after an
+  /// outdoor sowing/planting. null = none.
+  final num? maxC;
+
   factory Crop.fromJson(Map<String, dynamic> j) {
     final harvest = j['harvest'] as Map<String, dynamic>;
     return Crop(
@@ -250,13 +261,16 @@ class Crop {
           .toList(growable: false),
       harvestDaysMin: harvest['days_min'] as num,
       harvestDaysMax: harvest['days_max'] as num,
-      sources:
-          (j['sources'] as List).map((s) => s as String).toList(growable: false),
+      sources: (j['sources'] as List)
+          .map((s) => s as String)
+          .toList(growable: false),
       verified: j['verified'] as bool,
       difficulty: (j['difficulty'] as num?)?.toInt(),
       waterCadenceDays: j['water_cadence_days'] == null
           ? null
-          : WaterCadence.fromJson(j['water_cadence_days'] as Map<String, dynamic>),
+          : WaterCadence.fromJson(
+              j['water_cadence_days'] as Map<String, dynamic>,
+            ),
       feedCadenceDays: (j['feed_cadence_days'] as num?)?.toInt(),
       depthMm: (j['depth_mm'] as num?)?.toInt(),
       germinationDays: (j['germination_days'] as num?)?.toInt(),
@@ -264,6 +278,7 @@ class Crop {
       perennial: j['perennial'] as bool? ?? false,
       image: j['image'] as String?,
       draft: j['draft'] as bool? ?? false,
+      maxC: j['max_c'] as num?,
     );
   }
 }
@@ -275,6 +290,7 @@ class FrostProfile {
     required this.firstFrost,
     this.south = false,
     this.regime = 'frost',
+    this.weeklyTmax,
   });
 
   /// Median last spring frost for the user's location (ISO `yyyy-mm-dd`).
@@ -291,19 +307,26 @@ class FrostProfile {
   /// dates are anchors around the coldest day, not frosts.
   final String regime;
 
+  /// Mean daily max per calendar week 0-51; null = no heat trimming.
+  final List<double>? weeklyTmax;
+
   factory FrostProfile.fromJson(Map<String, dynamic> j) => FrostProfile(
-        lastFrost: j['last_frost'] as String,
-        firstFrost: j['first_frost'] as String,
-        south: j['hemisphere'] == 'south',
-        regime: j['regime'] as String? ?? 'frost',
-      );
+    lastFrost: j['last_frost'] as String,
+    firstFrost: j['first_frost'] as String,
+    south: j['hemisphere'] == 'south',
+    regime: j['regime'] as String? ?? 'frost',
+    weeklyTmax: (j['weekly_tmax'] as List?)
+        ?.map((e) => (e as num).toDouble())
+        .toList(growable: false),
+  );
 
   Map<String, dynamic> toJson() => {
-        'last_frost': lastFrost,
-        'first_frost': firstFrost,
-        'hemisphere': south ? 'south' : 'north',
-        'regime': regime,
-      };
+    'last_frost': lastFrost,
+    'first_frost': firstFrost,
+    'hemisphere': south ? 'south' : 'north',
+    'regime': regime,
+    if (weeklyTmax != null) 'weekly_tmax': weeklyTmax,
+  };
 
   /// The same month/days, moved to the season [today] falls in.
   FrostProfile forSeason(String today) {
@@ -313,6 +336,7 @@ class FrostProfile {
       firstFrost: isoForSeason(firstFrost.substring(5), season, south: south),
       south: south,
       regime: regime,
+      weeklyTmax: weeklyTmax,
     );
   }
 }
@@ -342,11 +366,11 @@ class ScheduledWindow {
   final LocalizedText? note;
 
   Map<String, dynamic> toJson() => {
-        'crop_slug': cropSlug,
-        'method': methodToWire(method),
-        'start': start,
-        'end': end,
-        'min_soil_c': minSoilC,
-        'note': note?.toJson(),
-      };
+    'crop_slug': cropSlug,
+    'method': methodToWire(method),
+    'start': start,
+    'end': end,
+    'min_soil_c': minSoilC,
+    'note': note?.toJson(),
+  };
 }

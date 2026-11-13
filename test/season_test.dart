@@ -31,6 +31,6 @@ void main() {
         maxSuggestions: (params['maxSuggestions'] as num).toInt(),
       ),
     );
-    expect(backendSides(nodes.map((n) => n.toJson()).toList()), fixture['nodes']);
+    expect(backendSides(nodes.map((n) => n.toJson()).toList()), backendSides(fixture['nodes']));
   });
 }

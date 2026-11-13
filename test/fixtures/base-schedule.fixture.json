@@ -12,7 +12,11 @@
       "min_soil_c": null,
       "note": {
         "nl": "Binnen voorzaaien voor een vroege start.",
-        "en": "Start indoors for an early start."
+        "en": "Start indoors for an early start.",
+        "de": "Für einen frühen Start drinnen vorziehen.",
+        "fr": "Semer en intérieur pour un démarrage précoce.",
+        "sv": "Förkultivera inomhus för en tidig start.",
+        "pt": "Semear em interior para um arranque antecipado."
       }
     },
     {
@@ -23,7 +27,11 @@
       "min_soil_c": null,
       "note": {
         "nl": "Binnen voorzaaien voor een vroege start.",
-        "en": "Start indoors for an early start."
+        "en": "Start indoors for an early start.",
+        "de": "Für einen frühen Start drinnen vorziehen.",
+        "fr": "Semer en intérieur pour un démarrage précoce.",
+        "sv": "Förkultivera inomhus för en tidig start.",
+        "pt": "Semear em interior para um arranque antecipado."
       }
     },
     {
@@ -34,7 +42,11 @@
       "min_soil_c": 5,
       "note": {
         "nl": "Poten/planten in de aangegeven periode.",
-        "en": "Plant in the window shown."
+        "en": "Plant in the window shown.",
+        "de": "Im angezeigten Zeitraum pflanzen.",
+        "fr": "Planter pendant la période indiquée.",
+        "sv": "Plantera under den period som visas.",
+        "pt": "Plantar no período indicado."
       }
     },
     {
@@ -45,7 +57,11 @@
       "min_soil_c": 6,
       "note": {
         "nl": "Poten/planten in de aangegeven periode.",
-        "en": "Plant in the window shown."
+        "en": "Plant in the window shown.",
+        "de": "Im angezeigten Zeitraum pflanzen.",
+        "fr": "Planter pendant la période indiquée.",
+        "sv": "Plantera under den period som visas.",
+        "pt": "Plantar no período indicado."
       }
     },
     {
@@ -56,7 +72,11 @@
       "min_soil_c": 5,
       "note": {
         "nl": "Direct op de plek buiten zaaien.",
-        "en": "Sow directly outdoors where it will grow."
+        "en": "Sow directly outdoors where it will grow.",
+        "de": "Direkt an Ort und Stelle ins Freiland säen.",
+        "fr": "Semer directement en place, en pleine terre.",
+        "sv": "Så direkt på växtplatsen.",
+        "pt": "Semear diretamente no local definitivo."
       }
     },
     {
@@ -67,7 +87,11 @@
       "min_soil_c": 12,
       "note": {
         "nl": "Buiten uitplanten zodra het veilig is.",
-        "en": "Plant out once conditions are safe."
+        "en": "Plant out once conditions are safe.",
+        "de": "Auspflanzen, sobald das Wetter es zulässt.",
+        "fr": "Repiquer dès que la météo le permet.",
+        "sv": "Plantera ut när vädret tillåter.",
+        "pt": "Transplantar quando o tempo o permitir."
       }
     },
     {
@@ -78,7 +102,11 @@
       "min_soil_c": 3,
       "note": {
         "nl": "Direct op de plek buiten zaaien.",
-        "en": "Sow directly outdoors where it will grow."
+        "en": "Sow directly outdoors where it will grow.",
+        "de": "Direkt an Ort und Stelle ins Freiland säen.",
+        "fr": "Semer directement en place, en pleine terre.",
+        "sv": "Så direkt på växtplatsen.",
+        "pt": "Semear diretamente no local definitivo."
       }
     },
     {
@@ -89,7 +117,11 @@
       "min_soil_c": 3,
       "note": {
         "nl": "Poten/planten in de aangegeven periode.",
-        "en": "Plant in the window shown."
+        "en": "Plant in the window shown.",
+        "de": "Im angezeigten Zeitraum pflanzen.",
+        "fr": "Planter pendant la période indiquée.",
+        "sv": "Plantera under den period som visas.",
+        "pt": "Plantar no período indicado."
       }
     }
   ]

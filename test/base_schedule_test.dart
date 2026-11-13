@@ -12,6 +12,8 @@ import 'package:cropsy/timing/engine.dart';
 import 'package:cropsy/timing/types.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'backend_sides.dart';
+
 void main() {
   test('base schedule matches the backend fixture day-for-day', () {
     final fixture = jsonDecode(
@@ -46,7 +48,7 @@ void main() {
       expect(p['end'], e['end'],
           reason: 'row $i end (${e['crop_slug']}/${e['method']})');
       expect(p['min_soil_c'], e['min_soil_c'], reason: 'row $i min_soil_c');
-      expect(p['note'], e['note'], reason: 'row $i note');
+      expect(backendSides(p['note']), backendSides(e['note']), reason: 'row $i note');
     }
   });
 

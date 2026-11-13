@@ -39,7 +39,11 @@
       "end": "2027-03-18",
       "note": {
         "nl": "Direct op de plek buiten zaaien.",
-        "en": "Sow directly outdoors where it will grow."
+        "en": "Sow directly outdoors where it will grow.",
+        "de": "Direkt an Ort und Stelle ins Freiland säen.",
+        "fr": "Semer directement en place, en pleine terre.",
+        "sv": "Så direkt på växtplatsen.",
+        "pt": "Semear diretamente no local definitivo."
       }
     },
     {
@@ -50,7 +54,11 @@
       "end": "2027-06-10",
       "note": {
         "nl": "Direct op de plek buiten zaaien.",
-        "en": "Sow directly outdoors where it will grow."
+        "en": "Sow directly outdoors where it will grow.",
+        "de": "Direkt an Ort und Stelle ins Freiland säen.",
+        "fr": "Semer directement en place, en pleine terre.",
+        "sv": "Så direkt på växtplatsen.",
+        "pt": "Semear diretamente no local definitivo."
       }
     },
     {
@@ -61,7 +69,11 @@
       "end": "2027-05-27",
       "note": {
         "nl": "Buiten uitplanten zodra het veilig is.",
-        "en": "Plant out once conditions are safe."
+        "en": "Plant out once conditions are safe.",
+        "de": "Auspflanzen, sobald das Wetter es zulässt.",
+        "fr": "Repiquer dès que la météo le permet.",
+        "sv": "Plantera ut när vädret tillåter.",
+        "pt": "Transplantar quando o tempo o permitir."
       }
     },
     {

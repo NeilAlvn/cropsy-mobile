@@ -22,11 +22,22 @@ DateTime parseIso(String d) {
 String toIso(DateTime d) => d.toIso8601String().substring(0, 10);
 
 /// Add [n] calendar days (rounded, matching the TS `Math.round`).
-DateTime addDays(DateTime d, num n) =>
-    DateTime.fromMillisecondsSinceEpoch(
-      d.millisecondsSinceEpoch + n.round() * msPerDay,
-      isUtc: true,
-    );
+DateTime addDays(DateTime d, num n) => DateTime.fromMillisecondsSinceEpoch(
+  d.millisecondsSinceEpoch + n.round() * msPerDay,
+  isUtc: true,
+);
 
 /// Add [weeks] (fractional allowed; rounded to whole days like the TS engine).
 DateTime addWeeks(DateTime d, num weeks) => addDays(d, (weeks * 7).round());
+
+/// Calendar week of a UTC date, 0-51. Days 364 and 365 fold into week 51.
+/// Port of `weekOfYear` in the backend's `src/timing/dates.ts`.
+int weekOfYear(DateTime d) {
+  final doy = DateTime.utc(
+    d.year,
+    d.month,
+    d.day,
+  ).difference(DateTime.utc(d.year, 1, 1)).inDays;
+  final w = doy ~/ 7;
+  return w > 51 ? 51 : w;
+}
