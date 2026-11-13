@@ -1,0 +1,41 @@
+## title
+Cropsy: Garden Planner
+## subtitle
+Veggie patch planner & journal
+## keywords
+herbs,seedling,frost,season,organic,backyard,balcony,pots,compost,greenhouse,homegrown,tomato
+## short
+Veggie patch planner: when to sow, water and harvest, set by your own seasons.
+## description
+Cropsy is a garden planner for growing your own vegetables and herbs, anywhere: a windowsill, a balcony, a raised bed or a backyard veggie patch. It is your sowing calendar, garden journal and watering reminder in one, and it tells you which crops fit your space and exactly when to sow, plant out, water and harvest them.
+
+YOUR SEASON, LAID OUT
+Pick a crop and press Start. Cropsy builds a season path from the frost dates and climate of your own place, from Hobart to Brisbane, and from Invercargill to Auckland: sow indoors, plant out, first harvest, last harvest. When the weather shifts, the plan moves with it. You are never behind.
+
+ONE PLACE FOR THE WHOLE GARDEN
+Home shows what needs doing this week. My garden holds every plant with its photos and notes. Season path shows the year at a glance. Explore finds the next crop for the space you have.
+
+REMINDERS THAT KNOW YOUR POTS
+Watering reminders follow the size of the container and the forecast, so a small pot in a heatwave and a bed in spring get different advice.
+
+DIAGNOSE FROM A PHOTO
+Spots on a leaf? Take a picture. Cropsy suggests the likely problem, what to do today and how to prevent it next time. Every answer says it is a guess, because it is.
+
+A JOURNAL THAT ADDS UP
+Log every harvest by weight or by count and watch the yearly tally grow. Growth photos stay with the plant.
+
+FREE TO TRY
+Free: 1 garden with 3 growing plants at a time (plan as many as you like), this week's and next week's tasks, daily care reminders, every crop guide, 20 journal photos and 2 freeze days a month.
+Premium: unlimited gardens and plants, the full-season plan, the garden planner grid, photo diagnosis, unlimited photos and freeze days, and export. Pay yearly, starting with a 7-day free trial (cancel any time before it ends; we remind you 2 days before), or pay monthly.
+Lifetime: one payment for everything in Premium, all future features included.
+Subscriptions renew automatically at the price shown in the store unless you cancel at least 24 hours before the period ends. Manage or cancel any time in your App Store or Google Play account.
+
+Prices are shown in your local currency in the store before you buy.
+
+Cropsy speaks English, Dutch, German, French, Swedish and Portuguese.
+
+Terms of Use: https://www.cropsyapp.com/en/terms
+Apple's standard EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy Policy: https://www.cropsyapp.com/en/privacy
+## whats_new
+Cropsy now knows the southern seasons. Search for your town or use GPS: your calendar follows your own frost dates and climate, from Hobart to Brisbane and from Invercargill to Auckland. In frost-free areas it plans by temperature instead.
