@@ -2097,6 +2097,14 @@ abstract final class Str {
     sv: '$min–$max dagar',
     pt: '$min–$max dias',
   );
+  static const tooHotHere = LocalizedText(
+    nl: 'Te warm hier om dit gewas dit seizoen buiten te telen.',
+    en: 'Too hot here to grow this outdoors this season.',
+    de: 'Hier ist es diese Saison zu warm, um das draußen anzubauen.',
+    fr: 'Il fait trop chaud ici pour cultiver ceci en extérieur cette saison.',
+    sv: 'Det är för varmt här för att odla detta utomhus den här säsongen.',
+    pt: 'Está demasiado calor aqui para cultivar isto ao ar livre nesta época.',
+  );
 
   // ── settings ──────────────────────────────────────────────────────────────
   static const settings = LocalizedText(

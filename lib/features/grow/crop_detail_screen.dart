@@ -23,6 +23,7 @@ import '../../design/mascot.dart';
 import '../../design/typography.dart';
 import '../../design/widgets.dart';
 import '../../timing/dates.dart';
+import '../../timing/engine.dart';
 import '../../timing/types.dart';
 import '../repository_scope.dart';
 import '../garden/gating.dart';
@@ -254,6 +255,12 @@ class _Calendar extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (crop.methods.any((m) => m.type != MethodType.sowIndoor) &&
+            !scheduleCrop(crop, repo.frost).any((w) => w.method != MethodType.sowIndoor))
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(Str.tooHotHere.of(context), style: AppText.caption(context)),
+          ),
         PlantingCalendarBar(crop: crop, frost: repo.frost, today: repo.today),
         const SizedBox(height: 12),
         Text(Str.frostRelative(anchor, repo.regionName).of(context),
