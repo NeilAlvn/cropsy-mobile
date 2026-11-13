@@ -25,6 +25,15 @@ void main() {
     expect(inputFromKg(1), closeTo(2.20462, 1e-6));
   });
 
+  test('metric litres keep one decimal', () {
+    AppRegion.apply(lang: 'en', country: 'GB');
+    expect([volumeL(1.5), volumeL(0.2), volumeL(10)], ['1.5 L', '0.2 L', '10 L']);
+    AppRegion.apply(lang: 'nl', country: 'NL');
+    expect([volumeL(1.5), volumeL(0.2), volumeL(10)], ['1,5 L', '0,2 L', '10 L']);
+    AppRegion.apply(lang: 'de', country: 'DE');
+    expect(volumeL(7.5), '7,5 L');
+  });
+
   test('US unit round trip and no -0', () {
     AppRegion.apply(lang: 'en', country: 'US');
     expect(inputFromLitres(litresFromInput(2)), closeTo(2, 1e-9));

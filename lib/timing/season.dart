@@ -5,6 +5,7 @@
 /// Port of `src/timing/season.ts`; parity in `test/season_test.dart`.
 library;
 
+import '../l10n/date_fmt.dart';
 import '../l10n/strings.dart';
 import 'dates.dart';
 import 'engine.dart';
@@ -139,9 +140,9 @@ List<SeasonNode> seasonPath(
           note: Str.successionNote(
             after?.names,
             p.cropSlug,
-            hEnd,
+            dayMonthIso(hEnd),
             c.crop.names,
-            c.end,
+            dayMonthIso(c.end),
           ),
         ),
       );

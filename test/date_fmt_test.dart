@@ -35,6 +35,23 @@ void main() {
     expect(dayMonthYear(d), '3 mai. 2026');
   });
 
+  test('English outside the US keeps "Sep"; German weekdays keep the dot', () {
+    final sep = DateTime(2026, 9, 13); // a Sunday
+    for (final c in ['GB', 'AU', 'NL']) {
+      AppRegion.apply(lang: 'en', country: c);
+      expect(dayMonth(sep), '13 Sep', reason: c);
+      expect(dayMonthYear(sep), '13 Sep 2026', reason: c);
+      expect(weekdayDayMonth(sep), 'Sunday 13 Sep', reason: c);
+      expect(monthShort(9), 'Sep', reason: c);
+    }
+    AppRegion.apply(lang: 'en', country: 'US');
+    expect(dayMonth(sep), 'Sep 13');
+    AppRegion.apply(lang: 'de', country: 'DE');
+    expect(weekdayShort(sep), 'So.');
+    AppRegion.apply(lang: 'nl', country: 'NL');
+    expect(weekdayShort(sep), 'zo');
+  });
+
   test('season label', () {
     expect(seasonLabel('2026-11-13', south: false), '2026');
     expect(seasonLabel('2026-11-13', south: true), '2026/27');

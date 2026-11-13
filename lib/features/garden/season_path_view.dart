@@ -126,7 +126,7 @@ class _SeasonPathViewState extends State<SeasonPathView> {
                     child: Row(children: [
                       const Mascot(MascotPose.pointing, size: 40),
                       const SizedBox(width: 12),
-                      Expanded(child: Text(p.note?.en ?? '', style: AppText.body(context))),
+                      Expanded(child: Text(p.note?.of(context) ?? '', style: AppText.body(context))),
                       const SizedBox(width: 8),
                       TextButton(
                         onPressed: () async {

@@ -119,6 +119,8 @@ void main() {
     expect(pathDay(d, Str.monthShort(11).pick('en')), '13 NOV');
     AppRegion.apply(lang: 'en', country: 'US');
     expect(pathDay(d, Str.monthShort(11).pick('en')), 'NOV 13');
+    AppRegion.apply(lang: 'nl', country: 'US');
+    expect(pathDay(d, Str.monthShort(11).pick('nl')), '13 NOV');
     AppRegion.apply(lang: 'nl', country: 'NL');
   });
 }

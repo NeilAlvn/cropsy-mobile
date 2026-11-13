@@ -15,6 +15,7 @@ import 'dart:convert';
 import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../l10n/mascot_lines.dart';
 import '../../design/icons.dart';
 
@@ -1737,7 +1738,7 @@ class _CropOptions extends StatelessWidget {
 /// look in every language.
 @visibleForTesting
 String pathDay(DateTime d, String month) =>
-    AppRegion.isUS ? '$month ${d.day}' : '${d.day} $month';
+    AppRegion.isUS && Intl.defaultLocale == 'en_US' ? '$month ${d.day}' : '${d.day} $month';
 
 String _day(String iso, BuildContext context) {
   final d = parseIso(iso);

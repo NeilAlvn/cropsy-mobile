@@ -202,7 +202,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: AppColors.paper,
-      builder: (_) => _HarvestSheet(
+      builder: (_) => HarvestSheet(
         cropName: repo.cropNames(plant.cropSlug),
         pricedUnit: repo.content.prices[plant.cropSlug]?.unit,
       ),
@@ -360,8 +360,9 @@ class _Journal extends StatelessWidget {
   }
 }
 
-class _HarvestSheet extends StatefulWidget {
-  const _HarvestSheet({required this.cropName, this.pricedUnit});
+@visibleForTesting
+class HarvestSheet extends StatefulWidget {
+  const HarvestSheet({required this.cropName, this.pricedUnit});
 
   /// The crop's own name, in both languages.
   final LocalizedText cropName;
@@ -371,10 +372,10 @@ class _HarvestSheet extends StatefulWidget {
   final String? pricedUnit;
 
   @override
-  State<_HarvestSheet> createState() => _HarvestSheetState();
+  State<HarvestSheet> createState() => HarvestSheetState();
 }
 
-class _HarvestSheetState extends State<_HarvestSheet> {
+class HarvestSheetState extends State<HarvestSheet> {
   final _qty = TextEditingController();
   late String _unit = widget.pricedUnit ?? 'pcs';
 
@@ -406,7 +407,7 @@ class _HarvestSheetState extends State<_HarvestSheet> {
             ),
             const SizedBox(width: 10),
             SegmentedButton<String>(
-              segments: [ButtonSegment(value: 'pcs', label: Text(Str.pieces.of(context))), ButtonSegment(value: 'kg', label: Text(Str.unitMass.of(context)))],
+              segments: [ButtonSegment(value: 'pcs', label: Text(Str.pieces.of(context))), ButtonSegment(value: 'kg', label: Text(massUnit))],
               selected: {_unit},
               onSelectionChanged: (v) => setState(() => _unit = v.first),
             ),

@@ -9,15 +9,18 @@ import '../timing/dates.dart';
 import '../timing/season_year.dart';
 
 bool get _en => (Intl.defaultLocale ?? 'en').startsWith('en');
+bool get _us => Intl.defaultLocale == 'en_US';
+// Non-US English keeps the bare 'en' names ("Sep", not en_GB's "Sept").
+String? get _nameLocale => _en ? 'en' : null;
 
-String dayMonth(DateTime d) => (_en ? DateFormat.MMMd() : DateFormat('d MMM')).format(d);
+String dayMonth(DateTime d) => (_us ? DateFormat.MMMd() : DateFormat('d MMM', _nameLocale)).format(d);
 String dayMonthIso(String iso) => dayMonth(parseIso(iso));
 String weekdayDayMonth(DateTime d) =>
-    (_en ? DateFormat('EEEE').add_MMMd() : DateFormat('EEEE d MMM')).format(d);
+    (_us ? DateFormat('EEEE').add_MMMd() : DateFormat('EEEE d MMM', _nameLocale)).format(d);
 String dayMonthYear(DateTime d) =>
-    (_en ? DateFormat.yMMMd() : DateFormat('d MMM yyyy')).format(d);
-String weekdayShort(DateTime d) => DateFormat.E().format(d);
-String monthShort(int month) => DateFormat.MMM().format(DateTime(2000, month));
+    (_us ? DateFormat.yMMMd() : DateFormat('d MMM yyyy', _nameLocale)).format(d);
+String weekdayShort(DateTime d) => (_en ? DateFormat.E() : DateFormat('EEE')).format(d);
+String monthShort(int month) => DateFormat('MMM', _nameLocale).format(DateTime(2000, month));
 String clock(DateTime d) => DateFormat.jm().format(d);
 
 /// "2026" in the north; "2026/27" in the south, where the season runs Jul–Jun.
