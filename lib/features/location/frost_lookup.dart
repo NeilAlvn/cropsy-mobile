@@ -17,17 +17,21 @@ class FrostLookup {
   final double lat;
   final double lon;
 
-  /// `open-meteo` | `fallback` (server default) — shown in the "based on" row.
+  /// Always `open-meteo` (anything else is rejected in `_get`) — shown in the "based on" row.
   final String source;
 }
 
 Future<FrostLookup?> _get(Map<String, String> query) async {
   final client = HttpClient()..connectionTimeout = const Duration(seconds: 8);
   try {
+    const limit = Duration(seconds: 15);
     final req = await client.getUrl(Uri.parse('$apiBaseUrl/api/frost').replace(queryParameters: query));
-    final res = await req.close();
+    final res = await req.close().timeout(limit);
     if (res.statusCode != 200) return null;
-    final j = jsonDecode(await res.transform(utf8.decoder).join()) as Map<String, dynamic>;
+    final j = jsonDecode(await res.transform(utf8.decoder).join().timeout(limit)) as Map<String, dynamic>;
+    // An old backend answers with NL `fallback` dates or a hemisphere-less
+    // profile; never save those.
+    if (j['source'] != 'open-meteo' || j['hemisphere'] == null) return null;
     return FrostLookup(
       profile: FrostProfile.fromJson(j),
       lat: (j['lat'] as num).toDouble(),

@@ -4361,14 +4361,6 @@ abstract final class Str {
     sv: 'Hämtar frostdatumen för den rutan.',
     pt: 'Procura as datas de geada dessa zona.',
   );
-  static const snapToRegion = LocalizedText(
-    nl: 'Kies de dichtstbijzijnde teeltregio',
-    en: 'Snap to the nearest growing region',
-    de: 'Auf die nächste Anbauregion setzen',
-    fr: 'Prendre la région de culture la plus proche',
-    sv: 'Välj närmaste odlingsregion',
-    pt: 'Ajustar à região de cultivo mais próxima',
-  );
   static const noLocation = LocalizedText(
     nl: 'Geen locatie gevonden. Kies een regio of vul een postcode in.',
     en: 'Could not get a location. Pick a region or enter a postcode.',
@@ -4376,6 +4368,23 @@ abstract final class Str {
     fr: 'Position introuvable. Choisis une région ou entre un code postal.',
     sv: 'Kunde inte hitta en plats. Välj en region eller ange ett postnummer.',
     pt: 'Não foi possível obter a localização. Escolhe uma região ou introduz um código postal.',
+  );
+  static const pickPlaceFirst = LocalizedText(
+    nl: 'Zoek eerst je woonplaats of gebruik je locatie.',
+    en: 'Search for your town or use your location first.',
+    de: 'Suche zuerst deinen Wohnort oder nutze deinen Standort.',
+    fr: 'Cherche d’abord ta ville ou utilise ta position.',
+    sv: 'Sök först efter din ort eller använd din plats.',
+    pt: 'Procura primeiro a tua localidade ou usa a tua localização.',
+  );
+
+  static const frostLookupFailed = LocalizedText(
+    nl: 'Vorstdatums ophalen lukte niet. Probeer het zo opnieuw.',
+    en: 'Couldn’t fetch frost dates. Try again in a moment.',
+    de: 'Frostdaten konnten nicht geladen werden. Versuch es gleich noch einmal.',
+    fr: 'Impossible de récupérer les dates de gel. Réessaie dans un instant.',
+    sv: 'Kunde inte hämta frostdatum. Försök igen om en stund.',
+    pt: 'Não foi possível obter as datas de geada. Tenta de novo daqui a pouco.',
   );
   static const postcodeNotFound = LocalizedText(
     nl: 'Postcode niet gevonden (verwacht 1234AB), of je bent offline.',

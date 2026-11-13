@@ -15,6 +15,7 @@ import '../../l10n/mascot_lines.dart';
 import '../../design/typography.dart';
 import '../../timing/dates.dart';
 import '../../timing/season.dart';
+import '../../timing/season_year.dart';
 import '../repository_scope.dart';
 import '../paywall/paywall_screen.dart';
 import 'planner_grid_screen.dart';
@@ -38,7 +39,8 @@ class _SeasonPathViewState extends State<SeasonPathView> {
       builder: (context, snap) {
         final nodes = snap.data ?? const [];
         if (snap.connectionState != ConnectionState.done) return const SizedBox.shrink();
-        final year = parseIso(repo.today).year;
+        final south = repo.frost.south;
+        final start = seasonStart(seasonYearOf(repo.today, south: south), south: south);
         final lanes = <String, List<SeasonNode>>{};
         for (final n in nodes) {
           if (n.kind == SeasonNodeKind.succession) continue;
@@ -90,19 +92,19 @@ class _SeasonPathViewState extends State<SeasonPathView> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 controller: ScrollController(
-                  initialScrollOffset: ((parseIso(repo.today).month - 3).clamp(0, 6)) * _monthW,
+                  initialScrollOffset: ((parseIso(repo.today).difference(start).inDays ~/ 30 - 2).clamp(0, 6)) * _monthW,
                 ),
                 child: SizedBox(
                   width: 12 * _monthW,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _MonthHeader(today: repo.today),
+                      _MonthHeader(today: repo.today, south: south),
                       for (final e in lanes.entries)
                         _Lane(
                             label: repo.cropNames(e.value.first.cropSlug).of(context),
                             nodes: e.value,
-                            year: year),
+                            start: start),
                     ],
                   ),
                 ),
@@ -150,8 +152,9 @@ class _SeasonPathViewState extends State<SeasonPathView> {
 }
 
 class _MonthHeader extends StatelessWidget {
-  const _MonthHeader({required this.today});
+  const _MonthHeader({required this.today, required this.south});
   final String today;
+  final bool south;
 
   @override
   Widget build(BuildContext context) {
@@ -163,8 +166,8 @@ class _MonthHeader extends StatelessWidget {
           child: Center(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: i + 1 == m ? BoxDecoration(color: AppColors.sprout, borderRadius: BorderRadius.circular(8)) : null,
-              child: Text(_monthAbbr[i], style: AppText.caption(context, color: i + 1 == m ? AppColors.onAccent : AppColors.muted)),
+              decoration: monthAt(i, south: south) == m ? BoxDecoration(color: AppColors.sprout, borderRadius: BorderRadius.circular(8)) : null,
+              child: Text(_monthAbbr[monthAt(i, south: south) - 1], style: AppText.caption(context, color: monthAt(i, south: south) == m ? AppColors.onAccent : AppColors.muted)),
             ),
           ),
         ),
@@ -173,16 +176,14 @@ class _MonthHeader extends StatelessWidget {
 }
 
 class _Lane extends StatelessWidget {
-  const _Lane({required this.label, required this.nodes, required this.year});
+  const _Lane({required this.label, required this.nodes, required this.start});
   final String label;
   final List<SeasonNode> nodes;
-  final int year;
+  final DateTime start;
 
   double _x(String iso) {
-    final d = parseIso(iso);
-    if (d.year < year) return 0;
-    if (d.year > year) return 12 * _monthW;
-    return ((d.month - 1) + (d.day - 1) / 31) * _monthW;
+    final days = parseIso(iso).difference(start).inDays;
+    return (days / 365 * 12 * _monthW).clamp(0.0, 12 * _monthW);
   }
 
   @override

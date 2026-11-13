@@ -22,6 +22,7 @@ MarkerFacts _facts({
   List<({String slug, String on})> harvests = const [],
   List<({int days, String on})> streaks = const [],
   List<({String plantId, String firstOn, String lastOn})> photos = const [],
+  String? country,
 }) =>
     MarkerFacts(
       today: DateTime.utc(2026, 9, 16),
@@ -42,6 +43,7 @@ MarkerFacts _facts({
       harvests: harvests,
       streaks: streaks,
       photos: photos,
+      country: country,
     );
 
 /// [n] harvests of the same crop, one a day through June (at most 30).
@@ -69,6 +71,15 @@ List<SeasonMarker> _of(List<SeasonMarker> m, SeasonMarkerKind kind) =>
     m.where((e) => e.kind == kind).toList();
 
 void main() {
+  test('IJsheiligen is a marker in NL/BE only', () {
+    bool hasIjs(String? c) => seasonMarkers(_facts(country: c))
+        .any((m) => m.kind == SeasonMarkerKind.ijsheiligen);
+    expect(hasIjs('NL'), isTrue);
+    expect(hasIjs('BE'), isTrue);
+    expect(hasIjs('US'), isFalse);
+    expect(hasIjs('AU'), isFalse);
+  });
+
   test('the year always carries its frost dates and its recap', () {
     final marks = seasonMarkers(_facts(plants: 0));
     expect(

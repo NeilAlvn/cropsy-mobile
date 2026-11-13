@@ -1,13 +1,12 @@
 /// Location picker — lets the grower set the place their whole schedule is
-/// computed from. Three ways in, matching how people actually think about it:
-///   • "Use my current location" — detect and snap to the nearest region.
-///   • Type a town — "Rotterdam", "Antwerp" — and match it to a region.
-///   • Pick a region from the list.
+/// computed from. Ways in:
+///   • "Use my current location" — GPS → frost API.
+///   • Search a town or postcode anywhere in the world → frost API.
+///   • In NL/BE only: pick one of the bundled regions from the list.
 ///
-/// Whatever they choose calls [GardenRepository.setRegion], which re-points the
-/// frost profile every planting date and reminder is derived from. In production
-/// the detected/typed coordinate would hit `GET /api/frost?lat=&lon=`; here it
-/// resolves offline against the bundled presets.
+/// Whatever they choose calls [GardenRepository.setLocation] / `setRegion`,
+/// which re-points the frost profile every planting date and reminder is
+/// derived from.
 library;
 
 import 'package:flutter/material.dart';
@@ -23,6 +22,8 @@ import '../../design/colors.dart';
 import '../../design/typography.dart';
 import '../repository_scope.dart';
 import 'frost_lookup.dart';
+import 'place_search.dart';
+import 'saved_location.dart';
 
 /// Opens the picker and applies the chosen region. Returns the chosen region, or
 /// null if dismissed.
@@ -51,17 +52,19 @@ class _LocationSheet extends StatefulWidget {
 class _LocationSheetState extends State<_LocationSheet> {
   String _query = '';
   bool _detecting = false;
+  List<PlaceHit> _places = const [];
+  bool _searching = false;
 
   Future<void> _detect() async {
     setState(() => _detecting = true);
     final repo = RepositoryScope.of(context);
     // Read before the await: the context is gone by the time this lands.
     final here = Str.yourLocation.of(context);
-    // GPS → GET /api/frost. Offline or denied: snap to the nearest preset.
+    // GPS → GET /api/frost. Offline or denied: tell the user, keep the saved place.
     final hit = await frostForDevice();
     if (!mounted) return;
     if (hit != null) {
-      await repo.setLocation(name: here, profile: hit.profile, lat: hit.lat, lon: hit.lon);
+      await repo.setLocation(name: here, lookup: hit);
       if (mounted) Navigator.pop(context);
       return;
     }
@@ -77,7 +80,7 @@ class _LocationSheetState extends State<_LocationSheet> {
     final hit = await frostForPostcode(pc);
     if (!mounted) return;
     if (hit != null) {
-      await repo.setLocation(name: pc.toUpperCase(), profile: hit.profile, lat: hit.lat, lon: hit.lon, postcode: pc);
+      await repo.setLocation(name: pc.toUpperCase(), lookup: hit, postcode: pc, country: 'NL');
       if (mounted) Navigator.pop(context);
       return;
     }
@@ -87,14 +90,41 @@ class _LocationSheetState extends State<_LocationSheet> {
     );
   }
 
+  Future<void> _search(String q) async {
+    final query = q.trim();
+    if (_pcPattern.hasMatch(query)) return _postcode(query);
+    setState(() => _searching = true);
+    final hits = await searchPlaces(query, lang: AppLangScope.of(context).code);
+    if (!mounted) return;
+    setState(() {
+      _searching = false;
+      _places = hits;
+    });
+  }
+
+  Future<void> _place(PlaceHit p) async {
+    setState(() => _detecting = true);
+    final repo = RepositoryScope.of(context);
+    final hit = await frostForCoordinate(p.lat, p.lon);
+    if (!mounted) return;
+    if (hit != null) {
+      await repo.setLocation(name: p.label, lookup: hit, country: p.countryCode);
+      if (mounted) Navigator.pop(context);
+      return;
+    }
+    setState(() => _detecting = false);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(Str.frostLookupFailed.of(context))));
+  }
+
   static final _pcPattern = RegExp(r'^[1-9]\d{3}\s?[A-Za-z]{2}$');
 
   @override
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
     final current = repo.regionName;
-    final matches =
-        frostRegions.where((r) => r.matches(_query)).toList(growable: false);
+    final matches = usesNlBePresets(repo.effectiveCountry)
+        ? frostRegions.where((r) => r.matches(_query)).toList(growable: false)
+        : const <FrostRegion>[];
     // Leave room for the keyboard when the search field is focused.
     final viewInsets = MediaQuery.of(context).viewInsets.bottom;
     final maxH = MediaQuery.of(context).size.height * 0.78;
@@ -136,7 +166,12 @@ class _LocationSheetState extends State<_LocationSheet> {
               padding: const EdgeInsets.fromLTRB(20, 6, 20, 6),
               child: TextField(
                 autofocus: false,
-                onChanged: (q) => setState(() => _query = q),
+                textInputAction: TextInputAction.search,
+                onSubmitted: _search,
+                onChanged: (q) => setState(() {
+                  _query = q;
+                  _places = const [];
+                }),
                 style: AppText.body(context),
                 decoration: InputDecoration(
                   isDense: true,
@@ -161,45 +196,44 @@ class _LocationSheetState extends State<_LocationSheet> {
             _UseLocationTile(detecting: _detecting, onTap: _detecting ? null : _detect),
             Divider(height: 1, color: AppColors.hairline),
             Flexible(
-              child: matches.isEmpty
-                  ? _pcPattern.hasMatch(_query.trim())
-                      ? ListTile(
-                          leading: Icon(PhosphorIcons.envelopeSimple, color: AppColors.sprout),
-                          title: Text(Str.usePostcode(_query.trim().toUpperCase()).of(context), style: AppText.body(context)),
-                          subtitle: Text(Str.looksUpFrost.of(context), style: AppText.caption(context)),
-                          onTap: _detecting ? null : () => _postcode(_query.trim()),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.all(24),
-                          child: Text(
-                            Str.noLocationMatch(_query).of(context),
-                            style: AppText.bodyMuted(context),
-                          ),
-                        )
-                  : ListView.separated(
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      itemCount: matches.length,
-                      separatorBuilder: (_, _) =>
-                          Divider(height: 1, color: AppColors.hairline, indent: 20),
-                      itemBuilder: (context, i) {
-                        final r = matches[i];
-                        final selected = r.name == current;
-                        return ListTile(
-                          leading: Icon(PhosphorIcons.mapPin,
-                              color: selected ? AppColors.sprout : AppColors.muted),
-                          title: Text(r.name, style: AppText.body(context)),
-                          subtitle: Text(
-                            r.cities.take(3).join(' · '),
-                            style: AppText.caption(context),
-                          ),
-                          trailing: selected
-                              ? Icon(PhosphorIcons.checkCircle, color: AppColors.sprout)
-                              : null,
-                          onTap: () => Navigator.pop(context, r),
-                        );
-                      },
-                    ),
+              child: _searching
+                  ? const Padding(padding: EdgeInsets.all(24), child: Center(child: CircularProgressIndicator()))
+                  : matches.isEmpty && _places.isEmpty
+                      ? _pcPattern.hasMatch(_query.trim())
+                          ? ListTile(
+                              leading: Icon(PhosphorIcons.envelopeSimple, color: AppColors.sprout),
+                              title: Text(Str.usePostcode(_query.trim().toUpperCase()).of(context), style: AppText.body(context)),
+                              subtitle: Text(Str.looksUpFrost.of(context), style: AppText.caption(context)),
+                              onTap: _detecting ? null : () => _postcode(_query.trim()),
+                            )
+                          : _query.trim().length < 2
+                              ? const SizedBox.shrink()
+                              : ListTile(
+                                  leading: Icon(PhosphorIcons.magnifyingGlass, color: AppColors.sprout),
+                                  title: Text(_query.trim(), style: AppText.body(context)),
+                                  subtitle: Text(Str.looksUpFrost.of(context), style: AppText.caption(context)),
+                                  onTap: _detecting ? null : () => _search(_query),
+                                )
+                      : ListView(
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          children: [
+                            for (final r in matches)
+                              ListTile(
+                                leading: Icon(PhosphorIcons.mapPin, color: r.name == current ? AppColors.sprout : AppColors.muted),
+                                title: Text(r.name, style: AppText.body(context)),
+                                subtitle: Text(r.cities.take(3).join(' · '), style: AppText.caption(context)),
+                                trailing: r.name == current ? Icon(PhosphorIcons.checkCircle, color: AppColors.sprout) : null,
+                                onTap: () => Navigator.pop(context, r),
+                              ),
+                            for (final p in _places)
+                              ListTile(
+                                leading: Icon(PhosphorIcons.mapPin, color: AppColors.muted),
+                                title: Text(p.label, style: AppText.body(context)),
+                                onTap: _detecting ? null : () => _place(p),
+                              ),
+                          ],
+                        ),
             ),
             SizedBox(height: MediaQuery.of(context).padding.bottom + 8),
           ],
@@ -233,7 +267,7 @@ class _UseLocationTile extends StatelessWidget {
       ),
       subtitle: detecting
           ? null
-          : Text(Str.snapToRegion.of(context),
+          : Text(Str.looksUpFrost.of(context),
               style: AppText.caption(context)),
     );
   }

@@ -41,6 +41,8 @@ import '../../notifications/reminders.dart';
 import '../../timing/types.dart';
 import '../../timing/weather_adjust.dart' show TaskKind;
 import '../location/frost_lookup.dart';
+import '../location/place_search.dart';
+import '../location/saved_location.dart';
 import '../paywall/paywall_screen.dart';
 import '../repository_scope.dart';
 import '../settings/settings_screen.dart';
@@ -125,6 +127,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   FrostRegion _region = defaultRegion;
   FrostLookup? _lookup; // GPS / postcode result, wins over the preset
   String? _postcode;
+  PlaceHit? _place;
   final _spaces = <String>{'balcony'};
   int _sizeBucket = 0;
   String _sun = 'full';
@@ -156,6 +159,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Analytics.capture('onboarding_step_viewed', properties: {'step': 0});
   }
 
+  static const _locationPage = 2; // 0 hero, 1 get-to-know, 2 where-do-you-grow
   static const _pageDuration = Duration(milliseconds: 380);
   static const _pageCurve = Curves.easeInOutCubic;
 
@@ -191,11 +195,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       name: gardenKindLabel(_kind).pick(AppLangScope.of(context).code),
       sizeM2: _sizeBuckets[_sizeBucket].$2,
       postcode: _postcode,
-      profile: _lookup?.profile,
-      lat: _lookup?.lat,
-      lon: _lookup?.lon,
+      lookup: _lookup,
+      placeName: _place?.label,
+      country: _place?.countryCode,
     );
-    if (_lookup != null) repo.frostSource = _lookup!.source;
     // `methods` and `companions` are no longer asked here: the place belongs to
     // the plant, and companions default on. The jsonb shape is unchanged, so
     // anything reading it keeps working — it just sees fewer keys on first run.
@@ -251,7 +254,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Future<void> _skip() async {
-    await RepositoryScope.of(context).seedDemoGarden();
+    final repo = RepositoryScope.of(context);
+    if (!usesNlBePresets(repo.effectiveCountry)) {
+      _controller.animateToPage(_locationPage, duration: _pageDuration, curve: _pageCurve);
+      return;
+    }
+    await repo.seedDemoGarden();
     widget.onDone();
   }
 
@@ -325,7 +333,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         subtitle: Str.frostBackbone,
         progress: onboardingProgress(2),
         onBack: _prev,
-        onNext: _next,
+        onNext: () {
+          if (_lookup == null && !usesNlBePresets(RepositoryScope.of(context).effectiveCountry)) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(Str.pickPlaceFirst.of(context))));
+            return;
+          }
+          _next();
+        },
         body: _LocationStep(
           region: _region,
           lookup: _lookup,
@@ -333,10 +347,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             _region = r;
             _lookup = null;
             _postcode = null;
+            _place = null;
           }),
-          onLookup: (l, pc) => setState(() {
+          onLookup: (l, pc, place) => setState(() {
             _lookup = l;
             _postcode = pc;
+            _place = place;
           }),
         ),
       ),
@@ -575,7 +591,7 @@ class _LocationStep extends StatefulWidget {
   final FrostRegion region;
   final FrostLookup? lookup;
   final ValueChanged<FrostRegion> onRegion;
-  final void Function(FrostLookup lookup, String? postcode) onLookup;
+  final void Function(FrostLookup lookup, String? postcode, PlaceHit? place) onLookup;
 
   @override
   State<_LocationStep> createState() => _LocationStepState();
@@ -584,6 +600,8 @@ class _LocationStep extends StatefulWidget {
 class _LocationStepState extends State<_LocationStep> {
   bool _busy = false;
   String? _error;
+  List<PlaceHit> _places = const [];
+  static final _pcPattern = RegExp(r'^[1-9]\d{3}\s?[A-Za-z]{2}$');
   final _pc = TextEditingController();
 
   @override
@@ -603,11 +621,26 @@ class _LocationStepState extends State<_LocationStep> {
       _busy = false;
       if (hit == null) _error = Str.noLocationPickRegion.of(context);
     });
-    if (hit != null) widget.onLookup(hit, null);
+    if (hit != null) widget.onLookup(hit, null, null);
   }
 
-  Future<void> _postcode() async {
+  Future<void> _search() async {
     final pc = _pc.text.trim();
+    if (!_pcPattern.hasMatch(pc)) {
+      setState(() {
+        _busy = true;
+        _error = null;
+        _places = const [];
+      });
+      final hits = await searchPlaces(pc, lang: AppLangScope.of(context).code);
+      if (!mounted) return;
+      setState(() {
+        _busy = false;
+        _places = hits;
+        if (hits.isEmpty) _error = Str.noLocationMatch(pc).of(context);
+      });
+      return;
+    }
     setState(() {
       _busy = true;
       _error = null;
@@ -618,7 +651,7 @@ class _LocationStepState extends State<_LocationStep> {
       _busy = false;
       if (hit == null) _error = Str.postcodeNotFoundPickRegion.of(context);
     });
-    if (hit != null) widget.onLookup(hit, pc.toUpperCase());
+    if (hit != null) widget.onLookup(hit, pc.toUpperCase(), null);
   }
 
   @override
@@ -639,10 +672,10 @@ class _LocationStepState extends State<_LocationStep> {
             Expanded(
               child: TextField(
                 controller: _pc,
-                textCapitalization: TextCapitalization.characters,
+                textCapitalization: TextCapitalization.words,
                 style: AppText.body(context),
-                decoration: InputDecoration(isDense: true, hintText: Str.postcodeHint.of(context)),
-                onSubmitted: (_) => _postcode(),
+                decoration: InputDecoration(isDense: true, hintText: Str.townOrPostcode.of(context)),
+                onSubmitted: (_) => _search(),
               ),
             ),
             const SizedBox(width: 8),
@@ -653,7 +686,7 @@ class _LocationStepState extends State<_LocationStep> {
               width: 116,
               child: SecondaryButton(
                 label: Str.lookUp.of(context),
-                onPressed: _busy ? null : _postcode,
+                onPressed: _busy ? null : _search,
               ),
             ),
           ],
@@ -662,6 +695,26 @@ class _LocationStepState extends State<_LocationStep> {
           const SizedBox(height: 8),
           Text(_error!, style: AppText.caption(context, color: AppColors.critical)),
         ],
+        for (final p in _places)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: SelectTile(
+              icon: PhosphorIcons.mapPin,
+              label: p.label,
+              selected: false,
+              onTap: () async {
+                setState(() => _busy = true);
+                final hit = await frostForCoordinate(p.lat, p.lon);
+                if (!mounted) return;
+                setState(() {
+                  _busy = false;
+                  if (hit == null) _error = Str.frostLookupFailed.of(context);
+                  _places = const [];
+                });
+                if (hit != null) widget.onLookup(hit, null, p);
+              },
+            ),
+          ),
         if (l != null) ...[
           const SizedBox(height: 12),
           MascotNote(
@@ -672,18 +725,20 @@ class _LocationStepState extends State<_LocationStep> {
             ),
           ),
         ],
-        const SizedBox(height: 18),
-        GroupLabel(Str.orPickRegion),
-        for (final r in frostRegions)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: SelectTile(
-              icon: PhosphorIcons.mapPin,
-              label: r.name,
-              selected: l == null && r.name == widget.region.name,
-              onTap: () => widget.onRegion(r),
+        if (usesNlBePresets(RepositoryScope.of(context).effectiveCountry)) ...[
+          const SizedBox(height: 18),
+          GroupLabel(Str.orPickRegion),
+          for (final r in frostRegions)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: SelectTile(
+                icon: PhosphorIcons.mapPin,
+                label: r.name,
+                selected: l == null && r.name == widget.region.name,
+                onTap: () => widget.onRegion(r),
+              ),
             ),
-          ),
+        ],
       ],
     );
   }

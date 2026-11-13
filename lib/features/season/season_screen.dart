@@ -240,6 +240,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
       MarkerFacts(
         today: today,
         frost: repo.frost,
+        country: repo.effectiveCountry,
         plantCount: plants.length,
         photoThisMonth: photoThisMonth,
         euros: tally.euros,

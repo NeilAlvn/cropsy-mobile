@@ -13,6 +13,7 @@ import '../../l10n/strings.dart';
 import '../../timing/content_snapshot.dart';
 import '../../timing/dates.dart';
 import '../../timing/types.dart';
+import '../location/saved_location.dart';
 
 enum SeasonMarkerKind {
   ijsheiligen,
@@ -121,10 +122,14 @@ class MarkerFacts {
     this.harvests = const [],
     this.streaks = const [],
     this.photos = const [],
+    this.country,
   });
 
   final DateTime today;
   final FrostProfile frost;
+
+  /// ISO-2; null = unknown.
+  final String? country;
 
   /// Plants in the garden. With none of them, the path has nothing to say about
   /// seed orders or photos, so those markers stay away.
@@ -208,12 +213,13 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
   final out = <SeasonMarker>[
     // The Dutch gardener's calendar turns on this week, not on the average
     // frost date, so it is a first-class marker (PRD §4).
-    SeasonMarker(
-      kind: SeasonMarkerKind.ijsheiligen,
-      on: _iso(year, 5, 11),
-      title: Str.ijsheiligen,
-      caption: Str.ijsheiligenSub,
-    ),
+    if (usesNlBePresets(facts.country))
+      SeasonMarker(
+        kind: SeasonMarkerKind.ijsheiligen,
+        on: _iso(year, 5, 11),
+        title: Str.ijsheiligen,
+        caption: Str.ijsheiligenSub,
+      ),
     SeasonMarker(
       kind: SeasonMarkerKind.lastFrost,
       on: facts.frost.lastFrost,

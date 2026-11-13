@@ -2,8 +2,8 @@
 /// computed from the real frost-relative engine, so the bands shift with the
 /// user's region instead of being a static picture.
 ///
-/// A 12-month (Jan→Dec) chart with three lanes — Sow / Plant out / Harvest —
-/// each drawn as coloured bands positioned by day-of-year, plus a vertical
+/// A 12-month chart from the season start (Jan, or Jul in the south) with three lanes — Sow / Plant out / Harvest —
+/// each drawn as coloured bands positioned by day-of-season, plus a vertical
 /// "today" marker and month labels.
 library;
 
@@ -15,6 +15,7 @@ import '../../design/colors.dart';
 import '../../design/typography.dart';
 import '../../timing/dates.dart';
 import '../../timing/engine.dart';
+import '../../timing/season_year.dart';
 import '../../timing/types.dart';
 
 enum _Lane { sow, plantOut, harvest }
@@ -27,17 +28,12 @@ class _Band {
   final Color color;
 }
 
-double _dayFrac(String iso) {
-  final d = parseIso(iso);
-  final jan1 = DateTime.utc(d.year, 1, 1);
-  final doy = d.difference(jan1).inDays;
-  return (doy / 365).clamp(0.0, 1.0);
-}
+/// Position on a cyclic 365-day axis, so a band that runs into the next
+/// season (garlic: planted Oct, harvested Jul) wraps instead of vanishing.
+@visibleForTesting
+double calendarFrac(DateTime d, DateTime start) => (d.difference(start).inDays % 365) / 365;
 
-double _dayFracFromDate(DateTime d) {
-  final jan1 = DateTime.utc(d.year, 1, 1);
-  return (d.difference(jan1).inDays / 365).clamp(0.0, 1.0);
-}
+double _frac(DateTime d, DateTime start) => calendarFrac(d, start);
 
 class PlantingCalendarBar extends StatelessWidget {
   const PlantingCalendarBar({
@@ -52,20 +48,42 @@ class PlantingCalendarBar extends StatelessWidget {
   final String today;
 
   List<_Band> _bands() {
+    final start = seasonStart(
+      seasonYearOf(today, south: frost.south),
+      south: frost.south,
+    );
     final windows = scheduleCrop(crop, frost);
     final bands = <_Band>[];
     for (final w in windows) {
       switch (w.method) {
         case MethodType.sowIndoor:
-          bands.add(_Band(_Lane.sow, _dayFrac(w.start), _dayFrac(w.end),
-              AppColors.bandSowIndoor));
+          bands.add(
+            _Band(
+              _Lane.sow,
+              _frac(parseIso(w.start), start),
+              _frac(parseIso(w.end), start),
+              AppColors.bandSowIndoor,
+            ),
+          );
         case MethodType.sowDirect:
-          bands.add(_Band(_Lane.sow, _dayFrac(w.start), _dayFrac(w.end),
-              AppColors.bandSowOutdoor));
+          bands.add(
+            _Band(
+              _Lane.sow,
+              _frac(parseIso(w.start), start),
+              _frac(parseIso(w.end), start),
+              AppColors.bandSowOutdoor,
+            ),
+          );
         case MethodType.transplant:
         case MethodType.plant:
-          bands.add(_Band(_Lane.plantOut, _dayFrac(w.start), _dayFrac(w.end),
-              AppColors.bandPlantOut));
+          bands.add(
+            _Band(
+              _Lane.plantOut,
+              _frac(parseIso(w.start), start),
+              _frac(parseIso(w.end), start),
+              AppColors.bandPlantOut,
+            ),
+          );
       }
     }
     // Harvest band: from the earliest establishment date + harvest days.
@@ -75,8 +93,14 @@ class PlantingCalendarBar extends StatelessWidget {
           .reduce((a, b) => a.isBefore(b) ? a : b);
       final hs = establish.add(Duration(days: crop.harvestDaysMin.toInt()));
       final he = establish.add(Duration(days: crop.harvestDaysMax.toInt()));
-      bands.add(_Band(_Lane.harvest, _dayFracFromDate(hs), _dayFracFromDate(he),
-          AppColors.bandHarvest));
+      bands.add(
+        _Band(
+          _Lane.harvest,
+          _frac(hs, start),
+          _frac(he, start),
+          AppColors.bandHarvest,
+        ),
+      );
     }
     return bands;
   }
@@ -84,7 +108,10 @@ class PlantingCalendarBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bands = _bands();
-    final todayFrac = _dayFrac(today);
+    final todayFrac = _frac(
+      parseIso(today),
+      seasonStart(seasonYearOf(today, south: frost.south), south: frost.south),
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -94,15 +121,14 @@ class PlantingCalendarBar extends StatelessWidget {
               _Lane.sow => Str.sow,
               _Lane.plantOut => Str.plantOut,
               _Lane.harvest => Str.harvest,
-            }
-                .of(context),
+            }.of(context),
             bands: bands.where((b) => b.lane == lane).toList(),
             todayFrac: todayFrac,
           ),
           const SizedBox(height: 8),
         ],
         const SizedBox(height: 2),
-        const _MonthAxis(),
+        _MonthAxis(south: frost.south),
         const SizedBox(height: 12),
         _Legend(),
       ],
@@ -131,41 +157,44 @@ class _LaneRow extends StatelessWidget {
           child: Text(label, style: AppText.caption(context)),
         ),
         Expanded(
-          child: LayoutBuilder(builder: (context, c) {
-            final w = c.maxWidth;
-            return SizedBox(
-              height: 18,
-              child: Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.sand,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                  ),
-                  for (final b in bands)
-                    Positioned(
-                      left: b.start * w,
-                      width: ((b.end - b.start) * w).clamp(4.0, w),
-                      top: 0,
-                      bottom: 0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: b.color,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
+          child: LayoutBuilder(
+            builder: (context, c) {
+              final w = c.maxWidth;
+              return SizedBox(
+                height: 18,
+                child: Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.sand,
+                        borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                  Positioned(
-                    left: (todayFrac * w).clamp(0.0, w - 2),
-                    top: -2,
-                    bottom: -2,
-                    child: Container(width: 2, color: AppColors.ink),
-                  ),
-                ],
-              ),
-            );
-          }),
+                    for (final b in bands)
+                      Positioned(
+                        left: b.start * w,
+                        // A wrapped band (end < start) runs to the edge of the axis.
+                        width: (((b.end < b.start ? 1.0 : b.end) - b.start) * w).clamp(4.0, w),
+                        top: 0,
+                        bottom: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: b.color,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                      ),
+                    Positioned(
+                      left: (todayFrac * w).clamp(0.0, w - 2),
+                      top: -2,
+                      bottom: -2,
+                      child: Container(width: 2, color: AppColors.ink),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ],
     );
@@ -173,8 +202,22 @@ class _LaneRow extends StatelessWidget {
 }
 
 class _MonthAxis extends StatelessWidget {
-  const _MonthAxis();
-  static const _labels = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+  const _MonthAxis({required this.south});
+  final bool south;
+  static const _labels = [
+    'J',
+    'F',
+    'M',
+    'A',
+    'M',
+    'J',
+    'J',
+    'A',
+    'S',
+    'O',
+    'N',
+    'D',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -184,10 +227,13 @@ class _MonthAxis extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              for (final m in _labels)
+              for (var i = 0; i < 12; i++)
                 Expanded(
                   child: Center(
-                    child: Text(m, style: AppText.caption(context)),
+                    child: Text(
+                      _labels[monthAt(i, south: south) - 1],
+                      style: AppText.caption(context),
+                    ),
                   ),
                 ),
             ],
@@ -202,18 +248,20 @@ class _Legend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget dot(Color c, String label) => Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 10,
-              height: 10,
-              decoration: BoxDecoration(
-                  color: c, borderRadius: BorderRadius.circular(3)),
-            ),
-            const SizedBox(width: 5),
-            Text(label, style: AppText.caption(context)),
-          ],
-        );
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(
+            color: c,
+            borderRadius: BorderRadius.circular(3),
+          ),
+        ),
+        const SizedBox(width: 5),
+        Text(label, style: AppText.caption(context)),
+      ],
+    );
     return Wrap(
       spacing: 14,
       runSpacing: 6,
