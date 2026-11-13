@@ -74,41 +74,40 @@ class PathNode {
     String? loggedOn,
     bool? skipped,
     LocalizedText? movedReason,
-  }) =>
-      PathNode(
-        id: id,
-        kind: kind,
-        plannedDue: plannedDue,
-        due: due ?? this.due,
-        until: until ?? this.until,
-        loggedOn: loggedOn ?? this.loggedOn,
-        skipped: skipped ?? this.skipped,
-        movedReason: movedReason ?? this.movedReason,
-      );
+  }) => PathNode(
+    id: id,
+    kind: kind,
+    plannedDue: plannedDue,
+    due: due ?? this.due,
+    until: until ?? this.until,
+    loggedOn: loggedOn ?? this.loggedOn,
+    skipped: skipped ?? this.skipped,
+    movedReason: movedReason ?? this.movedReason,
+  );
 
   factory PathNode.fromJson(Map<String, dynamic> j) => PathNode(
-        id: j['id'] as String,
-        kind: nodeKindFromWire(j['kind'] as String),
-        plannedDue: j['planned_due'] as String,
-        due: j['due'] as String,
-        until: j['until'] as String?,
-        loggedOn: j['logged_on'] as String?,
-        skipped: j['skipped'] as bool? ?? false,
-        movedReason: j['moved_reason'] == null
-            ? null
-            : LocalizedText.fromJson(j['moved_reason'] as Map<String, dynamic>),
-      );
+    id: j['id'] as String,
+    kind: nodeKindFromWire(j['kind'] as String),
+    plannedDue: j['planned_due'] as String,
+    due: j['due'] as String,
+    until: j['until'] as String?,
+    loggedOn: j['logged_on'] as String?,
+    skipped: j['skipped'] as bool? ?? false,
+    movedReason: j['moved_reason'] == null
+        ? null
+        : LocalizedText.fromJson(j['moved_reason'] as Map<String, dynamic>),
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'kind': nodeKindToWire(kind),
-        'planned_due': plannedDue,
-        'due': due,
-        'until': until,
-        'logged_on': loggedOn,
-        'skipped': skipped,
-        'moved_reason': movedReason?.toJson(),
-      };
+    'id': id,
+    'kind': nodeKindToWire(kind),
+    'planned_due': plannedDue,
+    'due': due,
+    'until': until,
+    'logged_on': loggedOn,
+    'skipped': skipped,
+    'moved_reason': movedReason?.toJson(),
+  };
 }
 
 class PathStart {
@@ -150,17 +149,29 @@ List<PathNode> buildPath(Crop crop, PathStart start, String plantId) {
 
   if (start.method == MethodType.sowIndoor) {
     if (crop.germinationDays != null) {
-      nodes.add(_node(id(NodeKind.potOn), NodeKind.potOn,
-          at(crop.germinationDays! + _potOnAfterEmergenceDays)));
+      nodes.add(
+        _node(
+          id(NodeKind.potOn),
+          NodeKind.potOn,
+          at(crop.germinationDays! + _potOnAfterEmergenceDays),
+        ),
+      );
     }
     if (crop.daysToTransplant != null) {
       transplantDue = at(crop.daysToTransplant!);
-      nodes.add(_node(id(NodeKind.transplant), NodeKind.transplant, transplantDue));
+      nodes.add(
+        _node(id(NodeKind.transplant), NodeKind.transplant, transplantDue),
+      );
     }
   }
   if (start.method == MethodType.sowDirect && crop.germinationDays != null) {
-    nodes.add(_node(id(NodeKind.thin), NodeKind.thin,
-        at(crop.germinationDays! + _thinAfterEmergenceDays)));
+    nodes.add(
+      _node(
+        id(NodeKind.thin),
+        NodeKind.thin,
+        at(crop.germinationDays! + _thinAfterEmergenceDays),
+      ),
+    );
   }
 
   // Harvest window. harvest days count from the plant's OUTDOOR start: the
@@ -168,7 +179,9 @@ List<PathNode> buildPath(Crop crop, PathStart start, String plantId) {
   final harvestFrom = parseIso(transplantDue ?? start.on);
   final harvestDue = toIso(addDays(harvestFrom, crop.harvestDaysMin));
   final harvestUntil = toIso(addDays(harvestFrom, crop.harvestDaysMax));
-  nodes.add(_node(id(NodeKind.harvest), NodeKind.harvest, harvestDue, harvestUntil));
+  nodes.add(
+    _node(id(NodeKind.harvest), NodeKind.harvest, harvestDue, harvestUntil),
+  );
 
   if (crop.feedCadenceDays != null) {
     var feed = parseIso(transplantDue ?? at(_feedStartWithoutTransplantDays));
@@ -207,10 +220,10 @@ class ReplanParams {
   final int frostMarginDays;
 
   factory ReplanParams.fromJson(Map<String, dynamic> j) => ReplanParams(
-        thresholdDays: (j['thresholdDays'] as num).toInt(),
-        firstFrost: j['firstFrost'] as String?,
-        frostMarginDays: (j['frostMarginDays'] as num).toInt(),
-      );
+    thresholdDays: (j['thresholdDays'] as num).toInt(),
+    firstFrost: j['firstFrost'] as String?,
+    frostMarginDays: (j['frostMarginDays'] as num).toInt(),
+  );
 }
 
 const defaultReplan = ReplanParams();
@@ -222,8 +235,11 @@ class ReplanWarning {
   final String nodeId;
   final LocalizedText reason;
 
-  Map<String, dynamic> toJson() =>
-      {'code': code, 'node_id': nodeId, 'reason': reason.toJson()};
+  Map<String, dynamic> toJson() => {
+    'code': code,
+    'node_id': nodeId,
+    'reason': reason.toJson(),
+  };
 }
 
 class ReplanResult {
@@ -241,15 +257,15 @@ class ReplanResult {
 }
 
 LocalizedText _step(NodeKind k) => switch (k) {
-      NodeKind.sow => Str.stepSowing,
-      NodeKind.potOn => Str.stepPottingOn,
-      NodeKind.transplant => Str.stepPlantingOut,
-      NodeKind.thin => Str.stepThinning,
-      NodeKind.feed => Str.stepFeeding,
-      NodeKind.water => Str.stepWatering,
-      NodeKind.harvest => Str.stepHarvest,
-      NodeKind.harvested => Str.stepHarvested,
-    };
+  NodeKind.sow => Str.stepSowing,
+  NodeKind.potOn => Str.stepPottingOn,
+  NodeKind.transplant => Str.stepPlantingOut,
+  NodeKind.thin => Str.stepThinning,
+  NodeKind.feed => Str.stepFeeding,
+  NodeKind.water => Str.stepWatering,
+  NodeKind.harvest => Str.stepHarvest,
+  NodeKind.harvested => Str.stepHarvested,
+};
 
 int _diffDays(String a, String b) =>
     ((parseIso(a).millisecondsSinceEpoch - parseIso(b).millisecondsSinceEpoch) /
@@ -276,7 +292,12 @@ ReplanResult logNode(
   }
 
   final sign = delta > 0 ? '+' : '−';
-  final reason = Str.replanMoved(sign, delta.abs(), _step(anchor.kind), delta > 0);
+  final reason = Str.replanMoved(
+    sign,
+    delta.abs(),
+    _step(anchor.kind),
+    delta > 0,
+  );
 
   final warnings = <ReplanWarning>[];
   for (var j = i + 1; j < out.length; j++) {
@@ -291,14 +312,17 @@ ReplanResult logNode(
 
     final firstFrost = params.firstFrost;
     if (moved.kind == NodeKind.harvest && firstFrost != null) {
-      final limit =
-          toIso(addDays(parseIso(firstFrost), -params.frostMarginDays));
+      final limit = toIso(
+        addDays(parseIso(firstFrost), -params.frostMarginDays),
+      );
       final end = moved.until ?? moved.due;
       if (end.compareTo(limit) > 0) {
-        warnings.add(ReplanWarning(
-          nodeId: moved.id,
-          reason: Str.replanFrostWarning(end, firstFrost),
-        ));
+        warnings.add(
+          ReplanWarning(
+            nodeId: moved.id,
+            reason: Str.replanFrostWarning(end, firstFrost),
+          ),
+        );
       }
     }
   }

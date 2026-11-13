@@ -24,15 +24,15 @@ class CropSnapshot {
   final List<String> deleted;
 
   factory CropSnapshot.fromJson(Map<String, dynamic> j) => CropSnapshot(
-        version: j['version'] as String,
-        generatedAt: j['generated_at'] as String,
-        crops: (j['crops'] as List)
-            .map((c) => Crop.fromJson(c as Map<String, dynamic>))
-            .toList(growable: false),
-        deleted: (j['deleted'] as List? ?? const [])
-            .map((s) => s as String)
-            .toList(growable: false),
-      );
+    version: j['version'] as String,
+    generatedAt: j['generated_at'] as String,
+    crops: (j['crops'] as List)
+        .map((c) => Crop.fromJson(c as Map<String, dynamic>))
+        .toList(growable: false),
+    deleted: (j['deleted'] as List? ?? const [])
+        .map((s) => s as String)
+        .toList(growable: false),
+  );
 
   static CropSnapshot parse(String jsonText) =>
       CropSnapshot.fromJson(jsonDecode(jsonText) as Map<String, dynamic>);

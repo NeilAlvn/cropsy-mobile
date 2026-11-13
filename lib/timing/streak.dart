@@ -20,7 +20,11 @@ class StreakParams {
 const defaultStreak = StreakParams();
 
 class StreakResult {
-  const StreakResult({required this.count, required this.freezesUsed, required this.todayOpen});
+  const StreakResult({
+    required this.count,
+    required this.freezesUsed,
+    required this.todayOpen,
+  });
 
   /// Consecutive-day count ending today (today counts only if active).
   final int count;
@@ -31,10 +35,18 @@ class StreakResult {
   /// True when today is not yet active — at risk until it is.
   final bool todayOpen;
 
-  Map<String, dynamic> toJson() => {'count': count, 'freezesUsed': freezesUsed, 'todayOpen': todayOpen};
+  Map<String, dynamic> toJson() => {
+    'count': count,
+    'freezesUsed': freezesUsed,
+    'todayOpen': todayOpen,
+  };
 }
 
-StreakResult computeStreak(Iterable<String> activeDays, String today, {StreakParams params = defaultStreak}) {
+StreakResult computeStreak(
+  Iterable<String> activeDays,
+  String today, {
+  StreakParams params = defaultStreak,
+}) {
   final active = activeDays.toSet();
   final freezesUsed = <String, int>{};
   var count = 0;
@@ -63,7 +75,11 @@ StreakResult computeStreak(Iterable<String> activeDays, String today, {StreakPar
     }
     day = addDays(day, -1);
   }
-  return StreakResult(count: count, freezesUsed: freezesUsed, todayOpen: todayOpen);
+  return StreakResult(
+    count: count,
+    freezesUsed: freezesUsed,
+    todayOpen: todayOpen,
+  );
 }
 
 /// The runs worth marking on the season path: a week, a month, a hundred days.
@@ -86,7 +102,8 @@ List<({int days, String on})> streakMilestones(
   String today, {
   StreakParams params = defaultStreak,
 }) {
-  final days = activeDays.where((d) => d.compareTo(today) <= 0).toList()..sort();
+  final days = activeDays.where((d) => d.compareTo(today) <= 0).toList()
+    ..sort();
   final out = <({int days, String on})>[];
   var next = 0;
   for (final day in days) {
@@ -94,7 +111,8 @@ List<({int days, String on})> streakMilestones(
     final run = computeStreak(activeDays, day, params: params).count;
     // One active day can clear more than one threshold only if the thresholds
     // were miles apart; the while keeps that honest rather than assuming.
-    while (next < streakMilestoneDays.length && run >= streakMilestoneDays[next]) {
+    while (next < streakMilestoneDays.length &&
+        run >= streakMilestoneDays[next]) {
       out.add((days: streakMilestoneDays[next], on: day));
       next++;
     }
