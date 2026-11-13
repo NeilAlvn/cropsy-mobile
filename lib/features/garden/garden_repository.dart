@@ -561,7 +561,7 @@ class GardenRepository extends ChangeNotifier {
       name: name,
       profile: lookup.profile,
       source: lookup.source,
-      country: country ?? (postcode != null ? 'NL' : deviceCountry()), // postcode lookup = PDOK, NL-only
+      country: country ?? lookup.country ?? (postcode != null ? 'NL' : deviceCountry()), // postcode lookup = PDOK, NL-only
       lat: lookup.lat,
       lon: lookup.lon,
       postcode: postcode,
@@ -677,7 +677,7 @@ class GardenRepository extends ChangeNotifier {
             name: placeName ?? postcode?.toUpperCase() ?? _yourLocation,
             profile: lookup.profile,
             source: lookup.source,
-            country: country ?? (postcode != null ? 'NL' : deviceCountry()), // postcode lookup = PDOK, NL-only
+            country: country ?? lookup.country ?? (postcode != null ? 'NL' : deviceCountry()), // postcode lookup = PDOK, NL-only
             lat: lookup.lat,
             lon: lookup.lon,
             postcode: postcode,
