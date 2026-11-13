@@ -1,6 +1,7 @@
 /// Live daily weather for the overlay (API-CONTRACT §5): Open-Meteo through
-/// the Cropsy backend (/api/weather), 7 days
-/// back + 7 ahead, cached in AppMeta for six hours. Offline or on failure the
+/// the Cropsy backend (/api/weather), today + 6 ahead, cached in AppMeta for
+/// six hours. The backend has no past days, so the app keeps its own record of
+/// each day it has seen (`weather_history`) and serves the last 7 as past days. Offline or on failure the
 /// cache is used if present, else there is no overlay — the base schedule
 /// stands and the app never invents a forecast.
 library;
@@ -20,10 +21,34 @@ Uri weatherUri(double lat, double lon) => Uri.parse('$apiBaseUrl/api/weather').r
       'latitude': lat.toStringAsFixed(2),
       'longitude': lon.toStringAsFixed(2),
       'daily': 'precipitation_sum,temperature_2m_min,temperature_2m_max,weathercode',
-      'past_days': '7',
       'forecast_days': '7',
       'timezone': 'auto',
+      'tz_offset': DateTime.now().timeZoneOffset.inMinutes.toString(),
     });
+
+String _todayIso() => DateTime.now().toIso8601String().substring(0, 10);
+
+String _isoMinus(String today, int days) =>
+    DateTime.parse(today).subtract(Duration(days: days)).toIso8601String().substring(0, 10);
+
+/// The stored record after a fetch: days up to [today] (and at most 7 days
+/// back), one per date, the freshly fetched value replacing the stored one.
+@visibleForTesting
+List<DayObservation> mergeHistory(List<DayObservation> stored, List<DayObservation> fetched, String today) {
+  final from = _isoMinus(today, 7);
+  final byDate = {for (final o in [...stored, ...fetched]) o.date: o};
+  return [
+    for (final o in byDate.values)
+      if (o.date.compareTo(from) >= 0 && o.date.compareTo(today) <= 0) o,
+  ]..sort((a, b) => a.date.compareTo(b.date));
+}
+
+/// Stored days before [today] as past days, then the fetched series from today on.
+@visibleForTesting
+List<DayObservation> withPastDays(List<DayObservation> stored, List<DayObservation> fetched, String today) => [
+      ...mergeHistory(stored, const [], today).where((o) => o.date.compareTo(today) < 0),
+      ...fetched.where((o) => o.date.compareTo(today) >= 0),
+    ];
 
 class WeatherService {
   WeatherService(this.db);
@@ -37,12 +62,46 @@ class WeatherService {
     final cached = await _readCache(lat, lon);
     if (cached != null && cached.fresh) return cached.days;
     final fetched = await _fetch(lat, lon);
+    final today = _todayIso();
     if (fetched != null) {
-      await _writeCache(lat, lon, fetched);
-      return fetched;
+      final history = mergeHistory(await _readHistory(lat, lon), fetched, today);
+      await _writeHistory(lat, lon, history);
+      final days = withPastDays(history, fetched, today);
+      await _writeCache(lat, lon, days);
+      return days;
     }
     return cached?.days; // stale beats nothing
   }
+
+  static const _historyKey = 'weather_history';
+
+  Future<List<DayObservation>> _readHistory(double lat, double lon) async {
+    try {
+      final row = await (db.select(db.appMeta)..where((t) => t.key.equals(_historyKey))).getSingleOrNull();
+      if (row == null) return const [];
+      final j = jsonDecode(row.value) as Map<String, dynamic>;
+      if ((j['lat'] as num).toDouble() != lat || (j['lon'] as num).toDouble() != lon) return const [];
+      return [for (final o in j['days'] as List) DayObservation.fromJson(o as Map<String, dynamic>)];
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  Future<void> _writeHistory(double lat, double lon, List<DayObservation> days) => db.into(db.appMeta).insert(
+        AppMetaCompanion.insert(
+          key: _historyKey,
+          value: jsonEncode({'lat': lat, 'lon': lon, 'days': [for (final o in days) _toJson(o)]}),
+        ),
+        mode: InsertMode.insertOrReplace,
+      );
+
+  static Map<String, dynamic> _toJson(DayObservation o) => {
+        'date': o.date,
+        'precip_mm': o.precipMm,
+        'temp_min_c': o.tempMinC,
+        'temp_max_c': o.tempMaxC,
+        if (o.weatherCode != null) 'weather_code': o.weatherCode,
+      };
 
   Future<List<DayObservation>?> _fetch(double lat, double lon) async {
     final client = HttpClient()..connectionTimeout = const Duration(seconds: 8);
@@ -56,8 +115,8 @@ class WeatherService {
       final rain = (d['precipitation_sum'] as List);
       final tmin = (d['temperature_2m_min'] as List);
       final tmax = (d['temperature_2m_max'] as List);
-      // Open-Meteo answers `weathercode` under the name it was asked for, but
-      // also serves the newer `weather_code` spelling; accept either, and a
+      // The backend answers `weathercode`, but the newer `weather_code`
+      // spelling is accepted too, and a
       // response with neither simply has no condition to show.
       final code = (d['weathercode'] ?? d['weather_code']) as List?;
       return [
@@ -102,16 +161,7 @@ class WeatherService {
                 'lat': lat,
                 'lon': lon,
                 'at': DateTime.now().toIso8601String(),
-                'days': [
-                  for (final o in days)
-                    {
-                      'date': o.date,
-                      'precip_mm': o.precipMm,
-                      'temp_min_c': o.tempMinC,
-                      'temp_max_c': o.tempMaxC,
-                      if (o.weatherCode != null) 'weather_code': o.weatherCode,
-                    },
-                ],
+                'days': [for (final o in days) _toJson(o)],
               }),
             ),
             mode: InsertMode.insertOrReplace,

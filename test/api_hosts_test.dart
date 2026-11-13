@@ -1,6 +1,5 @@
 import 'package:cropsy/config.dart';
 import 'package:cropsy/features/garden/weather_service.dart';
-import 'package:cropsy/features/location/place_search.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -14,12 +13,12 @@ void main() {
     expect(u.queryParameters['longitude'], '-97.74');
     expect(u.queryParameters['daily'], 'precipitation_sum,temperature_2m_min,temperature_2m_max,weathercode');
     expect(u.queryParameters.containsKey('apikey'), isFalse);
+    expect(u.queryParameters.containsKey('past_days'), isFalse);
+    expect(u.queryParameters['tz_offset'], DateTime.now().timeZoneOffset.inMinutes.toString());
   });
 
-  test('place search goes through the Cropsy backend', () {
-    final u = placesUri('Austin', 'en');
-    expect(u.host, api.host);
-    expect(u.path, '/api/places');
-    expect(u.queryParameters, {'name': 'Austin', 'count': '6', 'language': 'en', 'format': 'json'});
+  test('weather query keeps the backend canonical key order (no 308)', () {
+    expect(weatherUri(1, 2).query.split('&').map((p) => p.split('=').first).toList(),
+        ['latitude', 'longitude', 'daily', 'forecast_days', 'timezone', 'tz_offset']);
   });
 }

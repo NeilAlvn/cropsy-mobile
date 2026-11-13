@@ -510,12 +510,20 @@ abstract final class Str {
     pt: 'O que tornaria isto melhor?',
   );
   static const climateNormals = LocalizedText(
-    nl: 'Open-Meteo klimaatgegevens (10 jaar)',
-    en: 'Open-Meteo climate data (10 years)',
-    de: 'Open-Meteo-Klimadaten (10 Jahre)',
-    fr: 'Données climatiques Open-Meteo (10 ans)',
-    sv: 'Klimatdata från Open-Meteo (10 år)',
-    pt: 'Dados climáticos Open-Meteo (10 anos)',
+    nl: 'Klimaatgegevens: Copernicus ERA5-Land via Open-Meteo.com (CC BY 4.0)',
+    en: 'Climate data: Copernicus ERA5-Land via Open-Meteo.com (CC BY 4.0)',
+    de: 'Klimadaten: Copernicus ERA5-Land über Open-Meteo.com (CC BY 4.0)',
+    fr: 'Données climatiques : Copernicus ERA5-Land via Open-Meteo.com (CC BY 4.0)',
+    sv: 'Klimatdata: Copernicus ERA5-Land via Open-Meteo.com (CC BY 4.0)',
+    pt: 'Dados climáticos: Copernicus ERA5-Land via Open-Meteo.com (CC BY 4.0)',
+  );
+  static const forecastCredit = LocalizedText(
+    nl: 'Weersverwachting: MET Norway (CC BY 4.0)',
+    en: 'Forecast: MET Norway (CC BY 4.0)',
+    de: 'Vorhersage: MET Norway (CC BY 4.0)',
+    fr: 'Prévisions : MET Norway (CC BY 4.0)',
+    sv: 'Prognos: MET Norway (CC BY 4.0)',
+    pt: 'Previsão: MET Norway (CC BY 4.0)',
   );
   static const regionalPreset = LocalizedText(
     nl: 'NL regiovoorinstelling',

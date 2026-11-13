@@ -279,6 +279,7 @@ class _Calendar extends StatelessWidget {
                 .of(context),
             icon: PhosphorIcons.thermometer,
           ),
+          Pill(label: Str.forecastCredit.of(context), icon: PhosphorIcons.cloudSun),
           Pill(label: Str.verifiedAgainst(crop.sources.length).of(context), icon: PhosphorIcons.sealCheck),
         ]),
       ],
