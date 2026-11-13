@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'config.dart';
@@ -23,6 +22,7 @@ import 'design/colors.dart';
 import 'design/motion.dart';
 import 'design/theme_mode.dart';
 import 'l10n/app_lang.dart';
+import 'l10n/region.dart';
 import 'features/app_shell.dart';
 import 'features/garden/garden_repository.dart';
 import 'features/onboarding/onboarding_screen.dart';
@@ -79,7 +79,7 @@ Future<void> _boot() async {
   await initializeDateFormatting();
   final profile = await repo.profile();
   final lang = AppLang(profile?.lang ?? deviceLang());
-  Intl.defaultLocale = lang.code;
+  AppRegion.apply(lang: lang.code, country: repo.effectiveCountry);
   // Haptics and reduced motion are read at paint time, with no context and no
   // await to spare, so they are pulled out of the profile once, here.
   AccessPrefs.load(jsonDecode(profile?.preferences ?? '{}') as Map<String, dynamic>);

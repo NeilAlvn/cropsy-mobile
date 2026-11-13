@@ -7,6 +7,7 @@ library;
 
 import '../../timing/dates.dart';
 import '../../timing/season.dart';
+import '../../timing/season_year.dart';
 import '../../timing/types.dart';
 import 'season_markers.dart';
 
@@ -97,6 +98,7 @@ List<SeasonRow> seasonRows({
   required int Function(int month) optionsFor,
   List<SeasonMarker> markers = const [],
   List<SeasonTask> tasks = const [],
+  bool south = false,
 }) {
   final byMonth = <int, List<SeasonNode>>{};
   for (final n in [...nodes]..sort((a, b) => a.start.compareTo(b.start))) {
@@ -113,12 +115,17 @@ List<SeasonRow> seasonRows({
 
   final rows = <SeasonRow>[];
   var markedToday = false;
-  for (var month = 1; month <= 12; month++) {
+  // Northern paths run Jan-Dec, southern ones Jul-Jun; "from today onwards" is
+  // a position on that axis, not a month number.
+  final order = [for (var i = 0; i < 12; i++) monthAt(i, south: south)];
+  final todayAt = order.indexOf(today.month);
+  for (var at = 0; at < 12; at++) {
+    final month = order[at];
     final inMonth = byMonth[month] ?? const <SeasonNode>[];
     final marks = markersByMonth[month] ?? const <SeasonMarker>[];
     final steps = tasksByMonth[month] ?? const <SeasonTask>[];
     final empty = inMonth.isEmpty && marks.isEmpty && steps.isEmpty;
-    final suggestion = empty && month >= today.month ? optionsFor(month) : 0;
+    final suggestion = empty && at >= todayAt ? optionsFor(month) : 0;
     if (empty && suggestion == 0 && month != today.month) continue;
 
     rows.add(SeasonRow.month(month, current: month == today.month));
@@ -145,7 +152,7 @@ List<SeasonRow> seasonRows({
       });
     }
     if (suggestion > 0) rows.add(SeasonRow.suggestion(month, suggestion));
-    if (!markedToday && month >= today.month) {
+    if (!markedToday && at >= todayAt) {
       rows.add(const SeasonRow.today());
       markedToday = true;
     }
@@ -157,13 +164,15 @@ List<SeasonRow> seasonRows({
 /// Where a free path goes behind the paywall: the first row dated after this
 /// week and next, or null if the whole path fits inside them. Rows are in date
 /// order, so everything from the returned index on is further out.
-int? seasonLockFrom(List<SeasonRow> rows, DateTime today) {
+int? seasonLockFrom(List<SeasonRow> rows, DateTime today, {bool south = false}) {
+  final todayIso = '${today.year}-${today.month.toString().padLeft(2, '0')}-01';
+  final season = seasonYearOf(todayIso, south: south);
   final cutoff = DateTime.utc(today.year, today.month, today.day + 14);
   for (var i = 0; i < rows.length; i++) {
     final r = rows[i];
     final on = switch (r.kind) {
       SeasonRowKind.today => null,
-      SeasonRowKind.month || SeasonRowKind.suggestion => DateTime.utc(today.year, r.month),
+      SeasonRowKind.month || SeasonRowKind.suggestion => DateTime.utc(south ? (r.month < 7 ? season + 1 : season) : today.year, r.month),
       SeasonRowKind.node => parseIso(r.node!.start),
       SeasonRowKind.marker => parseIso(r.marker!.on),
       SeasonRowKind.task => parseIso(r.task!.due),

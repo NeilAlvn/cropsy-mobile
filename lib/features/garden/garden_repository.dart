@@ -26,6 +26,7 @@ import '../../data/seed.dart';
 import '../../db/database.dart';
 import '../../db/uuid.dart';
 import '../../l10n/app_lang.dart';
+import '../../l10n/region.dart';
 import '../../l10n/strings.dart';
 import '../../timing/content_snapshot.dart';
 import '../../timing/crop_snapshot.dart';
@@ -247,6 +248,7 @@ class GardenRepository extends ChangeNotifier {
     } else {
       unawaited(repo._recoverLocation());
     }
+    AppRegion.setCountry(repo.effectiveCountry);
     return repo;
   }
 
@@ -595,6 +597,7 @@ class GardenRepository extends ChangeNotifier {
     regionName = l.name;
     frostSource = l.source;
     country = l.country;
+    AppRegion.setCountry(effectiveCountry);
     await setMeta(SavedLocation.metaKey, l.encode());
   }
 

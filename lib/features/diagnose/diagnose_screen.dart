@@ -58,6 +58,7 @@ List<Problem> filterProblems(
 bool _matches(LocalizedText text, String query, String? lang) =>
     text.nl.toLowerCase().contains(query) ||
     text.en.toLowerCase().contains(query) ||
+    (text.enUs?.toLowerCase().contains(query) ?? false) ||
     (lang != null && text.pick(lang).toLowerCase().contains(query));
 
 class DiagnoseScreen extends StatefulWidget {

@@ -8,8 +8,8 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/date_fmt.dart';
 import '../../l10n/app_lang.dart';
-import 'package:intl/intl.dart';
 
 import '../../design/colors.dart';
 import '../../design/components.dart';
@@ -46,7 +46,7 @@ LocalizedText nodeKindLine(NodeKind k) => switch (k) {
       NodeKind.harvested => Str.stageHarvested,
     };
 
-String formatDay(String iso) => DateFormat('d MMM').format(parseIso(iso));
+String formatDay(String iso) => dayMonth(parseIso(iso));
 
 /// Opens the log sheet for [node] and applies what the gardener chose.
 /// Returns true when something changed, so the caller can refresh.

@@ -155,6 +155,10 @@ abstract final class MascotLines {
         'The average first autumn frost for your region. Harvest windows are '
         'counted back from it, so anything still ripening after this date is '
         'on borrowed time.',
+    enUs:
+        'The average first fall frost for your region. Harvest windows are '
+        'counted back from it, so anything still ripening after this date is '
+        'on borrowed time.',
     de: 'Der durchschnittliche erste Herbstfrost in deiner Region. Erntefenster werden von ihm aus zurückgerechnet, für alles, was danach noch reift, wird es also knapp.',
     fr: 'Les premières gelées d\'automne en moyenne dans ta région. Les périodes de récolte sont comptées à rebours à partir d\'elles, donc tout ce qui mûrit encore après cette date joue les prolongations.',
     sv: 'Den genomsnittliga första höstfrosten i din region. Skördefönstren räknas bakåt från den, så allt som fortfarande mognar efter det datumet lever på lånad tid.',
@@ -326,17 +330,16 @@ abstract final class MascotLines {
 
   static const problemsComing = LocalizedText(
     nl:
-        'De 25 problemen die op Nederlandse balkons spelen, slakken, luizen, '
+        'De 25 meest voorkomende balkonproblemen, slakken, luizen, '
         'meeldauw, neusrot, worden geschreven en nagekeken. Ze komen met de '
         'contentupdate.',
     en:
-        'The 25 problems common on Dutch balconies, slakken, luizen, meeldauw, '
-        'neusrot, are being written and checked. They land with the content '
-        'update.',
-    de: 'Die 25 häufigsten Probleme auf niederländischen Balkonen, Schnecken, Läuse, Mehltau, Blütenendfäule, werden geschrieben und geprüft. Sie kommen mit dem Inhalts-Update.',
-    fr: 'Les 25 problèmes les plus courants sur les balcons néerlandais, limaces, pucerons, oïdium, nécrose apicale, sont en cours d\'écriture et de vérification. Ils arrivent avec la mise à jour du contenu.',
-    sv: 'De 25 vanligaste problemen på nederländska balkonger – sniglar, bladlöss, mjöldagg, pistillröta – skrivs och kontrolleras just nu. De kommer med innehållsuppdateringen.',
-    pt: 'Os 25 problemas mais comuns nas varandas neerlandesas (lesmas, pulgões, oídio, podridão apical) estão a ser escritos e verificados. Chegam com a atualização de conteúdo.',
+        'The 25 most common balcony problems are being written and checked. '
+        'Coming in the content update.',
+    de: 'Die 25 häufigsten Probleme auf Balkonen, Schnecken, Läuse, Mehltau, Blütenendfäule, werden geschrieben und geprüft. Sie kommen mit dem Inhalts-Update.',
+    fr: 'Les 25 problèmes les plus courants sur les balcons, limaces, pucerons, oïdium, nécrose apicale, sont en cours d\'écriture et de vérification. Ils arrivent avec la mise à jour du contenu.',
+    sv: 'De 25 vanligaste problemen på balkonger – sniglar, bladlöss, mjöldagg, pistillröta – skrivs och kontrolleras just nu. De kommer med innehållsuppdateringen.',
+    pt: 'Os 25 problemas mais comuns nas varandas (lesmas, pulgões, oídio, podridão apical) estão a ser escritos e verificados. Chegam com a atualização de conteúdo.',
   );
 
   static const seasonLaysItselfOut = LocalizedText(
@@ -426,7 +429,7 @@ abstract final class MascotLines {
         'Pluk wat rijp is en dek af of zet binnen.',
     en:
         'First frost is expected in about $days days '
-        '($firstFrost). ${crop.en} does not survive it. '
+        '($firstFrost). ${crop.pick('en')} does not survive it. '
         'Pick what is ripe and cover or move it in.',
     de:
         'Der erste Frost wird in etwa $days Tagen erwartet '
@@ -456,7 +459,7 @@ abstract final class MascotLines {
         'Houd ${crop.nl.toLowerCase()} binnen tot na de ijsheiligen.',
     en:
         'Last frost is still ~$days days away ($lastFrost). '
-        'Keep ${crop.en.toLowerCase()} inside until after IJsheiligen.',
+        'Keep ${crop.pick('en').toLowerCase()} inside until after IJsheiligen.',
     // German nouns keep their capital.
     de:
         'Der letzte Frost ist noch ~$days Tage entfernt ($lastFrost). '
@@ -472,78 +475,108 @@ abstract final class MascotLines {
         'Mantém as plantas de ${crop.pick('pt').toLowerCase()} dentro de casa até passarem as últimas geadas.',
   );
 
+  /// [insightLastFrostAhead] without the ice saints, for everyone outside
+  /// the Netherlands and Belgium.
+  static LocalizedText insightLastFrostAheadGeneric(
+    int days,
+    String lastFrost,
+    LocalizedText crop,
+  ) => LocalizedText(
+    nl:
+        'De laatste vorst is nog ~$days dagen weg ($lastFrost). '
+        'Houd ${crop.nl.toLowerCase()} binnen tot na je laatste vorst.',
+    en:
+        'Last frost is still ~$days days away ($lastFrost). '
+        'Keep ${crop.pick('en').toLowerCase()} inside until after your last frost.',
+    de:
+        'Der letzte Frost ist noch ~$days Tage entfernt ($lastFrost). '
+        'Lass ${crop.pick('de')} drinnen, bis dein letzter Frost vorbei ist.',
+    fr:
+        'Les dernières gelées sont encore à ~$days ${days <= 1 ? 'jour' : 'jours'} ($lastFrost). '
+        '${crop.pick('fr')} : à garder à l\'intérieur jusqu\'après ta dernière gelée.',
+    sv:
+        'Sista frosten är fortfarande ~$days ${days == 1 ? 'dag' : 'dagar'} bort '
+        '($lastFrost). Håll ${crop.pick('sv').toLowerCase()} inne tills sista frosten är över.',
+    pt:
+        '${days == 1 ? 'Ainda falta ~1 dia' : 'Ainda faltam ~$days dias'} para a última geada ($lastFrost). '
+        'Mantém as plantas de ${crop.pick('pt').toLowerCase()} dentro de casa até passar a última geada.',
+  );
+
   static LocalizedText insightColdNight(
-    int tempC,
+    String temp,
     String date,
   ) => LocalizedText(
     nl:
-        'Koude nacht op komst: $tempC°C op '
+        'Koude nacht op komst: $temp op '
         '$date. Dek af of zet de potten binnen.',
     en:
-        'Cold night ahead: $tempC°C on '
+        'Cold night ahead: $temp on '
         '$date. Fleece or bring pots in.',
+    enUs:
+        'Cold night ahead: $temp on '
+        '$date. Cover with frost cloth or bring pots in.',
     de:
-        'Kalte Nacht im Anmarsch: $tempC °C am '
+        'Kalte Nacht im Anmarsch: $temp am '
         '$date. Deck ab oder hol die Töpfe rein.',
     fr:
-        'Nuit froide en vue : $tempC °C le '
+        'Nuit froide en vue : $temp le '
         '$date. Couvre d\'un voile ou rentre les pots.',
     sv:
-        'Kall natt på väg: $tempC °C den $date. Täck med fiberduk eller ta in '
+        'Kall natt på väg: $temp den $date. Täck med fiberduk eller ta in '
         'krukorna.',
     pt:
-        'Noite fria a caminho: $tempC °C a $date. Cobre com manta térmica ou '
+        'Noite fria a caminho: $temp a $date. Cobre com manta térmica ou '
         'leva os vasos para dentro.',
   );
 
   static LocalizedText insightHeat(
-    int tempC,
+    String temp,
     String date,
-    int litres,
+    String pot,
   ) => LocalizedText(
     nl:
-        '$tempC°C op '
-        '$date: een pot van $litres L '
+        '$temp op '
+        '$date: een pot van $pot '
         'droogt in één dag uit. Geef water in de ochtend en zet de pot '
         'in de schaduw als dat kan.',
     en:
-        '$tempC°C on '
-        '$date: a $litres L pot dries out '
+        '$temp on '
+        '$date: a $pot pot dries out '
         'in a day. Water in the morning, shade the pot if you can.',
     de:
-        '$tempC °C am '
-        '$date: Ein Topf mit $litres L trocknet an einem Tag aus. Gieß '
+        '$temp am '
+        '$date: Ein Topf mit $pot trocknet an einem Tag aus. Gieß '
         'morgens und stell den Topf in den Schatten, wenn es geht.',
     fr:
-        '$tempC °C le '
-        '$date : un pot de $litres L sèche en une journée. Arrose le '
+        '$temp le '
+        '$date : un pot de $pot sèche en une journée. Arrose le '
         'matin, et mets le pot à l\'ombre si tu peux.',
     sv:
-        '$tempC °C den $date: en kruka på $litres L torkar ut på en dag. Vattna '
+        '$temp den $date: en kruka på $pot torkar ut på en dag. Vattna '
         'på morgonen och ställ krukan i skugga om du kan.',
     pt:
-        '$tempC °C a $date: um vaso de $litres L seca num dia. Rega de manhã '
+        '$temp a $date: um vaso de $pot seca num dia. Rega de manhã '
         'e põe o vaso à sombra se puderes.',
   );
 
-  static LocalizedText insightRain(int mm) => LocalizedText(
+  static LocalizedText insightRain(String amount) => LocalizedText(
     nl:
-        '$mm mm regen in de komende drie dagen. Sla het '
+        '$amount regen in de komende drie dagen. Sla het '
         'water geven over en controleer de gaatjes in de pot.',
     en:
-        '$mm mm of rain in the next three days. Skip '
+        '$amount of rain in the next three days. Skip '
         'watering and check the drainage holes.',
     de:
-        '$mm mm Regen in den nächsten drei Tagen. Lass das '
+        '$amount Regen in den nächsten drei Tagen. Lass das '
         'Gießen aus und prüf die Abzugslöcher.',
     fr:
-        '$mm mm de pluie dans les trois prochains jours. Pas besoin '
+        '$amount de pluie dans les trois prochains jours. Pas besoin '
         'd\'arroser ; vérifie juste les trous de drainage.',
     sv:
-        '$mm mm regn de närmaste tre dagarna. Hoppa över vattningen och kolla '
+        '$amount regn de närmaste tre dagarna. Hoppa över vattningen och kolla '
         'dräneringshålen.',
     pt:
-        '$mm mm de chuva nos próximos três dias. Salta a rega e verifica os '
+        '$amount de chuva nos próximos três dias. Salta a rega e verifica os '
         'furos de drenagem.',
   );
 }

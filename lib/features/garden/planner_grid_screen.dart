@@ -8,6 +8,7 @@ library;
 import 'dart:convert';
 import '../../timing/types.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 
 import 'package:flutter/material.dart';
@@ -77,7 +78,7 @@ class _PlannerGridScreenState extends State<PlannerGridScreen> {
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
         children: [
           Row(children: [
-            Text('${_cols * 30} × ${_rows * 30} cm', style: AppText.label(context)),
+            Text('${lengthCm(_cols * 30)} × ${lengthCm(_rows * 30)}', style: AppText.label(context)),
             const Spacer(),
             _Stepper(label: 'cols', value: _cols, onChanged: (v) => setState(() => _cols = v)),
             const SizedBox(width: 10),

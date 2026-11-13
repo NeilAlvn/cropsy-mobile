@@ -16,6 +16,7 @@ import '../../design/icons.dart';
 import '../../design/typography.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../timing/types.dart';
 import 'settings_rows.dart';
 
@@ -99,8 +100,8 @@ class FaqScreen extends StatelessWidget {
 
 /// The help content. Chrome, not crop data, so it lives here rather than in the
 /// snapshot, and it carries both languages like everything else the user reads.
-const faq = <(LocalizedText, LocalizedText)>[
-  (Str.faqDatesQ, Str.faqDatesA),
+List<(LocalizedText, LocalizedText)> get faq => [
+  (Str.faqDatesQ, Str.faqDatesA(distanceKm(1))),
   (Str.faqBehindQ, Str.faqBehindA),
   (Str.faqWateringQ, Str.faqWateringA),
   (Str.faqOfflineQ, Str.faqOfflineA),

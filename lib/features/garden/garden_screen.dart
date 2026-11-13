@@ -5,8 +5,9 @@
 library;
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/date_fmt.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import '../../design/motion.dart';
@@ -185,7 +186,7 @@ class _PlantList extends StatelessWidget {
                                 style: AppText.heading(context)),
                             Text(
                               p.potLitres != null
-                                  ? Str.potLitres(p.potLitres!).of(context)
+                                  ? Str.potLitres(volumeL(p.potLitres!)).of(context)
                                   : 'in ground',
                               style: AppText.caption(context),
                             ),
@@ -415,7 +416,7 @@ class _PlantIn extends StatelessWidget {
     if (months.isEmpty) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.only(top: 4),
-      child: Text(Str.plantIn(months.map((m) => DateFormat.MMM().format(DateTime(2000, m))).join(', ')).of(context),
+      child: Text(Str.plantIn(months.map(monthShort).join(', ')).of(context),
           style: AppText.caption(context, color: AppColors.sprout)),
     );
   }

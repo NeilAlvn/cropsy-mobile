@@ -1,4 +1,5 @@
 import 'package:cropsy/features/paywall/paywall_screen.dart';
+import 'package:cropsy/l10n/region.dart';
 import 'package:cropsy/l10n/strings.dart';
 import 'package:cropsy/purchases/purchase_service.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -60,5 +61,18 @@ void main() {
     expect(fallbackOffers.first.plan, Plan.yearly);
     expect(fallbackOffers.first.trialDays, 7);
     expect(fallbackOffers.map((o) => o.plan), [Plan.yearly, Plan.monthly, Plan.lifetime]);
+  });
+
+  group('region', () {
+    tearDown(() => AppRegion.apply(lang: 'nl', country: 'NL'));
+
+    test('fallback euro prices only in the eurozone', () {
+      AppRegion.apply(lang: 'en', country: 'US');
+      final yearly = fallbackOffers.firstWhere((o) => o.plan == Plan.yearly);
+      expect(yearly.isFallback, isTrue);
+      expect(yearly.billed('en'), '…');
+      AppRegion.apply(lang: 'nl', country: 'NL');
+      expect(yearly.billed('nl'), contains('39,99'));
+    });
   });
 }

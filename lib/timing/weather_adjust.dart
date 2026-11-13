@@ -14,6 +14,7 @@
 library;
 
 import '../l10n/strings.dart';
+import '../l10n/units.dart';
 import 'dates.dart';
 import 'types.dart';
 
@@ -281,7 +282,7 @@ Adjustment _adjustTask(
       return Adjustment(
         taskId: task.id,
         action: AdjustAction.skip,
-        reason: Str.adjustRainSkip(mm),
+        reason: Str.adjustRainSkip(rainMm(mm)),
       );
     }
 
@@ -301,7 +302,7 @@ Adjustment _adjustTask(
         taskId: task.id,
         action: AdjustAction.bringForward,
         to: day,
-        reason: Str.adjustHeat(t),
+        reason: Str.adjustHeat(tempC(t)),
       );
     }
     return _none(task);
@@ -322,7 +323,7 @@ Adjustment _adjustTask(
           taskId: task.id,
           action: AdjustAction.defer,
           to: obs.date,
-          reason: Str.adjustSoilCold(gate),
+          reason: Str.adjustSoilCold(tempC(gate, exact: true)),
         );
       }
     }
@@ -331,7 +332,7 @@ Adjustment _adjustTask(
       taskId: task.id,
       action: AdjustAction.defer,
       to: toIso(addDays(due, p.maxDeferDays)),
-      reason: Str.adjustSoilStaysCold(gate),
+      reason: Str.adjustSoilStaysCold(tempC(gate, exact: true)),
     );
   }
 

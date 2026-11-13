@@ -37,6 +37,9 @@ import '../../design/typography.dart';
 import '../garden/log_node_flow.dart' show formatDay, nodeKindLine;
 import '../../l10n/app_lang.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/region.dart';
+import '../../l10n/date_fmt.dart';
+import '../../l10n/units.dart';
 import '../../notifications/reminders.dart';
 import '../../timing/types.dart';
 import '../../timing/weather_adjust.dart' show TaskKind;
@@ -163,7 +166,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   static const _pageDuration = Duration(milliseconds: 380);
   static const _pageCurve = Curves.easeInOutCubic;
 
-  static const _sizeBuckets = [('< 2 m²', 1), ('2–5 m²', 4), ('5–20 m²', 12), ('> 20 m²', 30)];
+  static List<(String, int)> get _sizeBuckets => gardenSizeBuckets();
 
   void _prev() {
     if (_page > 0) _controller.previousPage(duration: _pageDuration, curve: _pageCurve);
@@ -330,7 +333,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       StepFrame(
         pose: MascotPose.pointing,
         title: Str.whereDoYouGrow,
-        subtitle: Str.frostBackbone,
+        subtitle: Str.frostBackbone(distanceKm(1)),
         progress: onboardingProgress(2),
         onBack: _prev,
         onNext: () {
@@ -619,7 +622,7 @@ class _LocationStepState extends State<_LocationStep> {
     if (!mounted) return;
     setState(() {
       _busy = false;
-      if (hit == null) _error = Str.noLocationPickRegion.of(context);
+      if (hit == null) _error = (AppRegion.nlBe ? Str.noLocationPickRegion : Str.placeNotFound).of(context);
     });
     if (hit != null) widget.onLookup(hit, null, null);
   }
@@ -637,7 +640,7 @@ class _LocationStepState extends State<_LocationStep> {
       setState(() {
         _busy = false;
         _places = hits;
-        if (hits.isEmpty) _error = Str.noLocationMatch(pc).of(context);
+        if (hits.isEmpty) _error = (AppRegion.nlBe ? Str.noLocationMatch(pc) : Str.placeNotFound).of(context);
       });
       return;
     }
@@ -649,7 +652,7 @@ class _LocationStepState extends State<_LocationStep> {
     if (!mounted) return;
     setState(() {
       _busy = false;
-      if (hit == null) _error = Str.postcodeNotFoundPickRegion.of(context);
+      if (hit == null) _error = (AppRegion.nlBe ? Str.postcodeNotFoundPickRegion : Str.placeNotFound).of(context);
     });
     if (hit != null) widget.onLookup(hit, pc.toUpperCase(), null);
   }
@@ -720,8 +723,8 @@ class _LocationStepState extends State<_LocationStep> {
           MascotNote(
             pose: MascotPose.celebrating,
             text: Str.foundFrostDates(
-              l.profile.lastFrost.substring(5),
-              l.profile.firstFrost.substring(5),
+              dayMonthIso(l.profile.lastFrost),
+              dayMonthIso(l.profile.firstFrost),
             ),
           ),
         ],
@@ -840,8 +843,8 @@ class _PlanStep extends StatelessWidget {
                     label: Text(
                       Str.planFrostLine(
                         region,
-                        frost.lastFrost.substring(5),
-                        frost.firstFrost.substring(5),
+                        dayMonthIso(frost.lastFrost),
+                        dayMonthIso(frost.firstFrost),
                       ).of(context),
                       style: AppText.body(context),
                     ),

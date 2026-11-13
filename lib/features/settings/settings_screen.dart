@@ -16,6 +16,7 @@ import '../../design/components.dart';
 import '../../design/typography.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/date_fmt.dart';
 import '../../sync/auth_service.dart';
 import '../../sync/sync_engine.dart';
 import '../../timing/types.dart';
@@ -183,9 +184,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ? Str.syncing.of(context)
                 : last == null
                     ? Str.notSyncedYet.of(context)
-                    : Str.lastSync(
-                            '${last.hour.toString().padLeft(2, '0')}:${last.minute.toString().padLeft(2, '0')}')
-                        .of(context) +
+                    : Str.lastSync(clock(last)).of(context) +
                         (auth.lastReport?.ok == false
                             ? Str.someTablesFailed.of(context)
                             : ''),

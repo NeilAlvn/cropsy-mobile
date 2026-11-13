@@ -15,6 +15,7 @@ import 'dart:convert';
 import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../l10n/mascot_lines.dart';
 import '../../design/icons.dart';
 
@@ -42,6 +43,8 @@ import '../paywall/paywall_screen.dart';
 import '../repository_scope.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/region.dart';
+import '../../l10n/date_fmt.dart';
 import 'season_rows.dart';
 import 'season_markers.dart';
 
@@ -395,6 +398,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
       optionsFor: (month) => repo.whatToGrowIn(month).length,
       markers: markers,
       tasks: tasks,
+      south: repo.frost.south,
     );
 
     // Swing per path stop, worked out first so a stop can look ahead and back.
@@ -491,7 +495,7 @@ class _SeasonScreenState extends State<SeasonScreen> {
     }
     // Free paths show this week and next; further out is a blurred preview
     // behind one bar. Today's tasks and reminders never sit past the line.
-    final lock = premium ? null : seasonLockFrom(shape, today);
+    final lock = premium ? null : seasonLockFrom(shape, today, south: repo.frost.south);
     if (lock == null) return rows;
     return [
       ...rows.take(lock),
@@ -1135,7 +1139,7 @@ class _MarkerItem implements _Item {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      Str.recapTitle(today.year).of(context),
+                      Str.recapTitle(seasonLabel(repo.today, south: repo.frost.south)).of(context),
                       style: AppText.heading(context),
                     ),
                   ),
@@ -1151,13 +1155,15 @@ class _MarkerItem implements _Item {
                   Expanded(
                     child: _Figure(value: '$harvested', label: Str.picked.of(context)),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _Figure(value: '€${tally.euros.round()}', label: Str.saved.of(context)),
-                  ),
+                  if (AppRegion.euro) ...[
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _Figure(value: '€${tally.euros.round()}', label: Str.saved.of(context)),
+                    ),
+                  ],
                 ],
               ),
-              if (tally.unpriced > 0) ...[
+              if (AppRegion.euro && tally.unpriced > 0) ...[
                 const SizedBox(height: 10),
                 Text(
                   '${tally.unpriced} harvests have no price yet, so they are not counted.',
@@ -1644,7 +1650,7 @@ class _Crest extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(Str.season.of(context), style: AppText.kicker(context)),
-          Text(Str.yearInGarden(today.year).of(context), style: AppText.title(context)),
+          Text(Str.yearInGarden(seasonLabel(RepositoryScope.of(context).today, south: RepositoryScope.of(context).frost.south)).of(context), style: AppText.title(context)),
           const SizedBox(height: 4),
           Row(
             children: [
@@ -1728,13 +1734,19 @@ class _CropOptions extends StatelessWidget {
   );
 }
 
+/// "13 NOV", or "NOV 13" for US English: the upper-case path style keeps its
+/// look in every language.
+@visibleForTesting
+String pathDay(DateTime d, String month) =>
+    AppRegion.isUS && Intl.defaultLocale == 'en_US' ? '$month ${d.day}' : '${d.day} $month';
+
 String _day(String iso, BuildContext context) {
   final d = parseIso(iso);
-  return '${d.day} ${Str.monthShort(d.month).of(context)}';
+  return pathDay(d, Str.monthShort(d.month).of(context));
 }
 
 String _window(String start, String end, BuildContext context) {
-  String fmt(DateTime d) => '${d.day} ${Str.monthShort(d.month).of(context)}';
+  String fmt(DateTime d) => pathDay(d, Str.monthShort(d.month).of(context));
   final s = parseIso(start);
   final e = parseIso(end);
   return start == end ? fmt(s) : '${fmt(s)} – ${fmt(e)}';

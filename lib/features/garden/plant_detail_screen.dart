@@ -6,12 +6,14 @@ library;
 import 'dart:io';
 import '../../timing/types.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/date_fmt.dart';
+import '../../l10n/region.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/motion.dart';
 
 import 'package:flutter/material.dart';
 import '../../design/icons.dart';
-import 'package:intl/intl.dart';
 
 import '../../db/database.dart';
 import '../../design/colors.dart';
@@ -101,7 +103,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                         const SizedBox(width: 8),
                         Text(
                           (plant.potLitres != null
-                                  ? Str.potLitres(plant.potLitres!)
+                                  ? Str.potLitres(volumeL(plant.potLitres!))
                                   : Str.placeGround)
                               .of(context),
                           style: AppText.bodyMuted(context),
@@ -109,7 +111,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                         if (plant.plantedOn != null) ...[
                           const SizedBox(width: 8),
                           Text(
-                            '· ${Str.plantedOn(DateFormat('d MMM').format(parseIso(plant.plantedOn!))).of(context)}',
+                            '· ${Str.plantedOn(dayMonth(parseIso(plant.plantedOn!))).of(context)}',
                             style: AppText.bodyMuted(context),
                           ),
                         ],
@@ -200,7 +202,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: AppColors.paper,
-      builder: (_) => _HarvestSheet(
+      builder: (_) => HarvestSheet(
         cropName: repo.cropNames(plant.cropSlug),
         pricedUnit: repo.content.prices[plant.cropSlug]?.unit,
       ),
@@ -337,7 +339,7 @@ class _Journal extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              DateFormat('EEEE d MMM').format(parseIso(e.entryOn)),
+                              weekdayDayMonth(parseIso(e.entryOn)),
                               style: AppText.label(context, color: AppColors.sprout),
                             ),
                             const SizedBox(height: 2),
@@ -358,8 +360,9 @@ class _Journal extends StatelessWidget {
   }
 }
 
-class _HarvestSheet extends StatefulWidget {
-  const _HarvestSheet({required this.cropName, this.pricedUnit});
+@visibleForTesting
+class HarvestSheet extends StatefulWidget {
+  const HarvestSheet({required this.cropName, this.pricedUnit});
 
   /// The crop's own name, in both languages.
   final LocalizedText cropName;
@@ -369,10 +372,10 @@ class _HarvestSheet extends StatefulWidget {
   final String? pricedUnit;
 
   @override
-  State<_HarvestSheet> createState() => _HarvestSheetState();
+  State<HarvestSheet> createState() => HarvestSheetState();
 }
 
-class _HarvestSheetState extends State<_HarvestSheet> {
+class HarvestSheetState extends State<HarvestSheet> {
   final _qty = TextEditingController();
   late String _unit = widget.pricedUnit ?? 'pcs';
 
@@ -404,22 +407,24 @@ class _HarvestSheetState extends State<_HarvestSheet> {
             ),
             const SizedBox(width: 10),
             SegmentedButton<String>(
-              segments: [ButtonSegment(value: 'pcs', label: Text(Str.pieces.of(context))), ButtonSegment(value: 'kg', label: Text('kg'))],
+              segments: [ButtonSegment(value: 'pcs', label: Text(Str.pieces.of(context))), ButtonSegment(value: 'kg', label: Text(massUnit))],
               selected: {_unit},
               onSelectionChanged: (v) => setState(() => _unit = v.first),
             ),
           ]),
-          const SizedBox(height: 8),
-          Text(
-            switch (widget.pricedUnit) {
-              null => Str.noShopPrice.of(context),
-              final priced when priced == _unit =>
-                Str.countsTowardsTally.of(context),
-              final priced => Str.pricedPerUnit(
-                  priced == 'kg' ? Str.unitKg : Str.pieces).of(context),
-            },
-            style: AppText.caption(context),
-          ),
+          if (AppRegion.euro) ...[
+            const SizedBox(height: 8),
+            Text(
+              switch (widget.pricedUnit) {
+                null => Str.noShopPrice.of(context),
+                final priced when priced == _unit =>
+                  Str.countsTowardsTally.of(context),
+                final priced => Str.pricedPerUnit(
+                    priced == 'kg' ? Str.unitMass : Str.pieces).of(context),
+              },
+              style: AppText.caption(context),
+            ),
+          ],
           const SizedBox(height: 20),
           PrimaryButton(
             label: Str.saveHarvest.of(context),
@@ -427,7 +432,7 @@ class _HarvestSheetState extends State<_HarvestSheet> {
             onPressed: () {
               final q = double.tryParse(_qty.text.replaceAll(',', '.'));
               if (q == null || q <= 0) return;
-              Navigator.pop(context, (q, _unit));
+              Navigator.pop(context, (_unit == 'kg' ? (kgFromInput(q) * 1000).round() / 1000 : q, _unit));
             },
           ),
         ],
@@ -449,7 +454,8 @@ class _EditPlantSheet extends StatefulWidget {
 
 class _EditPlantSheetState extends State<_EditPlantSheet> {
   late final TextEditingController _pot =
-      TextEditingController(text: widget.plant.potLitres?.toString() ?? '');
+      TextEditingController(
+          text: widget.plant.potLitres == null ? '' : potInputText(widget.plant.potLitres!));
   late String? _plantedOn = widget.plant.plantedOn;
 
   Future<void> _pickDate() async {
@@ -488,10 +494,10 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
           const SizedBox(height: 16),
           TextField(
             controller: _pot,
-            keyboardType: TextInputType.number,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
             style: AppText.body(context),
             decoration: InputDecoration(
-                labelText: Str.potSizeLitres.of(context),
+                labelText: (AppRegion.imperial ? Str.potSizeGallons : Str.potSizeLitres).of(context),
                 hintText: Str.leaveBlankInGround.of(context)),
           ),
           if (_plantedOn != null) ...[
@@ -507,7 +513,7 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
                     const SizedBox(width: 12),
                     Text(Str.planted.of(context), style: AppText.bodyMuted(context)),
                     const Spacer(),
-                    Text(DateFormat('d MMM yyyy').format(parseIso(_plantedOn!)),
+                    Text(dayMonthYear(parseIso(_plantedOn!)),
                         style: AppText.label(context)),
                     const SizedBox(width: 6),
                     Icon(PhosphorIcons.caretRight, color: AppColors.muted),
@@ -520,7 +526,8 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
           PrimaryButton(
             label: Str.saveChanges.of(context),
             onPressed: () async {
-              final pot = int.tryParse(_pot.text.trim());
+              final potIn = double.tryParse(_pot.text.trim().replaceAll(',', '.'));
+              final pot = potIn == null ? null : litresFromInput(potIn).round();
               await repo.updatePlant(widget.plant.id,
                   potLitres: pot, plantedOn: _plantedOn);
               if (context.mounted) Navigator.pop(context, true);

@@ -30,6 +30,7 @@ import '../../design/mascot.dart';
 import '../../design/motion.dart';
 import '../../design/typography.dart';
 import '../../l10n/app_lang.dart';
+import '../../l10n/region.dart';
 import '../../l10n/strings.dart';
 import '../../notifications/lifecycle.dart';
 import '../../purchases/purchase_service.dart';
@@ -357,7 +358,8 @@ class _PaywallScreenState extends State<PaywallScreen> {
                           label: _busy
                               ? Str.oneMoment.of(context)
                               : (trial > 0 ? Str.pwCtaTrial(trial) : Str.continueLabel).of(context),
-                          onPressed: _busy ? null : () => _buy(selected),
+                          // Fallback prices are not buyable outside the eurozone.
+                          onPressed: _busy || (selected.isFallback && !AppRegion.euro) ? null : () => _buy(selected),
                         ),
                       ),
                       const SizedBox(height: 6),

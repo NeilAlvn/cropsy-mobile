@@ -5,6 +5,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
@@ -76,7 +77,7 @@ class _SeasonPathViewState extends State<SeasonPathView> {
                 Expanded(
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(Str.gardenPlanner.of(context), style: AppText.label(context)),
-                    Text(Str.plannerBlurb.of(context), style: AppText.caption(context)),
+                    Text(Str.plannerBlurb(lengthCm(30)).of(context), style: AppText.caption(context)),
                   ]),
                 ),
                 Icon(PhosphorIcons.caretRight, color: AppColors.muted),
@@ -125,7 +126,7 @@ class _SeasonPathViewState extends State<SeasonPathView> {
                     child: Row(children: [
                       const Mascot(MascotPose.pointing, size: 40),
                       const SizedBox(width: 12),
-                      Expanded(child: Text(p.note?.en ?? '', style: AppText.body(context))),
+                      Expanded(child: Text(p.note?.of(context) ?? '', style: AppText.body(context))),
                       const SizedBox(width: 8),
                       TextButton(
                         onPressed: () async {

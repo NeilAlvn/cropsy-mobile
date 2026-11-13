@@ -5,10 +5,12 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/date_fmt.dart';
+import '../../l10n/region.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import '../../design/motion.dart';
-import 'package:intl/intl.dart';
 
 import '../../design/colors.dart';
 import '../../design/components.dart';
@@ -67,7 +69,13 @@ class _SheetState extends State<_Sheet> {
   late String _on = widget.today;
   late MethodType _method = _methods.first;
   late String _place = widget.crop.containerOk ? 'outdoor_container' : 'ground';
-  late final _pot = TextEditingController(text: widget.crop.minPotLitres?.toString() ?? '');
+  late final _pot = TextEditingController(
+      text: widget.crop.minPotLitres == null ? '' : potInputText(widget.crop.minPotLitres!));
+
+  int? _potLitres() {
+    final v = double.tryParse(_pot.text.trim().replaceAll(',', '.'));
+    return v == null ? null : litresFromInput(v).round();
+  }
   final _variety = TextEditingController();
 
   List<MethodType> get _methods {
@@ -115,7 +123,7 @@ class _SheetState extends State<_Sheet> {
                   const SizedBox(width: 12),
                   Text(Str.plantingDate.of(context), style: AppText.bodyMuted(context)),
                   const Spacer(),
-                  Text(DateFormat('d MMM yyyy').format(parseIso(_on)), style: AppText.label(context)),
+                  Text(dayMonthYear(parseIso(_on)), style: AppText.label(context)),
                   Icon(PhosphorIcons.caretRight, color: AppColors.muted),
                 ]),
               ),
@@ -151,11 +159,11 @@ class _SheetState extends State<_Sheet> {
               const SizedBox(height: 14),
               TextField(
                 controller: _pot,
-                keyboardType: TextInputType.number,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 style: AppText.body(context),
                 decoration: InputDecoration(
-                  labelText: Str.potSizeLitres.of(context),
-                  helperText: widget.crop.minPotLitres == null ? null : Str.atLeastLitres(widget.crop.minPotLitres!.toInt()).of(context),
+                  labelText: (AppRegion.imperial ? Str.potSizeGallons : Str.potSizeLitres).of(context),
+                  helperText: widget.crop.minPotLitres == null ? null : Str.atLeastPot(volumeL(widget.crop.minPotLitres!)).of(context),
                 ),
               ),
             ],
@@ -175,7 +183,7 @@ class _SheetState extends State<_Sheet> {
                   plantedOn: _on,
                   method: _method,
                   place: _place,
-                  potLitres: _container ? int.tryParse(_pot.text.trim()) : null,
+                  potLitres: _container ? _potLitres() : null,
                   variety: _variety.text.trim().isEmpty ? null : _variety.text.trim(),
                 ),
               ),

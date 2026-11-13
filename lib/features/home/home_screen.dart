@@ -7,11 +7,12 @@ library;
 import 'package:flutter/material.dart';
 import '../../l10n/mascot_lines.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/date_fmt.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import 'package:flutter/services.dart';
 
-import 'package:intl/intl.dart';
 
 import '../../db/database.dart';
 import '../../design/brutal.dart';
@@ -67,6 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
             .where((c) =>
                 c.names.en.toLowerCase().contains(_query.toLowerCase()) ||
                 c.names.nl.toLowerCase().contains(_query.toLowerCase()) ||
+                (c.names.enUs?.toLowerCase().contains(_query.toLowerCase()) ??
+                    false) ||
                 c.names.pick(lang).toLowerCase().contains(_query.toLowerCase()))
             .toList()
           ..sort((a, b) => a.names.pick(lang).compareTo(b.names.pick(lang))))
@@ -560,7 +563,7 @@ class _TodayWeatherHead extends StatelessWidget {
                 [
                   if (face != null) face.name.of(context),
                   (wet
-                          ? Str.weatherRain(today.precipMm.toStringAsFixed(1))
+                          ? Str.weatherRain(rainMm(today.precipMm))
                           : Str.weatherDry)
                       .of(context),
                 ].join(' · '),
@@ -572,7 +575,7 @@ class _TodayWeatherHead extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Text(
-          Str.weatherRange(today.tempMaxC.round(), today.tempMinC.round()).of(context),
+          Str.weatherRange(tempBare(today.tempMaxC), tempBare(today.tempMinC)).of(context),
           style: AppText.title(context)
               .copyWith(fontFeatures: const [FontFeature.tabularFigures()]),
         ),
@@ -594,14 +597,13 @@ class _ForecastStrip extends StatelessWidget {
     if (days.isEmpty) return const SizedBox.shrink();
     // `Intl.defaultLocale` is set at startup, so the weekday comes out in the
     // app's language without threading a locale through.
-    final fmt = DateFormat('EEE');
     return Row(
       children: [
         for (final o in days)
           Expanded(
             child: Column(
               children: [
-                Text(fmt.format(parseIso(o.date)),
+                Text(weekdayShort(parseIso(o.date)),
                     style: AppText.caption(context, color: AppColors.inkMuted),
                     maxLines: 1),
                 const SizedBox(height: 4),
@@ -609,7 +611,7 @@ class _ForecastStrip extends StatelessWidget {
                     size: 18,
                     color: _conditionFace(o.weatherCode)?.color ?? AppColors.inkPlaceholder),
                 const SizedBox(height: 4),
-                Text('${o.tempMaxC.round()}°',
+                Text(tempBare(o.tempMaxC),
                     style: AppText.caption(context, color: AppColors.ink)
                         .copyWith(fontFeatures: const [FontFeature.tabularFigures()]),
                     maxLines: 1),
@@ -751,7 +753,6 @@ class _UpcomingHarvest extends StatelessWidget {
                   itemBuilder: (context, i) {
                     final r = rows[i];
                     final h = r.harvest;
-                    final fmt = DateFormat('d MMM');
                     return GestureDetector(
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: r.plant.id)),
@@ -775,7 +776,7 @@ class _UpcomingHarvest extends StatelessWidget {
                                 children: [
                                   Text(repo.cropNames(r.plant.cropSlug).of(context), style: AppText.label(context)),
                                   Text(
-                                    '${fmt.format(parseIso(h.due))} – ${fmt.format(parseIso(h.until ?? h.due))}',
+                                    '${dayMonth(parseIso(h.due))} – ${dayMonth(parseIso(h.until ?? h.due))}',
                                     style: AppText.caption(context, color: AppColors.clay),
                                   ),
                                 ],

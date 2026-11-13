@@ -6,6 +6,7 @@
 library;
 
 import 'season_year.dart';
+import 'us_crop_names.dart';
 
 enum MethodType { sowIndoor, sowDirect, transplant, plant }
 
@@ -48,6 +49,7 @@ class LocalizedText {
     this.fr,
     this.sv,
     this.pt,
+    this.enUs,
   });
 
   final String nl;
@@ -56,6 +58,17 @@ class LocalizedText {
   final String? fr;
   final String? sv;
   final String? pt;
+
+  /// US English, where it differs from [en] (crop names, a few words).
+  final String? enUs;
+
+  /// Set only through `AppRegion.apply`.
+  static bool usEnglish = false;
+  static bool dutchAlias = true;
+
+  LocalizedText withEnUs(String? enUs) => enUs == null
+      ? this
+      : LocalizedText(nl: nl, en: en, de: de, fr: fr, sv: sv, pt: pt, enUs: enUs);
 
   factory LocalizedText.fromJson(Map<String, dynamic> j) {
     final en = (j['en'] ?? j['nl']) as String;
@@ -85,12 +98,13 @@ class LocalizedText {
     'fr' => fr ?? en,
     'sv' => sv ?? en,
     'pt' => pt ?? en,
-    _ => en,
+    _ => usEnglish && enUs != null ? enUs! : en,
   };
 
   /// The small name under a title: English for everyone except English
   /// readers, who see Dutch. Empty when it would repeat the title.
   String other(String lang) {
+    if (lang == 'en' && !dutchAlias) return '';
     final o = lang == 'en' ? nl : en;
     return o == pick(lang) ? '' : o;
   }
@@ -103,10 +117,11 @@ class LocalizedText {
       other.de == de &&
       other.fr == fr &&
       other.sv == sv &&
-      other.pt == pt;
+      other.pt == pt &&
+      other.enUs == enUs;
 
   @override
-  int get hashCode => Object.hash(nl, en, de, fr, sv, pt);
+  int get hashCode => Object.hash(nl, en, de, fr, sv, pt, enUs);
 }
 
 /// One way to grow a crop, timed relative to a frost anchor.
@@ -248,7 +263,8 @@ class Crop {
     final harvest = j['harvest'] as Map<String, dynamic>;
     return Crop(
       slug: j['slug'] as String,
-      names: LocalizedText.fromJson(j['names'] as Map<String, dynamic>),
+      names: LocalizedText.fromJson(j['names'] as Map<String, dynamic>)
+          .withEnUs(usCropNames[j['slug']]),
       category: j['category'] as String,
       frostTender: j['frost_tender'] as bool,
       containerOk: j['container_ok'] as bool,
