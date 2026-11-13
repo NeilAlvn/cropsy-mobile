@@ -255,7 +255,8 @@ class _Calendar extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (crop.methods.any((m) => m.type != MethodType.sowIndoor) &&
+        if ((repo.frost.weeklyTmax?.length ?? 0) == 52 &&
+            crop.methods.any((x) => x.type != MethodType.sowIndoor) &&
             !scheduleCrop(crop, repo.frost).any((w) => w.method != MethodType.sowIndoor))
           Padding(
             padding: const EdgeInsets.only(bottom: 8),

@@ -604,6 +604,10 @@ class GardenRepository extends ChangeNotifier {
     try {
       final hit = await frostForCoordinate(saved.lat!, saved.lon!);
       if (hit == null) return;
+      // The user may have picked another place during the network wait; that
+      // newer choice wins (same idea as the guard in _recoverLocation).
+      final now = SavedLocation.decode(await meta(SavedLocation.metaKey));
+      if (now == null || now.lat != saved.lat || now.lon != saved.lon) return;
       await _remember(SavedLocation(
         name: saved.name,
         profile: hit.profile,
