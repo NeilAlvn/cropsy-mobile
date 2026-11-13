@@ -430,7 +430,7 @@ abstract final class MascotLines {
         'Pluk wat rijp is en dek af of zet binnen.',
     en:
         'First frost is expected in about $days days '
-        '($firstFrost). ${crop.en} does not survive it. '
+        '($firstFrost). ${crop.pick('en')} does not survive it. '
         'Pick what is ripe and cover or move it in.',
     de:
         'Der erste Frost wird in etwa $days Tagen erwartet '
@@ -460,7 +460,7 @@ abstract final class MascotLines {
         'Houd ${crop.nl.toLowerCase()} binnen tot na de ijsheiligen.',
     en:
         'Last frost is still ~$days days away ($lastFrost). '
-        'Keep ${crop.en.toLowerCase()} inside until after IJsheiligen.',
+        'Keep ${crop.pick('en').toLowerCase()} inside until after IJsheiligen.',
     // German nouns keep their capital.
     de:
         'Der letzte Frost ist noch ~$days Tage entfernt ($lastFrost). '

@@ -1702,7 +1702,7 @@ abstract final class Str {
   // ── the path's own stops ──────────────────────────────────────────────────
   static LocalizedText sowCrop(LocalizedText crop) => LocalizedText(
     nl: '${crop.nl} zaaien',
-    en: 'Sow ${crop.en}',
+    en: 'Sow ${crop.pick('en')}',
     de: '${crop.pick('de')} säen',
     fr: '${crop.pick('fr')} : semer',
     sv: 'Så ${crop.pick('sv').toLowerCase()}',
@@ -1710,7 +1710,7 @@ abstract final class Str {
   );
   static LocalizedText harvestCrop(LocalizedText crop) => LocalizedText(
     nl: '${crop.nl} oogsten',
-    en: 'Harvest ${crop.en}',
+    en: 'Harvest ${crop.pick('en')}',
     de: '${crop.pick('de')} ernten',
     fr: '${crop.pick('fr')} : récolter',
     sv: 'Skörda ${crop.pick('sv').toLowerCase()}',
@@ -1718,7 +1718,7 @@ abstract final class Str {
   );
   static LocalizedText followOn(LocalizedText crop) => LocalizedText(
     nl: 'Daarna: ${crop.nl}',
-    en: 'Follow on: ${crop.en}',
+    en: 'Follow on: ${crop.pick('en')}',
     de: 'Danach: ${crop.pick('de')}',
     fr: 'Ensuite : ${crop.pick('fr')}',
     sv: 'Sedan: ${crop.pick('sv').toLowerCase()}',
@@ -1732,7 +1732,7 @@ abstract final class Str {
   static LocalizedText stepOnCrop(LocalizedText step, LocalizedText crop) =>
       LocalizedText(
         nl: '${crop.nl} ${step.nl.toLowerCase()}',
-        en: '${step.en} ${crop.en}',
+        en: '${step.en} ${crop.pick('en')}',
         de: '${crop.pick('de')} ${step.pick('de').toLowerCase()}',
         fr: '${crop.pick('fr')} : ${step.pick('fr').toLowerCase()}',
         sv: '${step.pick('sv')} ${crop.pick('sv').toLowerCase()}',
@@ -3818,7 +3818,7 @@ abstract final class Str {
   // ── the growth log ────────────────────────────────────────────────────────
   static LocalizedText howIsItDoing(LocalizedText crop) => LocalizedText(
     nl: 'Hoe gaat het met je ${crop.nl}?',
-    en: 'How is your ${crop.en} doing?',
+    en: 'How is your ${crop.pick('en')} doing?',
     de: '${crop.pick('de')}: Wie läuft es?',
     fr: '${crop.pick('fr')} : comment ça pousse ?',
     sv: '${crop.pick('sv')}: hur går det?',
@@ -4113,7 +4113,7 @@ abstract final class Str {
   );
   static LocalizedText painting(LocalizedText crop) => LocalizedText(
     nl: '${crop.nl} plaatsen. Tik een gevuld vakje om het leeg te maken.',
-    en: 'Painting ${crop.en}. Tap a filled cell to clear it.',
+    en: 'Painting ${crop.pick('en')}. Tap a filled cell to clear it.',
     de: '${crop.pick('de')} setzen. Tippe auf ein volles Feld, um es zu leeren.',
     fr: 'Placement : ${crop.pick('fr')}. Touche une case remplie pour la vider.',
     sv: 'Placerar ${crop.pick('sv').toLowerCase()}. Tryck på en fylld ruta för att tömma den.',
@@ -4905,7 +4905,7 @@ abstract final class Str {
   );
   static LocalizedText pathCompanion(LocalizedText partner) => LocalizedText(
     nl: 'Zet ${partner.nl} erbij',
-    en: 'Plant ${partner.en} alongside',
+    en: 'Plant ${partner.pick('en')} alongside',
     de: '${partner.pick('de')} dazupflanzen',
     fr: 'À planter à côté : ${partner.pick('fr')}',
     sv: 'Plantera ${partner.pick('sv').toLowerCase()} bredvid',
@@ -4914,7 +4914,7 @@ abstract final class Str {
   static LocalizedText pathCompanionCaption(LocalizedText have) =>
       LocalizedText(
         nl: 'Goede buur voor je ${have.nl}',
-        en: 'A good neighbour for your ${have.en}',
+        en: 'A good neighbour for your ${have.pick('en')}',
         enUs: 'A good neighbor for your ${have.pick('en')}',
         de: 'Ein guter Nachbar für ${have.pick('de')}',
         fr: '${have.pick('fr')} : un bon voisin',
@@ -5109,7 +5109,7 @@ abstract final class Str {
   );
   static LocalizedText pathFirstSowCaption(LocalizedText crop) => LocalizedText(
     nl: 'Het seizoen begon met ${crop.nl}',
-    en: 'The season began with ${crop.en}',
+    en: 'The season began with ${crop.pick('en')}',
     de: 'Die Saison begann mit ${crop.pick('de')}',
     fr: 'Premier semis de la saison : ${crop.pick('fr')}',
     sv: 'Säsongen började med ${crop.pick('sv').toLowerCase()}',
@@ -5125,7 +5125,7 @@ abstract final class Str {
   );
   static LocalizedText pathHarvestCaption(LocalizedText crop) => LocalizedText(
     nl: 'Geplukt: ${crop.nl}',
-    en: 'Picked: ${crop.en}',
+    en: 'Picked: ${crop.pick('en')}',
     de: 'Geerntet: ${crop.pick('de')}',
     fr: 'Récolté : ${crop.pick('fr')}',
     sv: 'Skördat: ${crop.pick('sv').toLowerCase()}',
@@ -5581,7 +5581,7 @@ abstract final class Str {
     String until,
   ) => LocalizedText(
     nl: 'Plek vrij na ${after?.nl ?? afterSlug} ($freeFrom) — ${crop.nl} zaaien kan nog tot $until.',
-    en: 'Space frees up after ${after?.en ?? afterSlug} ($freeFrom) — ${crop.en} can still be sown until $until.',
+    en: 'Space frees up after ${after?.pick('en') ?? afterSlug} ($freeFrom) — ${crop.pick('en')} can still be sown until $until.',
     de: 'Platz frei nach ${after?.pick('de') ?? afterSlug} ($freeFrom) — ${crop.pick('de')} kannst du noch bis $until säen.',
     fr: 'Place libre après ${after?.pick('fr') ?? afterSlug} ($freeFrom) — tu peux encore semer ${crop.pick('fr')} jusqu\'au $until.',
     sv:

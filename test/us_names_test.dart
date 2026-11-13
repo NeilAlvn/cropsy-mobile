@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cropsy/l10n/mascot_lines.dart';
 import 'package:cropsy/l10n/region.dart';
 import 'package:cropsy/timing/crop_snapshot.dart';
 import 'package:cropsy/timing/us_crop_names.dart';
@@ -20,5 +21,13 @@ void main() {
     expect(courgette.names.pick('en'), 'Zucchini');
     AppRegion.apply(lang: 'en', country: 'GB');
     expect(courgette.names.pick('en'), 'Courgette');
+  });
+
+  test('crop names inside English sentences follow the region', () {
+    final names = crops.firstWhere((c) => c.slug == 'courgette').names;
+    AppRegion.apply(lang: 'en', country: 'US');
+    expect(MascotLines.insightFirstFrostSoon(3, '1 Oct', names).pick('en'), contains('Zucchini'));
+    AppRegion.apply(lang: 'en', country: 'GB');
+    expect(MascotLines.insightFirstFrostSoon(3, '1 Oct', names).pick('en'), contains('Courgette'));
   });
 }
