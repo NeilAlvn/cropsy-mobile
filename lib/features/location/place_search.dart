@@ -1,5 +1,5 @@
-/// Town / postcode search anywhere in the world: Open-Meteo Geocoding (free,
-/// no key; the device already calls Open-Meteo for the forecast). NL postcodes
+/// Town search anywhere in the world: Open-Meteo Geocoding, called through the
+/// Cropsy backend (/api/places), which holds the key. NL postcodes
 /// keep going through `frostForPostcode` (PDOK, exact centroid).
 library;
 

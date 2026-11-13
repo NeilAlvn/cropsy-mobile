@@ -39,6 +39,6 @@ EULA padrão da Apple: https://www.apple.com/legal/internet-services/itunes/dev/
 Política de privacidade: https://www.cropsyapp.com/pt/privacy
 ## whats_new
 A Cropsy funciona agora onde quer que cultives.
-- As tuas próprias datas de geada, em qualquer lugar: pesquisa por localidade ou código postal, ou usa a tua localização.
+- As tuas próprias datas de geada, em qualquer lugar: pesquisa por uma localidade, ou usa a tua localização.
 - Janelas de sementeira adaptadas ao calor, e sementeiras de outono para culturas de clima fresco.
 - Correções: as datas de colheita contam agora a partir da plantação definitiva, e o teu local mantém-se após reiniciar.

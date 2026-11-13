@@ -39,6 +39,6 @@ Apples standard-EULA: https://www.apple.com/legal/internet-services/itunes/dev/s
 Integritetspolicy: https://www.cropsyapp.com/sv/privacy
 ## whats_new
 Cropsy fungerar nu överallt där du odlar.
-- Dina egna frostdatum, var du än bor: sök på ort eller postnummer, eller använd din position.
+- Dina egna frostdatum, var du än bor: sök på en ort, eller använd din position.
 - Värmemedvetna såddfönster, plus höstsådd för svalare grödor.
 - Rättelser: skördedatum räknas nu från utplantering, och din plats finns kvar efter en omstart.

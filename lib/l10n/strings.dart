@@ -9,6 +9,7 @@
 library;
 
 import '../timing/types.dart';
+import 'region.dart';
 
 abstract final class Str {
   // ── tabs, read by the screen reader (base 8.8) ────────────────────────────
@@ -4408,6 +4409,28 @@ abstract final class Str {
     sv: 'Ort, region eller postnummer',
     pt: 'Cidade, região ou código postal',
   );
+  static const _townOrZip = LocalizedText(
+    nl: 'Plaats, regio of postcode',
+    en: 'Town or ZIP code',
+    de: 'Ort oder ZIP-Code',
+    fr: 'Ville ou ZIP code',
+    sv: 'Ort eller ZIP-kod',
+    pt: 'Cidade ou ZIP code',
+  );
+  static const _townOrRegion = LocalizedText(
+    nl: 'Plaats of regio',
+    en: 'Town or region',
+    de: 'Ort oder Region',
+    fr: 'Ville ou région',
+    sv: 'Ort eller region',
+    pt: 'Cidade ou região',
+  );
+
+  /// The place-search hint. Postcodes only work in NL/BE (PDOK) and as US ZIP
+  /// codes in the geocoder, so nowhere else promises them.
+  static LocalizedText get placeSearchHint =>
+      AppRegion.nlBe ? townOrPostcode : AppRegion.isUS ? _townOrZip : _townOrRegion;
+
   static LocalizedText usePostcode(String code) => LocalizedText(
     nl: 'Gebruik postcode $code',
     en: 'Use postcode $code',

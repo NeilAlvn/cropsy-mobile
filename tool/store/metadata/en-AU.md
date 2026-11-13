@@ -39,7 +39,7 @@ Apple's standard EULA: https://www.apple.com/legal/internet-services/itunes/dev/
 Privacy Policy: https://www.cropsyapp.com/en/privacy
 ## whats_new
 Cropsy now works wherever you grow.
-- Your own frost dates, anywhere: search any town or postcode, or use your location.
+- Your own frost dates, anywhere: search any town, or use your location.
 - Southern hemisphere seasons for Australia and New Zealand.
 - Heat-aware sowing windows, plus autumn sowings for cool crops.
 - Fixes: harvest dates now count from planting out, and your place stays put after a restart.

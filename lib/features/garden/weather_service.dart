@@ -1,4 +1,5 @@
-/// Live daily weather for the overlay (API-CONTRACT §5): Open-Meteo, 7 days
+/// Live daily weather for the overlay (API-CONTRACT §5): Open-Meteo through
+/// the Cropsy backend (/api/weather), 7 days
 /// back + 7 ahead, cached in AppMeta for six hours. Offline or on failure the
 /// cache is used if present, else there is no overlay — the base schedule
 /// stands and the app never invents a forecast.

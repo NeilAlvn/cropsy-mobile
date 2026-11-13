@@ -176,7 +176,7 @@ class _LocationSheetState extends State<_LocationSheet> {
                 style: AppText.body(context),
                 decoration: InputDecoration(
                   isDense: true,
-                  hintText: Str.townOrPostcode.of(context),
+                  hintText: Str.placeSearchHint.of(context),
                   hintStyle: AppText.bodyMuted(context),
                   prefixIcon: Icon(PhosphorIcons.magnifyingGlass, color: AppColors.muted),
                   filled: true,

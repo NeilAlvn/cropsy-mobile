@@ -39,6 +39,6 @@ Standard-EULA von Apple: https://www.apple.com/legal/internet-services/itunes/de
 Datenschutzerklärung: https://www.cropsyapp.com/de/privacy
 ## whats_new
 Cropsy funktioniert jetzt überall, wo du anbaust.
-- Deine eigenen Frostdaten, egal wo: Suche nach Ort oder Postleitzahl oder nutze deinen Standort.
+- Deine eigenen Frostdaten, egal wo: Suche nach einem Ort oder nutze deinen Standort.
 - Hitzebewusste Aussaatfenster und Herbstaussaaten für kühle Kulturen.
 - Korrekturen: Erntedaten zählen jetzt ab dem Auspflanzen, und dein Ort bleibt nach einem Neustart erhalten.
