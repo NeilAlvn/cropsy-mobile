@@ -8,6 +8,7 @@ library;
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart';
@@ -32,11 +33,27 @@ String _isoMinus(String today, int days) =>
     DateTime.parse(today).subtract(Duration(days: days)).toIso8601String().substring(0, 10);
 
 /// The stored record after a fetch: days up to [today] (and at most 7 days
-/// back), one per date, the freshly fetched value replacing the stored one.
+/// back), one per date. A date seen before is merged, never replaced: MET's
+/// "today" covers only the hours still to come, so a later fetch must not erase
+/// earlier rain (precip/tmax/weathercode take the max, tmin the min).
 @visibleForTesting
 List<DayObservation> mergeHistory(List<DayObservation> stored, List<DayObservation> fetched, String today) {
   final from = _isoMinus(today, 7);
-  final byDate = {for (final o in [...stored, ...fetched]) o.date: o};
+  final byDate = <String, DayObservation>{};
+  for (final o in [...stored, ...fetched]) {
+    final p = byDate[o.date];
+    byDate[o.date] = p == null
+        ? o
+        : DayObservation(
+            date: o.date,
+            precipMm: max(p.precipMm, o.precipMm),
+            tempMinC: min(p.tempMinC, o.tempMinC),
+            tempMaxC: max(p.tempMaxC, o.tempMaxC),
+            weatherCode: p.weatherCode == null || o.weatherCode == null
+                ? p.weatherCode ?? o.weatherCode
+                : max(p.weatherCode!, o.weatherCode!),
+          );
+  }
   return [
     for (final o in byDate.values)
       if (o.date.compareTo(from) >= 0 && o.date.compareTo(today) <= 0) o,

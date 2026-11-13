@@ -7,17 +7,29 @@ import 'package:geocoding/geocoding.dart';
 DayObservation obs(String d, num mm) => DayObservation(date: d, precipMm: mm, tempMinC: 5, tempMaxC: 15);
 
 void main() {
-  test('stored days come back as past days, newest value per date wins', () {
+  test('stored days come back as past days, a date seen twice is merged', () {
     final stored = mergeHistory(
       [obs('2026-11-10', 1), obs('2026-11-11', 2), obs('2026-11-12', 3)],
       [obs('2026-11-12', 4), obs('2026-11-13', 5), obs('2026-11-14', 9)],
       '2026-11-13',
     );
     expect(stored.map((o) => o.date), ['2026-11-10', '2026-11-11', '2026-11-12', '2026-11-13']);
-    expect(stored[2].precipMm, 4);
+    expect(stored[2].precipMm, 4); // max(3, 4)
     final days = withPastDays(stored, [obs('2026-11-13', 6), obs('2026-11-14', 9)], '2026-11-13');
     expect(days.map((o) => o.date), ['2026-11-10', '2026-11-11', '2026-11-12', '2026-11-13', '2026-11-14']);
     expect(days[3].precipMm, 6);
+  });
+
+  test('a later, emptier reading never erases earlier rain', () {
+    final m = mergeHistory(
+      [const DayObservation(date: '2026-11-13', precipMm: 14, tempMinC: 8, tempMaxC: 12, weatherCode: 63)],
+      [const DayObservation(date: '2026-11-13', precipMm: 0, tempMinC: 6, tempMaxC: 10, weatherCode: 3)],
+      '2026-11-13',
+    );
+    expect(m.single.precipMm, 14);
+    expect(m.single.tempMinC, 6);
+    expect(m.single.tempMaxC, 12);
+    expect(m.single.weatherCode, 63);
   });
 
   test('history keeps at most 7 days before today', () {
