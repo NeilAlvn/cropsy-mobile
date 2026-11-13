@@ -7,8 +7,11 @@ import 'package:intl/intl.dart';
 
 import 'region.dart';
 
-String _n(num v, {int decimals = 0}) =>
-    NumberFormat(decimals == 0 ? '#,##0' : '#,##0.${'#' * decimals}', Intl.defaultLocale).format(v);
+String _n(num v, {int decimals = 0}) {
+  // Values that round to zero print as 0, never "-0".
+  final x = v.abs() <= (decimals == 0 ? 0.5 : 0.05) ? 0 : v;
+  return NumberFormat(decimals == 0 ? '#,##0' : '#,##0.${'#' * decimals}', Intl.defaultLocale).format(x);
+}
 
 bool get _imp => AppRegion.imperial;
 

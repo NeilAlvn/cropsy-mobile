@@ -25,6 +25,16 @@ void main() {
     expect(clock(d), '15:05');
   });
 
+  test('non-English keeps its fixed patterns', () {
+    AppRegion.apply(lang: 'de', country: 'DE');
+    expect(dayMonth(d), '3 Mai');
+    expect(weekdayDayMonth(d), 'Sonntag 3 Mai');
+    expect(dayMonthYear(d), '3 Mai 2026');
+    AppRegion.apply(lang: 'pt', country: 'PT');
+    expect(dayMonth(d), '3 mai.');
+    expect(dayMonthYear(d), '3 mai. 2026');
+  });
+
   test('season label', () {
     expect(seasonLabel('2026-11-13', south: false), '2026');
     expect(seasonLabel('2026-11-13', south: true), '2026/27');

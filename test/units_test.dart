@@ -25,6 +25,13 @@ void main() {
     expect(inputFromKg(1), closeTo(2.20462, 1e-6));
   });
 
+  test('US unit round trip and no -0', () {
+    AppRegion.apply(lang: 'en', country: 'US');
+    expect(inputFromLitres(litresFromInput(2)), closeTo(2, 1e-9));
+    AppRegion.apply(lang: 'en', country: 'GB');
+    expect(tempC(-0.2), '0°C');
+  });
+
   test('UK and NL stay metric, NL with a decimal comma as today', () {
     AppRegion.apply(lang: 'en', country: 'GB');
     expect([tempC(20), rainMm(3), lengthCm(30), depthMm(10), volumeL(10), massKg(1.5), areaM2(2)],

@@ -1,5 +1,6 @@
-/// Dates on locale skeletons, so `AppRegion`'s intl locale decides the order
-/// (en_US "May 3", en_GB "3 May", nl "3 mei").
+/// Dates. English uses locale skeletons, so `AppRegion`'s intl locale decides
+/// the order (en_US "May 3", en_GB "3 May"). Other languages keep their
+/// fixed patterns, exactly as before.
 library;
 
 import 'package:intl/intl.dart';
@@ -7,10 +8,14 @@ import 'package:intl/intl.dart';
 import '../timing/dates.dart';
 import '../timing/season_year.dart';
 
-String dayMonth(DateTime d) => DateFormat.MMMd().format(d);
+bool get _en => (Intl.defaultLocale ?? 'en').startsWith('en');
+
+String dayMonth(DateTime d) => (_en ? DateFormat.MMMd() : DateFormat('d MMM')).format(d);
 String dayMonthIso(String iso) => dayMonth(parseIso(iso));
-String weekdayDayMonth(DateTime d) => DateFormat('EEEE').add_MMMd().format(d);
-String dayMonthYear(DateTime d) => DateFormat.yMMMd().format(d);
+String weekdayDayMonth(DateTime d) =>
+    (_en ? DateFormat('EEEE').add_MMMd() : DateFormat('EEEE d MMM')).format(d);
+String dayMonthYear(DateTime d) =>
+    (_en ? DateFormat.yMMMd() : DateFormat('d MMM yyyy')).format(d);
 String weekdayShort(DateTime d) => DateFormat.E().format(d);
 String monthShort(int month) => DateFormat.MMM().format(DateTime(2000, month));
 String clock(DateTime d) => DateFormat.jm().format(d);
