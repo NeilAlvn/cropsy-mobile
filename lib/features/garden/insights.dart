@@ -5,6 +5,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/mascot_lines.dart';
 
@@ -61,20 +62,20 @@ List<Insight> insightsFor({
       out.add(Insight(
           MascotPose.frost,
           MascotLines.insightColdNight(
-              cold.first.tempMinC.round(), cold.first.date.substring(5))));
+              tempC(cold.first.tempMinC), cold.first.date.substring(5))));
     }
     final hot = ahead.where((o) => o.tempMaxC >= 30).toList();
     if (hot.isNotEmpty && potLitres != null) {
       out.add(Insight(
           MascotPose.sun,
           MascotLines.insightHeat(
-              hot.first.tempMaxC.round(), hot.first.date.substring(5), potLitres)));
+              tempC(hot.first.tempMaxC), hot.first.date.substring(5), volumeL(potLitres))));
     }
     final rain = ahead.take(3).fold<num>(0, (s, o) => s + o.precipMm);
     if (rain >= 15) {
       out.add(Insight(
           MascotPose.rain,
-          MascotLines.insightRain(rain.round())));
+          MascotLines.insightRain(rainMm(rain.round()))));
     }
   }
   return out;

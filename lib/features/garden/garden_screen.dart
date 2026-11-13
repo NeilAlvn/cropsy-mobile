@@ -7,6 +7,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import '../../design/motion.dart';
@@ -185,7 +186,7 @@ class _PlantList extends StatelessWidget {
                                 style: AppText.heading(context)),
                             Text(
                               p.potLitres != null
-                                  ? Str.potLitres(p.potLitres!).of(context)
+                                  ? Str.potLitres(volumeL(p.potLitres!)).of(context)
                                   : 'in ground',
                               style: AppText.caption(context),
                             ),

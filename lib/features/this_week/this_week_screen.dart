@@ -5,6 +5,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import 'package:intl/intl.dart';
@@ -261,9 +262,9 @@ class _WeatherBanner extends StatelessWidget {
     }
     final hotAhead = obs.where((o) => o.date.compareTo(repo.today) >= 0).any((o) => o.tempMaxC >= 30);
     final text = (recentRain >= 10
-            ? Str.rainSkipsWatering(recentRain.round())
+            ? Str.rainSkipsWatering(rainMm(recentRain.round()))
             : hotAhead
-                ? Str.heatAhead
+                ? Str.heatAhead(tempC(30))
                 : Str.forecastCalm)
         .of(context);
     final wet = recentRain >= 10;
@@ -284,7 +285,7 @@ class _WeatherBanner extends StatelessWidget {
                 Icon(wet ? PhosphorIcons.umbrella : hotAhead ? PhosphorIcons.sun : PhosphorIcons.cloud,
                     color: wet ? AppColors.rain : hotAhead ? AppColors.heat : AppColors.muted, size: 26),
                 const SizedBox(height: 2),
-                Text('${today.tempMaxC.round()}°', style: AppText.label(context)),
+                Text(tempBare(today.tempMaxC), style: AppText.label(context)),
               ],
             ),
           ],

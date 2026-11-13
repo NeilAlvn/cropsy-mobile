@@ -7,6 +7,7 @@ library;
 import 'package:flutter/material.dart';
 import '../../l10n/mascot_lines.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import 'package:flutter/services.dart';
@@ -560,7 +561,7 @@ class _TodayWeatherHead extends StatelessWidget {
                 [
                   if (face != null) face.name.of(context),
                   (wet
-                          ? Str.weatherRain(today.precipMm.toStringAsFixed(1))
+                          ? Str.weatherRain(rainMm(today.precipMm))
                           : Str.weatherDry)
                       .of(context),
                 ].join(' · '),
@@ -572,7 +573,7 @@ class _TodayWeatherHead extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Text(
-          Str.weatherRange(today.tempMaxC.round(), today.tempMinC.round()).of(context),
+          Str.weatherRange(tempBare(today.tempMaxC), tempBare(today.tempMinC)).of(context),
           style: AppText.title(context)
               .copyWith(fontFeatures: const [FontFeature.tabularFigures()]),
         ),
@@ -609,7 +610,7 @@ class _ForecastStrip extends StatelessWidget {
                     size: 18,
                     color: _conditionFace(o.weatherCode)?.color ?? AppColors.inkPlaceholder),
                 const SizedBox(height: 4),
-                Text('${o.tempMaxC.round()}°',
+                Text(tempBare(o.tempMaxC),
                     style: AppText.caption(context, color: AppColors.ink)
                         .copyWith(fontFeatures: const [FontFeature.tabularFigures()]),
                     maxLines: 1),

@@ -5,6 +5,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import '../../design/motion.dart';
@@ -155,7 +156,7 @@ class _SheetState extends State<_Sheet> {
                 style: AppText.body(context),
                 decoration: InputDecoration(
                   labelText: Str.potSizeLitres.of(context),
-                  helperText: widget.crop.minPotLitres == null ? null : Str.atLeastLitres(widget.crop.minPotLitres!.toInt()).of(context),
+                  helperText: widget.crop.minPotLitres == null ? null : Str.atLeastLitres(volumeL(widget.crop.minPotLitres!.toInt())).of(context),
                 ),
               ),
             ],

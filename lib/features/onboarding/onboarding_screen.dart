@@ -37,6 +37,7 @@ import '../../design/typography.dart';
 import '../garden/log_node_flow.dart' show formatDay, nodeKindLine;
 import '../../l10n/app_lang.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../notifications/reminders.dart';
 import '../../timing/types.dart';
 import '../../timing/weather_adjust.dart' show TaskKind;
@@ -330,7 +331,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       StepFrame(
         pose: MascotPose.pointing,
         title: Str.whereDoYouGrow,
-        subtitle: Str.frostBackbone,
+        subtitle: Str.frostBackbone(distanceKm(1)),
         progress: onboardingProgress(2),
         onBack: _prev,
         onNext: () {

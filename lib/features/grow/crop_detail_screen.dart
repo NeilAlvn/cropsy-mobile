@@ -7,6 +7,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import 'package:intl/intl.dart';
@@ -101,7 +102,7 @@ class _CropDetailScreenState extends State<CropDetailScreen> {
                     const SizedBox(height: 14),
                     Wrap(spacing: 8, runSpacing: 8, children: [
                       if (crop.containerOk && crop.minPotLitres != null)
-                        Pill(label: Str.potLitres(crop.minPotLitres!).of(context), icon: PhosphorIcons.square),
+                        Pill(label: Str.potLitres(volumeL(crop.minPotLitres!)).of(context), icon: PhosphorIcons.square),
                       Pill(
                           label: Str.sunNeed(crop.sun).of(context),
                           icon: PhosphorIcons.sun),
@@ -369,10 +370,10 @@ class _Location extends StatelessWidget {
           (crop.frostTender ? Str.yesWaitForLastFrost : Str.no).of(context)),
       if (minSoil != null)
         row(PhosphorIcons.thermometer, Str.minSoilTemp.of(context),
-            '$minSoil °C'),
+            tempC(minSoil)),
       if (crop.minPotLitres != null)
         row(PhosphorIcons.square, Str.minPotSize.of(context),
-            '${crop.minPotLitres} L'),
+            volumeL(crop.minPotLitres!)),
       row(PhosphorIcons.checkCircle, Str.containerFriendly.of(context),
           (crop.containerOk ? Str.yes : Str.no).of(context)),
       row(
@@ -388,6 +389,9 @@ class _Location extends StatelessWidget {
   }
 }
 
+/// A formatted value is the same in every language.
+LocalizedText _same(String v) => LocalizedText(nl: v, en: v);
+
 class _HowTos extends StatelessWidget {
   const _HowTos({required this.crop});
   final Crop crop;
@@ -398,14 +402,14 @@ class _HowTos extends StatelessWidget {
     final stages = <(String, LocalizedText, List<(LocalizedText, LocalizedText)>)>[
       ('🌱', Str.stageStarting, [
         if (crop.depthMm != null)
-          (Str.sowDepth, LocalizedText(nl: '${crop.depthMm} mm', en: '${crop.depthMm} mm')),
+          (Str.sowDepth, _same(depthMm(crop.depthMm!))),
         if (crop.germinationDays != null)
           (Str.germination, Str.aboutDays(crop.germinationDays!)),
         if (crop.daysToTransplant != null)
           (Str.plantOutAfter, Str.daysIndoors(crop.daysToTransplant!)),
-        (Str.spacing, LocalizedText(nl: '${crop.spacingCm} cm', en: '${crop.spacingCm} cm')),
+        (Str.spacing, _same(lengthCm(crop.spacingCm))),
         if (crop.vakPerM2 != null)
-          (Str.perSquare, LocalizedText(nl: '${crop.vakPerM2}', en: '${crop.vakPerM2}')),
+          (Str.perSquare(lengthCm(30)), LocalizedText(nl: '${crop.vakPerM2}', en: '${crop.vakPerM2}')),
       ]),
       ('💧', Str.care, [
         (Str.waterSmallPot, Str.everyDays(water?.small ?? 1)),

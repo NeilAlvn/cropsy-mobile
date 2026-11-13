@@ -5,6 +5,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/mascot_lines.dart';
 import 'package:intl/intl.dart';
@@ -70,7 +71,7 @@ class _HeroCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final parts = <String>[
-      if (tally.kg > 0) '${_n(tally.kg)} kg',
+      if (tally.kg > 0) massKg(tally.kg),
       if (tally.pcs > 0) '${_n(tally.pcs)} ${Str.pieces.of(context)}',
     ];
     return Container(

@@ -473,77 +473,77 @@ abstract final class MascotLines {
   );
 
   static LocalizedText insightColdNight(
-    int tempC,
+    String temp,
     String date,
   ) => LocalizedText(
     nl:
-        'Koude nacht op komst: $tempC°C op '
+        'Koude nacht op komst: $temp op '
         '$date. Dek af of zet de potten binnen.',
     en:
-        'Cold night ahead: $tempC°C on '
+        'Cold night ahead: $temp on '
         '$date. Fleece or bring pots in.',
     de:
-        'Kalte Nacht im Anmarsch: $tempC °C am '
+        'Kalte Nacht im Anmarsch: $temp am '
         '$date. Deck ab oder hol die Töpfe rein.',
     fr:
-        'Nuit froide en vue : $tempC °C le '
+        'Nuit froide en vue : $temp le '
         '$date. Couvre d\'un voile ou rentre les pots.',
     sv:
-        'Kall natt på väg: $tempC °C den $date. Täck med fiberduk eller ta in '
+        'Kall natt på väg: $temp den $date. Täck med fiberduk eller ta in '
         'krukorna.',
     pt:
-        'Noite fria a caminho: $tempC °C a $date. Cobre com manta térmica ou '
+        'Noite fria a caminho: $temp a $date. Cobre com manta térmica ou '
         'leva os vasos para dentro.',
   );
 
   static LocalizedText insightHeat(
-    int tempC,
+    String temp,
     String date,
-    int litres,
+    String pot,
   ) => LocalizedText(
     nl:
-        '$tempC°C op '
-        '$date: een pot van $litres L '
+        '$temp op '
+        '$date: een pot van $pot '
         'droogt in één dag uit. Geef water in de ochtend en zet de pot '
         'in de schaduw als dat kan.',
     en:
-        '$tempC°C on '
-        '$date: a $litres L pot dries out '
+        '$temp on '
+        '$date: a $pot pot dries out '
         'in a day. Water in the morning, shade the pot if you can.',
     de:
-        '$tempC °C am '
-        '$date: Ein Topf mit $litres L trocknet an einem Tag aus. Gieß '
+        '$temp am '
+        '$date: Ein Topf mit $pot trocknet an einem Tag aus. Gieß '
         'morgens und stell den Topf in den Schatten, wenn es geht.',
     fr:
-        '$tempC °C le '
-        '$date : un pot de $litres L sèche en une journée. Arrose le '
+        '$temp le '
+        '$date : un pot de $pot sèche en une journée. Arrose le '
         'matin, et mets le pot à l\'ombre si tu peux.',
     sv:
-        '$tempC °C den $date: en kruka på $litres L torkar ut på en dag. Vattna '
+        '$temp den $date: en kruka på $pot torkar ut på en dag. Vattna '
         'på morgonen och ställ krukan i skugga om du kan.',
     pt:
-        '$tempC °C a $date: um vaso de $litres L seca num dia. Rega de manhã '
+        '$temp a $date: um vaso de $pot seca num dia. Rega de manhã '
         'e põe o vaso à sombra se puderes.',
   );
 
-  static LocalizedText insightRain(int mm) => LocalizedText(
+  static LocalizedText insightRain(String amount) => LocalizedText(
     nl:
-        '$mm mm regen in de komende drie dagen. Sla het '
+        '$amount regen in de komende drie dagen. Sla het '
         'water geven over en controleer de gaatjes in de pot.',
     en:
-        '$mm mm of rain in the next three days. Skip '
+        '$amount of rain in the next three days. Skip '
         'watering and check the drainage holes.',
     de:
-        '$mm mm Regen in den nächsten drei Tagen. Lass das '
+        '$amount Regen in den nächsten drei Tagen. Lass das '
         'Gießen aus und prüf die Abzugslöcher.',
     fr:
-        '$mm mm de pluie dans les trois prochains jours. Pas besoin '
+        '$amount de pluie dans les trois prochains jours. Pas besoin '
         'd\'arroser ; vérifie juste les trous de drainage.',
     sv:
-        '$mm mm regn de närmaste tre dagarna. Hoppa över vattningen och kolla '
+        '$amount regn de närmaste tre dagarna. Hoppa över vattningen och kolla '
         'dräneringshålen.',
     pt:
-        '$mm mm de chuva nos próximos três dias. Salta a rega e verifica os '
+        '$amount de chuva nos próximos três dias. Salta a rega e verifica os '
         'furos de drenagem.',
   );
 }

@@ -6,6 +6,7 @@ library;
 import 'dart:io';
 import '../../timing/types.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/motion.dart';
 
@@ -101,7 +102,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                         const SizedBox(width: 8),
                         Text(
                           (plant.potLitres != null
-                                  ? Str.potLitres(plant.potLitres!)
+                                  ? Str.potLitres(volumeL(plant.potLitres!))
                                   : Str.placeGround)
                               .of(context),
                           style: AppText.bodyMuted(context),

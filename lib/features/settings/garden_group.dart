@@ -20,6 +20,7 @@ import '../../design/motion.dart';
 import '../../design/typography.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/units.dart';
 import '../../purchases/purchase_service.dart';
 import '../location/location_sheet.dart';
 import '../paywall/paywall_screen.dart';
@@ -63,7 +64,7 @@ class _GardenGroupState extends State<GardenGroup> {
     if (garden == null) return '';
     final kind = gardenKindLabel(garden.kind).of(context);
     final size = garden.sizeM2;
-    return size == null ? kind : '$kind · ${Str.gardenSizeM2(size).of(context)}';
+    return size == null ? kind : '$kind · ${Str.gardenSizeM2(areaM2(size)).of(context)}';
   }
 
   Future<void> _editGarden(GardenRow garden) async {

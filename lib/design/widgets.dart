@@ -4,6 +4,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../l10n/strings.dart';
+import '../l10n/units.dart';
 import '../l10n/app_lang.dart';
 import '../design/icons.dart';
 
@@ -106,7 +107,7 @@ class PhotoCard extends StatelessWidget {
   static String _defaultSubtitle(Crop crop, BuildContext context) {
     final diff = difficultyLine(difficultyOf(crop)).of(context);
     if (crop.containerOk && crop.minPotLitres != null) {
-      return '${Str.potLitres(crop.minPotLitres!).of(context)} · $diff';
+      return '${Str.potLitres(volumeL(crop.minPotLitres!)).of(context)} · $diff';
     }
     return diff;
   }
