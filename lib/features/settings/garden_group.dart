@@ -161,7 +161,7 @@ class _GardenProfileSheet extends StatefulWidget {
 class _GardenProfileSheetState extends State<_GardenProfileSheet> {
   /// Onboarding's own buckets (§5.1): nobody measures their balcony, they
   /// recognise it.
-  static const _sizes = [('< 2 m²', 1), ('2–5 m²', 4), ('5–20 m²', 12), ('> 20 m²', 30)];
+  static List<(String, int)> get _sizes => gardenSizeBuckets();
 
   late GardenKind _kind = widget.garden.kind;
   late double _sun = (widget.garden.sunHours ?? 6).toDouble();

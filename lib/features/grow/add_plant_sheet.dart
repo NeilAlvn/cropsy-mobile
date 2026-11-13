@@ -68,7 +68,13 @@ class _SheetState extends State<_Sheet> {
   late String _on = widget.today;
   late MethodType _method = _methods.first;
   late String _place = widget.crop.containerOk ? 'outdoor_container' : 'ground';
-  late final _pot = TextEditingController(text: widget.crop.minPotLitres?.toString() ?? '');
+  late final _pot = TextEditingController(
+      text: widget.crop.minPotLitres == null ? '' : inputFromLitres(widget.crop.minPotLitres!.toDouble()).round().toString());
+
+  int? _potLitres() {
+    final v = double.tryParse(_pot.text.trim().replaceAll(',', '.'));
+    return v == null ? null : litresFromInput(v).round();
+  }
   final _variety = TextEditingController();
 
   List<MethodType> get _methods {
@@ -155,8 +161,8 @@ class _SheetState extends State<_Sheet> {
                 keyboardType: TextInputType.number,
                 style: AppText.body(context),
                 decoration: InputDecoration(
-                  labelText: Str.potSizeLitres.of(context),
-                  helperText: widget.crop.minPotLitres == null ? null : Str.atLeastLitres(volumeL(widget.crop.minPotLitres!.toInt())).of(context),
+                  labelText: Str.potSize(volumeUnit).of(context),
+                  helperText: widget.crop.minPotLitres == null ? null : Str.atLeastPot(volumeL(widget.crop.minPotLitres!.toInt())).of(context),
                 ),
               ),
             ],
@@ -176,7 +182,7 @@ class _SheetState extends State<_Sheet> {
                   plantedOn: _on,
                   method: _method,
                   place: _place,
-                  potLitres: _container ? int.tryParse(_pot.text.trim()) : null,
+                  potLitres: _container ? _potLitres() : null,
                   variety: _variety.text.trim().isEmpty ? null : _variety.text.trim(),
                 ),
               ),

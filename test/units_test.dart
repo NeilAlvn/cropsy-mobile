@@ -55,4 +55,22 @@ void main() {
     AppRegion.apply(lang: 'en', country: 'US');
     expect(tempC(8.5, exact: true), '47°F');
   });
+
+  test('garden size buckets keep their stored m² values', () {
+    AppRegion.apply(lang: 'en', country: 'US');
+    expect(gardenSizeBuckets().map((b) => b.$2).toList(), [1, 4, 12, 30]);
+    expect(gardenSizeBuckets().first.$1, '< 22 sq ft');
+    AppRegion.apply(lang: 'nl', country: 'NL');
+    expect(gardenSizeBuckets().map((b) => b.$1).toList(), ['< 2 m²', '2–5 m²', '5–20 m²', '> 20 m²']);
+  });
+
+  test('input units round-trip to metric', () {
+    AppRegion.apply(lang: 'en', country: 'US');
+    expect(massUnit, 'lb');
+    expect(kgFromInput(2.20462), closeTo(1, 1e-9));
+    expect(litresFromInput(2).round(), 8);
+    AppRegion.apply(lang: 'nl', country: 'NL');
+    expect(massUnit, 'kg');
+    expect(litresFromInput(10).round(), 10);
+  });
 }

@@ -405,7 +405,7 @@ class _HarvestSheetState extends State<_HarvestSheet> {
             ),
             const SizedBox(width: 10),
             SegmentedButton<String>(
-              segments: [ButtonSegment(value: 'pcs', label: Text(Str.pieces.of(context))), ButtonSegment(value: 'kg', label: Text('kg'))],
+              segments: [ButtonSegment(value: 'pcs', label: Text(Str.pieces.of(context))), ButtonSegment(value: 'kg', label: Text(Str.unitMass.of(context)))],
               selected: {_unit},
               onSelectionChanged: (v) => setState(() => _unit = v.first),
             ),
@@ -417,7 +417,7 @@ class _HarvestSheetState extends State<_HarvestSheet> {
               final priced when priced == _unit =>
                 Str.countsTowardsTally.of(context),
               final priced => Str.pricedPerUnit(
-                  priced == 'kg' ? Str.unitKg : Str.pieces).of(context),
+                  priced == 'kg' ? Str.unitMass : Str.pieces).of(context),
             },
             style: AppText.caption(context),
           ),
@@ -428,7 +428,7 @@ class _HarvestSheetState extends State<_HarvestSheet> {
             onPressed: () {
               final q = double.tryParse(_qty.text.replaceAll(',', '.'));
               if (q == null || q <= 0) return;
-              Navigator.pop(context, (q, _unit));
+              Navigator.pop(context, (_unit == 'kg' ? kgFromInput(q) : q, _unit));
             },
           ),
         ],
@@ -450,7 +450,10 @@ class _EditPlantSheet extends StatefulWidget {
 
 class _EditPlantSheetState extends State<_EditPlantSheet> {
   late final TextEditingController _pot =
-      TextEditingController(text: widget.plant.potLitres?.toString() ?? '');
+      TextEditingController(
+          text: widget.plant.potLitres == null
+              ? ''
+              : inputFromLitres(widget.plant.potLitres!.toDouble()).round().toString());
   late String? _plantedOn = widget.plant.plantedOn;
 
   Future<void> _pickDate() async {
@@ -492,7 +495,7 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
             keyboardType: TextInputType.number,
             style: AppText.body(context),
             decoration: InputDecoration(
-                labelText: Str.potSizeLitres.of(context),
+                labelText: Str.potSize(volumeUnit).of(context),
                 hintText: Str.leaveBlankInGround.of(context)),
           ),
           if (_plantedOn != null) ...[
@@ -521,7 +524,8 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
           PrimaryButton(
             label: Str.saveChanges.of(context),
             onPressed: () async {
-              final pot = int.tryParse(_pot.text.trim());
+              final potIn = double.tryParse(_pot.text.trim().replaceAll(',', '.'));
+              final pot = potIn == null ? null : litresFromInput(potIn).round();
               await repo.updatePlant(widget.plant.id,
                   potLitres: pot, plantedOn: _plantedOn);
               if (context.mounted) Navigator.pop(context, true);

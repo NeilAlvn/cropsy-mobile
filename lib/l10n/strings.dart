@@ -3403,13 +3403,13 @@ abstract final class Str {
     sv: 'Redigera växt',
     pt: 'Editar planta',
   );
-  static const potSizeLitres = LocalizedText(
-    nl: 'Potmaat (liter)',
-    en: 'Pot size (litres)',
-    de: 'Topfgröße (Liter)',
-    fr: 'Taille du pot (litres)',
-    sv: 'Krukstorlek (liter)',
-    pt: 'Tamanho do vaso (litros)',
+  static LocalizedText potSize(String unit) => LocalizedText(
+    nl: 'Potmaat ($unit)',
+    en: 'Pot size ($unit)',
+    de: 'Topfgröße ($unit)',
+    fr: 'Taille du pot ($unit)',
+    sv: 'Krukstorlek ($unit)',
+    pt: 'Tamanho do vaso ($unit)',
   );
   static const leaveBlankInGround = LocalizedText(
     nl: 'leeg laten voor in de volle grond',
@@ -3777,7 +3777,7 @@ abstract final class Str {
         'Je telling rekent dit gewas per ${unit.nl}, dus dit telt mee voor '
         'de opbrengst maar niet voor het bespaarde bedrag.',
     en:
-        'Your tally prices this crop per ${unit.en}, so this adds to the '
+        'Your tally prices this crop per ${unit.pick('en')}, so this adds to the '
         'yield but not to money saved.',
     de:
         'Deine Bilanz rechnet diese Pflanze pro ${unit.pick('de')}, darum '
@@ -3792,7 +3792,8 @@ abstract final class Str {
         'O teu balanço conta o preço desta planta por ${unit.pick('pt')}, por isso '
         'isto soma à produção mas não ao dinheiro poupado.',
   );
-  static const unitKg = LocalizedText(
+  static const unitMass = LocalizedText(
+    enUs: 'lb',
     nl: 'kg',
     en: 'kg',
     de: 'kg',
@@ -3964,7 +3965,7 @@ abstract final class Str {
     sv: 'Var står den?',
     pt: 'Onde está?',
   );
-  static LocalizedText atLeastLitres(String amount) => LocalizedText(
+  static LocalizedText atLeastPot(String amount) => LocalizedText(
     nl: 'Minstens $amount voor dit gewas',
     en: 'At least $amount for this crop',
     de: 'Mindestens $amount für diese Pflanze',

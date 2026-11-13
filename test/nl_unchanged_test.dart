@@ -27,7 +27,7 @@ void main() {
     expect(Str.frostBackbone(distanceKm(1)).pick('nl'),
         'Bepaalt je vorstdatums, de basis onder elke plantdatum. Afgerond op ~1 km, nooit gevolgd.');
     expect(Str.gardenSizeM2(areaM2(12)).pick('nl'), '12 m²');
-    expect(Str.atLeastLitres(volumeL(5)).pick('nl'), 'Minstens 5 L voor dit gewas');
+    expect(Str.atLeastPot(volumeL(5)).pick('nl'), 'Minstens 5 L voor dit gewas');
     expect(MascotLines.insightRain(rainMm(12)).pick('en'),
         '12 mm of rain in the next three days. Skip watering and check the drainage holes.');
     expect(MascotLines.insightColdNight(tempC(-1), '12-03').pick('nl'),

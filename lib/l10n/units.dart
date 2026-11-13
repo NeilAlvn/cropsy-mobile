@@ -41,3 +41,16 @@ double kgFromInput(double v) => _imp ? v / 2.20462 : v;
 double litresFromInput(double v) => _imp ? v * 3.785 : v;
 double inputFromKg(double kg) => _imp ? kg * 2.20462 : kg;
 double inputFromLitres(double l) => _imp ? l / 3.785 : l;
+
+/// Size picker buckets: stored value is always m² (1, 4, 12, 30), the label
+/// follows the region. Shared by onboarding and settings.
+List<(String, int)> gardenSizeBuckets() {
+  String bare(num m2) => _imp ? _n(m2 * 10.7639) : _n(m2);
+  final unit = _imp ? ' sq ft' : ' m²';
+  return [
+    ('< ${areaM2(2)}', 1),
+    ('${bare(2)}–${bare(5)}$unit', 4),
+    ('${bare(5)}–${bare(20)}$unit', 12),
+    ('> ${areaM2(20)}', 30),
+  ];
+}

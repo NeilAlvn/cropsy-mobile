@@ -164,7 +164,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   static const _pageDuration = Duration(milliseconds: 380);
   static const _pageCurve = Curves.easeInOutCubic;
 
-  static const _sizeBuckets = [('< 2 m²', 1), ('2–5 m²', 4), ('5–20 m²', 12), ('> 20 m²', 30)];
+  static List<(String, int)> get _sizeBuckets => gardenSizeBuckets();
 
   void _prev() {
     if (_page > 0) _controller.previousPage(duration: _pageDuration, curve: _pageCurve);

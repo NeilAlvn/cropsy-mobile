@@ -5,6 +5,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/region.dart';
 import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/mascot_lines.dart';
@@ -114,7 +115,7 @@ class _HarvestTile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${repo.cropNames(row.cropSlug).of(context)} · ${row.amount}',
+              Text('${repo.cropNames(row.cropSlug).of(context)} · ${row.unit == 'kg' && AppRegion.imperial ? massKg(row.quantity) : row.amount}',
                   style: AppText.label(context)),
               Text(DateFormat('EEEE d MMM').format(parseIso(row.harvestedOn)), style: AppText.caption(context)),
             ],
