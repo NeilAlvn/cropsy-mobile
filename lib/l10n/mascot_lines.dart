@@ -155,6 +155,10 @@ abstract final class MascotLines {
         'The average first autumn frost for your region. Harvest windows are '
         'counted back from it, so anything still ripening after this date is '
         'on borrowed time.',
+    enUs:
+        'The average first fall frost for your region. Harvest windows are '
+        'counted back from it, so anything still ripening after this date is '
+        'on borrowed time.',
     de: 'Der durchschnittliche erste Herbstfrost in deiner Region. Erntefenster werden von ihm aus zurückgerechnet, für alles, was danach noch reift, wird es also knapp.',
     fr: 'Les premières gelées d\'automne en moyenne dans ta région. Les périodes de récolte sont comptées à rebours à partir d\'elles, donc tout ce qui mûrit encore après cette date joue les prolongations.',
     sv: 'Den genomsnittliga första höstfrosten i din region. Skördefönstren räknas bakåt från den, så allt som fortfarande mognar efter det datumet lever på lånad tid.',
@@ -482,6 +486,9 @@ abstract final class MascotLines {
     en:
         'Cold night ahead: $temp on '
         '$date. Fleece or bring pots in.',
+    enUs:
+        'Cold night ahead: $temp on '
+        '$date. Cover with frost cloth or bring pots in.',
     de:
         'Kalte Nacht im Anmarsch: $temp am '
         '$date. Deck ab oder hol die Töpfe rein.',

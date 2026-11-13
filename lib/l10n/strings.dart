@@ -627,6 +627,7 @@ abstract final class Str {
   static const gardenKindAllotment = LocalizedText(
     nl: 'Volkstuin',
     en: 'Allotment',
+    enUs: 'Community garden plot',
     de: 'Kleingarten',
     fr: 'Jardin familial',
     sv: 'Kolonilott',
@@ -1125,6 +1126,7 @@ abstract final class Str {
   static const spaceAllotment = LocalizedText(
     nl: 'Volkstuin',
     en: 'Allotment',
+    enUs: 'Community garden plot',
     de: 'Kleingarten',
     fr: 'Jardin familial',
     sv: 'Kolonilott',
@@ -2018,6 +2020,7 @@ abstract final class Str {
   static const goodNeighbours = LocalizedText(
     nl: 'Goede buren',
     en: 'Good neighbours',
+    enUs: 'Good neighbors',
     de: 'Gute Nachbarn',
     fr: 'Bons voisins',
     sv: 'Goda grannar',
@@ -2026,6 +2029,7 @@ abstract final class Str {
   static const badNeighbours = LocalizedText(
     nl: 'Slechte buren',
     en: 'Bad neighbours',
+    enUs: 'Bad neighbors',
     de: 'Schlechte Nachbarn',
     fr: 'Mauvais voisins',
     sv: 'Dåliga grannar',
@@ -3561,6 +3565,7 @@ abstract final class Str {
     'Neighbours' => const LocalizedText(
       nl: 'Buren',
       en: 'Neighbours',
+      enUs: 'Neighbors',
       de: 'Nachbarn',
       fr: 'Voisins',
       sv: 'Grannar',
@@ -4129,6 +4134,14 @@ abstract final class Str {
     fr: 'Planifier',
     sv: 'Planera',
     pt: 'Planear',
+  );
+  static LocalizedText addedToGrowing(String crop) => LocalizedText(
+    nl: '$crop staat bij Groeit 🌱',
+    en: '$crop added to Growing 🌱',
+    de: '$crop ist jetzt im Anbau 🌱',
+    fr: '$crop est maintenant dans En culture 🌱',
+    sv: '$crop är tillagd i Växer 🌱',
+    pt: '$crop está agora em A crescer 🌱',
   );
   static LocalizedText addedToPlanning(String crop) => LocalizedText(
     nl: '$crop staat bij Gepland',
@@ -4902,6 +4915,7 @@ abstract final class Str {
       LocalizedText(
         nl: 'Goede buur voor je ${have.nl}',
         en: 'A good neighbour for your ${have.en}',
+        enUs: 'A good neighbor for your ${have.pick('en')}',
         de: 'Ein guter Nachbar für ${have.pick('de')}',
         fr: '${have.pick('fr')} : un bon voisin',
         sv: '${have.pick('sv')}: en god granne',

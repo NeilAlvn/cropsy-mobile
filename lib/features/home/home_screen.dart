@@ -68,6 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
             .where((c) =>
                 c.names.en.toLowerCase().contains(_query.toLowerCase()) ||
                 c.names.nl.toLowerCase().contains(_query.toLowerCase()) ||
+                (c.names.enUs?.toLowerCase().contains(_query.toLowerCase()) ??
+                    false) ||
                 c.names.pick(lang).toLowerCase().contains(_query.toLowerCase()))
             .toList()
           ..sort((a, b) => a.names.pick(lang).compareTo(b.names.pick(lang))))

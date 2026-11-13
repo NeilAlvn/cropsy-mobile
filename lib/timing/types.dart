@@ -6,6 +6,7 @@
 library;
 
 import 'season_year.dart';
+import 'us_crop_names.dart';
 
 enum MethodType { sowIndoor, sowDirect, transplant, plant }
 
@@ -262,7 +263,8 @@ class Crop {
     final harvest = j['harvest'] as Map<String, dynamic>;
     return Crop(
       slug: j['slug'] as String,
-      names: LocalizedText.fromJson(j['names'] as Map<String, dynamic>),
+      names: LocalizedText.fromJson(j['names'] as Map<String, dynamic>)
+          .withEnUs(usCropNames[j['slug']]),
       category: j['category'] as String,
       frostTender: j['frost_tender'] as bool,
       containerOk: j['container_ok'] as bool,

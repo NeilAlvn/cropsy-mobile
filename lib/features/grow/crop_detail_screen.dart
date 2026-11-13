@@ -733,8 +733,8 @@ class _Cta extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(growing
-              ? '${crop.names.of(context)} added to Growing 🌱'
-              : '${crop.names.of(context)} added to Planning'),
+              ? Str.addedToGrowing(crop.names.of(context)).of(context)
+              : Str.addedToPlanning(crop.names.of(context)).of(context)),
         ));
         Navigator.of(context).pop();
       }
