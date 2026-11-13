@@ -19,6 +19,17 @@ UA = "CropsyPrototype/0.1 (contact: dev@visiontech.example) placeholder-image-fe
 
 # Slugs whose Wikipedia title isn't just the sentence-cased slug.
 OVERRIDES = {
+    "asparagus": "Asparagus officinalis",
+    "blueberry-in-pot": "Blueberry",
+    "celery-leaf": "Celery",
+    "fig-in-pot": "Ficus carica",
+    "gooseberry-in-pot": "Gooseberry",
+    "mint": "Mentha",
+    "nasturtium": "Tropaeolum majus",
+    "purslane": "Portulaca oleracea",
+    "raspberry-in-pot": "Raspberry",
+    "redcurrant-in-pot": "Redcurrant",
+    "sage": "Salvia officinalis",
     "aubergine": "Eggplant",
     "courgette": "Zucchini",
     "rocket": "Arugula",
