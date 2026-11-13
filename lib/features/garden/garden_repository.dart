@@ -613,6 +613,8 @@ class GardenRepository extends ChangeNotifier {
     }
     final hit = await frostForCoordinate(lat, lon);
     if (hit == null) return;
+    // Onboarding may have saved a place during the network wait.
+    if (await meta(SavedLocation.metaKey) != null) return;
     await setLocation(name: g.first.postcode?.toUpperCase() ?? _yourLocation, lookup: hit, postcode: g.first.postcode);
   }
 

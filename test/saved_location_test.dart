@@ -44,6 +44,7 @@ void main() {
 
   test('a looked-up location survives a restart', () async {
     final db = AppDatabase.memory();
+    addTearDown(db.close);
     final first = await GardenRepository.create(db: db, today: demoToday, observations: (_, _) async => null);
     await first.createGarden(region: defaultRegion, kind: GardenKind.garden);
     await first.setLocation(name: 'Melbourne, Victoria', lookup: melbourne, country: 'AU');
@@ -57,7 +58,9 @@ void main() {
   });
 
   test('frostSource is whatever the lookup said', () async {
-    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday, observations: (_, _) async => null);
+    final db = AppDatabase.memory();
+    addTearDown(db.close);
+    final repo = await GardenRepository.create(db: db, today: demoToday, observations: (_, _) async => null);
     const preset = FrostLookup(
       profile: FrostProfile(lastFrost: '2026-04-15', firstFrost: '2026-11-01'),
       lat: 52.0,
@@ -69,7 +72,9 @@ void main() {
   });
 
   test('onboarding with a lookup names the garden after the place, not Randstad', () async {
-    final repo = await GardenRepository.create(db: AppDatabase.memory(), today: demoToday, observations: (_, _) async => null);
+    final db = AppDatabase.memory();
+    addTearDown(db.close);
+    final repo = await GardenRepository.create(db: db, today: demoToday, observations: (_, _) async => null);
     await repo.createGarden(region: defaultRegion, kind: GardenKind.garden, lookup: melbourne, placeName: 'Melbourne, Victoria', country: 'AU');
     expect(repo.regionName, 'Melbourne, Victoria');
     expect(repo.frost.south, isTrue);
