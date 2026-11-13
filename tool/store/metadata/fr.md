@@ -38,4 +38,7 @@ Conditions d'utilisation: https://www.cropsyapp.com/fr/terms
 CLUF standard d'Apple: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Politique de confidentialité: https://www.cropsyapp.com/fr/privacy
 ## whats_new
-Cropsy parle maintenant anglais, néerlandais, allemand, français, suédois et portugais.
+Cropsy fonctionne désormais partout où vous cultivez.
+- Vos propres dates de gel, où que vous soyez : cherchez une ville ou un code postal, ou utilisez votre position.
+- Fenêtres de semis adaptées à la chaleur, et semis d'automne pour les cultures de saison fraîche.
+- Corrections : les dates de récolte comptent désormais à partir de la mise en place, et votre lieu est conservé après un redémarrage.

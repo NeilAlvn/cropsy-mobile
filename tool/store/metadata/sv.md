@@ -38,4 +38,7 @@ Användarvillkor: https://www.cropsyapp.com/sv/terms
 Apples standard-EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Integritetspolicy: https://www.cropsyapp.com/sv/privacy
 ## whats_new
-Cropsy talar nu engelska, nederländska, tyska, franska, svenska och portugisiska.
+Cropsy fungerar nu överallt där du odlar.
+- Dina egna frostdatum, var du än bor: sök på ort eller postnummer, eller använd din position.
+- Värmemedvetna såddfönster, plus höstsådd för svalare grödor.
+- Rättningar: skördedatum räknas nu från utplantering, och din plats finns kvar efter en omstart.

@@ -38,4 +38,7 @@ Termos de utilização: https://www.cropsyapp.com/pt/terms
 EULA padrão da Apple: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Política de privacidade: https://www.cropsyapp.com/pt/privacy
 ## whats_new
-A Cropsy passa a falar inglês, neerlandês, alemão, francês, sueco e português.
+A Cropsy funciona agora onde quer que cultive.
+- As suas próprias datas de geada, em qualquer lugar: pesquise por localidade ou código postal, ou use a sua localização.
+- Janelas de sementeira adaptadas ao calor, e sementeiras de outono para culturas de clima fresco.
+- Correções: as datas de colheita contam agora a partir da plantação definitiva, e o seu local mantém-se após reiniciar.

@@ -38,4 +38,7 @@ Gebruiksvoorwaarden: https://www.cropsyapp.com/nl/terms
 Standaard-EULA van Apple: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Privacybeleid: https://www.cropsyapp.com/nl/privacy
 ## whats_new
-Cropsy spreekt nu Nederlands, Engels, Duits, Frans, Zweeds en Portugees.
+Cropsy werkt nu overal waar je teelt.
+- Je eigen vorstdata, waar je ook woont: zoek op plaats of postcode, of gebruik je locatie.
+- Hittebewuste zaaiperiodes, plus herfstzaaiingen voor koele gewassen.
+- Verbeteringen: oogstdata tellen nu vanaf het uitplanten, en je plaats blijft bewaard na een herstart.

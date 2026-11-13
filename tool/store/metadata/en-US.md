@@ -38,4 +38,9 @@ Terms of Use: https://www.cropsyapp.com/en/terms
 Apple's standard EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Privacy Policy: https://www.cropsyapp.com/en/privacy
 ## whats_new
-Cropsy now works wherever you garden. Search for your town or use GPS, and your calendar follows your own frost dates and climate, from Minnesota to Texas. In warm areas it plans around the heat, with a second season for cool crops in fall. Fahrenheit, inches and American plant names (zucchini, eggplant, cilantro) are in.
+Cropsy now works wherever you grow.
+- Your own frost dates, anywhere: search any town or postcode, or use your location.
+- Southern hemisphere seasons for Australia and New Zealand.
+- Heat-aware sowing windows, plus fall sowings for cool crops.
+- °F, inches and US crop names in the US.
+- Fixes: harvest dates now count from planting out, and your place stays put after a restart.
