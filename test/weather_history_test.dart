@@ -25,6 +25,11 @@ void main() {
     expect(mergeHistory(old, [], '2026-11-10').first.date, '2026-11-03');
   });
 
+  test('history location matches at 2 decimals, like weatherUri', () {
+    expect(sameSpot({'lat': 52.3712, 'lon': 4.8991}, 52.3698, 4.9012), isTrue);
+    expect(sameSpot({'lat': 52.37, 'lon': 4.90}, 52.38, 4.90), isFalse);
+  });
+
   test('placemark maps to a PlaceHit', () {
     final h = placeHitFromPlacemark(
         const Placemark(locality: 'Austin', administrativeArea: 'Texas', isoCountryCode: 'us'), 30.27, -97.74)!;

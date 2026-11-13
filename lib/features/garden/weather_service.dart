@@ -50,6 +50,12 @@ List<DayObservation> withPastDays(List<DayObservation> stored, List<DayObservati
       ...fetched.where((o) => o.date.compareTo(today) >= 0),
     ];
 
+/// Same place at the 2 decimals weatherUri sends.
+@visibleForTesting
+bool sameSpot(Map<String, dynamic> j, double lat, double lon) =>
+    (j['lat'] as num).toStringAsFixed(2) == lat.toStringAsFixed(2) &&
+    (j['lon'] as num).toStringAsFixed(2) == lon.toStringAsFixed(2);
+
 class WeatherService {
   WeatherService(this.db);
   final AppDatabase db;
@@ -80,7 +86,7 @@ class WeatherService {
       final row = await (db.select(db.appMeta)..where((t) => t.key.equals(_historyKey))).getSingleOrNull();
       if (row == null) return const [];
       final j = jsonDecode(row.value) as Map<String, dynamic>;
-      if ((j['lat'] as num).toDouble() != lat || (j['lon'] as num).toDouble() != lon) return const [];
+      if (!sameSpot(j, lat, lon)) return const [];
       return [for (final o in j['days'] as List) DayObservation.fromJson(o as Map<String, dynamic>)];
     } catch (_) {
       return const [];

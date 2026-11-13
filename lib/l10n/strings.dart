@@ -5659,20 +5659,20 @@ abstract final class Str {
   );
   static LocalizedText faqDatesA(String distance) => LocalizedText(
     nl:
-        'Uit de vorstdatums voor jouw locatie (tien jaar Open-Meteo-weerdata, '
+        'Uit de vorstdatums voor jouw locatie (tien jaar Copernicus ERA5-Land-klimaatdata, '
         'afgerond op ~$distance), gecombineerd met teeltregels die tegen '
         'minstens twee gepubliceerde zaaikalenders zijn gelegd.',
     en:
-        'From the frost dates for your location (ten years of Open-Meteo '
-        'weather data, rounded to ~$distance), checked against at least two '
+        'From the frost dates for your location (ten years of Copernicus ERA5-Land '
+        'climate data, rounded to ~$distance), checked against at least two '
         'published seed calendars.',
     de:
-        'Aus den Frostdaten für deinen Standort (zehn Jahre Open-Meteo-Wetterdaten, '
+        'Aus den Frostdaten für deinen Standort (zehn Jahre Copernicus-ERA5-Land-Klimadaten, '
         'auf ~$distance gerundet), abgeglichen mit mindestens zwei '
         'veröffentlichten Aussaatkalendern.',
-    fr: 'Des dates de gel de ta position (dix ans de données météo Open-Meteo, arrondies à ~$distance), vérifiées dans au moins deux calendriers de semis publiés.',
-    sv: 'Från frostdatumen för din plats (tio års väderdata från Open-Meteo, avrundade till ~$distance), kontrollerade mot minst två publicerade såkalendrar.',
-    pt: 'Das datas de geada da tua localização (dez anos de dados meteorológicos Open-Meteo, arredondados a ~$distance), verificadas em pelo menos dois calendários de sementeira publicados.',
+    fr: 'Des dates de gel de ta position (dix ans de données climatiques Copernicus ERA5-Land, arrondies à ~$distance), vérifiées dans au moins deux calendriers de semis publiés.',
+    sv: 'Från frostdatumen för din plats (tio års klimatdata från Copernicus ERA5-Land, avrundade till ~$distance), kontrollerade mot minst två publicerade såkalendrar.',
+    pt: 'Das datas de geada da tua localização (dez anos de dados climáticos Copernicus ERA5-Land, arredondados a ~$distance), verificadas em pelo menos dois calendários de sementeira publicados.',
   );
   static const faqBehindQ = LocalizedText(
     nl: 'Ik loop achter. Is mijn plan verpest?',
