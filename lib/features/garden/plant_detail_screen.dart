@@ -6,6 +6,7 @@ library;
 import 'dart:io';
 import '../../timing/types.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/region.dart';
 import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/motion.dart';
@@ -428,7 +429,7 @@ class _HarvestSheetState extends State<_HarvestSheet> {
             onPressed: () {
               final q = double.tryParse(_qty.text.replaceAll(',', '.'));
               if (q == null || q <= 0) return;
-              Navigator.pop(context, (_unit == 'kg' ? kgFromInput(q) : q, _unit));
+              Navigator.pop(context, (_unit == 'kg' ? (kgFromInput(q) * 1000).round() / 1000 : q, _unit));
             },
           ),
         ],
@@ -451,9 +452,7 @@ class _EditPlantSheet extends StatefulWidget {
 class _EditPlantSheetState extends State<_EditPlantSheet> {
   late final TextEditingController _pot =
       TextEditingController(
-          text: widget.plant.potLitres == null
-              ? ''
-              : inputFromLitres(widget.plant.potLitres!.toDouble()).round().toString());
+          text: widget.plant.potLitres == null ? '' : potInputText(widget.plant.potLitres!));
   late String? _plantedOn = widget.plant.plantedOn;
 
   Future<void> _pickDate() async {
@@ -492,10 +491,10 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
           const SizedBox(height: 16),
           TextField(
             controller: _pot,
-            keyboardType: TextInputType.number,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
             style: AppText.body(context),
             decoration: InputDecoration(
-                labelText: Str.potSize(volumeUnit).of(context),
+                labelText: (AppRegion.imperial ? Str.potSizeGallons : Str.potSizeLitres).of(context),
                 hintText: Str.leaveBlankInGround.of(context)),
           ),
           if (_plantedOn != null) ...[

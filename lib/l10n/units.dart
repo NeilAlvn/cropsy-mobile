@@ -41,6 +41,9 @@ double kgFromInput(double v) => _imp ? v / 2.20462 : v;
 double litresFromInput(double v) => _imp ? v * 3.785 : v;
 double inputFromKg(double kg) => _imp ? kg * 2.20462 : kg;
 double inputFromLitres(double l) => _imp ? l / 3.785 : l;
+/// Pot field prefill: one decimal in gallons so an untouched save round-trips.
+String potInputText(int litres) =>
+    _imp ? inputFromLitres(litres.toDouble()).toStringAsFixed(1).replaceAll(RegExp(r'\.0$'), '') : '$litres';
 
 /// Size picker buckets: stored value is always m² (1, 4, 12, 30), the label
 /// follows the region. Shared by onboarding and settings.

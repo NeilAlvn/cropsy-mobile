@@ -3403,13 +3403,21 @@ abstract final class Str {
     sv: 'Redigera växt',
     pt: 'Editar planta',
   );
-  static LocalizedText potSize(String unit) => LocalizedText(
-    nl: 'Potmaat ($unit)',
-    en: 'Pot size ($unit)',
-    de: 'Topfgröße ($unit)',
-    fr: 'Taille du pot ($unit)',
-    sv: 'Krukstorlek ($unit)',
-    pt: 'Tamanho do vaso ($unit)',
+  static const potSizeLitres = LocalizedText(
+    nl: 'Potmaat (liter)',
+    en: 'Pot size (litres)',
+    de: 'Topfgröße (Liter)',
+    fr: 'Taille du pot (litres)',
+    sv: 'Krukstorlek (liter)',
+    pt: 'Tamanho do vaso (litros)',
+  );
+  static const potSizeGallons = LocalizedText(
+    nl: 'Potmaat (gallon)',
+    en: 'Pot size (gallons)',
+    de: 'Topfgröße (Gallonen)',
+    fr: 'Taille du pot (gallons)',
+    sv: 'Krukstorlek (gallon)',
+    pt: 'Tamanho do vaso (galões)',
   );
   static const leaveBlankInGround = LocalizedText(
     nl: 'leeg laten voor in de volle grond',

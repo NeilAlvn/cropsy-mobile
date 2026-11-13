@@ -73,4 +73,12 @@ void main() {
     expect(massUnit, 'kg');
     expect(litresFromInput(10).round(), 10);
   });
+
+  test('imperial pot prefill is stable on an untouched save', () {
+    AppRegion.apply(lang: 'en', country: 'US');
+    expect(potInputText(10), '2.6');
+    for (final l in [5, 10, 12, 20, 30, 50]) {
+      expect(litresFromInput(double.parse(potInputText(l))).round(), l, reason: '$l L');
+    }
+  });
 }

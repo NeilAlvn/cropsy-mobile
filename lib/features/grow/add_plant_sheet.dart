@@ -5,6 +5,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/region.dart';
 import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
@@ -69,7 +70,7 @@ class _SheetState extends State<_Sheet> {
   late MethodType _method = _methods.first;
   late String _place = widget.crop.containerOk ? 'outdoor_container' : 'ground';
   late final _pot = TextEditingController(
-      text: widget.crop.minPotLitres == null ? '' : inputFromLitres(widget.crop.minPotLitres!.toDouble()).round().toString());
+      text: widget.crop.minPotLitres == null ? '' : potInputText(widget.crop.minPotLitres!.toInt()));
 
   int? _potLitres() {
     final v = double.tryParse(_pot.text.trim().replaceAll(',', '.'));
@@ -158,10 +159,10 @@ class _SheetState extends State<_Sheet> {
               const SizedBox(height: 14),
               TextField(
                 controller: _pot,
-                keyboardType: TextInputType.number,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 style: AppText.body(context),
                 decoration: InputDecoration(
-                  labelText: Str.potSize(volumeUnit).of(context),
+                  labelText: (AppRegion.imperial ? Str.potSizeGallons : Str.potSizeLitres).of(context),
                   helperText: widget.crop.minPotLitres == null ? null : Str.atLeastPot(volumeL(widget.crop.minPotLitres!.toInt())).of(context),
                 ),
               ),

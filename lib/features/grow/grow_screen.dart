@@ -3,6 +3,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../../l10n/region.dart';
+import '../../l10n/units.dart';
 import '../../l10n/strings.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
@@ -144,7 +146,7 @@ class _CropCard extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             crop.containerOk && crop.minPotLitres != null
-                ? '${crop.minPotLitres}L pot · ${Str.sunNeed(crop.sun).of(context)}'
+                ? '${AppRegion.imperial ? Str.potLitres(volumeL(crop.minPotLitres!)).of(context) : '${crop.minPotLitres}L pot'} · ${Str.sunNeed(crop.sun).of(context)}'
                 : Str.sunNeed(crop.sun).of(context),
             style: AppText.caption(context),
           ),
