@@ -62,6 +62,10 @@ class SavedLocation {
   }
 }
 
+/// A looked-up place saved before the climate curve existed: fetch it once.
+bool needsClimate(SavedLocation l) =>
+    l.source == 'open-meteo' && l.profile.weeklyTmax == null && l.lat != null && l.lon != null;
+
 /// The device's region setting (Settings → General → Language & Region).
 String? deviceCountry() => PlatformDispatcher.instance.locale.countryCode?.toUpperCase();
 

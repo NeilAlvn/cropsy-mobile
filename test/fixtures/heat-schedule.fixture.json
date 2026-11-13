@@ -1,0 +1,272 @@
+{
+  "frost": {
+    "last_frost": "2026-02-18",
+    "first_frost": "2026-12-08",
+    "weekly_tmax": [
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      34,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20,
+      20
+    ]
+  },
+  "windows": [
+    {
+      "crop_slug": "broccoli",
+      "method": "sow_indoor",
+      "start": "2026-01-07",
+      "end": "2026-01-21",
+      "min_soil_c": null,
+      "note": {
+        "nl": "Binnen voorzaaien voor een vroege start.",
+        "en": "Start indoors for an early start.",
+        "de": "Für einen frühen Start drinnen vorziehen.",
+        "fr": "Semer en intérieur pour un démarrage précoce.",
+        "sv": "Förkultivera inomhus för en tidig start.",
+        "pt": "Semear em interior para um arranque antecipado."
+      }
+    },
+    {
+      "crop_slug": "lettuce",
+      "method": "sow_indoor",
+      "start": "2026-01-07",
+      "end": "2026-01-21",
+      "min_soil_c": null,
+      "note": {
+        "nl": "Binnen voorzaaien voor een vroege start.",
+        "en": "Start indoors for an early start.",
+        "de": "Für einen frühen Start drinnen vorziehen.",
+        "fr": "Semer en intérieur pour un démarrage précoce.",
+        "sv": "Förkultivera inomhus för en tidig start.",
+        "pt": "Semear em interior para um arranque antecipado."
+      }
+    },
+    {
+      "crop_slug": "pea",
+      "method": "sow_direct",
+      "start": "2026-01-07",
+      "end": "2026-03-04",
+      "min_soil_c": 5,
+      "note": {
+        "nl": "Direct op de plek buiten zaaien.",
+        "en": "Sow directly outdoors where it will grow.",
+        "de": "Direkt an Ort und Stelle ins Freiland säen.",
+        "fr": "Semer directement en place, en pleine terre.",
+        "sv": "Så direkt på växtplatsen.",
+        "pt": "Semear diretamente no local definitivo."
+      }
+    },
+    {
+      "crop_slug": "spinach",
+      "method": "sow_direct",
+      "start": "2026-01-07",
+      "end": "2026-03-04",
+      "min_soil_c": 5,
+      "note": {
+        "nl": "Direct op de plek buiten zaaien.",
+        "en": "Sow directly outdoors where it will grow.",
+        "de": "Direkt an Ort und Stelle ins Freiland säen.",
+        "fr": "Semer directement en place, en pleine terre.",
+        "sv": "Så direkt på växtplatsen.",
+        "pt": "Semear diretamente no local definitivo."
+      }
+    },
+    {
+      "crop_slug": "tomato",
+      "method": "sow_indoor",
+      "start": "2026-01-07",
+      "end": "2026-02-04",
+      "min_soil_c": null,
+      "note": {
+        "nl": "Binnen voorzaaien voor een vroege start.",
+        "en": "Start indoors for an early start.",
+        "de": "Für einen frühen Start drinnen vorziehen.",
+        "fr": "Semer en intérieur pour un démarrage précoce.",
+        "sv": "Förkultivera inomhus för en tidig start.",
+        "pt": "Semear em interior para um arranque antecipado."
+      }
+    },
+    {
+      "crop_slug": "basil",
+      "method": "sow_indoor",
+      "start": "2026-01-21",
+      "end": "2026-02-11",
+      "min_soil_c": null,
+      "note": {
+        "nl": "Binnen voorzaaien voor een vroege start.",
+        "en": "Start indoors for an early start.",
+        "de": "Für einen frühen Start drinnen vorziehen.",
+        "fr": "Semer en intérieur pour un démarrage précoce.",
+        "sv": "Förkultivera inomhus för en tidig start.",
+        "pt": "Semear em interior para um arranque antecipado."
+      }
+    },
+    {
+      "crop_slug": "broccoli",
+      "method": "transplant",
+      "start": "2026-02-04",
+      "end": "2026-03-04",
+      "min_soil_c": null,
+      "note": {
+        "nl": "Buiten uitplanten zodra het veilig is.",
+        "en": "Plant out once conditions are safe.",
+        "de": "Auspflanzen, sobald das Wetter es zulässt.",
+        "fr": "Repiquer dès que la météo le permet.",
+        "sv": "Plantera ut när vädret tillåter.",
+        "pt": "Transplantar quando o tempo o permitir."
+      }
+    },
+    {
+      "crop_slug": "lettuce",
+      "method": "sow_direct",
+      "start": "2026-02-04",
+      "end": "2026-04-15",
+      "min_soil_c": 5,
+      "note": {
+        "nl": "Direct op de plek buiten zaaien.",
+        "en": "Sow directly outdoors where it will grow.",
+        "de": "Direkt an Ort und Stelle ins Freiland säen.",
+        "fr": "Semer directement en place, en pleine terre.",
+        "sv": "Så direkt på växtplatsen.",
+        "pt": "Semear diretamente no local definitivo."
+      }
+    },
+    {
+      "crop_slug": "basil",
+      "method": "transplant",
+      "start": "2026-03-18",
+      "end": "2026-04-01",
+      "min_soil_c": 12,
+      "note": {
+        "nl": "Buiten uitplanten zodra het veilig is.",
+        "en": "Plant out once conditions are safe.",
+        "de": "Auspflanzen, sobald das Wetter es zulässt.",
+        "fr": "Repiquer dès que la météo le permet.",
+        "sv": "Plantera ut när vädret tillåter.",
+        "pt": "Transplantar quando o tempo o permitir."
+      }
+    },
+    {
+      "crop_slug": "tomato",
+      "method": "transplant",
+      "start": "2026-03-18",
+      "end": "2026-04-01",
+      "min_soil_c": 12,
+      "note": {
+        "nl": "Buiten uitplanten zodra het veilig is.",
+        "en": "Plant out once conditions are safe.",
+        "de": "Auspflanzen, sobald das Wetter es zulässt.",
+        "fr": "Repiquer dès que la météo le permet.",
+        "sv": "Plantera ut när vädret tillåter.",
+        "pt": "Transplantar quando o tempo o permitir."
+      }
+    },
+    {
+      "crop_slug": "broccoli",
+      "method": "transplant",
+      "start": "2026-09-15",
+      "end": "2026-09-29",
+      "min_soil_c": null,
+      "note": {
+        "nl": "Uitplanten voor een oogst in het koele seizoen.",
+        "en": "Plant out for a cool-season harvest.",
+        "de": "Auspflanzen für eine Ernte in der kühlen Jahreszeit.",
+        "fr": "Repiquer pour une récolte en saison fraîche.",
+        "sv": "Plantera ut för en skörd under den svala säsongen.",
+        "pt": "Transplantar para uma colheita na estação fresca."
+      }
+    },
+    {
+      "crop_slug": "pea",
+      "method": "sow_direct",
+      "start": "2026-09-15",
+      "end": "2026-09-22",
+      "min_soil_c": null,
+      "note": {
+        "nl": "Nazaaien voor een oogst in het koele seizoen.",
+        "en": "Sow again for a cool-season harvest.",
+        "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+        "fr": "Ressemer pour une récolte en saison fraîche.",
+        "sv": "Så igen för en skörd under den svala säsongen.",
+        "pt": "Semear de novo para uma colheita na estação fresca."
+      }
+    },
+    {
+      "crop_slug": "lettuce",
+      "method": "sow_direct",
+      "start": "2026-10-13",
+      "end": "2026-10-27",
+      "min_soil_c": null,
+      "note": {
+        "nl": "Nazaaien voor een oogst in het koele seizoen.",
+        "en": "Sow again for a cool-season harvest.",
+        "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+        "fr": "Ressemer pour une récolte en saison fraîche.",
+        "sv": "Så igen för en skörd under den svala säsongen.",
+        "pt": "Semear de novo para uma colheita na estação fresca."
+      }
+    },
+    {
+      "crop_slug": "spinach",
+      "method": "sow_direct",
+      "start": "2026-10-13",
+      "end": "2026-10-27",
+      "min_soil_c": null,
+      "note": {
+        "nl": "Nazaaien voor een oogst in het koele seizoen.",
+        "en": "Sow again for a cool-season harvest.",
+        "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+        "fr": "Ressemer pour une récolte en saison fraîche.",
+        "sv": "Så igen för en skörd under den svala säsongen.",
+        "pt": "Semear de novo para uma colheita na estação fresca."
+      }
+    }
+  ]
+}

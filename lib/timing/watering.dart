@@ -15,8 +15,12 @@ import 'weather_adjust.dart';
 
 /// Smaller pots dry out faster. A 3 L herb pot on a hot balcony is daily work;
 /// a bed holds water for days. Mirrors DEFAULT_WATER_CADENCE in watering.ts.
-const defaultWaterCadence =
-    WaterCadence(small: 1, medium: 2, large: 3, ground: 4);
+const defaultWaterCadence = WaterCadence(
+  small: 1,
+  medium: 2,
+  large: 3,
+  ground: 4,
+);
 
 /// Days between waterings for a given pot size (litres). null = in-ground.
 /// [cadence] is the crop's override (`Crop.waterCadenceDays`), if any.
@@ -42,12 +46,14 @@ List<Task> wateringTasksFor({
   final tasks = <Task>[];
   for (var d = 0; d < horizonDays; d += interval) {
     final due = toIso(addDays(from, d));
-    tasks.add(Task(
-      id: 'water-$plantId-$due',
-      cropSlug: cropSlug,
-      kind: TaskKind.water,
-      due: due,
-    ));
+    tasks.add(
+      Task(
+        id: 'water-$plantId-$due',
+        cropSlug: cropSlug,
+        kind: TaskKind.water,
+        due: due,
+      ),
+    );
   }
   return tasks;
 }

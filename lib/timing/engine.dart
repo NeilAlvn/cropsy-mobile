@@ -12,28 +12,59 @@
 library;
 
 import 'dates.dart';
+import 'heat.dart';
 import 'types.dart';
 
 DateTime _anchorDate(CropMethod method, FrostProfile frost) => parseIso(
-      method.anchor == FrostAnchor.lastFrost
-          ? frost.lastFrost
-          : frost.firstFrost,
-    );
+  method.anchor == FrostAnchor.lastFrost ? frost.lastFrost : frost.firstFrost,
+);
 
 /// Compute the dated windows for a single crop at a location.
 /// Deterministic: same crop + same frost profile always yields the same result.
 List<ScheduledWindow> scheduleCrop(Crop crop, FrostProfile frost) {
-  return crop.methods.map((method) {
-    final anchor = _anchorDate(method, frost);
-    return ScheduledWindow(
-      cropSlug: crop.slug,
-      method: method.type,
-      start: toIso(addWeeks(anchor, method.startWeeks)),
-      end: toIso(addWeeks(anchor, method.endWeeks)),
-      minSoilC: method.minSoilC,
-      note: method.note,
-    );
-  }).toList(growable: false);
+  final hasClimate = frost.weeklyTmax?.length == 52;
+  // (auto, window) in method order; window null = trimmed away.
+  final items = [
+    for (final method in crop.methods)
+      if (!method.needsClimate || hasClimate)
+        (
+          auto: method.needsClimate,
+          window: () {
+            final anchor = _anchorDate(method, frost);
+            return trimForHeat(
+              ScheduledWindow(
+                cropSlug: crop.slug,
+                method: method.type,
+                start: toIso(addWeeks(anchor, method.startWeeks)),
+                end: toIso(addWeeks(anchor, method.endWeeks)),
+                minSoilC: method.minSoilC,
+                note: method.note,
+              ),
+              crop.maxC == null
+                  ? null
+                  : crop.maxC! +
+                        (method.needsClimate ? autumnHeatAllowanceC : 0),
+              frost.weeklyTmax,
+              method.needsClimate ? autumnMinC : null,
+            );
+          }(),
+          type: method.type,
+        ),
+  ];
+  // Sowing indoors only makes sense if there is still a time to plant out.
+  // Only the spring pairing (no needsClimate) counts.
+  final spring = items
+      .where((it) => !it.auto && it.type == MethodType.transplant)
+      .toList();
+  final keepsTransplant = spring.any((it) => it.window != null);
+  return [
+    for (final it in items)
+      if (it.window case final w?)
+        if (w.method != MethodType.sowIndoor ||
+            spring.isEmpty ||
+            keepsTransplant)
+          w,
+  ];
 }
 
 /// Schedule many crops at once (e.g. everything in a user's garden), sorted by
@@ -66,9 +97,11 @@ List<ScheduledWindow> windowsActiveInRange(
     from.millisecondsSinceEpoch + days * msPerDay,
     isUtc: true,
   );
-  return windows.where((w) {
-    final ws = parseIso(w.start);
-    final we = parseIso(w.end);
-    return !we.isBefore(from) && ws.isBefore(to); // overlaps the range
-  }).toList(growable: false);
+  return windows
+      .where((w) {
+        final ws = parseIso(w.start);
+        final we = parseIso(w.end);
+        return !we.isBefore(from) && ws.isBefore(to); // overlaps the range
+      })
+      .toList(growable: false);
 }

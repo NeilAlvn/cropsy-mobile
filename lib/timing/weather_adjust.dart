@@ -70,20 +70,20 @@ class Task {
   final num? minSoilC;
 
   factory Task.fromJson(Map<String, dynamic> j) => Task(
-        id: j['id'] as String,
-        cropSlug: j['crop_slug'] as String,
-        kind: taskKindFromWire(j['kind'] as String),
-        due: j['due'] as String,
-        minSoilC: j['min_soil_c'] as num?,
-      );
+    id: j['id'] as String,
+    cropSlug: j['crop_slug'] as String,
+    kind: taskKindFromWire(j['kind'] as String),
+    due: j['due'] as String,
+    minSoilC: j['min_soil_c'] as num?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'crop_slug': cropSlug,
-        'kind': taskKindToWire(kind),
-        'due': due,
-        if (minSoilC != null) 'min_soil_c': minSoilC,
-      };
+    'id': id,
+    'crop_slug': cropSlug,
+    'kind': taskKindToWire(kind),
+    'due': due,
+    if (minSoilC != null) 'min_soil_c': minSoilC,
+  };
 }
 
 /// One day of weather. Soil temp is proxied by air (mean of min/max).
@@ -108,12 +108,12 @@ class DayObservation {
   final int? weatherCode;
 
   factory DayObservation.fromJson(Map<String, dynamic> j) => DayObservation(
-        date: j['date'] as String,
-        precipMm: j['precip_mm'] as num,
-        tempMinC: j['temp_min_c'] as num,
-        tempMaxC: j['temp_max_c'] as num,
-        weatherCode: (j['weather_code'] as num?)?.toInt(),
-      );
+    date: j['date'] as String,
+    precipMm: j['precip_mm'] as num,
+    tempMinC: j['temp_min_c'] as num,
+    tempMaxC: j['temp_max_c'] as num,
+    weatherCode: (j['weather_code'] as num?)?.toInt(),
+  );
 
   num get meanTemp => (tempMinC + tempMaxC) / 2;
 }
@@ -121,7 +121,16 @@ class DayObservation {
 /// The eight condition groups the app names. WMO publishes far more codes than
 /// a gardener needs, so they collapse to the groups the string table has words
 /// for — anything finer would be a distinction nobody acts on.
-enum WeatherCondition { clear, partlyCloudy, overcast, fog, drizzle, rain, snow, thunder }
+enum WeatherCondition {
+  clear,
+  partlyCloudy,
+  overcast,
+  fog,
+  drizzle,
+  rain,
+  snow,
+  thunder,
+}
 
 /// Group a WMO code. Returns null for "we do not know" — a missing code from an
 /// old cache, or one outside the published table — so the caller can say
@@ -172,11 +181,11 @@ class Adjustment {
   final LocalizedText reason;
 
   Map<String, dynamic> toJson() => {
-        'task_id': taskId,
-        'action': adjustActionToWire(action),
-        if (to != null) 'to': to,
-        'reason': reason.toJson(),
-      };
+    'task_id': taskId,
+    'action': adjustActionToWire(action),
+    if (to != null) 'to': to,
+    'reason': reason.toJson(),
+  };
 }
 
 class AdjustParams {
@@ -223,15 +232,15 @@ class AdjustParams {
 extension AdjustParamsCopy on AdjustParams {
   /// Same rules, a different clock — the repository stamps `today`.
   AdjustParams withToday(String? today) => AdjustParams(
-        rainLookbackDays: rainLookbackDays,
-        rainForecastDays: rainForecastDays,
-        wetThresholdMm: wetThresholdMm,
-        maxDeferDays: maxDeferDays,
-        heatThresholdC: heatThresholdC,
-        heatLookbackDays: heatLookbackDays,
-        heatDryMaxMm: heatDryMaxMm,
-        today: today,
-      );
+    rainLookbackDays: rainLookbackDays,
+    rainForecastDays: rainForecastDays,
+    wetThresholdMm: wetThresholdMm,
+    maxDeferDays: maxDeferDays,
+    heatThresholdC: heatThresholdC,
+    heatLookbackDays: heatLookbackDays,
+    heatDryMaxMm: heatDryMaxMm,
+    today: today,
+  );
 }
 
 const AdjustParams defaultAdjust = AdjustParams(
@@ -245,11 +254,8 @@ const AdjustParams defaultAdjust = AdjustParams(
   today: null,
 );
 
-Adjustment _none(Task task) => Adjustment(
-      taskId: task.id,
-      action: AdjustAction.none,
-      reason: Str.empty,
-    );
+Adjustment _none(Task task) =>
+    Adjustment(taskId: task.id, action: AdjustAction.none, reason: Str.empty);
 
 Adjustment _adjustTask(
   Task task,

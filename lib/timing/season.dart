@@ -11,7 +11,12 @@ import 'engine.dart';
 import 'types.dart';
 
 class SeasonPlant {
-  const SeasonPlant({required this.plantId, required this.cropSlug, this.harvestStart, this.harvestEnd});
+  const SeasonPlant({
+    required this.plantId,
+    required this.cropSlug,
+    this.harvestStart,
+    this.harvestEnd,
+  });
   final String plantId;
   final String cropSlug;
   final String? harvestStart;
@@ -45,14 +50,14 @@ class SeasonNode {
   final LocalizedText? note;
 
   Map<String, dynamic> toJson() => {
-        'kind': _kindWire[kind],
-        'crop_slug': cropSlug,
-        'plant_id': plantId,
-        'start': start,
-        'end': end,
-        if (afterPlantId != null) 'after_plant_id': afterPlantId,
-        'note': note?.toJson(),
-      };
+    'kind': _kindWire[kind],
+    'crop_slug': cropSlug,
+    'plant_id': plantId,
+    'start': start,
+    'end': end,
+    if (afterPlantId != null) 'after_plant_id': afterPlantId,
+    'note': note?.toJson(),
+  };
 }
 
 class SeasonParams {
@@ -77,10 +82,27 @@ List<SeasonNode> seasonPath(
     if (crop == null) continue;
     for (final w in scheduleCrop(crop, frost)) {
       if (w.method == MethodType.sowIndoor) continue;
-      nodes.add(SeasonNode(kind: SeasonNodeKind.sowWindow, cropSlug: p.cropSlug, plantId: p.plantId, start: w.start, end: w.end, note: w.note));
+      nodes.add(
+        SeasonNode(
+          kind: SeasonNodeKind.sowWindow,
+          cropSlug: p.cropSlug,
+          plantId: p.plantId,
+          start: w.start,
+          end: w.end,
+          note: w.note,
+        ),
+      );
     }
     if (p.harvestStart != null && p.harvestEnd != null) {
-      nodes.add(SeasonNode(kind: SeasonNodeKind.harvestWindow, cropSlug: p.cropSlug, plantId: p.plantId, start: p.harvestStart!, end: p.harvestEnd!));
+      nodes.add(
+        SeasonNode(
+          kind: SeasonNodeKind.harvestWindow,
+          cropSlug: p.cropSlug,
+          plantId: p.plantId,
+          start: p.harvestStart!,
+          end: p.harvestEnd!,
+        ),
+      );
     }
   }
 
@@ -106,15 +128,23 @@ List<SeasonNode> seasonPath(
     });
     for (final c in candidates.take(params.maxSuggestions)) {
       final after = bySlug[p.cropSlug];
-      nodes.add(SeasonNode(
-        kind: SeasonNodeKind.succession,
-        cropSlug: c.crop.slug,
-        plantId: null,
-        afterPlantId: p.plantId,
-        start: c.start,
-        end: c.end,
-        note: Str.successionNote(after?.names, p.cropSlug, hEnd, c.crop.names, c.end),
-      ));
+      nodes.add(
+        SeasonNode(
+          kind: SeasonNodeKind.succession,
+          cropSlug: c.crop.slug,
+          plantId: null,
+          afterPlantId: p.plantId,
+          start: c.start,
+          end: c.end,
+          note: Str.successionNote(
+            after?.names,
+            p.cropSlug,
+            hEnd,
+            c.crop.names,
+            c.end,
+          ),
+        ),
+      );
     }
   }
 

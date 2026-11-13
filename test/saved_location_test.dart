@@ -112,4 +112,13 @@ void main() {
     await repo.setLocation(name: '9711AA', lookup: lookup, postcode: '9711AA');
     expect(repo.country, 'NL');
   });
+
+  test('needsClimate: looked-up places without a climate curve only', () {
+    const base = FrostProfile(lastFrost: '2026-02-18', firstFrost: '2026-12-08');
+    expect(needsClimate(const SavedLocation(name: 'Austin', profile: base, source: 'open-meteo', lat: 30.3, lon: -97.7)), isTrue);
+    expect(needsClimate(const SavedLocation(name: 'Randstad', profile: base, source: 'preset', lat: 52.3, lon: 4.9)), isFalse);
+    expect(needsClimate(const SavedLocation(name: 'X', profile: base, source: 'open-meteo')), isFalse);
+    final withClimate = FrostProfile(lastFrost: '2026-02-18', firstFrost: '2026-12-08', weeklyTmax: List.filled(52, 20.0));
+    expect(needsClimate(SavedLocation(name: 'Austin', profile: withClimate, source: 'open-meteo', lat: 30.3, lon: -97.7)), isFalse);
+  });
 }

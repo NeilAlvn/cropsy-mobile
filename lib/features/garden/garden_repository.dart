@@ -243,6 +243,7 @@ class GardenRepository extends ChangeNotifier {
         ..regionName = saved.name
         ..frostSource = saved.source
         ..country = saved.country;
+      if (needsClimate(saved)) unawaited(repo._refreshClimate(saved));
     } else {
       unawaited(repo._recoverLocation());
     }
@@ -595,6 +596,31 @@ class GardenRepository extends ChangeNotifier {
     frostSource = l.source;
     country = l.country;
     await setMeta(SavedLocation.metaKey, l.encode());
+  }
+
+  /// Re-fetch a saved place's profile once, to pick up its climate curve.
+  /// Name, country and postcode stay as the user chose them.
+  Future<void> _refreshClimate(SavedLocation saved) async {
+    try {
+      final hit = await frostForCoordinate(saved.lat!, saved.lon!);
+      if (hit == null) return;
+      // The user may have picked another place during the network wait; that
+      // newer choice wins (same idea as the guard in _recoverLocation).
+      final now = SavedLocation.decode(await meta(SavedLocation.metaKey));
+      if (now == null || now.lat != saved.lat || now.lon != saved.lon) return;
+      await _remember(SavedLocation(
+        name: saved.name,
+        profile: hit.profile,
+        source: hit.source,
+        country: saved.country,
+        lat: hit.lat,
+        lon: hit.lon,
+        postcode: saved.postcode,
+      ));
+      notifyListeners();
+    } catch (_) {
+      // Offline or upstream down: keep the old profile; next launch retries.
+    }
   }
 
   /// 1.0.x stored only the garden's coordinate. Rebuild the saved location from

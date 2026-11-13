@@ -1,12 +1,16 @@
 {
-  "version": "031c8c8eb7747415",
-  "generated_at": "2026-09-15T11:41:08.165Z",
+  "version": "6510a50c43e7e1a1",
+  "generated_at": "2026-11-13T15:44:49.965Z",
   "crops": [
     {
       "slug": "asparagus",
       "names": {
         "nl": "Asperge",
-        "en": "Asparagus"
+        "en": "Asparagus",
+        "de": "Spargel",
+        "fr": "Asperge",
+        "sv": "Sparris",
+        "pt": "Espargo"
       },
       "category": "fruit",
       "frost_tender": false,
@@ -15,6 +19,7 @@
       "spacing_cm": 40,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "plant",
@@ -24,7 +29,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Poten/planten in de aangegeven periode.",
-            "en": "Plant in the window shown."
+            "en": "Plant in the window shown.",
+            "de": "Im angezeigten Zeitraum pflanzen.",
+            "fr": "Planter pendant la période indiquée.",
+            "sv": "Plantera under den period som visas.",
+            "pt": "Plantar no período indicado."
           }
         }
       ],
@@ -50,7 +59,11 @@
       "slug": "aubergine",
       "names": {
         "nl": "Aubergine",
-        "en": "Aubergine"
+        "en": "Aubergine",
+        "de": "Aubergine",
+        "fr": "Aubergine",
+        "sv": "Aubergine",
+        "pt": "Beringela"
       },
       "category": "fruit-veg",
       "frost_tender": true,
@@ -59,6 +72,7 @@
       "spacing_cm": 45,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": 36,
       "methods": [
         {
           "type": "sow_indoor",
@@ -68,7 +82,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -79,7 +97,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -106,7 +128,11 @@
       "slug": "basil",
       "names": {
         "nl": "Basilicum",
-        "en": "Basil"
+        "en": "Basil",
+        "de": "Basilikum",
+        "fr": "Basilic",
+        "sv": "Basilika",
+        "pt": "Manjericão"
       },
       "category": "herb",
       "frost_tender": true,
@@ -115,6 +141,7 @@
       "spacing_cm": 20,
       "vak_per_m2": 4,
       "sun": "full",
+      "max_c": 38,
       "methods": [
         {
           "type": "sow_indoor",
@@ -124,7 +151,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -135,7 +166,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -161,7 +196,11 @@
       "slug": "beetroot",
       "names": {
         "nl": "Kroot",
-        "en": "Beetroot"
+        "en": "Beetroot",
+        "de": "Rote Bete",
+        "fr": "Betterave",
+        "sv": "Rödbeta",
+        "pt": "Beterraba"
       },
       "category": "root",
       "frost_tender": false,
@@ -170,6 +209,7 @@
       "spacing_cm": 10,
       "vak_per_m2": 9,
       "sun": "full",
+      "max_c": 30,
       "methods": [
         {
           "type": "sow_direct",
@@ -179,7 +219,11 @@
           "min_soil_c": 7,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         },
         {
@@ -190,7 +234,27 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -10,
+          "end_weeks": -8,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -209,7 +273,9 @@
       "sources": [
         "IVN rode biet",
         "robbiesmoestuin.nl",
-        "mooiemoestuin.nl"
+        "mooiemoestuin.nl",
+        "Autumn timing: Tenth Acre Farm, guide to fall planting (https://tenthacrefarm.com/guide-to-fall-planting)",
+        "Autumn timing: Grow a Good Life, fall garden vegetables to direct sow (https://growagoodlife.com/fall-garden-vegetables-to-direct-sow/)"
       ],
       "verified": true
     },
@@ -217,7 +283,11 @@
       "slug": "blueberry-in-pot",
       "names": {
         "nl": "Blauwe bes in pot",
-        "en": "Blueberry in a pot"
+        "en": "Blueberry in a pot",
+        "de": "Heidelbeere im Topf",
+        "fr": "Myrtillier en pot",
+        "sv": "Blåbär i kruka",
+        "pt": "Mirtilo em vaso"
       },
       "category": "fruit",
       "frost_tender": false,
@@ -226,6 +296,7 @@
       "spacing_cm": 100,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "plant",
@@ -235,7 +306,11 @@
           "min_soil_c": 7,
           "note": {
             "nl": "Plant in de late winter of het vroege voorjaar voor het uitlopen van de knoppen.",
-            "en": "Plant in late winter or early spring before bud burst."
+            "en": "Plant in late winter or early spring before bud burst.",
+            "de": "Im Spätwinter oder zeitigen Frühjahr vor dem Austrieb pflanzen.",
+            "fr": "Planter en fin d'hiver ou au début du printemps, avant le débourrement.",
+            "sv": "Plantera på senvintern eller tidigt på våren, innan knopparna slår ut.",
+            "pt": "Plantar no fim do inverno ou no início da primavera, antes do abrolhamento."
           }
         },
         {
@@ -246,7 +321,11 @@
           "min_soil_c": 7,
           "note": {
             "nl": "Plant in het najaar na bladval zolang de grond niet bevroren is.",
-            "en": "Plant in autumn after leaf drop provided the ground is not frozen."
+            "en": "Plant in autumn after leaf drop provided the ground is not frozen.",
+            "de": "Im Herbst nach dem Laubfall pflanzen, solange der Boden nicht gefroren ist.",
+            "fr": "Planter en automne après la chute des feuilles, tant que le sol n'est pas gelé.",
+            "sv": "Plantera på hösten efter lövfällningen, så länge marken inte är frusen.",
+            "pt": "Plantar no outono, depois da queda das folhas, desde que o solo não esteja gelado."
           }
         }
       ],
@@ -286,7 +365,11 @@
       "slug": "borage",
       "names": {
         "nl": "Bernagie (komkommerkruid)",
-        "en": "Borage"
+        "en": "Borage",
+        "de": "Borretsch",
+        "fr": "Bourrache",
+        "sv": "Gurkört",
+        "pt": "Borragem"
       },
       "category": "herb",
       "frost_tender": true,
@@ -295,6 +378,7 @@
       "spacing_cm": 30,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -304,7 +388,11 @@
           "min_soil_c": 10,
           "note": {
             "nl": "Voorzaaien in diepe potjes om de gevoelige penwortel te beschermen",
-            "en": "Sow indoors in deep pots to protect sensitive taproot"
+            "en": "Sow indoors in deep pots to protect sensitive taproot",
+            "de": "In tiefen Töpfen vorziehen, um die empfindliche Pfahlwurzel zu schonen",
+            "fr": "Semer en intérieur dans des pots profonds pour ménager la racine pivotante fragile",
+            "sv": "Förkultivera i djupa krukor för att skona den känsliga pålroten",
+            "pt": "Semear em interior em vasos fundos, para proteger a delicada raiz aprumada"
           }
         },
         {
@@ -315,7 +403,11 @@
           "min_soil_c": 10,
           "note": {
             "nl": "Afharden en uitplanten na IJsheiligen",
-            "en": "Harden off and plant outside after last frosts"
+            "en": "Harden off and plant outside after last frosts",
+            "de": "Abhärten und nach dem letzten Frost auspflanzen",
+            "fr": "Acclimater, puis repiquer après les dernières gelées",
+            "sv": "Härda av och plantera ut efter de sista frostnätterna",
+            "pt": "Aclimatar e transplantar depois das últimas geadas"
           }
         },
         {
@@ -326,7 +418,11 @@
           "min_soil_c": 10,
           "note": {
             "nl": "Ter plekke zaaien vanaf april tot augustus",
-            "en": "Direct sow outdoors from April to August"
+            "en": "Direct sow outdoors from April to August",
+            "de": "Von April bis August direkt ins Freie säen",
+            "fr": "Semer en pleine terre d'avril à août",
+            "sv": "Så direkt på friland från april till augusti",
+            "pt": "Semear diretamente ao ar livre de abril a agosto"
           }
         }
       ],
@@ -368,7 +464,11 @@
       "slug": "broad-bean",
       "names": {
         "nl": "Tuinboon",
-        "en": "Broad bean"
+        "en": "Broad bean",
+        "de": "Dicke Bohne",
+        "fr": "Fève",
+        "sv": "Bondböna",
+        "pt": "Fava"
       },
       "category": "legume",
       "frost_tender": false,
@@ -377,6 +477,7 @@
       "spacing_cm": 20,
       "vak_per_m2": 4,
       "sun": "full",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_direct",
@@ -386,7 +487,11 @@
           "min_soil_c": 3,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         }
       ],
@@ -413,7 +518,11 @@
       "slug": "broccoli",
       "names": {
         "nl": "Broccoli",
-        "en": "Broccoli"
+        "en": "Broccoli",
+        "de": "Brokkoli",
+        "fr": "Brocoli",
+        "sv": "Broccoli",
+        "pt": "Brócolos"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -422,6 +531,7 @@
       "spacing_cm": 40,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": 27,
       "methods": [
         {
           "type": "sow_indoor",
@@ -431,7 +541,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -442,7 +556,27 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
+          }
+        },
+        {
+          "type": "transplant",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -12,
+          "end_weeks": -10,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Uitplanten voor een oogst in het koele seizoen.",
+            "en": "Plant out for a cool-season harvest.",
+            "de": "Auspflanzen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Repiquer pour une récolte en saison fraîche.",
+            "sv": "Plantera ut för en skörd under den svala säsongen.",
+            "pt": "Transplantar para uma colheita na estação fresca."
           }
         }
       ],
@@ -460,7 +594,9 @@
       "image": "broccoli.jpg",
       "sources": [
         "Allezadenkopen zaaikalender",
-        "Tuinadvies.nl zaaikalender"
+        "Tuinadvies.nl zaaikalender",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)",
+        "Autumn timing: Tenth Acre Farm, guide to fall planting (https://tenthacrefarm.com/guide-to-fall-planting)"
       ],
       "verified": true
     },
@@ -468,7 +604,11 @@
       "slug": "brussels-sprouts",
       "names": {
         "nl": "Spruitjes",
-        "en": "Brussels sprouts"
+        "en": "Brussels sprouts",
+        "de": "Rosenkohl",
+        "fr": "Chou de Bruxelles",
+        "sv": "Brysselkål",
+        "pt": "Couve-de-bruxelas"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -477,6 +617,7 @@
       "spacing_cm": 60,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 27,
       "methods": [
         {
           "type": "sow_indoor",
@@ -486,7 +627,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -497,7 +642,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -523,7 +672,11 @@
       "slug": "cabbage",
       "names": {
         "nl": "Witte kool",
-        "en": "Cabbage"
+        "en": "Cabbage",
+        "de": "Weißkohl",
+        "fr": "Chou blanc",
+        "sv": "Vitkål",
+        "pt": "Couve-repolho"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -532,6 +685,7 @@
       "spacing_cm": 45,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": 27,
       "methods": [
         {
           "type": "sow_indoor",
@@ -541,7 +695,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -552,7 +710,27 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
+          }
+        },
+        {
+          "type": "transplant",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -12,
+          "end_weeks": -10,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Uitplanten voor een oogst in het koele seizoen.",
+            "en": "Plant out for a cool-season harvest.",
+            "de": "Auspflanzen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Repiquer pour une récolte en saison fraîche.",
+            "sv": "Plantera ut för en skörd under den svala säsongen.",
+            "pt": "Transplantar para uma colheita na estação fresca."
           }
         }
       ],
@@ -570,7 +748,9 @@
       "image": "cabbage.jpg",
       "sources": [
         "Allezadenkopen zaaikalender",
-        "directplant moestuinkalender"
+        "directplant moestuinkalender",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)",
+        "Autumn timing: Bob Vila, fall vegetable garden (https://www.bobvila.com/articles/fall-vegetable-garden/)"
       ],
       "verified": true
     },
@@ -578,7 +758,11 @@
       "slug": "carrot",
       "names": {
         "nl": "Wortel",
-        "en": "Carrot"
+        "en": "Carrot",
+        "de": "Möhre",
+        "fr": "Carotte",
+        "sv": "Morot",
+        "pt": "Cenoura"
       },
       "category": "root",
       "frost_tender": false,
@@ -587,6 +771,7 @@
       "spacing_cm": 5,
       "vak_per_m2": 16,
       "sun": "full",
+      "max_c": 30,
       "methods": [
         {
           "type": "sow_direct",
@@ -596,7 +781,27 @@
           "min_soil_c": 7,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -12,
+          "end_weeks": -10,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -614,7 +819,9 @@
       "image": "carrot.jpg",
       "sources": [
         "Tuinadvies.nl moestuinklussen",
-        "Gardeners World NL jaarkalender"
+        "Gardeners World NL jaarkalender",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)",
+        "Autumn timing: Tenth Acre Farm, guide to fall planting (https://tenthacrefarm.com/guide-to-fall-planting)"
       ],
       "verified": true
     },
@@ -622,7 +829,11 @@
       "slug": "cauliflower",
       "names": {
         "nl": "Bloemkool",
-        "en": "Cauliflower"
+        "en": "Cauliflower",
+        "de": "Blumenkohl",
+        "fr": "Chou-fleur",
+        "sv": "Blomkål",
+        "pt": "Couve-flor"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -631,6 +842,7 @@
       "spacing_cm": 45,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": 27,
       "methods": [
         {
           "type": "sow_indoor",
@@ -640,7 +852,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -651,7 +867,27 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
+          }
+        },
+        {
+          "type": "transplant",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -12,
+          "end_weeks": -10,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Uitplanten voor een oogst in het koele seizoen.",
+            "en": "Plant out for a cool-season harvest.",
+            "de": "Auspflanzen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Repiquer pour une récolte en saison fraîche.",
+            "sv": "Plantera ut för en skörd under den svala säsongen.",
+            "pt": "Transplantar para uma colheita na estação fresca."
           }
         }
       ],
@@ -669,7 +905,9 @@
       "image": "cauliflower.jpg",
       "sources": [
         "groenten-kweken bloemkool",
-        "Allezadenkopen zaaikalender"
+        "Allezadenkopen zaaikalender",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)",
+        "Autumn timing: Tenth Acre Farm, guide to fall planting (https://tenthacrefarm.com/guide-to-fall-planting)"
       ],
       "verified": true
     },
@@ -677,7 +915,11 @@
       "slug": "celeriac",
       "names": {
         "nl": "Knolselderij",
-        "en": "Celeriac"
+        "en": "Celeriac",
+        "de": "Knollensellerie",
+        "fr": "Céleri-rave",
+        "sv": "Rotselleri",
+        "pt": "Aipo-rábano"
       },
       "category": "root",
       "frost_tender": false,
@@ -686,6 +928,7 @@
       "spacing_cm": 35,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 30,
       "methods": [
         {
           "type": "sow_indoor",
@@ -695,7 +938,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -706,7 +953,11 @@
           "min_soil_c": 10,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -733,7 +984,11 @@
       "slug": "celery",
       "names": {
         "nl": "Bleekselderij",
-        "en": "Celery"
+        "en": "Celery",
+        "de": "Staudensellerie",
+        "fr": "Céleri branche",
+        "sv": "Blekselleri",
+        "pt": "Aipo"
       },
       "category": "herb",
       "frost_tender": false,
@@ -742,6 +997,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 4,
       "sun": "full",
+      "max_c": 30,
       "methods": [
         {
           "type": "sow_indoor",
@@ -751,7 +1007,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -762,7 +1022,11 @@
           "min_soil_c": 10,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -794,7 +1058,11 @@
       "slug": "celery-leaf",
       "names": {
         "nl": "Snijselderij",
-        "en": "Leaf celery"
+        "en": "Leaf celery",
+        "de": "Schnittsellerie",
+        "fr": "Céleri à couper",
+        "sv": "Snittselleri",
+        "pt": "Aipo de folha"
       },
       "category": "herb",
       "frost_tender": false,
@@ -803,6 +1071,7 @@
       "spacing_cm": 15,
       "vak_per_m2": 4,
       "sun": "partial",
+      "max_c": 30,
       "methods": [
         {
           "type": "sow_indoor",
@@ -812,7 +1081,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Binnen voorzaaien vanaf half maart bij 18-22 °C; zaden zijn trage lichtkiemers.",
-            "en": "Sow indoors from mid-March at 18-22 °C; seeds are slow surface germinators."
+            "en": "Sow indoors from mid-March at 18-22 °C; seeds are slow surface germinators.",
+            "de": "Ab Mitte März bei 18–22 °C vorziehen; die Samen sind Lichtkeimer und keimen langsam.",
+            "fr": "Semer en intérieur dès la mi-mars à 18–22 °C ; les graines germent lentement, à la lumière.",
+            "sv": "Förkultivera från mitten av mars vid 18–22 °C; fröna är ljusgroende och gror långsamt.",
+            "pt": "Semear em interior a partir de meados de março, a 18–22 °C; as sementes germinam devagar e à superfície."
           }
         },
         {
@@ -823,7 +1096,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Rechtstreeks buiten zaaien vanaf april zodra de grond opwarmt tot in juli.",
-            "en": "Sow directly outdoors from April once soil warms up through July."
+            "en": "Sow directly outdoors from April once soil warms up through July.",
+            "de": "Ab April, sobald der Boden warm ist, bis Juli direkt ins Freie säen.",
+            "fr": "Semer en pleine terre d'avril à juillet, dès que le sol s'est réchauffé.",
+            "sv": "Så direkt på friland från april, när jorden har blivit varm, fram till juli.",
+            "pt": "Semear diretamente ao ar livre de abril a julho, assim que o solo aquecer."
           }
         },
         {
@@ -834,7 +1111,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Uitplanten na IJsheiligen wanneer de buitentemperaturen stabiel zijn.",
-            "en": "Transplant outdoors after mid-May once outdoor temperatures stabilize."
+            "en": "Transplant outdoors after mid-May once outdoor temperatures stabilize.",
+            "de": "Nach Mitte Mai auspflanzen, sobald die Temperaturen draußen stabil sind.",
+            "fr": "Repiquer après la mi-mai, une fois les températures extérieures stables.",
+            "sv": "Plantera ut efter mitten av maj, när temperaturen utomhus har stabiliserats.",
+            "pt": "Transplantar depois de meados de maio, quando as temperaturas exteriores estabilizarem."
           }
         }
       ],
@@ -880,7 +1161,11 @@
       "slug": "chamomile",
       "names": {
         "nl": "Kamille",
-        "en": "Chamomile"
+        "en": "Chamomile",
+        "de": "Kamille",
+        "fr": "Camomille",
+        "sv": "Kamomill",
+        "pt": "Camomila"
       },
       "category": "herb",
       "frost_tender": false,
@@ -889,6 +1174,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -898,7 +1184,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Voorzaaien bij 18-20 °C; zaden niet bedekken want kamille is een lichtkiemer.",
-            "en": "Sow indoors at 18-20 °C; do not cover seeds as chamomile is a light germinator."
+            "en": "Sow indoors at 18-20 °C; do not cover seeds as chamomile is a light germinator.",
+            "de": "Bei 18–20 °C vorziehen; Samen nicht bedecken, Kamille ist ein Lichtkeimer.",
+            "fr": "Semer en intérieur à 18–20 °C ; ne pas couvrir les graines, la camomille germe à la lumière.",
+            "sv": "Förkultivera vid 18–20 °C; täck inte fröna, kamomill är ljusgroende.",
+            "pt": "Semear em interior a 18–20 °C; não cobrir as sementes, pois a camomila precisa de luz para germinar."
           }
         },
         {
@@ -909,7 +1199,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Na afharden uitplanten in de tuin of in potten.",
-            "en": "Plant out in beds or pots after hardening off."
+            "en": "Plant out in beds or pots after hardening off.",
+            "de": "Nach dem Abhärten ins Beet oder in Töpfe auspflanzen.",
+            "fr": "Repiquer en planche ou en pot après acclimatation.",
+            "sv": "Plantera ut i bädd eller kruka efter avhärdning.",
+            "pt": "Transplantar para canteiros ou vasos depois de aclimatar."
           }
         },
         {
@@ -920,7 +1214,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Ter plekke zaaien; zaden licht aandrukken en niet begraven.",
-            "en": "Sow directly outdoors; press seeds lightly into the soil without burying."
+            "en": "Sow directly outdoors; press seeds lightly into the soil without burying.",
+            "de": "Direkt ins Freie säen; Samen leicht andrücken, nicht mit Erde bedecken.",
+            "fr": "Semer en pleine terre ; appuyer légèrement les graines sur le sol sans les enterrer.",
+            "sv": "Så direkt på friland; tryck lätt ner fröna i jorden utan att täcka dem.",
+            "pt": "Semear diretamente ao ar livre; pressionar ligeiramente as sementes no solo, sem as enterrar."
           }
         }
       ],
@@ -962,7 +1260,11 @@
       "slug": "chervil",
       "names": {
         "nl": "Kervel",
-        "en": "Chervil"
+        "en": "Chervil",
+        "de": "Kerbel",
+        "fr": "Cerfeuil",
+        "sv": "Körvel",
+        "pt": "Cerefólio"
       },
       "category": "herb",
       "frost_tender": false,
@@ -971,6 +1273,7 @@
       "spacing_cm": 15,
       "vak_per_m2": 4,
       "sun": "partial",
+      "max_c": 24,
       "methods": [
         {
           "type": "sow_direct",
@@ -980,7 +1283,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Voorjaarsteelt direct in de volle grond of pot zaaien; verdraagt koele omstandigheden goed",
-            "en": "Spring direct sowing outdoors; tolerates cool early-season conditions well"
+            "en": "Spring direct sowing outdoors; tolerates cool early-season conditions well",
+            "de": "Im Frühjahr direkt ins Freie säen; verträgt kühles Wetter zu Saisonbeginn gut",
+            "fr": "Semer en pleine terre au printemps ; supporte bien la fraîcheur du début de saison",
+            "sv": "Så direkt på friland på våren; tål svalt väder tidigt på säsongen bra",
+            "pt": "Semear diretamente ao ar livre na primavera; tolera bem o fresco do início da estação"
           }
         },
         {
@@ -991,7 +1298,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Herfst- en winterteelt zaaien voor oogst in het late najaar en de winter",
-            "en": "Late summer and autumn sowing for late autumn and winter harvest"
+            "en": "Late summer and autumn sowing for late autumn and winter harvest",
+            "de": "Für die Ernte im Spätherbst und Winter im Spätsommer und Herbst säen",
+            "fr": "Semer en fin d'été et en automne pour récolter en fin d'automne et en hiver",
+            "sv": "Så på sensommaren och hösten för skörd sent på hösten och på vintern",
+            "pt": "Semear no fim do verão e no outono, para colher no fim do outono e no inverno"
           }
         },
         {
@@ -1002,7 +1313,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Voorzaaien kan in perspotjes, maar direct zaaien geniet voorkeur wegens penwortel",
-            "en": "Indoor start possible in plugs, but direct sowing is preferred due to taproot"
+            "en": "Indoor start possible in plugs, but direct sowing is preferred due to taproot",
+            "de": "Vorziehen in Multitopfplatten ist möglich, wegen der Pfahlwurzel aber besser direkt säen",
+            "fr": "Semis en intérieur possible en mottes, mais mieux vaut semer en place à cause de la racine pivotante",
+            "sv": "Kan förkultiveras i pluggbrätten, men direktsådd är att föredra på grund av pålroten",
+            "pt": "É possível semear em interior em alvéolos, mas é preferível semear diretamente por causa da raiz aprumada"
           }
         }
       ],
@@ -1047,7 +1362,11 @@
       "slug": "chili",
       "names": {
         "nl": "Spaanse peper",
-        "en": "Chilli"
+        "en": "Chilli",
+        "de": "Chili",
+        "fr": "Piment",
+        "sv": "Chili",
+        "pt": "Malagueta"
       },
       "category": "fruit-veg",
       "frost_tender": true,
@@ -1056,6 +1375,7 @@
       "spacing_cm": 40,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": 36,
       "methods": [
         {
           "type": "sow_indoor",
@@ -1065,7 +1385,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -1076,7 +1400,11 @@
           "min_soil_c": 14,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -1103,7 +1431,11 @@
       "slug": "chives",
       "names": {
         "nl": "Bieslook",
-        "en": "Chives"
+        "en": "Chives",
+        "de": "Schnittlauch",
+        "fr": "Ciboulette",
+        "sv": "Gräslök",
+        "pt": "Cebolinho"
       },
       "category": "allium",
       "frost_tender": false,
@@ -1112,6 +1444,7 @@
       "spacing_cm": 15,
       "vak_per_m2": 9,
       "sun": "partial",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -1121,7 +1454,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -1132,7 +1469,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -1158,7 +1499,11 @@
       "slug": "coriander",
       "names": {
         "nl": "Koriander",
-        "en": "Coriander"
+        "en": "Coriander",
+        "de": "Koriander",
+        "fr": "Coriandre",
+        "sv": "Koriander",
+        "pt": "Coentros"
       },
       "category": "herb",
       "frost_tender": false,
@@ -1167,6 +1512,7 @@
       "spacing_cm": 10,
       "vak_per_m2": 9,
       "sun": "partial",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_direct",
@@ -1176,7 +1522,27 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -8,
+          "end_weeks": -6,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -1194,7 +1560,9 @@
       "image": "coriander.jpg",
       "sources": [
         "Florum kruiden-zaaikalender",
-        "moestuintijd"
+        "moestuintijd",
+        "Autumn timing: Harvest to Table, fall cilantro (https://harvesttotable.com/how-to-grow-fall-cilantro-planting-through-harvest/)",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)"
       ],
       "verified": true
     },
@@ -1202,7 +1570,11 @@
       "slug": "courgette",
       "names": {
         "nl": "Courgette",
-        "en": "Courgette"
+        "en": "Courgette",
+        "de": "Zucchini",
+        "fr": "Courgette",
+        "sv": "Zucchini",
+        "pt": "Courgette"
       },
       "category": "fruit-veg",
       "frost_tender": true,
@@ -1211,6 +1583,7 @@
       "spacing_cm": 90,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 35,
       "methods": [
         {
           "type": "sow_indoor",
@@ -1220,7 +1593,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -1231,7 +1608,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -1264,7 +1645,11 @@
       "slug": "cucumber",
       "names": {
         "nl": "Komkommer",
-        "en": "Cucumber"
+        "en": "Cucumber",
+        "de": "Salatgurke",
+        "fr": "Concombre",
+        "sv": "Gurka",
+        "pt": "Pepino"
       },
       "category": "fruit-veg",
       "frost_tender": true,
@@ -1273,6 +1658,7 @@
       "spacing_cm": 45,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 35,
       "methods": [
         {
           "type": "sow_indoor",
@@ -1282,7 +1668,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -1293,7 +1683,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -1325,7 +1719,11 @@
       "slug": "dill",
       "names": {
         "nl": "Dille",
-        "en": "Dill"
+        "en": "Dill",
+        "de": "Dill",
+        "fr": "Aneth",
+        "sv": "Dill",
+        "pt": "Endro"
       },
       "category": "herb",
       "frost_tender": false,
@@ -1334,6 +1732,7 @@
       "spacing_cm": 15,
       "vak_per_m2": 9,
       "sun": "full",
+      "max_c": 27,
       "methods": [
         {
           "type": "sow_direct",
@@ -1343,7 +1742,11 @@
           "min_soil_c": 10,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         }
       ],
@@ -1369,7 +1772,11 @@
       "slug": "edamame",
       "names": {
         "nl": "Edamame (sojaboon)",
-        "en": "Edamame"
+        "en": "Edamame",
+        "de": "Edamame (Sojabohne)",
+        "fr": "Edamame (soja)",
+        "sv": "Edamame (sojaböna)",
+        "pt": "Edamame (soja)"
       },
       "category": "legume",
       "frost_tender": true,
@@ -1378,6 +1785,7 @@
       "spacing_cm": 15,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": 35,
       "methods": [
         {
           "type": "sow_indoor",
@@ -1387,7 +1795,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Voorzaaien binnenshuis bij ca. 20 °C, ongeveer 2 tot 3 weken voor IJsheiligen.",
-            "en": "Sow indoors at around 20 °C, approximately 2 to 3 weeks before the last frost date."
+            "en": "Sow indoors at around 20 °C, approximately 2 to 3 weeks before the last frost date.",
+            "de": "Bei etwa 20 °C vorziehen, rund 2 bis 3 Wochen vor dem letzten Frost.",
+            "fr": "Semer en intérieur vers 20 °C, environ 2 à 3 semaines avant les dernières gelées.",
+            "sv": "Förkultivera vid cirka 20 °C, ungefär 2 till 3 veckor före sista frosten.",
+            "pt": "Semear em interior a cerca de 20 °C, umas 2 a 3 semanas antes da última geada."
           }
         },
         {
@@ -1398,7 +1810,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Uitplanten na IJsheiligen zodra de zaailingen 8-10 cm zijn en het weer zacht is.",
-            "en": "Transplant outdoors after IJsheiligen once seedlings are 8-10 cm tall and weather is mild."
+            "en": "Transplant outdoors after IJsheiligen once seedlings are 8-10 cm tall and weather is mild.",
+            "de": "Nach den Eisheiligen auspflanzen, sobald die Jungpflanzen 8–10 cm groß sind und das Wetter mild ist.",
+            "fr": "Repiquer après les saints de glace, quand les plants mesurent 8–10 cm et que le temps est doux.",
+            "sv": "Plantera ut efter sista frosten, när plantorna är 8–10 cm höga och vädret är milt.",
+            "pt": "Transplantar depois das últimas geadas, quando as plântulas tiverem 8–10 cm e o tempo estiver ameno."
           }
         },
         {
@@ -1409,7 +1825,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Direct buiten zaaien na IJsheiligen zodra de grond minimaal 12-15 °C is.",
-            "en": "Direct sow outdoors after IJsheiligen once the soil temperature is at least 12-15 °C."
+            "en": "Direct sow outdoors after IJsheiligen once the soil temperature is at least 12-15 °C.",
+            "de": "Nach den Eisheiligen direkt ins Freie säen, sobald der Boden mindestens 12–15 °C warm ist.",
+            "fr": "Semer en pleine terre après les saints de glace, quand le sol atteint au moins 12–15 °C.",
+            "sv": "Så direkt på friland efter sista frosten, när jorden håller minst 12–15 °C.",
+            "pt": "Semear diretamente ao ar livre depois das últimas geadas, quando o solo estiver a pelo menos 12–15 °C."
           }
         }
       ],
@@ -1448,7 +1868,11 @@
       "slug": "endive",
       "names": {
         "nl": "Andijvie",
-        "en": "Endive"
+        "en": "Endive",
+        "de": "Endivie",
+        "fr": "Chicorée scarole",
+        "sv": "Endiv",
+        "pt": "Escarola"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -1457,6 +1881,7 @@
       "spacing_cm": 30,
       "vak_per_m2": 4,
       "sun": "partial",
+      "max_c": 28,
       "methods": [
         {
           "type": "sow_indoor",
@@ -1466,7 +1891,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -1477,7 +1906,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         },
         {
@@ -1488,7 +1921,11 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         }
       ],
@@ -1514,7 +1951,11 @@
       "slug": "fennel",
       "names": {
         "nl": "Venkel",
-        "en": "Florence fennel"
+        "en": "Florence fennel",
+        "de": "Knollenfenchel",
+        "fr": "Fenouil bulbeux",
+        "sv": "Fänkål",
+        "pt": "Funcho"
       },
       "category": "herb",
       "frost_tender": false,
@@ -1523,6 +1964,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 4,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_direct",
@@ -1532,7 +1974,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         }
       ],
@@ -1559,7 +2005,11 @@
       "slug": "fig-in-pot",
       "names": {
         "nl": "Vijg in pot",
-        "en": "Fig in a pot"
+        "en": "Fig in a pot",
+        "de": "Feige im Topf",
+        "fr": "Figuier en pot",
+        "sv": "Fikon i kruka",
+        "pt": "Figueira em vaso"
       },
       "category": "fruit",
       "frost_tender": true,
@@ -1568,6 +2018,7 @@
       "spacing_cm": 100,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "plant",
@@ -1577,7 +2028,11 @@
           "min_soil_c": 7,
           "note": {
             "nl": "Planten of oppotten in het vroege voorjaar tijdens de rustperiode voordat de plant uitloopt.",
-            "en": "Plant or pot up in early spring during dormancy before new growth starts."
+            "en": "Plant or pot up in early spring during dormancy before new growth starts.",
+            "de": "Im zeitigen Frühjahr während der Ruhezeit pflanzen oder umtopfen, bevor der Neuaustrieb beginnt.",
+            "fr": "Planter ou rempoter au début du printemps, pendant le repos végétatif, avant la reprise.",
+            "sv": "Plantera i kruka eller plantera om tidigt på våren, medan den är i vila, innan den nya tillväxten börjar.",
+            "pt": "Plantar ou envasar no início da primavera, durante o repouso vegetativo, antes do novo crescimento."
           }
         }
       ],
@@ -1617,7 +2072,11 @@
       "slug": "french-bean",
       "names": {
         "nl": "Stamslaboon",
-        "en": "French bean"
+        "en": "French bean",
+        "de": "Buschbohne",
+        "fr": "Haricot nain",
+        "sv": "Buskböna",
+        "pt": "Feijão anão"
       },
       "category": "legume",
       "frost_tender": true,
@@ -1626,6 +2085,7 @@
       "spacing_cm": 10,
       "vak_per_m2": 9,
       "sun": "full",
+      "max_c": 35,
       "methods": [
         {
           "type": "sow_direct",
@@ -1635,7 +2095,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         }
       ],
@@ -1661,7 +2125,11 @@
       "slug": "garden-cress",
       "names": {
         "nl": "Tuinkers",
-        "en": "Garden cress"
+        "en": "Garden cress",
+        "de": "Gartenkresse",
+        "fr": "Cresson alénois",
+        "sv": "Kryddkrasse",
+        "pt": "Mastruço"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -1670,6 +2138,7 @@
       "spacing_cm": 10,
       "vak_per_m2": null,
       "sun": "partial",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_direct",
@@ -1679,7 +2148,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Direct buiten zaaien in het vroege voorjaar; verdraagt lichte vorst en kiemt al vanaf 5 °C.",
-            "en": "Direct sow outdoors in early spring; tolerates light frost and germinates from 5 °C."
+            "en": "Direct sow outdoors in early spring; tolerates light frost and germinates from 5 °C.",
+            "de": "Im zeitigen Frühjahr direkt ins Freie säen; verträgt leichten Frost und keimt ab 5 °C.",
+            "fr": "Semer en pleine terre au début du printemps ; supporte les gelées légères et germe dès 5 °C.",
+            "sv": "Så direkt på friland tidigt på våren; tål lätt frost och gror från 5 °C.",
+            "pt": "Semear diretamente ao ar livre no início da primavera; tolera geadas ligeiras e germina a partir dos 5 °C."
           }
         },
         {
@@ -1690,7 +2163,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Najaarsteelt van eind augustus tot begin oktober vóór de zware nachtvorsten.",
-            "en": "Autumn sowing from late August to early October before hard frosts."
+            "en": "Autumn sowing from late August to early October before hard frosts.",
+            "de": "Im Herbst von Ende August bis Anfang Oktober säen, vor den starken Frösten.",
+            "fr": "Semer en automne, de fin août à début octobre, avant les fortes gelées.",
+            "sv": "Så på hösten från slutet av augusti till början av oktober, innan den hårda frosten kommer.",
+            "pt": "Semear no outono, do fim de agosto ao início de outubro, antes das geadas fortes."
           }
         },
         {
@@ -1701,7 +2178,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnenshuis op de vensterbank het hele jaar door te zaaien als kiemgroente.",
-            "en": "Can be sown indoors on the windowsill year-round as microgreens."
+            "en": "Can be sown indoors on the windowsill year-round as microgreens.",
+            "de": "Lässt sich das ganze Jahr drinnen auf der Fensterbank als Microgreens säen.",
+            "fr": "Se sème toute l'année en intérieur, sur le rebord de fenêtre, en micro-pousses.",
+            "sv": "Kan sås inomhus på fönsterbrädan året runt som microgreens.",
+            "pt": "Pode semear-se em interior, no parapeito da janela, todo o ano, como microverdes."
           }
         }
       ],
@@ -1743,7 +2224,11 @@
       "slug": "garlic",
       "names": {
         "nl": "Knoflook",
-        "en": "Garlic"
+        "en": "Garlic",
+        "de": "Knoblauch",
+        "fr": "Ail",
+        "sv": "Vitlök",
+        "pt": "Alho"
       },
       "category": "allium",
       "frost_tender": false,
@@ -1752,6 +2237,7 @@
       "spacing_cm": 15,
       "vak_per_m2": 9,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "plant",
@@ -1761,7 +2247,11 @@
           "min_soil_c": 3,
           "note": {
             "nl": "Poten/planten in de aangegeven periode.",
-            "en": "Plant in the window shown."
+            "en": "Plant in the window shown.",
+            "de": "Im angezeigten Zeitraum pflanzen.",
+            "fr": "Planter pendant la période indiquée.",
+            "sv": "Plantera under den period som visas.",
+            "pt": "Plantar no período indicado."
           }
         }
       ],
@@ -1789,7 +2279,11 @@
       "slug": "gherkin",
       "names": {
         "nl": "Augurk",
-        "en": "Gherkin"
+        "en": "Gherkin",
+        "de": "Einlegegurke",
+        "fr": "Cornichon",
+        "sv": "Inläggningsgurka",
+        "pt": "Pepino de conserva"
       },
       "category": "fruit-veg",
       "frost_tender": true,
@@ -1798,6 +2292,7 @@
       "spacing_cm": 40,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 35,
       "methods": [
         {
           "type": "sow_indoor",
@@ -1807,7 +2302,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -1818,7 +2317,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -1850,7 +2353,11 @@
       "slug": "gooseberry-in-pot",
       "names": {
         "nl": "Kruisbes in pot",
-        "en": "Gooseberry in a pot"
+        "en": "Gooseberry in a pot",
+        "de": "Stachelbeere im Topf",
+        "fr": "Groseillier à maquereau en pot",
+        "sv": "Krusbär i kruka",
+        "pt": "Groselheira-espinhosa em vaso"
       },
       "category": "fruit",
       "frost_tender": false,
@@ -1859,6 +2366,7 @@
       "spacing_cm": 100,
       "vak_per_m2": null,
       "sun": "partial",
+      "max_c": null,
       "methods": [
         {
           "type": "plant",
@@ -1868,7 +2376,11 @@
           "min_soil_c": 0,
           "note": {
             "nl": "Plant struiken met kale wortel of uit pot tijdens de rustperiode (november tot maart) in vorstvrije grond.",
-            "en": "Plant bare-root or potted shrubs during the dormant period (November to March) when the soil is unfrozen."
+            "en": "Plant bare-root or potted shrubs during the dormant period (November to March) when the soil is unfrozen.",
+            "de": "Wurzelnackte oder getopfte Sträucher in der Ruhezeit (November bis März) pflanzen, wenn der Boden frostfrei ist.",
+            "fr": "Planter les arbustes en racines nues ou en pot pendant le repos végétatif (de novembre à mars), hors période de gel.",
+            "sv": "Plantera barrotade eller krukodlade buskar under vilotiden (november till mars) när marken är tjälfri.",
+            "pt": "Plantar arbustos de raiz nua ou em vaso durante o repouso vegetativo (de novembro a março), com o solo sem gelo."
           }
         }
       ],
@@ -1905,7 +2417,11 @@
       "slug": "kale",
       "names": {
         "nl": "Boerenkool",
-        "en": "Kale"
+        "en": "Kale",
+        "de": "Grünkohl",
+        "fr": "Chou kale",
+        "sv": "Grönkål",
+        "pt": "Couve frisada"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -1914,6 +2430,7 @@
       "spacing_cm": 45,
       "vak_per_m2": 1,
       "sun": "partial",
+      "max_c": 29,
       "methods": [
         {
           "type": "sow_indoor",
@@ -1923,7 +2440,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -1934,7 +2455,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         },
         {
@@ -1945,7 +2470,27 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
+          }
+        },
+        {
+          "type": "transplant",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -12,
+          "end_weeks": -10,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Uitplanten voor een oogst in het koele seizoen.",
+            "en": "Plant out for a cool-season harvest.",
+            "de": "Auspflanzen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Repiquer pour une récolte en saison fraîche.",
+            "sv": "Plantera ut för en skörd under den svala säsongen.",
+            "pt": "Transplantar para uma colheita na estação fresca."
           }
         }
       ],
@@ -1963,7 +2508,9 @@
       "image": "kale.jpg",
       "sources": [
         "Allezadenkopen zaaikalender",
-        "Gardeners World NL jaarkalender"
+        "Gardeners World NL jaarkalender",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)",
+        "Autumn timing: Tenth Acre Farm, guide to fall planting (https://tenthacrefarm.com/guide-to-fall-planting)"
       ],
       "verified": true
     },
@@ -1971,7 +2518,11 @@
       "slug": "kohlrabi",
       "names": {
         "nl": "Koolrabi",
-        "en": "Kohlrabi"
+        "en": "Kohlrabi",
+        "de": "Kohlrabi",
+        "fr": "Chou-rave",
+        "sv": "Kålrabbi",
+        "pt": "Couve-rábano"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -1980,6 +2531,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 4,
       "sun": "full",
+      "max_c": 27,
       "methods": [
         {
           "type": "sow_indoor",
@@ -1989,7 +2541,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -2000,7 +2556,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         },
         {
@@ -2011,7 +2571,11 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         }
       ],
@@ -2037,7 +2601,11 @@
       "slug": "komatsuna",
       "names": {
         "nl": "Komatsuna",
-        "en": "Komatsuna"
+        "en": "Komatsuna",
+        "de": "Komatsuna",
+        "fr": "Komatsuna",
+        "sv": "Komatsuna",
+        "pt": "Komatsuna"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -2046,6 +2614,7 @@
       "spacing_cm": 20,
       "vak_per_m2": 4,
       "sun": "shade-tolerant",
+      "max_c": 27,
       "methods": [
         {
           "type": "sow_indoor",
@@ -2055,7 +2624,11 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Zaai voor in een koele, lichte ruimte vanaf 6-8 weken voor de vorst.",
-            "en": "Sow indoors in a cool, bright space 6-8 weeks before the last frost."
+            "en": "Sow indoors in a cool, bright space 6-8 weeks before the last frost.",
+            "de": "6–8 Wochen vor dem letzten Frost kühl und hell vorziehen.",
+            "fr": "Semer en intérieur, au frais et à la lumière, 6–8 semaines avant les dernières gelées.",
+            "sv": "Förkultivera svalt och ljust 6–8 veckor före sista frosten.",
+            "pt": "Semear em interior, num local fresco e luminoso, 6–8 semanas antes da última geada."
           }
         },
         {
@@ -2066,7 +2639,11 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Plant afgeharde zaailingen buiten uit vanaf 2-4 weken voor de laatste vorst.",
-            "en": "Transplant hardened-off seedlings outdoors 2-4 weeks before the last frost."
+            "en": "Transplant hardened-off seedlings outdoors 2-4 weeks before the last frost.",
+            "de": "Abgehärtete Jungpflanzen 2–4 Wochen vor dem letzten Frost auspflanzen.",
+            "fr": "Repiquer les plants acclimatés 2–4 semaines avant les dernières gelées.",
+            "sv": "Plantera ut avhärdade plantor 2–4 veckor före sista frosten.",
+            "pt": "Transplantar as plântulas aclimatadas 2–4 semanas antes da última geada."
           }
         },
         {
@@ -2077,7 +2654,11 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Zaai direct buiten vanaf 4 weken voor de vorst tot in de late zomer.",
-            "en": "Sow directly outdoors from 4 weeks before frost until late summer."
+            "en": "Sow directly outdoors from 4 weeks before frost until late summer.",
+            "de": "Ab 4 Wochen vor dem letzten Frost bis zum Spätsommer direkt ins Freie säen.",
+            "fr": "Semer en pleine terre de 4 semaines avant les dernières gelées jusqu'à la fin de l'été.",
+            "sv": "Så direkt på friland från 4 veckor före sista frosten till sensommaren.",
+            "pt": "Semear diretamente ao ar livre desde 4 semanas antes da última geada até ao fim do verão."
           }
         }
       ],
@@ -2119,7 +2700,11 @@
       "slug": "lambs-lettuce",
       "names": {
         "nl": "Veldsla",
-        "en": "Lamb's lettuce"
+        "en": "Lamb's lettuce",
+        "de": "Feldsalat",
+        "fr": "Mâche",
+        "sv": "Fältsallat",
+        "pt": "Canónigos"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -2128,6 +2713,7 @@
       "spacing_cm": 10,
       "vak_per_m2": 16,
       "sun": "partial",
+      "max_c": 24,
       "methods": [
         {
           "type": "sow_direct",
@@ -2137,7 +2723,11 @@
           "min_soil_c": 3,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         }
       ],
@@ -2163,7 +2753,11 @@
       "slug": "lavender",
       "names": {
         "nl": "Lavendel (eetbaar)",
-        "en": "Lavender (culinary)"
+        "en": "Lavender (culinary)",
+        "de": "Echter Lavendel",
+        "fr": "Lavande vraie",
+        "sv": "Lavendel",
+        "pt": "Alfazema"
       },
       "category": "herb",
       "frost_tender": false,
@@ -2172,6 +2766,7 @@
       "spacing_cm": 30,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -2181,7 +2776,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Binnenshuis voorzaaien van februari tot april bij minimaal 15-18 °C.",
-            "en": "Sow indoors from February to April at a minimum of 15-18 °C."
+            "en": "Sow indoors from February to April at a minimum of 15-18 °C.",
+            "de": "Von Februar bis April bei mindestens 15–18 °C vorziehen.",
+            "fr": "Semer en intérieur de février à avril, à 15–18 °C minimum.",
+            "sv": "Förkultivera från februari till april vid minst 15–18 °C.",
+            "pt": "Semear em interior de fevereiro a abril, a pelo menos 15–18 °C."
           }
         },
         {
@@ -2192,7 +2791,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Afgeharde zaailingen na IJsheiligen (half mei) uitplanten in de volle grond.",
-            "en": "Plant out hardened-off seedlings after mid-May (IJsheiligen) into open ground."
+            "en": "Plant out hardened-off seedlings after mid-May (IJsheiligen) into open ground.",
+            "de": "Abgehärtete Jungpflanzen nach Mitte Mai (Eisheilige) ins Freiland auspflanzen.",
+            "fr": "Repiquer les plants acclimatés en pleine terre après la mi-mai (saints de glace).",
+            "sv": "Plantera ut avhärdade plantor på friland efter sista frosten.",
+            "pt": "Transplantar as plântulas aclimatadas para o solo depois de meados de maio, passadas as últimas geadas."
           }
         },
         {
@@ -2203,7 +2806,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Buiten ter plaatse zaaien vanaf half mei wanneer de bodem voldoende is opgewarmd.",
-            "en": "Sow directly outdoors from mid-May once the soil has sufficiently warmed."
+            "en": "Sow directly outdoors from mid-May once the soil has sufficiently warmed.",
+            "de": "Ab Mitte Mai direkt ins Freie säen, sobald der Boden warm genug ist.",
+            "fr": "Semer en pleine terre dès la mi-mai, quand le sol s'est assez réchauffé.",
+            "sv": "Så direkt på friland från mitten av maj, när jorden är tillräckligt varm.",
+            "pt": "Semear diretamente ao ar livre a partir de meados de maio, quando o solo tiver aquecido o suficiente."
           }
         }
       ],
@@ -2250,7 +2857,11 @@
       "slug": "leek",
       "names": {
         "nl": "Prei",
-        "en": "Leek"
+        "en": "Leek",
+        "de": "Lauch",
+        "fr": "Poireau",
+        "sv": "Purjolök",
+        "pt": "Alho-francês"
       },
       "category": "allium",
       "frost_tender": false,
@@ -2259,6 +2870,7 @@
       "spacing_cm": 15,
       "vak_per_m2": 9,
       "sun": "full",
+      "max_c": 30,
       "methods": [
         {
           "type": "sow_indoor",
@@ -2268,7 +2880,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -2279,7 +2895,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -2305,7 +2925,11 @@
       "slug": "lemon-balm",
       "names": {
         "nl": "Citroenmelisse",
-        "en": "Lemon balm"
+        "en": "Lemon balm",
+        "de": "Zitronenmelisse",
+        "fr": "Mélisse",
+        "sv": "Citronmeliss",
+        "pt": "Erva-cidreira"
       },
       "category": "herb",
       "frost_tender": false,
@@ -2314,6 +2938,7 @@
       "spacing_cm": 30,
       "vak_per_m2": 1,
       "sun": "shade-tolerant",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -2323,7 +2948,11 @@
           "min_soil_c": 13,
           "note": {
             "nl": "Binnen voorzaaien in maart of april op een lichte, warme plek.",
-            "en": "Sow indoors in March or April in a bright, warm location."
+            "en": "Sow indoors in March or April in a bright, warm location.",
+            "de": "Im März oder April hell und warm vorziehen.",
+            "fr": "Semer en intérieur en mars ou en avril, au chaud et à la lumière.",
+            "sv": "Förkultivera ljust och varmt i mars eller april.",
+            "pt": "Semear em interior em março ou abril, num local quente e luminoso."
           }
         },
         {
@@ -2334,7 +2963,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Uitplanten na IJsheiligen wanneer de zaailingen zijn afgehard.",
-            "en": "Plant out after the last spring frosts once seedlings are hardened off."
+            "en": "Plant out after the last spring frosts once seedlings are hardened off.",
+            "de": "Nach den letzten Frühjahrsfrösten auspflanzen, sobald die Jungpflanzen abgehärtet sind.",
+            "fr": "Repiquer après les dernières gelées de printemps, une fois les plants acclimatés.",
+            "sv": "Plantera ut efter vårens sista frostnätter, när plantorna är avhärdade.",
+            "pt": "Transplantar depois das últimas geadas da primavera, quando as plântulas estiverem aclimatadas."
           }
         },
         {
@@ -2345,7 +2978,11 @@
           "min_soil_c": 13,
           "note": {
             "nl": "Buiten ter plekke zaaien vanaf het voorjaar; kiemt optimaal na IJsheiligen.",
-            "en": "Sow directly outdoors from spring; best germination occurs after mid-May."
+            "en": "Sow directly outdoors from spring; best germination occurs after mid-May.",
+            "de": "Ab Frühjahr direkt ins Freie säen; die Keimung gelingt am besten nach Mitte Mai.",
+            "fr": "Semer en pleine terre dès le printemps ; la germination est meilleure après la mi-mai.",
+            "sv": "Så direkt på friland från våren; fröna gror bäst efter mitten av maj.",
+            "pt": "Semear diretamente ao ar livre a partir da primavera; germina melhor depois de meados de maio."
           }
         }
       ],
@@ -2393,7 +3030,11 @@
       "slug": "lemon-verbena",
       "names": {
         "nl": "Citroenverbena",
-        "en": "Lemon verbena"
+        "en": "Lemon verbena",
+        "de": "Zitronenverbene",
+        "fr": "Verveine citronnelle",
+        "sv": "Citronverbena",
+        "pt": "Lúcia-lima"
       },
       "category": "herb",
       "frost_tender": true,
@@ -2402,6 +3043,7 @@
       "spacing_cm": 35,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "plant",
@@ -2411,7 +3053,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Plant of verplaats kuipplanten na IJsheiligen naar buiten in warme grond.",
-            "en": "Plant or move container shrubs outside after mid-May frosts into warm soil."
+            "en": "Plant or move container shrubs outside after mid-May frosts into warm soil.",
+            "de": "Kübelsträucher nach den Frösten Mitte Mai in warmen Boden pflanzen oder nach draußen stellen.",
+            "fr": "Planter les arbustes en bac dans un sol réchauffé, ou les sortir, après les gelées de la mi-mai.",
+            "sv": "Plantera ut krukbuskarna i varm jord, eller ställ ut dem, när frostnätterna är över.",
+            "pt": "Plantar em solo já quente, ou levar para fora os arbustos em vaso, depois das últimas geadas de meados de maio."
           }
         }
       ],
@@ -2449,7 +3095,11 @@
       "slug": "lemongrass",
       "names": {
         "nl": "Citroengras",
-        "en": "Lemongrass"
+        "en": "Lemongrass",
+        "de": "Zitronengras",
+        "fr": "Citronnelle",
+        "sv": "Citrongräs",
+        "pt": "Erva-príncipe"
       },
       "category": "herb",
       "frost_tender": true,
@@ -2458,6 +3108,7 @@
       "spacing_cm": 30,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -2467,7 +3118,11 @@
           "min_soil_c": 20,
           "note": {
             "nl": "Binnenshuis voorzaaien op een warme, lichte plek bij minimaal 20 °C.",
-            "en": "Sow indoors in a warm, bright spot at minimum 20 °C."
+            "en": "Sow indoors in a warm, bright spot at minimum 20 °C.",
+            "de": "Warm und hell bei mindestens 20 °C vorziehen.",
+            "fr": "Semer en intérieur, au chaud et à la lumière, à 20 °C minimum.",
+            "sv": "Förkultivera varmt och ljust vid minst 20 °C.",
+            "pt": "Semear em interior, num local quente e luminoso, a 20 °C no mínimo."
           }
         },
         {
@@ -2478,7 +3133,11 @@
           "min_soil_c": 20,
           "note": {
             "nl": "Uitplanten na IJsheiligen wanneer alle vorstgevaar geweken is.",
-            "en": "Plant out after the Ice Saints once all risk of frost has passed."
+            "en": "Plant out after the Ice Saints once all risk of frost has passed.",
+            "de": "Nach den Eisheiligen auspflanzen, wenn keine Frostgefahr mehr besteht.",
+            "fr": "Repiquer après les saints de glace, quand tout risque de gel est écarté.",
+            "sv": "Plantera ut när all risk för frost är över.",
+            "pt": "Transplantar depois das últimas geadas, quando já não houver qualquer risco de geada."
           }
         },
         {
@@ -2489,7 +3148,11 @@
           "min_soil_c": 20,
           "note": {
             "nl": "Buiten zaaien vanaf eind mei als de grond goed is opgewarmd.",
-            "en": "Sow directly outdoors from late May once the soil has warmed up."
+            "en": "Sow directly outdoors from late May once the soil has warmed up.",
+            "de": "Ab Ende Mai direkt ins Freie säen, sobald der Boden warm ist.",
+            "fr": "Semer en pleine terre dès la fin mai, quand le sol s'est réchauffé.",
+            "sv": "Så direkt på friland från slutet av maj, när jorden har blivit varm.",
+            "pt": "Semear diretamente ao ar livre a partir do fim de maio, quando o solo tiver aquecido."
           }
         }
       ],
@@ -2523,7 +3186,11 @@
       "slug": "lettuce",
       "names": {
         "nl": "Sla",
-        "en": "Lettuce"
+        "en": "Lettuce",
+        "de": "Kopfsalat",
+        "fr": "Laitue",
+        "sv": "Sallat",
+        "pt": "Alface"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -2532,6 +3199,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 4,
       "sun": "partial",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_indoor",
@@ -2541,7 +3209,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -2552,7 +3224,27 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -8,
+          "end_weeks": -6,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -2570,7 +3262,9 @@
       "image": "lettuce.jpg",
       "sources": [
         "Tuinadvies.nl moestuinklussen",
-        "Gardeners World NL jaarkalender"
+        "Gardeners World NL jaarkalender",
+        "Autumn timing: Grow a Good Life, fall vegetable garden (https://growagoodlife.com/fall-vegetable-garden/)",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)"
       ],
       "verified": true
     },
@@ -2578,7 +3272,11 @@
       "slug": "lovage",
       "names": {
         "nl": "Lavas (maggiplant)",
-        "en": "Lovage"
+        "en": "Lovage",
+        "de": "Liebstöckel",
+        "fr": "Livèche",
+        "sv": "Libbsticka",
+        "pt": "Levístico"
       },
       "category": "herb",
       "frost_tender": false,
@@ -2587,6 +3285,7 @@
       "spacing_cm": 50,
       "vak_per_m2": 1,
       "sun": "shade-tolerant",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -2596,7 +3295,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Binnenshuis voorzaaien in maart of april, ongeveer 6 tot 8 weken voor IJsheiligen.",
-            "en": "Sow indoors in March or April, about 6 to 8 weeks before Ice Saints."
+            "en": "Sow indoors in March or April, about 6 to 8 weeks before Ice Saints.",
+            "de": "Im März oder April vorziehen, etwa 6 bis 8 Wochen vor den Eisheiligen.",
+            "fr": "Semer en intérieur en mars ou en avril, environ 6 à 8 semaines avant les saints de glace.",
+            "sv": "Förkultivera i mars eller april, ungefär 6 till 8 veckor före sista frosten.",
+            "pt": "Semear em interior em março ou abril, umas 6 a 8 semanas antes das últimas geadas."
           }
         },
         {
@@ -2607,7 +3310,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Ter plekke zaaien vanaf half april tot juni/juli zodra de bodem opwarmt.",
-            "en": "Direct sow outdoors from mid-April through June/July once the soil warms."
+            "en": "Direct sow outdoors from mid-April through June/July once the soil warms.",
+            "de": "Ab Mitte April bis Juni/Juli direkt ins Freie säen, sobald der Boden warm ist.",
+            "fr": "Semer en pleine terre de la mi-avril à juin/juillet, dès que le sol se réchauffe.",
+            "sv": "Så direkt på friland från mitten av april till juni/juli, när jorden har blivit varm.",
+            "pt": "Semear diretamente ao ar livre de meados de abril a junho/julho, assim que o solo aquecer."
           }
         },
         {
@@ -2618,7 +3325,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Uitplanten rond of direct na IJsheiligen (half mei) tot juni.",
-            "en": "Transplant outdoors around or directly after Ice Saints (mid-May) through June."
+            "en": "Transplant outdoors around or directly after Ice Saints (mid-May) through June.",
+            "de": "Um die oder direkt nach den Eisheiligen (Mitte Mai) bis Juni auspflanzen.",
+            "fr": "Repiquer autour des saints de glace (mi-mai) ou juste après, jusqu'en juin.",
+            "sv": "Plantera ut kring eller strax efter sista frosten och fram till juni.",
+            "pt": "Transplantar a partir de meados de maio, logo depois das últimas geadas, até junho."
           }
         }
       ],
@@ -2667,7 +3378,11 @@
       "slug": "mangetout",
       "names": {
         "nl": "Peul",
-        "en": "Mangetout"
+        "en": "Mangetout",
+        "de": "Zuckererbse",
+        "fr": "Pois mangetout",
+        "sv": "Sockerärt",
+        "pt": "Ervilha-torta"
       },
       "category": "legume",
       "frost_tender": false,
@@ -2676,6 +3391,7 @@
       "spacing_cm": 8,
       "vak_per_m2": 8,
       "sun": "full",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_direct",
@@ -2685,7 +3401,27 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -12,
+          "end_weeks": -11,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -2703,7 +3439,9 @@
       "image": "mangetout.jpg",
       "sources": [
         "Stadstuinieren",
-        "Tuinadvies.nl bonen"
+        "Tuinadvies.nl bonen",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)",
+        "Autumn timing: Tenth Acre Farm, guide to fall planting (https://tenthacrefarm.com/guide-to-fall-planting)"
       ],
       "verified": true
     },
@@ -2711,7 +3449,11 @@
       "slug": "marjoram",
       "names": {
         "nl": "Marjolein",
-        "en": "Marjoram"
+        "en": "Marjoram",
+        "de": "Majoran",
+        "fr": "Marjolaine",
+        "sv": "Mejram",
+        "pt": "Manjerona"
       },
       "category": "herb",
       "frost_tender": true,
@@ -2720,6 +3462,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -2729,7 +3472,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Binnen voorzaaien op een lichte plek; zaden nauwelijks bedekken omdat het lichtkiemers zijn.",
-            "en": "Sow indoors in a bright spot; barely cover seeds as they require light to germinate."
+            "en": "Sow indoors in a bright spot; barely cover seeds as they require light to germinate.",
+            "de": "Hell vorziehen; Samen kaum bedecken, sie sind Lichtkeimer.",
+            "fr": "Semer en intérieur à la lumière ; couvrir à peine les graines, elles ont besoin de lumière pour germer.",
+            "sv": "Förkultivera ljust; täck knappt fröna, de behöver ljus för att gro.",
+            "pt": "Semear em interior num local luminoso; cobrir muito ligeiramente as sementes, pois precisam de luz para germinar."
           }
         },
         {
@@ -2740,7 +3487,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Afharden en buiten uitplanten na IJsheiligen zodra de kans op nachtvorst is geweken.",
-            "en": "Harden off and plant outdoors after the last frost once danger of freezing nights has passed."
+            "en": "Harden off and plant outdoors after the last frost once danger of freezing nights has passed.",
+            "de": "Abhärten und nach dem letzten Frost auspflanzen, wenn keine Frostnächte mehr drohen.",
+            "fr": "Acclimater, puis repiquer après les dernières gelées, quand les nuits ne risquent plus de geler.",
+            "sv": "Härda av och plantera ut efter sista frosten, när risken för frostnätter är över.",
+            "pt": "Aclimatar e transplantar depois da última geada, quando já não houver risco de noites geladas."
           }
         },
         {
@@ -2751,7 +3502,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Buiten zaaien in opgewarmde grond; zaden heel oppervlakkig aandrukken.",
-            "en": "Sow directly outdoors in warm soil; press seeds lightly into the surface."
+            "en": "Sow directly outdoors in warm soil; press seeds lightly into the surface.",
+            "de": "Direkt ins Freie in warmen Boden säen; Samen nur leicht andrücken.",
+            "fr": "Semer en pleine terre dans un sol réchauffé ; appuyer légèrement les graines en surface.",
+            "sv": "Så direkt på friland i varm jord; tryck bara lätt ner fröna i ytan.",
+            "pt": "Semear diretamente ao ar livre em solo quente; pressionar ligeiramente as sementes à superfície."
           }
         }
       ],
@@ -2792,7 +3547,11 @@
       "slug": "melon",
       "names": {
         "nl": "Meloen",
-        "en": "Melon"
+        "en": "Melon",
+        "de": "Melone",
+        "fr": "Melon",
+        "sv": "Melon",
+        "pt": "Melão"
       },
       "category": "fruit-veg",
       "frost_tender": true,
@@ -2801,6 +3560,7 @@
       "spacing_cm": 60,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 38,
       "methods": [
         {
           "type": "sow_indoor",
@@ -2810,7 +3570,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -2821,7 +3585,11 @@
           "min_soil_c": 16,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -2852,7 +3620,11 @@
       "slug": "mint",
       "names": {
         "nl": "Munt",
-        "en": "Mint"
+        "en": "Mint",
+        "de": "Minze",
+        "fr": "Menthe",
+        "sv": "Mynta",
+        "pt": "Hortelã"
       },
       "category": "herb",
       "frost_tender": false,
@@ -2861,6 +3633,7 @@
       "spacing_cm": 30,
       "vak_per_m2": null,
       "sun": "partial",
+      "max_c": null,
       "methods": [
         {
           "type": "transplant",
@@ -2870,7 +3643,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -2896,7 +3673,11 @@
       "slug": "mizuna",
       "names": {
         "nl": "Mizuna",
-        "en": "Mizuna"
+        "en": "Mizuna",
+        "de": "Mizuna",
+        "fr": "Mizuna",
+        "sv": "Mizuna",
+        "pt": "Mizuna"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -2905,6 +3686,7 @@
       "spacing_cm": 20,
       "vak_per_m2": 9,
       "sun": "shade-tolerant",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_indoor",
@@ -2914,7 +3696,11 @@
           "min_soil_c": 7,
           "note": {
             "nl": "Voorzaaien binnenshuis vanaf de late winter voor een vroege teelt",
-            "en": "Sow indoors from late winter for an early spring crop"
+            "en": "Sow indoors from late winter for an early spring crop",
+            "de": "Für eine frühe Frühjahrsernte ab Spätwinter vorziehen",
+            "fr": "Semer en intérieur dès la fin de l'hiver pour une récolte précoce au printemps",
+            "sv": "Förkultivera från senvintern för en tidig vårskörd",
+            "pt": "Semear em interior a partir do fim do inverno, para colher no início da primavera"
           }
         },
         {
@@ -2925,7 +3711,11 @@
           "min_soil_c": 7,
           "note": {
             "nl": "Uitplanten kan ruim voor IJsheiligen zodra de eerste echte blaadjes verschijnen",
-            "en": "Transplant outdoors well before IJsheiligen once first true leaves develop"
+            "en": "Transplant outdoors well before IJsheiligen once first true leaves develop",
+            "de": "Deutlich vor den Eisheiligen auspflanzen, sobald sich die ersten echten Blätter zeigen",
+            "fr": "Repiquer bien avant les saints de glace, dès l'apparition des premières vraies feuilles",
+            "sv": "Plantera ut i god tid före sista frosten, när de första örtbladen har utvecklats",
+            "pt": "Transplantar bem antes das últimas geadas, assim que surgirem as primeiras folhas verdadeiras"
           }
         },
         {
@@ -2936,7 +3726,27 @@
           "min_soil_c": 7,
           "note": {
             "nl": "Direct buiten zaaien vanaf half maart tot mei",
-            "en": "Direct sow outdoors from mid-March through May"
+            "en": "Direct sow outdoors from mid-March through May",
+            "de": "Von Mitte März bis Mai direkt ins Freie säen",
+            "fr": "Semer en pleine terre de la mi-mars à mai",
+            "sv": "Så direkt på friland från mitten av mars till maj",
+            "pt": "Semear diretamente ao ar livre de meados de março a maio"
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -6,
+          "end_weeks": -4,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -2969,7 +3779,9 @@
         "https://groei.nl/artikel/saladebar-aan-huis",
         "https://www.vreeken.nl/223200-mizuna-green-leaved",
         "https://plukkers.com/blogs/zaaien-en-planten/welke-trays-bakjes-potjes-potten-onderstellen-en-onderschalen-gebruiken-in-de-moestuin",
-        "https://www.tuinadvies.nl/tuininfo/moestuin/groenten/groenten-telen-op-schaduwrijke-plaatsen"
+        "https://www.tuinadvies.nl/tuininfo/moestuin/groenten/groenten-telen-op-schaduwrijke-plaatsen",
+        "Autumn timing: Grow a Good Life, fall garden vegetables to direct sow (https://growagoodlife.com/fall-garden-vegetables-to-direct-sow/)",
+        "Autumn timing: Almanac, Asian greens fast growers for fall (https://www.almanac.com/types-asian-greens-fast-growers-fall)"
       ],
       "verified": true
     },
@@ -2977,7 +3789,11 @@
       "slug": "mustard-greens",
       "names": {
         "nl": "Bladmosterd",
-        "en": "Mustard greens"
+        "en": "Mustard greens",
+        "de": "Blattsenf",
+        "fr": "Moutarde à feuilles",
+        "sv": "Bladsenap",
+        "pt": "Mostarda de folha"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -2986,6 +3802,7 @@
       "spacing_cm": 20,
       "vak_per_m2": 9,
       "sun": "partial",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_indoor",
@@ -2995,7 +3812,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Voorzaaien binnenshuis of onder glas voor een vroege voorjaarsteelt.",
-            "en": "Sow indoors or under glass for an early spring crop."
+            "en": "Sow indoors or under glass for an early spring crop.",
+            "de": "Für eine frühe Frühjahrsernte drinnen oder unter Glas vorziehen.",
+            "fr": "Semer en intérieur ou sous abri pour une récolte précoce au printemps.",
+            "sv": "Förkultivera inomhus eller under glas för en tidig vårskörd.",
+            "pt": "Semear em interior ou em estufa, para colher no início da primavera."
           }
         },
         {
@@ -3006,7 +3827,11 @@
           "min_soil_c": 4,
           "note": {
             "nl": "Direct buiten zaaien kan al vroeg, mosterdblad verdraagt koude grond goed.",
-            "en": "Direct sow outdoors early, as mustard greens tolerate cold soil well."
+            "en": "Direct sow outdoors early, as mustard greens tolerate cold soil well.",
+            "de": "Früh direkt ins Freie säen, denn Blattsenf verträgt kalten Boden gut.",
+            "fr": "Semer tôt en pleine terre : la moutarde à feuilles supporte bien un sol froid.",
+            "sv": "Så tidigt direkt på friland, eftersom bladsenap tål kall jord bra.",
+            "pt": "Semear cedo diretamente ao ar livre, pois a mostarda de folha tolera bem o solo frio."
           }
         },
         {
@@ -3017,7 +3842,11 @@
           "min_soil_c": 4,
           "note": {
             "nl": "Uitplanten zodra de zaailingen 2 tot 4 echte blaadjes hebben.",
-            "en": "Transplant outdoors once seedlings have 2 to 4 true leaves."
+            "en": "Transplant outdoors once seedlings have 2 to 4 true leaves.",
+            "de": "Auspflanzen, sobald die Jungpflanzen 2 bis 4 echte Blätter haben.",
+            "fr": "Repiquer quand les plants ont 2 à 4 vraies feuilles.",
+            "sv": "Plantera ut när plantorna har 2 till 4 örtblad.",
+            "pt": "Transplantar quando as plântulas tiverem 2 a 4 folhas verdadeiras."
           }
         }
       ],
@@ -3060,7 +3889,11 @@
       "slug": "nasturtium",
       "names": {
         "nl": "Oost-Indische kers",
-        "en": "Nasturtium"
+        "en": "Nasturtium",
+        "de": "Kapuzinerkresse",
+        "fr": "Capucine",
+        "sv": "Indiankrasse",
+        "pt": "Capuchinha"
       },
       "category": "herb",
       "frost_tender": true,
@@ -3069,6 +3902,7 @@
       "spacing_cm": 30,
       "vak_per_m2": 1,
       "sun": "shade-tolerant",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -3078,7 +3912,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Voorzaaien in potjes om wortelverstoring bij het uitplanten te voorkomen.",
-            "en": "Sow indoors in pots to avoid root disturbance when planting out."
+            "en": "Sow indoors in pots to avoid root disturbance when planting out.",
+            "de": "In Töpfen vorziehen, damit die Wurzeln beim Auspflanzen ungestört bleiben.",
+            "fr": "Semer en intérieur en godets, pour ne pas abîmer les racines au repiquage.",
+            "sv": "Förkultivera i krukor så att rötterna inte störs vid utplanteringen.",
+            "pt": "Semear em interior em vasinhos, para não perturbar as raízes ao transplantar."
           }
         },
         {
@@ -3089,7 +3927,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Afgeharde zaailingen pas na IJsheiligen buiten uitplanten.",
-            "en": "Plant hardened-off seedlings outdoors only after the last frost."
+            "en": "Plant hardened-off seedlings outdoors only after the last frost.",
+            "de": "Abgehärtete Jungpflanzen erst nach dem letzten Frost auspflanzen.",
+            "fr": "Repiquer les plants acclimatés seulement après les dernières gelées.",
+            "sv": "Plantera ut avhärdade plantor först efter sista frosten.",
+            "pt": "Transplantar as plântulas aclimatadas só depois da última geada."
           }
         },
         {
@@ -3100,7 +3942,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Ter plekke buiten zaaien vanaf half april tot mei in opgewarmde grond.",
-            "en": "Sow outdoors directly from mid-April through May once soil warms up."
+            "en": "Sow outdoors directly from mid-April through May once soil warms up.",
+            "de": "Ab Mitte April bis Mai direkt ins Freie säen, sobald der Boden warm ist.",
+            "fr": "Semer en pleine terre de la mi-avril à mai, dès que le sol se réchauffe.",
+            "sv": "Så direkt på friland från mitten av april till maj, när jorden har blivit varm.",
+            "pt": "Semear diretamente ao ar livre de meados de abril a maio, assim que o solo aquecer."
           }
         }
       ],
@@ -3143,7 +3989,11 @@
       "slug": "onion",
       "names": {
         "nl": "Ui",
-        "en": "Onion"
+        "en": "Onion",
+        "de": "Zwiebel",
+        "fr": "Oignon",
+        "sv": "Lök",
+        "pt": "Cebola"
       },
       "category": "allium",
       "frost_tender": false,
@@ -3152,6 +4002,7 @@
       "spacing_cm": 10,
       "vak_per_m2": 16,
       "sun": "full",
+      "max_c": 32,
       "methods": [
         {
           "type": "plant",
@@ -3161,7 +4012,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Poten/planten in de aangegeven periode.",
-            "en": "Plant in the window shown."
+            "en": "Plant in the window shown.",
+            "de": "Im angezeigten Zeitraum pflanzen.",
+            "fr": "Planter pendant la période indiquée.",
+            "sv": "Plantera under den period som visas.",
+            "pt": "Plantar no período indicado."
           }
         }
       ],
@@ -3187,7 +4042,11 @@
       "slug": "oregano",
       "names": {
         "nl": "Oregano",
-        "en": "Oregano"
+        "en": "Oregano",
+        "de": "Oregano",
+        "fr": "Origan",
+        "sv": "Oregano",
+        "pt": "Orégãos"
       },
       "category": "herb",
       "frost_tender": false,
@@ -3196,6 +4055,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 4,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -3205,7 +4065,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -3216,7 +4080,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -3247,7 +4115,11 @@
       "slug": "pak-choi",
       "names": {
         "nl": "Paksoi",
-        "en": "Pak choi"
+        "en": "Pak choi",
+        "de": "Pak Choi",
+        "fr": "Pak-choï",
+        "sv": "Pak choi",
+        "pt": "Pak choi"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -3256,6 +4128,7 @@
       "spacing_cm": 20,
       "vak_per_m2": 4,
       "sun": "partial",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_direct",
@@ -3265,7 +4138,27 @@
           "min_soil_c": 10,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -7,
+          "end_weeks": -5,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -3283,7 +4176,9 @@
       "image": "pak-choi.jpg",
       "sources": [
         "directplant moestuinkalender",
-        "Allezadenkopen zaaikalender"
+        "Allezadenkopen zaaikalender",
+        "Autumn timing: Grow a Good Life, fall garden vegetables to direct sow (https://growagoodlife.com/fall-garden-vegetables-to-direct-sow/)",
+        "Autumn timing: Almanac, Asian greens fast growers for fall (https://www.almanac.com/types-asian-greens-fast-growers-fall)"
       ],
       "verified": true
     },
@@ -3291,7 +4186,11 @@
       "slug": "parsley",
       "names": {
         "nl": "Peterselie",
-        "en": "Parsley"
+        "en": "Parsley",
+        "de": "Petersilie",
+        "fr": "Persil",
+        "sv": "Persilja",
+        "pt": "Salsa"
       },
       "category": "herb",
       "frost_tender": false,
@@ -3300,6 +4199,7 @@
       "spacing_cm": 15,
       "vak_per_m2": 9,
       "sun": "partial",
+      "max_c": 30,
       "methods": [
         {
           "type": "sow_indoor",
@@ -3309,7 +4209,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -3320,7 +4224,11 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         }
       ],
@@ -3346,7 +4254,11 @@
       "slug": "parsnip",
       "names": {
         "nl": "Pastinaak",
-        "en": "Parsnip"
+        "en": "Parsnip",
+        "de": "Pastinake",
+        "fr": "Panais",
+        "sv": "Palsternacka",
+        "pt": "Pastinaca"
       },
       "category": "root",
       "frost_tender": false,
@@ -3355,6 +4267,7 @@
       "spacing_cm": 12,
       "vak_per_m2": 9,
       "sun": "full",
+      "max_c": 29,
       "methods": [
         {
           "type": "sow_direct",
@@ -3364,7 +4277,11 @@
           "min_soil_c": 6,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         }
       ],
@@ -3390,7 +4307,11 @@
       "slug": "pea",
       "names": {
         "nl": "Doperwt",
-        "en": "Pea"
+        "en": "Pea",
+        "de": "Erbse",
+        "fr": "Petit pois",
+        "sv": "Ärt",
+        "pt": "Ervilha"
       },
       "category": "legume",
       "frost_tender": false,
@@ -3399,6 +4320,7 @@
       "spacing_cm": 8,
       "vak_per_m2": 8,
       "sun": "full",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_direct",
@@ -3408,7 +4330,27 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -12,
+          "end_weeks": -11,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -3426,7 +4368,9 @@
       "image": "pea.jpg",
       "sources": [
         "Tuinadvies.nl moestuinklussen",
-        "Gardeners World NL jaarkalender"
+        "Gardeners World NL jaarkalender",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)",
+        "Autumn timing: Tenth Acre Farm, guide to fall planting (https://tenthacrefarm.com/guide-to-fall-planting)"
       ],
       "verified": true
     },
@@ -3434,7 +4378,11 @@
       "slug": "pea-shoots",
       "names": {
         "nl": "Erwtenscheuten",
-        "en": "Pea shoots"
+        "en": "Pea shoots",
+        "de": "Erbsentriebe",
+        "fr": "Pousses de pois",
+        "sv": "Ärtskott",
+        "pt": "Rebentos de ervilha"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -3443,6 +4391,7 @@
       "spacing_cm": 1,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_indoor",
@@ -3452,7 +4401,11 @@
           "min_soil_c": 2,
           "note": {
             "nl": "Binnen voorzaaien op de vensterbank kan jaarrond, of vanaf februari tot begin maart.",
-            "en": "Sow indoors on the windowsill year-round, or from February to early March."
+            "en": "Sow indoors on the windowsill year-round, or from February to early March.",
+            "de": "Das ganze Jahr drinnen auf der Fensterbank säen, oder von Februar bis Anfang März.",
+            "fr": "Semer en intérieur sur le rebord de fenêtre toute l'année, ou de février à début mars.",
+            "sv": "Så inomhus på fönsterbrädan året runt, eller från februari till början av mars.",
+            "pt": "Semear em interior, no parapeito da janela, todo o ano, ou de fevereiro ao início de março."
           }
         },
         {
@@ -3463,7 +4416,11 @@
           "min_soil_c": 2,
           "note": {
             "nl": "Buiten zaaien vanaf half februari (10-12 weken vóór IJsheiligen) tot april/mei.",
-            "en": "Direct sow outdoors from mid-February (10-12 weeks before Ice Saints) through April/May."
+            "en": "Direct sow outdoors from mid-February (10-12 weeks before Ice Saints) through April/May.",
+            "de": "Ab Mitte Februar (10–12 Wochen vor den Eisheiligen) bis April/Mai direkt ins Freie säen.",
+            "fr": "Semer en pleine terre de la mi-février (10–12 semaines avant les saints de glace) à avril/mai.",
+            "sv": "Så direkt på friland från mitten av februari (10–12 veckor före sista frosten) till april/maj.",
+            "pt": "Semear diretamente ao ar livre de meados de fevereiro (10–12 semanas antes das últimas geadas) a abril/maio."
           }
         },
         {
@@ -3474,7 +4431,11 @@
           "min_soil_c": 2,
           "note": {
             "nl": "Najaarszaai buiten vanaf september (4-6 weken vóór de eerste vorst) tot in de late herfst.",
-            "en": "Autumn outdoor sowing from September (4-6 weeks before first frost) into late autumn."
+            "en": "Autumn outdoor sowing from September (4-6 weeks before first frost) into late autumn.",
+            "de": "Im Herbst ab September (4–6 Wochen vor dem ersten Frost) bis in den Spätherbst ins Freie säen.",
+            "fr": "Semer en pleine terre en automne, de septembre (4–6 semaines avant les premières gelées) à la fin de l'automne.",
+            "sv": "Så på friland på hösten, från september (4–6 veckor före första frosten) till senhösten.",
+            "pt": "Semear ao ar livre no outono, de setembro (4–6 semanas antes da primeira geada) ao fim do outono."
           }
         }
       ],
@@ -3516,7 +4477,11 @@
       "slug": "pepper",
       "names": {
         "nl": "Paprika",
-        "en": "Sweet pepper"
+        "en": "Sweet pepper",
+        "de": "Paprika",
+        "fr": "Poivron",
+        "sv": "Paprika",
+        "pt": "Pimento"
       },
       "category": "fruit-veg",
       "frost_tender": true,
@@ -3525,6 +4490,7 @@
       "spacing_cm": 40,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": 35,
       "methods": [
         {
           "type": "sow_indoor",
@@ -3534,7 +4500,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -3545,7 +4515,11 @@
           "min_soil_c": 14,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -3572,7 +4546,11 @@
       "slug": "pointed-cabbage",
       "names": {
         "nl": "Spitskool",
-        "en": "Pointed cabbage"
+        "en": "Pointed cabbage",
+        "de": "Spitzkohl",
+        "fr": "Chou cœur de bœuf",
+        "sv": "Spetskål",
+        "pt": "Couve-coração"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -3581,6 +4559,7 @@
       "spacing_cm": 40,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": 27,
       "methods": [
         {
           "type": "sow_indoor",
@@ -3590,7 +4569,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -3601,7 +4584,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -3627,7 +4614,11 @@
       "slug": "potato",
       "names": {
         "nl": "Aardappel",
-        "en": "Potato"
+        "en": "Potato",
+        "de": "Kartoffel",
+        "fr": "Pomme de terre",
+        "sv": "Potatis",
+        "pt": "Batata"
       },
       "category": "potato",
       "frost_tender": true,
@@ -3636,6 +4627,7 @@
       "spacing_cm": 30,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 29,
       "methods": [
         {
           "type": "plant",
@@ -3645,7 +4637,11 @@
           "min_soil_c": 6,
           "note": {
             "nl": "Poten/planten in de aangegeven periode.",
-            "en": "Plant in the window shown."
+            "en": "Plant in the window shown.",
+            "de": "Im angezeigten Zeitraum pflanzen.",
+            "fr": "Planter pendant la période indiquée.",
+            "sv": "Plantera under den period som visas.",
+            "pt": "Plantar no período indicado."
           }
         }
       ],
@@ -3672,7 +4668,11 @@
       "slug": "pumpkin",
       "names": {
         "nl": "Pompoen",
-        "en": "Pumpkin"
+        "en": "Pumpkin",
+        "de": "Kürbis",
+        "fr": "Potiron",
+        "sv": "Pumpa",
+        "pt": "Abóbora"
       },
       "category": "fruit-veg",
       "frost_tender": true,
@@ -3681,6 +4681,7 @@
       "spacing_cm": 120,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 35,
       "methods": [
         {
           "type": "sow_indoor",
@@ -3690,7 +4691,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -3701,7 +4706,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -3733,7 +4742,11 @@
       "slug": "purslane",
       "names": {
         "nl": "Postelein",
-        "en": "Summer purslane"
+        "en": "Summer purslane",
+        "de": "Sommerportulak",
+        "fr": "Pourpier d'été",
+        "sv": "Portlak",
+        "pt": "Beldroega"
       },
       "category": "leafy",
       "frost_tender": true,
@@ -3742,6 +4755,7 @@
       "spacing_cm": 5,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 38,
       "methods": [
         {
           "type": "sow_direct",
@@ -3751,7 +4765,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Buiten zaaien na IJsheiligen in opgewarmde grond tot eind augustus.",
-            "en": "Direct sow outdoors after IJsheiligen in warm soil until late August."
+            "en": "Direct sow outdoors after IJsheiligen in warm soil until late August.",
+            "de": "Nach den Eisheiligen bis Ende August direkt ins Freie in warmen Boden säen.",
+            "fr": "Semer en pleine terre dans un sol réchauffé, des saints de glace à fin août.",
+            "sv": "Så direkt på friland i varm jord efter sista frosten, fram till slutet av augusti.",
+            "pt": "Semear diretamente ao ar livre em solo quente, depois das últimas geadas e até ao fim de agosto."
           }
         },
         {
@@ -3762,7 +4780,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Voorzaaien onder glas vanaf april tot augustus bij minimaal 15-20 °C.",
-            "en": "Sow indoors or under glass from April to August at minimum 15-20 °C."
+            "en": "Sow indoors or under glass from April to August at minimum 15-20 °C.",
+            "de": "Von April bis August drinnen oder unter Glas bei mindestens 15–20 °C vorziehen.",
+            "fr": "Semer en intérieur ou sous abri d'avril à août, à 15–20 °C minimum.",
+            "sv": "Förkultivera inomhus eller under glas från april till augusti vid minst 15–20 °C.",
+            "pt": "Semear em interior ou em estufa de abril a agosto, a pelo menos 15–20 °C."
           }
         },
         {
@@ -3773,7 +4795,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Uitplanten in de late lente na IJsheiligen zodra de grond goed opgewarmd is.",
-            "en": "Transplant in late spring after IJsheiligen once soil has warmed up thoroughly."
+            "en": "Transplant in late spring after IJsheiligen once soil has warmed up thoroughly.",
+            "de": "Im späten Frühjahr nach den Eisheiligen auspflanzen, wenn der Boden gut durchgewärmt ist.",
+            "fr": "Repiquer en fin de printemps, après les saints de glace, quand le sol s'est bien réchauffé.",
+            "sv": "Plantera ut sent på våren, efter sista frosten, när jorden har blivit ordentligt varm.",
+            "pt": "Transplantar no fim da primavera, depois das últimas geadas, quando o solo tiver aquecido bem."
           }
         }
       ],
@@ -3816,7 +4842,11 @@
       "slug": "radicchio",
       "names": {
         "nl": "Radicchio (roodlof)",
-        "en": "Radicchio"
+        "en": "Radicchio",
+        "de": "Radicchio",
+        "fr": "Chicorée rouge",
+        "sv": "Radicchio",
+        "pt": "Radicchio"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -3825,6 +4855,7 @@
       "spacing_cm": 30,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": 28,
       "methods": [
         {
           "type": "sow_indoor",
@@ -3834,7 +4865,11 @@
           "min_soil_c": 10,
           "note": {
             "nl": "Zaai in perspotten of trays vanaf IJsheiligen tot juli voor de herfst- en winterteelt.",
-            "en": "Sow in trays or plug pots from mid-May through July for the autumn and winter crop."
+            "en": "Sow in trays or plug pots from mid-May through July for the autumn and winter crop.",
+            "de": "Von Mitte Mai bis Juli in Schalen oder Multitopfplatten vorziehen, für die Herbst- und Winterernte.",
+            "fr": "Semer en caissettes ou en plaques alvéolées de la mi-mai à juillet, pour récolter en automne et en hiver.",
+            "sv": "Förkultivera i brätten eller pluggbrätten från mitten av maj till juli, för skörd på hösten och vintern.",
+            "pt": "Semear em tabuleiros ou alvéolos de meados de maio a julho, para colher no outono e no inverno."
           }
         },
         {
@@ -3845,7 +4880,11 @@
           "min_soil_c": 10,
           "note": {
             "nl": "Zaai ter plaatse vanaf half juni tot eind juli; zaaien vóór de langste dag geeft verhoogde kans op doorschieten.",
-            "en": "Sow directly from mid-June to late July; sowing before the solstice risks premature bolting."
+            "en": "Sow directly from mid-June to late July; sowing before the solstice risks premature bolting.",
+            "de": "Von Mitte Juni bis Ende Juli direkt säen; Aussaaten vor der Sonnenwende schießen leicht vorzeitig.",
+            "fr": "Semer en place de la mi-juin à fin juillet ; un semis avant le solstice risque de monter en graine trop tôt.",
+            "sv": "Så direkt från mitten av juni till slutet av juli; sådd före midsommar ökar risken för stocklöpning.",
+            "pt": "Semear diretamente de meados de junho ao fim de julho; se for semeado antes do solstício, tende a espigar cedo demais."
           }
         },
         {
@@ -3856,7 +4895,11 @@
           "min_soil_c": 10,
           "note": {
             "nl": "Plant zaailingen uit met 4-5 echte bladeren, minstens 6-8 weken voor de eerste herfstvorst.",
-            "en": "Plant out seedlings with 4-5 true leaves, at least 6-8 weeks before the first autumn frost."
+            "en": "Plant out seedlings with 4-5 true leaves, at least 6-8 weeks before the first autumn frost.",
+            "de": "Jungpflanzen mit 4–5 echten Blättern auspflanzen, mindestens 6–8 Wochen vor dem ersten Herbstfrost.",
+            "fr": "Repiquer les plants à 4–5 vraies feuilles, au moins 6–8 semaines avant les premières gelées d'automne.",
+            "sv": "Plantera ut plantorna när de har 4–5 örtblad, minst 6–8 veckor före höstens första frost.",
+            "pt": "Transplantar as plântulas com 4–5 folhas verdadeiras, pelo menos 6–8 semanas antes da primeira geada de outono."
           }
         }
       ],
@@ -3903,7 +4946,11 @@
       "slug": "radish",
       "names": {
         "nl": "Radijs",
-        "en": "Radish"
+        "en": "Radish",
+        "de": "Radieschen",
+        "fr": "Radis",
+        "sv": "Rädisa",
+        "pt": "Rabanete"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -3912,6 +4959,7 @@
       "spacing_cm": 5,
       "vak_per_m2": 16,
       "sun": "partial",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_direct",
@@ -3921,7 +4969,27 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -6,
+          "end_weeks": -4,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -3939,7 +5007,9 @@
       "image": "radish.jpg",
       "sources": [
         "Tuinadvies.nl moestuinklussen",
-        "Gardeners World NL jaarkalender"
+        "Gardeners World NL jaarkalender",
+        "Autumn timing: Grow a Good Life, fall vegetable garden (https://growagoodlife.com/fall-vegetable-garden/)",
+        "Autumn timing: Tenth Acre Farm, guide to fall planting (https://tenthacrefarm.com/guide-to-fall-planting)"
       ],
       "verified": true
     },
@@ -3947,7 +5017,11 @@
       "slug": "raspberry-in-pot",
       "names": {
         "nl": "Framboos in pot",
-        "en": "Raspberry in a pot"
+        "en": "Raspberry in a pot",
+        "de": "Himbeere im Topf",
+        "fr": "Framboisier en pot",
+        "sv": "Hallon i kruka",
+        "pt": "Framboeseira em vaso"
       },
       "category": "fruit",
       "frost_tender": false,
@@ -3956,6 +5030,7 @@
       "spacing_cm": 50,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "plant",
@@ -3965,7 +5040,11 @@
           "min_soil_c": 0,
           "note": {
             "nl": "Plant slapende wortels of potplanten in het voorjaar op vorstvrije dagen.",
-            "en": "Plant dormant canes or potted plants in spring on frost-free days."
+            "en": "Plant dormant canes or potted plants in spring on frost-free days.",
+            "de": "Ruhende Ruten oder Topfpflanzen im Frühjahr an frostfreien Tagen pflanzen.",
+            "fr": "Planter les cannes en repos ou les plants en pot au printemps, hors période de gel.",
+            "sv": "Plantera vilande skott eller krukodlade plantor på våren, en frostfri dag.",
+            "pt": "Plantar canas em repouso ou plantas em vaso na primavera, em dias sem geada."
           }
         },
         {
@@ -3976,7 +5055,11 @@
           "min_soil_c": 0,
           "note": {
             "nl": "Plant kale wortels of containerplanten in het najaar voor de vorst.",
-            "en": "Plant bare-root canes or potted plants in autumn before hard frosts."
+            "en": "Plant bare-root canes or potted plants in autumn before hard frosts.",
+            "de": "Wurzelnackte Ruten oder Topfpflanzen im Herbst vor starken Frösten pflanzen.",
+            "fr": "Planter les cannes en racines nues ou les plants en pot en automne, avant les fortes gelées.",
+            "sv": "Plantera barrotade skott eller krukodlade plantor på hösten, innan den hårda frosten kommer.",
+            "pt": "Plantar canas de raiz nua ou plantas em vaso no outono, antes das geadas fortes."
           }
         }
       ],
@@ -4018,7 +5101,11 @@
       "slug": "red-cabbage",
       "names": {
         "nl": "Rode kool",
-        "en": "Red cabbage"
+        "en": "Red cabbage",
+        "de": "Rotkohl",
+        "fr": "Chou rouge",
+        "sv": "Rödkål",
+        "pt": "Couve-roxa"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -4027,6 +5114,7 @@
       "spacing_cm": 45,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": 27,
       "methods": [
         {
           "type": "sow_indoor",
@@ -4036,7 +5124,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -4047,7 +5139,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -4073,7 +5169,11 @@
       "slug": "redcurrant-in-pot",
       "names": {
         "nl": "Rode bes in pot",
-        "en": "Redcurrant in a pot"
+        "en": "Redcurrant in a pot",
+        "de": "Rote Johannisbeere im Topf",
+        "fr": "Groseillier rouge en pot",
+        "sv": "Rött vinbär i kruka",
+        "pt": "Groselheira-vermelha em vaso"
       },
       "category": "fruit",
       "frost_tender": false,
@@ -4082,6 +5182,7 @@
       "spacing_cm": 80,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "plant",
@@ -4091,7 +5192,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Plant kale wortels of containerstruiken in het najaar; dit is het ideale plantseizoen zolang de grond vorstvrij is.",
-            "en": "Plant bare-root or potted bushes in autumn; this is the optimal planting time provided the ground is not frozen."
+            "en": "Plant bare-root or potted bushes in autumn; this is the optimal planting time provided the ground is not frozen.",
+            "de": "Wurzelnackte oder getopfte Sträucher im Herbst pflanzen; das ist die beste Pflanzzeit, solange der Boden nicht gefroren ist.",
+            "fr": "Planter les arbustes en racines nues ou en pot en automne ; c'est la meilleure période, tant que le sol n'est pas gelé.",
+            "sv": "Plantera barrotade eller krukodlade buskar på hösten; det är den bästa planteringstiden, så länge marken inte är frusen.",
+            "pt": "Plantar arbustos de raiz nua ou em vaso no outono; é a melhor altura para plantar, desde que o solo não esteja gelado."
           }
         },
         {
@@ -4102,7 +5207,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Plant in het vroege voorjaar voor het uitlopen en ruim voor de laatste nachtvorst.",
-            "en": "Plant in early spring before bud break and well before the final spring frosts."
+            "en": "Plant in early spring before bud break and well before the final spring frosts.",
+            "de": "Im zeitigen Frühjahr vor dem Austrieb und deutlich vor den letzten Frühjahrsfrösten pflanzen.",
+            "fr": "Planter au début du printemps, avant le débourrement et bien avant les dernières gelées.",
+            "sv": "Plantera tidigt på våren, innan knopparna slår ut och i god tid före vårens sista frostnätter.",
+            "pt": "Plantar no início da primavera, antes do abrolhamento e bem antes das últimas geadas."
           }
         }
       ],
@@ -4138,7 +5247,11 @@
       "slug": "rhubarb",
       "names": {
         "nl": "Rabarber",
-        "en": "Rhubarb"
+        "en": "Rhubarb",
+        "de": "Rhabarber",
+        "fr": "Rhubarbe",
+        "sv": "Rabarber",
+        "pt": "Ruibarbo"
       },
       "category": "fruit",
       "frost_tender": false,
@@ -4147,6 +5260,7 @@
       "spacing_cm": 90,
       "vak_per_m2": null,
       "sun": "partial",
+      "max_c": null,
       "methods": [
         {
           "type": "plant",
@@ -4156,7 +5270,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Poten/planten in de aangegeven periode.",
-            "en": "Plant in the window shown."
+            "en": "Plant in the window shown.",
+            "de": "Im angezeigten Zeitraum pflanzen.",
+            "fr": "Planter pendant la période indiquée.",
+            "sv": "Plantera under den period som visas.",
+            "pt": "Plantar no período indicado."
           }
         }
       ],
@@ -4182,7 +5300,11 @@
       "slug": "rocket",
       "names": {
         "nl": "Rucola",
-        "en": "Rocket"
+        "en": "Rocket",
+        "de": "Rucola",
+        "fr": "Roquette",
+        "sv": "Ruccola",
+        "pt": "Rúcula"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -4191,6 +5313,7 @@
       "spacing_cm": 15,
       "vak_per_m2": 9,
       "sun": "partial",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_direct",
@@ -4200,7 +5323,27 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -6,
+          "end_weeks": -4,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -4218,7 +5361,9 @@
       "image": "rocket.jpg",
       "sources": [
         "Moesmeisje zaaikalender",
-        "Allezadenkopen zaaikalender"
+        "Allezadenkopen zaaikalender",
+        "Autumn timing: Grow a Good Life, fall garden vegetables to direct sow (https://growagoodlife.com/fall-garden-vegetables-to-direct-sow/)",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)"
       ],
       "verified": true
     },
@@ -4226,7 +5371,11 @@
       "slug": "rosemary",
       "names": {
         "nl": "Rozemarijn",
-        "en": "Rosemary"
+        "en": "Rosemary",
+        "de": "Rosmarin",
+        "fr": "Romarin",
+        "sv": "Rosmarin",
+        "pt": "Alecrim"
       },
       "category": "herb",
       "frost_tender": false,
@@ -4235,6 +5384,7 @@
       "spacing_cm": 40,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "transplant",
@@ -4244,7 +5394,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -4275,7 +5429,11 @@
       "slug": "runner-bean",
       "names": {
         "nl": "Pronkboon",
-        "en": "Runner bean"
+        "en": "Runner bean",
+        "de": "Feuerbohne",
+        "fr": "Haricot d'Espagne",
+        "sv": "Rosenböna",
+        "pt": "Feijão-escarlate"
       },
       "category": "legume",
       "frost_tender": true,
@@ -4284,6 +5442,7 @@
       "spacing_cm": 20,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 32,
       "methods": [
         {
           "type": "sow_direct",
@@ -4293,7 +5452,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         }
       ],
@@ -4320,7 +5483,11 @@
       "slug": "sage",
       "names": {
         "nl": "Salie",
-        "en": "Sage"
+        "en": "Sage",
+        "de": "Salbei",
+        "fr": "Sauge",
+        "sv": "Salvia",
+        "pt": "Salva"
       },
       "category": "herb",
       "frost_tender": false,
@@ -4329,6 +5496,7 @@
       "spacing_cm": 40,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -4338,7 +5506,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -4349,7 +5521,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -4380,7 +5556,11 @@
       "slug": "shallot",
       "names": {
         "nl": "Sjalot",
-        "en": "Shallot"
+        "en": "Shallot",
+        "de": "Schalotte",
+        "fr": "Échalote",
+        "sv": "Schalottenlök",
+        "pt": "Chalota"
       },
       "category": "allium",
       "frost_tender": false,
@@ -4389,6 +5569,7 @@
       "spacing_cm": 15,
       "vak_per_m2": 9,
       "sun": "full",
+      "max_c": 32,
       "methods": [
         {
           "type": "plant",
@@ -4398,7 +5579,11 @@
           "min_soil_c": 3,
           "note": {
             "nl": "Poten/planten in de aangegeven periode.",
-            "en": "Plant in the window shown."
+            "en": "Plant in the window shown.",
+            "de": "Im angezeigten Zeitraum pflanzen.",
+            "fr": "Planter pendant la période indiquée.",
+            "sv": "Plantera under den period som visas.",
+            "pt": "Plantar no período indicado."
           }
         }
       ],
@@ -4424,7 +5609,11 @@
       "slug": "sorrel",
       "names": {
         "nl": "Zuring",
-        "en": "Sorrel"
+        "en": "Sorrel",
+        "de": "Sauerampfer",
+        "fr": "Oseille",
+        "sv": "Ängssyra",
+        "pt": "Azeda"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -4433,6 +5622,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 4,
       "sun": "partial",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -4442,7 +5632,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -4453,7 +5647,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -4479,7 +5677,11 @@
       "slug": "spinach",
       "names": {
         "nl": "Spinazie",
-        "en": "Spinach"
+        "en": "Spinach",
+        "de": "Spinat",
+        "fr": "Épinard",
+        "sv": "Spenat",
+        "pt": "Espinafre"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -4488,6 +5690,7 @@
       "spacing_cm": 15,
       "vak_per_m2": 9,
       "sun": "partial",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_direct",
@@ -4497,7 +5700,27 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -8,
+          "end_weeks": -6,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -4515,7 +5738,9 @@
       "image": "spinach.jpg",
       "sources": [
         "mooiemoestuin.nl",
-        "Tuinadvies.nl moestuinklussen"
+        "Tuinadvies.nl moestuinklussen",
+        "Autumn timing: Grow a Good Life, fall vegetable garden (https://growagoodlife.com/fall-vegetable-garden/)",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)"
       ],
       "verified": true
     },
@@ -4523,7 +5748,11 @@
       "slug": "spring-onion",
       "names": {
         "nl": "Bosui",
-        "en": "Spring onion"
+        "en": "Spring onion",
+        "de": "Frühlingszwiebel",
+        "fr": "Ciboule",
+        "sv": "Salladslök",
+        "pt": "Cebola de primavera"
       },
       "category": "allium",
       "frost_tender": false,
@@ -4532,6 +5761,7 @@
       "spacing_cm": 3,
       "vak_per_m2": 36,
       "sun": "partial",
+      "max_c": 30,
       "methods": [
         {
           "type": "sow_direct",
@@ -4541,7 +5771,27 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -8,
+          "end_weeks": -6,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -4560,7 +5810,9 @@
       "sources": [
         "Makkelijke Moestuin lente-ui",
         "keukenplanten.nl bosui",
-        "Gardeners World NL"
+        "Gardeners World NL",
+        "Autumn timing: Grow a Good Life, fall garden vegetables to direct sow (https://growagoodlife.com/fall-garden-vegetables-to-direct-sow/)",
+        "Autumn timing: Gardener's Path, spring onions (https://gardenerspath.com/plants/vegetables/grow-spring-onions/)"
       ],
       "verified": true
     },
@@ -4568,7 +5820,11 @@
       "slug": "stevia",
       "names": {
         "nl": "Stevia",
-        "en": "Stevia"
+        "en": "Stevia",
+        "de": "Stevia",
+        "fr": "Stévia",
+        "sv": "Stevia",
+        "pt": "Estévia"
       },
       "category": "herb",
       "frost_tender": true,
@@ -4577,6 +5833,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -4586,7 +5843,11 @@
           "min_soil_c": 20,
           "note": {
             "nl": "Binnenshuis voorzaaien bij minstens 20 °C op een warme, lichte plek; zaden zijn lichtkiemers.",
-            "en": "Sow indoors at minimum 20 °C in a warm, bright spot; seeds need light to germinate."
+            "en": "Sow indoors at minimum 20 °C in a warm, bright spot; seeds need light to germinate.",
+            "de": "Warm und hell bei mindestens 20 °C vorziehen; die Samen sind Lichtkeimer.",
+            "fr": "Semer en intérieur, au chaud et à la lumière, à 20 °C minimum ; les graines ont besoin de lumière pour germer.",
+            "sv": "Förkultivera varmt och ljust vid minst 20 °C; fröna behöver ljus för att gro.",
+            "pt": "Semear em interior, num local quente e luminoso, a 20 °C no mínimo; as sementes precisam de luz para germinar."
           }
         },
         {
@@ -4597,7 +5858,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Uitplanten na IJsheiligen zodra het buiten warm en vorstvrij is.",
-            "en": "Plant out after the last night frosts (Ice Saints) once warm weather has settled."
+            "en": "Plant out after the last night frosts (Ice Saints) once warm weather has settled.",
+            "de": "Nach den letzten Nachtfrösten (Eisheilige) auspflanzen, sobald es beständig warm ist.",
+            "fr": "Repiquer après les dernières gelées nocturnes (saints de glace), quand la chaleur s'est installée.",
+            "sv": "Plantera ut efter de sista frostnätterna, när det har blivit varaktigt varmt.",
+            "pt": "Transplantar depois das últimas geadas noturnas, quando o calor já se tiver instalado."
           }
         }
       ],
@@ -4637,7 +5902,11 @@
       "slug": "strawberry",
       "names": {
         "nl": "Aardbei",
-        "en": "Strawberry"
+        "en": "Strawberry",
+        "de": "Erdbeere",
+        "fr": "Fraise",
+        "sv": "Jordgubbe",
+        "pt": "Morango"
       },
       "category": "fruit",
       "frost_tender": false,
@@ -4646,6 +5915,7 @@
       "spacing_cm": 30,
       "vak_per_m2": 4,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "plant",
@@ -4655,7 +5925,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Poten/planten in de aangegeven periode.",
-            "en": "Plant in the window shown."
+            "en": "Plant in the window shown.",
+            "de": "Im angezeigten Zeitraum pflanzen.",
+            "fr": "Planter pendant la période indiquée.",
+            "sv": "Plantera under den period som visas.",
+            "pt": "Plantar no período indicado."
           }
         }
       ],
@@ -4681,7 +5955,11 @@
       "slug": "summer-savory",
       "names": {
         "nl": "Bonenkruid",
-        "en": "Summer savory"
+        "en": "Summer savory",
+        "de": "Bohnenkraut",
+        "fr": "Sarriette",
+        "sv": "Sommarkyndel",
+        "pt": "Segurelha"
       },
       "category": "herb",
       "frost_tender": true,
@@ -4690,6 +5968,7 @@
       "spacing_cm": 20,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -4699,7 +5978,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien; zaden zijn lichtkiemers en nauwelijks bedekken.",
-            "en": "Sow indoors; seeds are light germinators and should barely be covered."
+            "en": "Sow indoors; seeds are light germinators and should barely be covered.",
+            "de": "Vorziehen; die Samen sind Lichtkeimer und nur hauchdünn zu bedecken.",
+            "fr": "Semer en intérieur ; les graines germent à la lumière, les couvrir à peine.",
+            "sv": "Förkultivera; fröna är ljusgroende och ska knappt täckas.",
+            "pt": "Semear em interior; as sementes precisam de luz para germinar e devem ficar muito pouco cobertas."
           }
         },
         {
@@ -4710,7 +5993,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Afharden en buiten uitplanten na IJsheiligen wanneer vorstgevaar geweken is.",
-            "en": "Harden off and plant out after mid-May once danger of frost has passed."
+            "en": "Harden off and plant out after mid-May once danger of frost has passed.",
+            "de": "Abhärten und nach Mitte Mai auspflanzen, wenn keine Frostgefahr mehr besteht.",
+            "fr": "Acclimater, puis repiquer après la mi-mai, quand le risque de gel est passé.",
+            "sv": "Härda av och plantera ut efter mitten av maj, när frostrisken är över.",
+            "pt": "Aclimatar e transplantar depois de meados de maio, quando já não houver risco de geada."
           }
         },
         {
@@ -4721,7 +6008,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Buiten ter plekke zaaien na IJsheiligen in opgewarmde grond; oppervlakkig zaaien.",
-            "en": "Sow directly outdoors after mid-May in warmed soil; surface sow."
+            "en": "Sow directly outdoors after mid-May in warmed soil; surface sow.",
+            "de": "Nach Mitte Mai direkt ins Freie in warmen Boden säen; nur oben aufstreuen.",
+            "fr": "Semer en pleine terre après la mi-mai, dans un sol réchauffé ; semer en surface.",
+            "sv": "Så direkt på friland i varm jord efter mitten av maj; så på ytan.",
+            "pt": "Semear diretamente ao ar livre depois de meados de maio, em solo já quente; semear à superfície."
           }
         }
       ],
@@ -4767,7 +6058,11 @@
       "slug": "swede",
       "names": {
         "nl": "Koolraap",
-        "en": "Swede"
+        "en": "Swede",
+        "de": "Steckrübe",
+        "fr": "Rutabaga",
+        "sv": "Kålrot",
+        "pt": "Rutabaga"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -4776,6 +6071,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 4,
       "sun": "full",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_direct",
@@ -4785,7 +6081,11 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         }
       ],
@@ -4811,7 +6111,11 @@
       "slug": "sweetcorn",
       "names": {
         "nl": "Maïs",
-        "en": "Sweetcorn"
+        "en": "Sweetcorn",
+        "de": "Zuckermais",
+        "fr": "Maïs doux",
+        "sv": "Sockermajs",
+        "pt": "Milho-doce"
       },
       "category": "fruit-veg",
       "frost_tender": true,
@@ -4820,6 +6124,7 @@
       "spacing_cm": 35,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 36,
       "methods": [
         {
           "type": "sow_indoor",
@@ -4829,7 +6134,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -4840,7 +6149,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         },
         {
@@ -4851,7 +6164,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         }
       ],
@@ -4878,7 +6195,11 @@
       "slug": "swiss-chard",
       "names": {
         "nl": "Snijbiet",
-        "en": "Swiss chard"
+        "en": "Swiss chard",
+        "de": "Mangold",
+        "fr": "Blette",
+        "sv": "Mangold",
+        "pt": "Acelga"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -4887,6 +6208,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 4,
       "sun": "partial",
+      "max_c": 32,
       "methods": [
         {
           "type": "sow_direct",
@@ -4896,7 +6218,11 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
           }
         },
         {
@@ -4907,7 +6233,27 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -10,
+          "end_weeks": -8,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -4925,7 +6271,9 @@
       "image": "swiss-chard.jpg",
       "sources": [
         "Moesmeisje zaaikalender",
-        "directplant moestuinkalender"
+        "directplant moestuinkalender",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)",
+        "Autumn timing: Tenth Acre Farm, guide to fall planting (https://tenthacrefarm.com/guide-to-fall-planting)"
       ],
       "verified": true
     },
@@ -4933,7 +6281,11 @@
       "slug": "tarragon",
       "names": {
         "nl": "Dragon",
-        "en": "Tarragon"
+        "en": "Tarragon",
+        "de": "Estragon",
+        "fr": "Estragon",
+        "sv": "Dragon",
+        "pt": "Estragão"
       },
       "category": "herb",
       "frost_tender": true,
@@ -4942,6 +6294,7 @@
       "spacing_cm": 40,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -4951,7 +6304,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Binnen voorzaaien bij minimaal 15 °C, ca. 6 tot 8 weken voor IJsheiligen.",
-            "en": "Sow indoors at minimum 15 °C, about 6 to 8 weeks before the last spring frost."
+            "en": "Sow indoors at minimum 15 °C, about 6 to 8 weeks before the last spring frost.",
+            "de": "Bei mindestens 15 °C vorziehen, etwa 6 bis 8 Wochen vor dem letzten Frühjahrsfrost.",
+            "fr": "Semer en intérieur à 15 °C minimum, environ 6 à 8 semaines avant les dernières gelées de printemps.",
+            "sv": "Förkultivera vid minst 15 °C, ungefär 6 till 8 veckor före vårens sista frost.",
+            "pt": "Semear em interior a 15 °C no mínimo, umas 6 a 8 semanas antes da última geada da primavera."
           }
         },
         {
@@ -4962,7 +6319,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Uitplanten na IJsheiligen zodra de kans op nachtvorst voorbij is.",
-            "en": "Transplant outdoors after IJsheiligen once the danger of night frost has passed."
+            "en": "Transplant outdoors after IJsheiligen once the danger of night frost has passed.",
+            "de": "Nach den Eisheiligen auspflanzen, wenn keine Nachtfröste mehr drohen.",
+            "fr": "Repiquer après les saints de glace, quand le risque de gelées nocturnes est passé.",
+            "sv": "Plantera ut efter sista frosten, när risken för nattfrost är över.",
+            "pt": "Transplantar depois das últimas geadas, quando já não houver risco de geada noturna."
           }
         },
         {
@@ -4973,7 +6334,11 @@
           "min_soil_c": 15,
           "note": {
             "nl": "Buiten ter plekke zaaien na IJsheiligen wanneer de grond voldoende is opgewarmd.",
-            "en": "Sow directly outdoors after IJsheiligen once the soil has warmed up."
+            "en": "Sow directly outdoors after IJsheiligen once the soil has warmed up.",
+            "de": "Nach den Eisheiligen direkt ins Freie säen, sobald der Boden warm ist.",
+            "fr": "Semer en pleine terre après les saints de glace, quand le sol s'est réchauffé.",
+            "sv": "Så direkt på friland efter sista frosten, när jorden har blivit varm.",
+            "pt": "Semear diretamente ao ar livre depois das últimas geadas, quando o solo tiver aquecido."
           }
         }
       ],
@@ -5013,7 +6378,11 @@
       "slug": "tatsoi",
       "names": {
         "nl": "Tatsoi",
-        "en": "Tatsoi"
+        "en": "Tatsoi",
+        "de": "Tatsoi",
+        "fr": "Tatsoï",
+        "sv": "Tatsoi",
+        "pt": "Tatsoi"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -5022,6 +6391,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 4,
       "sun": "shade-tolerant",
+      "max_c": 26,
       "methods": [
         {
           "type": "sow_indoor",
@@ -5031,7 +6401,11 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Binnen voorzaaien 6 tot 8 weken voor IJsheiligen voor een vroege voorjaarsoogst.",
-            "en": "Sow indoors 6 to 8 weeks before Ice Saints for an early spring harvest."
+            "en": "Sow indoors 6 to 8 weeks before Ice Saints for an early spring harvest.",
+            "de": "6 bis 8 Wochen vor den Eisheiligen vorziehen, für eine frühe Frühjahrsernte.",
+            "fr": "Semer en intérieur 6 à 8 semaines avant les saints de glace, pour une récolte précoce au printemps.",
+            "sv": "Förkultivera 6 till 8 veckor före sista frosten för en tidig vårskörd.",
+            "pt": "Semear em interior 6 a 8 semanas antes das últimas geadas, para colher no início da primavera."
           }
         },
         {
@@ -5042,7 +6416,11 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Uitplanten na IJsheiligen zodra zaailingen echte bladeren hebben en 5-10 cm groot zijn.",
-            "en": "Plant out after Ice Saints once seedlings have true leaves and reach 5-10 cm."
+            "en": "Plant out after Ice Saints once seedlings have true leaves and reach 5-10 cm.",
+            "de": "Nach den Eisheiligen auspflanzen, sobald die Jungpflanzen echte Blätter haben und 5–10 cm groß sind.",
+            "fr": "Repiquer après les saints de glace, quand les plants ont de vraies feuilles et mesurent 5–10 cm.",
+            "sv": "Plantera ut efter sista frosten, när plantorna har örtblad och är 5–10 cm höga.",
+            "pt": "Transplantar depois das últimas geadas, quando as plântulas tiverem folhas verdadeiras e 5–10 cm."
           }
         },
         {
@@ -5053,7 +6431,11 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Buiten ter plaatse zaaien vanaf half mei; zaaien in juli/augustus geeft minder kans op doorschieten.",
-            "en": "Direct sow outdoors from mid-May; July/August sowings bolt less quickly."
+            "en": "Direct sow outdoors from mid-May; July/August sowings bolt less quickly.",
+            "de": "Ab Mitte Mai direkt ins Freie säen; Aussaaten im Juli/August schießen weniger schnell.",
+            "fr": "Semer en pleine terre dès la mi-mai ; les semis de juillet/août montent moins vite en graine.",
+            "sv": "Så direkt på friland från mitten av maj; plantor från sådd i juli/augusti stocklöper inte lika snabbt.",
+            "pt": "Semear diretamente ao ar livre a partir de meados de maio; as sementeiras de julho/agosto espigam menos depressa."
           }
         }
       ],
@@ -5095,7 +6477,11 @@
       "slug": "thyme",
       "names": {
         "nl": "Tijm",
-        "en": "Thyme"
+        "en": "Thyme",
+        "de": "Thymian",
+        "fr": "Thym",
+        "sv": "Timjan",
+        "pt": "Tomilho"
       },
       "category": "herb",
       "frost_tender": false,
@@ -5104,6 +6490,7 @@
       "spacing_cm": 25,
       "vak_per_m2": 4,
       "sun": "full",
+      "max_c": null,
       "methods": [
         {
           "type": "sow_indoor",
@@ -5113,7 +6500,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -5124,7 +6515,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -5155,7 +6550,11 @@
       "slug": "tomato",
       "names": {
         "nl": "Tomaat",
-        "en": "Tomato"
+        "en": "Tomato",
+        "de": "Tomate",
+        "fr": "Tomate",
+        "sv": "Tomat",
+        "pt": "Tomate"
       },
       "category": "fruit-veg",
       "frost_tender": true,
@@ -5164,6 +6563,7 @@
       "spacing_cm": 45,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": 34,
       "methods": [
         {
           "type": "sow_indoor",
@@ -5173,7 +6573,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -5184,7 +6588,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
@@ -5217,7 +6625,11 @@
       "slug": "turnip",
       "names": {
         "nl": "Meiraap",
-        "en": "Turnip"
+        "en": "Turnip",
+        "de": "Mairübe",
+        "fr": "Navet",
+        "sv": "Majrova",
+        "pt": "Nabo"
       },
       "category": "brassica",
       "frost_tender": false,
@@ -5226,6 +6638,7 @@
       "spacing_cm": 10,
       "vak_per_m2": 9,
       "sun": "full",
+      "max_c": 27,
       "methods": [
         {
           "type": "sow_direct",
@@ -5235,7 +6648,27 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Direct op de plek buiten zaaien.",
-            "en": "Sow directly outdoors where it will grow."
+            "en": "Sow directly outdoors where it will grow.",
+            "de": "Direkt an Ort und Stelle ins Freiland säen.",
+            "fr": "Semer directement en place, en pleine terre.",
+            "sv": "Så direkt på växtplatsen.",
+            "pt": "Semear diretamente no local definitivo."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "first_frost",
+          "needs_climate": true,
+          "start_weeks": -9,
+          "end_weeks": -8,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -5253,7 +6686,9 @@
       "image": "turnip.jpg",
       "sources": [
         "Tuinadvies.nl zaaikalender",
-        "directplant moestuinkalender"
+        "directplant moestuinkalender",
+        "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)",
+        "Autumn timing: Tenth Acre Farm, guide to fall planting (https://tenthacrefarm.com/guide-to-fall-planting)"
       ],
       "verified": true
     },
@@ -5261,7 +6696,11 @@
       "slug": "wild-rocket",
       "names": {
         "nl": "Wilde rucola",
-        "en": "Wild rocket"
+        "en": "Wild rocket",
+        "de": "Wilder Rucola",
+        "fr": "Roquette sauvage",
+        "sv": "Vildruccola",
+        "pt": "Rúcula-selvagem"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -5270,6 +6709,7 @@
       "spacing_cm": 30,
       "vak_per_m2": 1,
       "sun": "full",
+      "max_c": 28,
       "methods": [
         {
           "type": "sow_indoor",
@@ -5279,7 +6719,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Voorzaaien onder glas in februari en maart voor een vroege start.",
-            "en": "Sow indoors under glass in February and March for an early start."
+            "en": "Sow indoors under glass in February and March for an early start.",
+            "de": "Für einen frühen Start im Februar und März unter Glas vorziehen.",
+            "fr": "Semer sous abri en février et en mars, pour un démarrage précoce.",
+            "sv": "Förkultivera under glas i februari och mars för en tidig start.",
+            "pt": "Semear em estufa ou em interior em fevereiro e março, para um arranque antecipado."
           }
         },
         {
@@ -5290,7 +6734,11 @@
           "min_soil_c": 8,
           "note": {
             "nl": "Direct buiten zaaien vanaf maart zodra de bodem minimaal 8 °C is tot in september.",
-            "en": "Direct sow outdoors from March once soil reaches at least 8 °C until September."
+            "en": "Direct sow outdoors from March once soil reaches at least 8 °C until September.",
+            "de": "Ab März, sobald der Boden mindestens 8 °C hat, bis September direkt ins Freie säen.",
+            "fr": "Semer en pleine terre de mars à septembre, dès que le sol atteint au moins 8 °C.",
+            "sv": "Så direkt på friland från mars, när jorden håller minst 8 °C, fram till september.",
+            "pt": "Semear diretamente ao ar livre de março a setembro, assim que o solo atingir pelo menos 8 °C."
           }
         },
         {
@@ -5301,7 +6749,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Afgeharde zaailingen kunnen vanaf maart de volle grond of pot in.",
-            "en": "Hardened-off seedlings can be planted out into beds or containers from March onwards."
+            "en": "Hardened-off seedlings can be planted out into beds or containers from March onwards.",
+            "de": "Abgehärtete Jungpflanzen ab März ins Beet oder in Kübel auspflanzen.",
+            "fr": "Repiquer les plants acclimatés en planche ou en bac à partir de mars.",
+            "sv": "Avhärdade plantor kan planteras ut i bädd eller kruka från mars.",
+            "pt": "Transplantar as plântulas aclimatadas para canteiros ou vasos a partir de março."
           }
         }
       ],
@@ -5344,7 +6796,11 @@
       "slug": "winter-purslane",
       "names": {
         "nl": "Winterpostelein",
-        "en": "Winter purslane (miner's lettuce)"
+        "en": "Winter purslane (miner's lettuce)",
+        "de": "Winterportulak (Postelein)",
+        "fr": "Pourpier d'hiver (claytone de Cuba)",
+        "sv": "Vinterportlak",
+        "pt": "Beldroega-de-inverno"
       },
       "category": "leafy",
       "frost_tender": false,
@@ -5353,6 +6809,7 @@
       "spacing_cm": 10,
       "vak_per_m2": 9,
       "sun": "partial",
+      "max_c": 24,
       "methods": [
         {
           "type": "sow_direct",
@@ -5362,7 +6819,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Direct ter plaatse zaaien in de nazomer tot herfst voor oogst in het najaar en de winter.",
-            "en": "Sow directly outdoors from late summer through autumn for autumn and winter harvest."
+            "en": "Sow directly outdoors from late summer through autumn for autumn and winter harvest.",
+            "de": "Vom Spätsommer bis in den Herbst direkt ins Freie säen, für die Ernte im Herbst und Winter.",
+            "fr": "Semer en pleine terre de la fin de l'été à l'automne, pour récolter en automne et en hiver.",
+            "sv": "Så direkt på friland från sensommaren och under hösten, för skörd på hösten och vintern.",
+            "pt": "Semear diretamente ao ar livre do fim do verão ao outono, para colher no outono e no inverno."
           }
         },
         {
@@ -5373,7 +6834,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Voorzaaien in trays in de nazomer of vroege herfst.",
-            "en": "Pre-sow in module trays in late summer or early autumn."
+            "en": "Pre-sow in module trays in late summer or early autumn.",
+            "de": "Im Spätsommer oder Frühherbst in Multitopfplatten vorziehen.",
+            "fr": "Semer en intérieur en plaques alvéolées en fin d'été ou au début de l'automne.",
+            "sv": "Förkultivera i pluggbrätten på sensommaren eller tidigt på hösten.",
+            "pt": "Semear em interior em tabuleiros de alvéolos no fim do verão ou no início do outono."
           }
         },
         {
@@ -5384,7 +6849,11 @@
           "min_soil_c": 5,
           "note": {
             "nl": "Uitplanten van kluitjes circa 3 tot 4 weken na het zaaien.",
-            "en": "Transplant modules outdoors about 3 to 4 weeks after sowing."
+            "en": "Transplant modules outdoors about 3 to 4 weeks after sowing.",
+            "de": "Die Jungpflanzen etwa 3 bis 4 Wochen nach der Aussaat auspflanzen.",
+            "fr": "Repiquer les mottes environ 3 à 4 semaines après le semis.",
+            "sv": "Plantera ut pluggplantorna ungefär 3 till 4 veckor efter sådd.",
+            "pt": "Transplantar os torrões umas 3 a 4 semanas depois da sementeira."
           }
         }
       ],
@@ -5432,7 +6901,11 @@
       "slug": "winter-squash",
       "names": {
         "nl": "Winterpompoen",
-        "en": "Winter squash"
+        "en": "Winter squash",
+        "de": "Winterkürbis",
+        "fr": "Courge d'hiver",
+        "sv": "Vintersquash",
+        "pt": "Abóbora de inverno"
       },
       "category": "fruit-veg",
       "frost_tender": true,
@@ -5441,6 +6914,7 @@
       "spacing_cm": 100,
       "vak_per_m2": null,
       "sun": "full",
+      "max_c": 35,
       "methods": [
         {
           "type": "sow_indoor",
@@ -5450,7 +6924,11 @@
           "min_soil_c": null,
           "note": {
             "nl": "Binnen voorzaaien voor een vroege start.",
-            "en": "Start indoors for an early start."
+            "en": "Start indoors for an early start.",
+            "de": "Für einen frühen Start drinnen vorziehen.",
+            "fr": "Semer en intérieur pour un démarrage précoce.",
+            "sv": "Förkultivera inomhus för en tidig start.",
+            "pt": "Semear em interior para um arranque antecipado."
           }
         },
         {
@@ -5461,7 +6939,11 @@
           "min_soil_c": 12,
           "note": {
             "nl": "Buiten uitplanten zodra het veilig is.",
-            "en": "Plant out once conditions are safe."
+            "en": "Plant out once conditions are safe.",
+            "de": "Auspflanzen, sobald das Wetter es zulässt.",
+            "fr": "Repiquer dès que la météo le permet.",
+            "sv": "Plantera ut när vädret tillåter.",
+            "pt": "Transplantar quando o tempo o permitir."
           }
         }
       ],
