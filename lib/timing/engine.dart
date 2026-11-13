@@ -40,7 +40,10 @@ List<ScheduledWindow> scheduleCrop(Crop crop, FrostProfile frost) {
                 minSoilC: method.minSoilC,
                 note: method.note,
               ),
-              crop.maxC,
+              crop.maxC == null
+                  ? null
+                  : crop.maxC! +
+                        (method.needsClimate ? autumnHeatAllowanceC : 0),
               frost.weeklyTmax,
               method.needsClimate ? autumnMinC : null,
             );

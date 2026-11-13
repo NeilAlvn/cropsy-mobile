@@ -11,6 +11,9 @@ const heatLookaheadWeeks = 6;
 /// Cold floor for needsClimate (autumn) windows; see `AUTUMN_MIN_C` in heat.ts.
 const autumnMinC = 17;
 
+/// needs_climate (autumn) plantings go into heat on purpose and mature into cool weather, so their heat limit is maxC + this.
+const autumnHeatAllowanceC = 5;
+
 /// Mean of the weekly maxima over the lookahead that starts in [d]'s week.
 double lookaheadMax(List<double> weeklyTmax, DateTime d) {
   final w = weekOfYear(d);

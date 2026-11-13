@@ -72,6 +72,28 @@ void main() {
     );
   });
 
+  test(
+    'autumn allowance: max_c 27 drops the 15-29 Sep window, 27 + 5 keeps it',
+    () {
+      // Weeks 30-41 at 31 C (mirrors ALLOW in verify-engine.ts): lookaheads of
+      // weeks 36/37/38 are 31, 29.17, 27.33 - all above 27, all within 32.
+      final allow = List<double>.generate(
+        52,
+        (w) => w >= 30 && w <= 41 ? 31.0 : 20.0,
+      );
+      final w = win('2026-09-15', '2026-09-29', MethodType.transplant);
+      expect(autumnHeatAllowanceC, 5);
+      expect(trimForHeat(w, 27, allow, autumnMinC), isNull);
+      final kept = trimForHeat(
+        w,
+        27 + autumnHeatAllowanceC,
+        allow,
+        autumnMinC,
+      )!;
+      expect([kept.start, kept.end], ['2026-09-15', '2026-09-29']);
+    },
+  );
+
   test('FrostProfile carries weekly_tmax through json and forSeason', () {
     final p = FrostProfile.fromJson({
       'last_frost': '2026-02-18',

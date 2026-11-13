@@ -1,6 +1,6 @@
 {
-  "version": "bfb8520b822dc5b1",
-  "generated_at": "2026-11-13T15:28:47.363Z",
+  "version": "6510a50c43e7e1a1",
+  "generated_at": "2026-11-13T15:44:49.965Z",
   "crops": [
     {
       "slug": "asparagus",
@@ -249,12 +249,12 @@
           "end_weeks": -8,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -571,12 +571,12 @@
           "end_weeks": -10,
           "min_soil_c": null,
           "note": {
-            "nl": "Uitplanten voor een oogst in de herfst.",
-            "en": "Plant out for an autumn harvest.",
-            "de": "Auspflanzen für eine Ernte im Herbst.",
-            "fr": "Repiquer pour une récolte d’automne.",
-            "sv": "Plantera ut för en skörd på hösten.",
-            "pt": "Transplantar para uma colheita no outono."
+            "nl": "Uitplanten voor een oogst in het koele seizoen.",
+            "en": "Plant out for a cool-season harvest.",
+            "de": "Auspflanzen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Repiquer pour une récolte en saison fraîche.",
+            "sv": "Plantera ut för en skörd under den svala säsongen.",
+            "pt": "Transplantar para uma colheita na estação fresca."
           }
         }
       ],
@@ -725,12 +725,12 @@
           "end_weeks": -10,
           "min_soil_c": null,
           "note": {
-            "nl": "Uitplanten voor een oogst in de herfst.",
-            "en": "Plant out for an autumn harvest.",
-            "de": "Auspflanzen für eine Ernte im Herbst.",
-            "fr": "Repiquer pour une récolte d’automne.",
-            "sv": "Plantera ut för en skörd på hösten.",
-            "pt": "Transplantar para uma colheita no outono."
+            "nl": "Uitplanten voor een oogst in het koele seizoen.",
+            "en": "Plant out for a cool-season harvest.",
+            "de": "Auspflanzen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Repiquer pour une récolte en saison fraîche.",
+            "sv": "Plantera ut för en skörd under den svala säsongen.",
+            "pt": "Transplantar para uma colheita na estação fresca."
           }
         }
       ],
@@ -796,12 +796,12 @@
           "end_weeks": -10,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -882,12 +882,12 @@
           "end_weeks": -10,
           "min_soil_c": null,
           "note": {
-            "nl": "Uitplanten voor een oogst in de herfst.",
-            "en": "Plant out for an autumn harvest.",
-            "de": "Auspflanzen für eine Ernte im Herbst.",
-            "fr": "Repiquer pour une récolte d’automne.",
-            "sv": "Plantera ut för en skörd på hösten.",
-            "pt": "Transplantar para uma colheita no outono."
+            "nl": "Uitplanten voor een oogst in het koele seizoen.",
+            "en": "Plant out for a cool-season harvest.",
+            "de": "Auspflanzen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Repiquer pour une récolte en saison fraîche.",
+            "sv": "Plantera ut för en skörd under den svala säsongen.",
+            "pt": "Transplantar para uma colheita na estação fresca."
           }
         }
       ],
@@ -1537,12 +1537,12 @@
           "end_weeks": -6,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -2485,12 +2485,12 @@
           "end_weeks": -10,
           "min_soil_c": null,
           "note": {
-            "nl": "Uitplanten voor een oogst in de herfst.",
-            "en": "Plant out for an autumn harvest.",
-            "de": "Auspflanzen für eine Ernte im Herbst.",
-            "fr": "Repiquer pour une récolte d’automne.",
-            "sv": "Plantera ut för en skörd på hösten.",
-            "pt": "Transplantar para uma colheita no outono."
+            "nl": "Uitplanten voor een oogst in het koele seizoen.",
+            "en": "Plant out for a cool-season harvest.",
+            "de": "Auspflanzen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Repiquer pour une récolte en saison fraîche.",
+            "sv": "Plantera ut för en skörd under den svala säsongen.",
+            "pt": "Transplantar para uma colheita na estação fresca."
           }
         }
       ],
@@ -3239,12 +3239,12 @@
           "end_weeks": -6,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -3416,12 +3416,12 @@
           "end_weeks": -11,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -3741,12 +3741,12 @@
           "end_weeks": -4,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -4149,16 +4149,16 @@
           "type": "sow_direct",
           "anchor": "first_frost",
           "needs_climate": true,
-          "start_weeks": -6,
-          "end_weeks": -6,
+          "start_weeks": -7,
+          "end_weeks": -5,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -4345,12 +4345,12 @@
           "end_weeks": -11,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -4984,12 +4984,12 @@
           "end_weeks": -4,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -5338,12 +5338,12 @@
           "end_weeks": -4,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -5715,12 +5715,12 @@
           "end_weeks": -6,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -5786,12 +5786,12 @@
           "end_weeks": -6,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -6248,12 +6248,12 @@
           "end_weeks": -8,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
@@ -6663,12 +6663,12 @@
           "end_weeks": -8,
           "min_soil_c": null,
           "note": {
-            "nl": "Nazaaien voor een oogst in de herfst.",
-            "en": "Sow again for an autumn harvest.",
-            "de": "Nachsäen für eine Ernte im Herbst.",
-            "fr": "Ressemer pour une récolte d’automne.",
-            "sv": "Så igen för en skörd på hösten.",
-            "pt": "Semear de novo para uma colheita no outono."
+            "nl": "Nazaaien voor een oogst in het koele seizoen.",
+            "en": "Sow again for a cool-season harvest.",
+            "de": "Nachsäen für eine Ernte in der kühlen Jahreszeit.",
+            "fr": "Ressemer pour une récolte en saison fraîche.",
+            "sv": "Så igen för en skörd under den svala säsongen.",
+            "pt": "Semear de novo para uma colheita na estação fresca."
           }
         }
       ],
