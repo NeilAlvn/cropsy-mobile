@@ -5,11 +5,11 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/date_fmt.dart';
 import '../../l10n/region.dart';
 import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/mascot_lines.dart';
-import 'package:intl/intl.dart';
 
 import '../../db/database.dart';
 import '../../design/brutal.dart';
@@ -86,7 +86,9 @@ class _HeroCard extends StatelessWidget {
           Text(parts.isEmpty ? Str.nothingYet.of(context) : parts.join(' · '), style: AppText.display(context, color: AppColors.onInk)),
           const SizedBox(height: 4),
           Text(
-            tally.euros > 0
+            !AppRegion.euro
+                ? Str.harvestsLogged(count).of(context)
+                : tally.euros > 0
                 ? '${Str.savedAtPrices(tally.euros.toStringAsFixed(2)).of(context)}'
                     '${tally.unpriced > 0 ? ' · ${Str.unpricedCount(tally.unpriced).of(context)}' : ''}'
                 : '${Str.harvestsLogged(count).of(context)} · '
@@ -117,11 +119,11 @@ class _HarvestTile extends StatelessWidget {
             children: [
               Text('${repo.cropNames(row.cropSlug).of(context)} · ${row.unit == 'kg' && AppRegion.imperial ? massKg(row.quantity) : row.amount}',
                   style: AppText.label(context)),
-              Text(DateFormat('EEEE d MMM').format(parseIso(row.harvestedOn)), style: AppText.caption(context)),
+              Text(weekdayDayMonth(parseIso(row.harvestedOn)), style: AppText.caption(context)),
             ],
           ),
         ),
-        if (value != null) Text('€${value.toStringAsFixed(2)}', style: AppText.label(context, color: AppColors.clay)),
+        if (AppRegion.euro && value != null) Text('€${value.toStringAsFixed(2)}', style: AppText.label(context, color: AppColors.clay)),
       ]),
     );
   }

@@ -10,8 +10,12 @@ library;
 
 import '../../data/companions.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/date_fmt.dart';
+import '../../l10n/region.dart';
+import '../../l10n/units.dart';
 import '../../timing/content_snapshot.dart';
 import '../../timing/dates.dart';
+import '../../timing/season_year.dart';
 import '../../timing/types.dart';
 import '../location/saved_location.dart';
 
@@ -210,6 +214,11 @@ String _iso(int year, int month, int day) =>
 
 List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
   final year = facts.today.year;
+  final south = facts.frost.south;
+  final label = seasonLabel(_iso(year, facts.today.month, facts.today.day), south: south);
+  // The southern season runs Jul-Jun, so its recap lands at the end of the
+  // season that began this year, and seed orders at its start.
+  final recapYear = south ? seasonYearOf(_iso(year, facts.today.month, facts.today.day), south: true) + 1 : year;
   final out = <SeasonMarker>[
     // The Dutch gardener's calendar turns on this week, not on the average
     // frost date, so it is a first-class marker (PRD §4).
@@ -234,11 +243,13 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
     ),
     SeasonMarker(
       kind: SeasonMarkerKind.recap,
-      on: _iso(year, 12, 20),
-      title: Str.recapTitle(year),
-      caption: facts.euros > 0
+      on: south ? _iso(recapYear, 6, 20) : _iso(year, 12, 20),
+      title: Str.recapTitle(label),
+      caption: AppRegion.euro && facts.euros > 0
           ? Str.recapPicked(facts.euros.round())
-          : Str.recapSub,
+          : !AppRegion.euro && facts.kilos > 0
+              ? Str.recapMassPicked(massKg(facts.kilos))
+              : Str.recapSub,
     ),
   ];
 
@@ -247,7 +258,7 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
     // otherwise silent. This is the off-season reason to open it.
     out.add(SeasonMarker(
       kind: SeasonMarkerKind.orderSeeds,
-      on: _iso(year, 1, 10),
+      on: south ? _iso(year, 7, 10) : _iso(year, 1, 10),
       title: Str.orderSeed,
       caption: Str.cropsOnList(facts.plantCount),
     ));
@@ -265,9 +276,11 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
       kind: SeasonMarkerKind.payoff,
       on: facts.frost.firstFrost,
       title: Str.seasonTally,
-      caption: facts.euros > 0 || facts.kilos > 0
-          ? Str.tallySoFar(facts.euros.round(), facts.kilos.toStringAsFixed(1))
-          : Str.tallyEmpty,
+      caption: AppRegion.euro && (facts.euros > 0 || facts.kilos > 0)
+          ? Str.tallySoFar(facts.euros.round().toString(), massKg(facts.kilos))
+          : !AppRegion.euro && facts.kilos > 0
+              ? Str.tallyMassSoFar(massKg(facts.kilos))
+              : Str.tallyEmpty,
     ));
   }
 

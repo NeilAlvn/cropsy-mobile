@@ -5,10 +5,10 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/date_fmt.dart';
 import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
-import 'package:intl/intl.dart';
 
 import '../../design/colors.dart';
 import '../../design/motion.dart';
@@ -96,7 +96,7 @@ class ThisWeekScreen extends StatelessWidget {
     if (iso == toIso(addDays(parseIso(today), 1))) {
       return Str.tomorrow.of(context).toUpperCase();
     }
-    return DateFormat('EEEE d MMM').format(d).toUpperCase();
+    return weekdayDayMonth(d).toUpperCase();
   }
 }
 

@@ -12,6 +12,7 @@ library;
 import 'package:flutter/material.dart';
 import '../../l10n/mascot_lines.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/region.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import '../../design/motion.dart';
@@ -70,7 +71,7 @@ class _LocationSheetState extends State<_LocationSheet> {
     }
     setState(() => _detecting = false);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(Str.noLocation.of(context))),
+      SnackBar(content: Text((AppRegion.nlBe ? Str.noLocation : Str.placeNotFound).of(context))),
     );
   }
 
@@ -86,7 +87,7 @@ class _LocationSheetState extends State<_LocationSheet> {
     }
     setState(() => _detecting = false);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(Str.postcodeNotFound.of(context))),
+      SnackBar(content: Text((AppRegion.nlBe ? Str.postcodeNotFound : Str.placeNotFound).of(context))),
     );
   }
 

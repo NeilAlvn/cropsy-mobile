@@ -13,6 +13,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/region.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 
@@ -104,13 +105,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Expanded(child: _Stat(figure: '${d.streak.count}', label: Str.dayStreak.of(context))),
                   const SizedBox(width: 12),
                   Expanded(child: _Stat(figure: '$growing', label: Str.growingNow.of(context))),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _Stat(
-                      figure: '€${d.harvestEuros.round()}',
-                      label: Str.harvested.of(context),
+                  if (AppRegion.euro) ...[
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _Stat(
+                        figure: '€${d.harvestEuros.round()}',
+                        label: Str.harvested.of(context),
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
               // The order is the order someone looks for things in: their own

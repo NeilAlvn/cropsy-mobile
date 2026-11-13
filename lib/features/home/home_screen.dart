@@ -7,12 +7,12 @@ library;
 import 'package:flutter/material.dart';
 import '../../l10n/mascot_lines.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/date_fmt.dart';
 import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import 'package:flutter/services.dart';
 
-import 'package:intl/intl.dart';
 
 import '../../db/database.dart';
 import '../../design/brutal.dart';
@@ -597,14 +597,13 @@ class _ForecastStrip extends StatelessWidget {
     if (days.isEmpty) return const SizedBox.shrink();
     // `Intl.defaultLocale` is set at startup, so the weekday comes out in the
     // app's language without threading a locale through.
-    final fmt = DateFormat('EEE');
     return Row(
       children: [
         for (final o in days)
           Expanded(
             child: Column(
               children: [
-                Text(fmt.format(parseIso(o.date)),
+                Text(weekdayShort(parseIso(o.date)),
                     style: AppText.caption(context, color: AppColors.inkMuted),
                     maxLines: 1),
                 const SizedBox(height: 4),
@@ -754,7 +753,6 @@ class _UpcomingHarvest extends StatelessWidget {
                   itemBuilder: (context, i) {
                     final r = rows[i];
                     final h = r.harvest;
-                    final fmt = DateFormat('d MMM');
                     return GestureDetector(
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: r.plant.id)),
@@ -778,7 +776,7 @@ class _UpcomingHarvest extends StatelessWidget {
                                 children: [
                                   Text(repo.cropNames(r.plant.cropSlug).of(context), style: AppText.label(context)),
                                   Text(
-                                    '${fmt.format(parseIso(h.due))} – ${fmt.format(parseIso(h.until ?? h.due))}',
+                                    '${dayMonth(parseIso(h.due))} – ${dayMonth(parseIso(h.until ?? h.due))}',
                                     style: AppText.caption(context, color: AppColors.clay),
                                   ),
                                 ],

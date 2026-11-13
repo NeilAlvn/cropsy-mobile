@@ -144,13 +144,13 @@ abstract final class Str {
     sv: 'Säsong',
     pt: 'Estação',
   );
-  static LocalizedText yearInGarden(int year) => LocalizedText(
-    nl: '$year in jouw tuin',
-    en: '$year in your garden',
-    de: '$year in deinem Garten',
-    fr: '$year dans ton potager',
-    sv: '$year i din odling',
-    pt: '$year na tua horta',
+  static LocalizedText yearInGarden(String label) => LocalizedText(
+    nl: '$label in jouw tuin',
+    en: '$label in your garden',
+    de: '$label in deinem Garten',
+    fr: '$label dans ton potager',
+    sv: '$label i din odling',
+    pt: '$label na tua horta',
   );
   static const today = LocalizedText(
     nl: 'Vandaag',
@@ -272,12 +272,12 @@ abstract final class Str {
     pt: 'Sim',
   );
   static const balconySuitability = LocalizedText(
-    nl: 'Geschikt voor NL-balkon',
-    en: 'NL balcony suitability',
-    de: 'Eignung für NL-Balkone',
-    fr: 'Adaptation aux balcons NL',
-    sv: 'Passar på NL-balkong',
-    pt: 'Adequação a varandas NL',
+    nl: 'Geschikt voor balkon',
+    en: 'Balcony suitability',
+    de: 'Eignung für Balkone',
+    fr: 'Adaptation aux balcons',
+    sv: 'Passar på balkong',
+    pt: 'Adequação a varandas',
   );
   static const balconyGreat = LocalizedText(
     nl: 'Prima',
@@ -294,6 +294,14 @@ abstract final class Str {
     fr: 'Bien après les saints de glace',
     sv: 'Bra efter sista frosten',
     pt: 'Bom após as últimas geadas',
+  );
+  static const balconyAfterLastFrost = LocalizedText(
+    nl: 'Goed na je laatste vorst',
+    en: 'Good after your last frost',
+    de: 'Gut nach deinem letzten Frost',
+    fr: 'Bien après ta dernière gelée',
+    sv: 'Bra efter din sista frost',
+    pt: 'Bom depois da tua última geada',
   );
   static const balconyNeedsBed = LocalizedText(
     nl: 'Heeft een bed nodig',
@@ -501,12 +509,12 @@ abstract final class Str {
     pt: 'O que tornaria isto melhor?',
   );
   static const climateNormals = LocalizedText(
-    nl: 'KNMI/Open-Meteo klimaatnormalen',
-    en: 'KNMI/Open-Meteo climate normals',
-    de: 'KNMI/Open-Meteo-Klimamittel',
-    fr: 'Normales climatiques KNMI/Open-Meteo',
-    sv: 'Klimatnormaler från KNMI/Open-Meteo',
-    pt: 'Normais climáticas KNMI/Open-Meteo',
+    nl: 'Open-Meteo klimaatgegevens (10 jaar)',
+    en: 'Open-Meteo climate data (10 years)',
+    de: 'Open-Meteo-Klimadaten (10 Jahre)',
+    fr: 'Données climatiques Open-Meteo (10 ans)',
+    sv: 'Klimatdata från Open-Meteo (10 år)',
+    pt: 'Dados climáticos Open-Meteo (10 anos)',
   );
   static const regionalPreset = LocalizedText(
     nl: 'NL regiovoorinstelling',
@@ -1428,6 +1436,14 @@ abstract final class Str {
     sv: 'Letar fram din första uppgift…',
     pt: 'A procurar a tua primeira tarefa…',
   );
+  static const placeNotFound = LocalizedText(
+    nl: 'Geen plaats gevonden, of je bent offline. Probeer een plaats in de buurt.',
+    en: 'No place found, or you are offline. Try a nearby town.',
+    de: 'Kein Ort gefunden, oder du bist offline. Versuch einen Ort in der Nähe.',
+    fr: 'Aucun lieu trouvé, ou tu es hors ligne. Essaie une ville proche.',
+    sv: 'Ingen plats hittades, eller så är du offline. Prova en ort i närheten.',
+    pt: 'Nenhum local encontrado, ou estás sem ligação. Tenta uma localidade próxima.',
+  );
   static const noLocationPickRegion = LocalizedText(
     nl: 'Geen locatie, vul een postcode in of kies hieronder een regio.',
     en: 'No location, enter a postcode or pick a region below.',
@@ -1827,15 +1843,23 @@ abstract final class Str {
     sv: 'Säsongens summering',
     pt: 'Balanço da estação',
   );
-  static LocalizedText tallySoFar(int euros, String kilos) => LocalizedText(
-    nl: '€$euros en $kilos kg tot nu toe',
-    en: '€$euros and $kilos kg so far',
-    de: '$euros € und ${kilos.replaceAll('.', ',')} kg bisher',
-    fr: '$euros € et ${kilos.replaceAll('.', ',')} kg pour l\'instant',
-    sv: '$euros € och ${kilos.replaceAll('.', ',')} kg hittills',
-    pt: '$euros € e ${kilos.replaceAll('.', ',')} kg até agora',
+  /// Eurozone only; [mass] is already formatted (`massKg`).
+  static LocalizedText tallySoFar(String euros, String mass) => LocalizedText(
+    nl: '€$euros en $mass tot nu toe',
+    en: '€$euros and $mass so far',
+    de: '$euros € und $mass bisher',
+    fr: '$euros € et $mass pour l\'instant',
+    sv: '$euros € och $mass hittills',
+    pt: '$euros € e $mass até agora',
   );
-  static const tallyEmpty = LocalizedText(
+  static LocalizedText tallyMassSoFar(String mass) => LocalizedText(
+    nl: '$mass tot nu toe',
+    en: '$mass so far',
+    de: '$mass bisher',
+    fr: '$mass pour l\'instant',
+    sv: '$mass hittills',
+    pt: '$mass até agora',
+  );  static const tallyEmpty = LocalizedText(
     nl: 'Log een oogst en het telt hier op',
     en: 'Log a harvest and it adds up here',
     de: 'Trag eine Ernte ein, dann summiert sie sich hier',
@@ -1843,13 +1867,13 @@ abstract final class Str {
     sv: 'Logga en skörd så räknas den ihop här',
     pt: 'Regista uma colheita e ela soma-se aqui',
   );
-  static LocalizedText recapTitle(int year) => LocalizedText(
-    nl: 'Jouw $year, op één kaart',
-    en: 'Your $year, in one card',
-    de: 'Dein $year auf einer Karte',
-    fr: 'Ton $year, en une carte',
-    sv: 'Ditt $year, på ett kort',
-    pt: 'O teu $year, num só cartão',
+  static LocalizedText recapTitle(String label) => LocalizedText(
+    nl: 'Jouw $label, op één kaart',
+    en: 'Your $label, in one card',
+    de: 'Dein $label auf einer Karte',
+    fr: 'Ton $label, en une carte',
+    sv: 'Ditt $label, på ett kort',
+    pt: 'O teu $label, num só cartão',
   );
   static const recapSub = LocalizedText(
     nl: 'Wat je teelde, plukte en bespaarde',
@@ -1866,6 +1890,14 @@ abstract final class Str {
     fr: '$euros € récoltés pour l\'instant',
     sv: '$euros € skördat hittills',
     pt: '$euros € colhidos até agora',
+  );
+  static LocalizedText recapMassPicked(String mass) => LocalizedText(
+    nl: '$mass geplukt tot nu toe',
+    en: '$mass picked so far',
+    de: '$mass bisher geerntet',
+    fr: '$mass récoltés pour l\'instant',
+    sv: '$mass skördat hittills',
+    pt: '$mass colhidos até agora',
   );
   static const plantsGrown = LocalizedText(
     nl: 'Planten geteeld',
@@ -2052,14 +2084,14 @@ abstract final class Str {
     pt: 'Rascunho. A tabela verificada chega com a atualização de conteúdo',
   );
   static LocalizedText verifiedAgainst(int n) => LocalizedText(
-    nl: 'Gecontroleerd tegen $n NL-bronnen',
-    en: 'Verified against $n NL sources',
-    de: 'Geprüft mit $n NL-Quellen',
-    fr: 'Vérifié avec $n sources NL',
+    nl: 'Gecontroleerd tegen $n bronnen',
+    en: 'Verified against $n sources',
+    de: 'Geprüft mit $n Quellen',
+    fr: 'Vérifié avec $n sources',
     sv: n == 1
-        ? 'Kontrollerad mot 1 NL-källa'
-        : 'Kontrollerad mot $n NL-källor',
-    pt: n == 1 ? 'Verificado em 1 fonte NL' : 'Verificado em $n fontes NL',
+        ? 'Kontrollerad mot 1 källa'
+        : 'Kontrollerad mot $n källor',
+    pt: n == 1 ? 'Verificado em 1 fonte' : 'Verificado em $n fontes',
   );
   static LocalizedText basedOn(String region) => LocalizedText(
     nl: 'Op basis van: $region',
@@ -3654,31 +3686,31 @@ abstract final class Str {
     pt: 'Perguntas revistas por horticultores',
   );
   static const comingBenefits = LocalizedText(
-    nl: 'Voeding en gezondheid (NEVO)',
-    en: 'Nutrition and benefits (NEVO)',
-    de: 'Nährwerte und Vorteile (NEVO)',
-    fr: 'Nutrition et bienfaits (NEVO)',
-    sv: 'Näring och nytta (NEVO)',
-    pt: 'Nutrição e benefícios (NEVO)',
+    nl: 'Voeding en gezondheid',
+    en: 'Nutrition and benefits',
+    de: 'Nährwerte und Vorteile',
+    fr: 'Nutrition et bienfaits',
+    sv: 'Näring och nytta',
+    pt: 'Nutrição e benefícios',
   );
   static LocalizedText contentComing(LocalizedText what) => LocalizedText(
     nl:
-        '${what.nl}: wordt geschreven en nagekeken voor Nederlandse tuinen. '
+        '${what.nl}: wordt geschreven en nagekeken door tuinders. '
         'Komt in de contentupdate.',
     en:
-        '${what.en}: being written and checked for Dutch gardens. '
+        '${what.en}: being written and checked by growers. '
         'Coming in the content update.',
     de:
-        '${what.pick('de')}: wird für niederländische Gärten geschrieben und '
-        'geprüft. Kommt mit dem Inhalts-Update.',
+        '${what.pick('de')}: wird von Gärtnern geschrieben und geprüft. '
+        'Kommt mit dem Inhalts-Update.',
     fr:
-        '${what.pick('fr')} : en cours d\'écriture et de vérification pour les '
-        'jardins néerlandais. Arrive avec la mise à jour du contenu.',
+        '${what.pick('fr')} : en cours d\'écriture et de vérification par des '
+        'jardiniers. Arrive avec la mise à jour du contenu.',
     sv:
-        '${what.pick('sv')}: skrivs och kontrolleras för nederländska odlingar. '
+        '${what.pick('sv')}: skrivs och kontrolleras av odlare. '
         'Kommer med innehållsuppdateringen.',
     pt:
-        '${what.pick('pt')}: estamos a escrever e a verificar isto para hortas neerlandesas. '
+        '${what.pick('pt')}: está a ser escrito e verificado por hortelãos. '
         'Chega com a atualização de conteúdo.',
   );
 
@@ -4440,14 +4472,6 @@ abstract final class Str {
     sv: 'Söker…',
     pt: 'A procurar…',
   );
-  static const postcodeHint = LocalizedText(
-    nl: 'Postcode, bijv. 1012AB',
-    en: 'Postcode, e.g. 1012AB',
-    de: 'Postleitzahl, z. B. 1012AB',
-    fr: 'Code postal, ex. 1012AB',
-    sv: 'Postnummer, t.ex. 1012AB',
-    pt: 'Código postal, ex. 1012AB',
-  );
   static const lookUp = LocalizedText(
     nl: 'Zoek op',
     en: 'Look up',
@@ -4491,12 +4515,12 @@ abstract final class Str {
     pt: 'O que está errado?',
   );
   static const whatIsWrongHint = LocalizedText(
-    nl: 'bijv. het zaaivenster is te vroeg voor Groningen',
-    en: 'e.g. sowing window is too early for Groningen',
-    de: 'z. B. Aussaatfenster ist für Groningen zu früh',
-    fr: 'ex. la période de semis est trop tôt pour Groningue',
-    sv: 't.ex. såfönstret är för tidigt för Groningen',
-    pt: 'ex. a janela de sementeira é cedo demais para Groningen',
+    nl: 'bijv. het zaaivenster is te vroeg voor mijn regio',
+    en: 'e.g. the sowing window is too early for my area',
+    de: 'z. B. das Aussaatfenster ist für meine Gegend zu früh',
+    fr: 'ex. la période de semis est trop tôt pour ma région',
+    sv: 't.ex. såfönstret är för tidigt för mitt område',
+    pt: 'ex. a janela de sementeira é cedo demais para a minha zona',
   );
   static const send = LocalizedText(
     nl: 'Versturen',
@@ -5603,20 +5627,20 @@ abstract final class Str {
   );
   static LocalizedText faqDatesA(String distance) => LocalizedText(
     nl:
-        'Uit de vorstdatums voor jouw locatie (KNMI / Open-Meteo '
-        'klimaatnormalen, afgerond op ~$distance), gecombineerd met teeltregels '
-        'die tegen minstens twee Nederlandse zaaikalenders zijn gelegd.',
+        'Uit de vorstdatums voor jouw locatie (tien jaar Open-Meteo-weerdata, '
+        'afgerond op ~$distance), gecombineerd met teeltregels die tegen '
+        'minstens twee gepubliceerde zaaikalenders zijn gelegd.',
     en:
-        'From the frost dates for your location (KNMI / Open-Meteo climate '
-        'normals, rounded to ~$distance) combined with crop rules cross-checked '
-        'against at least two Dutch seed calendars.',
+        'From the frost dates for your location (ten years of Open-Meteo '
+        'weather data, rounded to ~$distance), checked against at least two '
+        'published seed calendars.',
     de:
-        'Aus den Frostdaten für deinen Standort (KNMI-/Open-Meteo-Klimamittel, '
-        'auf ~$distance gerundet), kombiniert mit Anbauregeln, die mit mindestens '
-        'zwei niederländischen Aussaatkalendern abgeglichen sind.',
-    fr: 'Des dates de gel de ta position (normales climatiques KNMI / Open-Meteo, arrondies à ~$distance) combinées à des règles de culture vérifiées dans au moins deux calendriers des semis néerlandais.',
-    sv: 'Från frostdatumen för din plats (klimatnormaler från KNMI / Open-Meteo, avrundade till ~$distance) kombinerade med odlingsregler som kontrollerats mot minst två nederländska såkalendrar.',
-    pt: 'Das datas de geada da tua localização (normais climáticas KNMI / Open-Meteo, arredondadas a ~$distance), combinadas com regras de cultivo verificadas em pelo menos dois calendários de sementeira neerlandeses.',
+        'Aus den Frostdaten für deinen Standort (zehn Jahre Open-Meteo-Wetterdaten, '
+        'auf ~$distance gerundet), abgeglichen mit mindestens zwei '
+        'veröffentlichten Aussaatkalendern.',
+    fr: 'Des dates de gel de ta position (dix ans de données météo Open-Meteo, arrondies à ~$distance), vérifiées dans au moins deux calendriers de semis publiés.',
+    sv: 'Från frostdatumen för din plats (tio års väderdata från Open-Meteo, avrundade till ~$distance), kontrollerade mot minst två publicerade såkalendrar.',
+    pt: 'Das datas de geada da tua localização (dez anos de dados meteorológicos Open-Meteo, arredondados a ~$distance), verificadas em pelo menos dois calendários de sementeira publicados.',
   );
   static const faqBehindQ = LocalizedText(
     nl: 'Ik loop achter. Is mijn plan verpest?',
@@ -5858,24 +5882,6 @@ abstract final class Str {
       fr: up(m.pick('fr')),
       sv: up(m.pick('sv')),
       pt: up(m.pick('pt')),
-    );
-  }
-
-  /// Three letters, for a marker on the path.
-  static LocalizedText monthShort(int month1to12) {
-    final m = months[month1to12 - 1];
-    return LocalizedText(
-      nl: m.nl.substring(0, 3).toUpperCase(),
-      en: m.en.substring(0, 3).toUpperCase(),
-      de: m.pick('de').substring(0, 3).toUpperCase(),
-      // juin and juillet share JUI; French markers use JUN / JUL.
-      fr: switch (month1to12) {
-        6 => 'JUN',
-        7 => 'JUL',
-        _ => m.pick('fr').substring(0, 3).toUpperCase(),
-      },
-      sv: m.pick('sv').substring(0, 3).toUpperCase(),
-      pt: m.pick('pt').substring(0, 3).toUpperCase(),
     );
   }
 }

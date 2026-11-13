@@ -5,12 +5,12 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/date_fmt.dart';
 import '../../l10n/region.dart';
 import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
 import '../../design/icons.dart';
 import '../../design/motion.dart';
-import 'package:intl/intl.dart';
 
 import '../../design/colors.dart';
 import '../../design/components.dart';
@@ -123,7 +123,7 @@ class _SheetState extends State<_Sheet> {
                   const SizedBox(width: 12),
                   Text(Str.plantingDate.of(context), style: AppText.bodyMuted(context)),
                   const Spacer(),
-                  Text(DateFormat('d MMM yyyy').format(parseIso(_on)), style: AppText.label(context)),
+                  Text(dayMonthYear(parseIso(_on)), style: AppText.label(context)),
                   Icon(PhosphorIcons.caretRight, color: AppColors.muted),
                 ]),
               ),

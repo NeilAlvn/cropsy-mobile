@@ -41,4 +41,14 @@ void main() {
     expect(Str.heatAhead(tempC(30)).pick('en'), contains('86°F+'));
     expect(Str.perSquare(lengthCm(30)).pick('en'), 'Per 12 in square');
   });
+
+  test('Dutch alias, IJsheiligen and euros stay for NL, go elsewhere', () {
+    AppRegion.apply(lang: 'en', country: 'GB');
+    expect(Str.verifiedAgainst(3).pick('en'), 'Verified against 3 sources');
+    expect(Str.tallyMassSoFar(massKg(2.5)).pick('en'), '2.5 kg so far');
+    AppRegion.apply(lang: 'en', country: 'US');
+    expect(Str.tallyMassSoFar(massKg(2.5)).pick('en'), '5.5 lb so far');
+    AppRegion.apply(lang: 'nl', country: 'NL');
+    expect(Str.tallySoFar('12', massKg(2.5)).pick('nl'), contains('€12'));
+  });
 }

@@ -330,17 +330,16 @@ abstract final class MascotLines {
 
   static const problemsComing = LocalizedText(
     nl:
-        'De 25 problemen die op Nederlandse balkons spelen, slakken, luizen, '
+        'De 25 meest voorkomende balkonproblemen, slakken, luizen, '
         'meeldauw, neusrot, worden geschreven en nagekeken. Ze komen met de '
         'contentupdate.',
     en:
-        'The 25 problems common on Dutch balconies, slakken, luizen, meeldauw, '
-        'neusrot, are being written and checked. They land with the content '
-        'update.',
-    de: 'Die 25 häufigsten Probleme auf niederländischen Balkonen, Schnecken, Läuse, Mehltau, Blütenendfäule, werden geschrieben und geprüft. Sie kommen mit dem Inhalts-Update.',
-    fr: 'Les 25 problèmes les plus courants sur les balcons néerlandais, limaces, pucerons, oïdium, nécrose apicale, sont en cours d\'écriture et de vérification. Ils arrivent avec la mise à jour du contenu.',
-    sv: 'De 25 vanligaste problemen på nederländska balkonger – sniglar, bladlöss, mjöldagg, pistillröta – skrivs och kontrolleras just nu. De kommer med innehållsuppdateringen.',
-    pt: 'Os 25 problemas mais comuns nas varandas neerlandesas (lesmas, pulgões, oídio, podridão apical) estão a ser escritos e verificados. Chegam com a atualização de conteúdo.',
+        'The 25 most common balcony problems are being written and checked. '
+        'Coming in the content update.',
+    de: 'Die 25 häufigsten Probleme auf Balkonen, Schnecken, Läuse, Mehltau, Blütenendfäule, werden geschrieben und geprüft. Sie kommen mit dem Inhalts-Update.',
+    fr: 'Les 25 problèmes les plus courants sur les balcons, limaces, pucerons, oïdium, nécrose apicale, sont en cours d\'écriture et de vérification. Ils arrivent avec la mise à jour du contenu.',
+    sv: 'De 25 vanligaste problemen på balkonger – sniglar, bladlöss, mjöldagg, pistillröta – skrivs och kontrolleras just nu. De kommer med innehållsuppdateringen.',
+    pt: 'Os 25 problemas mais comuns nas varandas (lesmas, pulgões, oídio, podridão apical) estão a ser escritos e verificados. Chegam com a atualização de conteúdo.',
   );
 
   static const seasonLaysItselfOut = LocalizedText(
@@ -474,6 +473,33 @@ abstract final class MascotLines {
     pt:
         '${days == 1 ? 'Ainda falta ~1 dia' : 'Ainda faltam ~$days dias'} para a última geada ($lastFrost). '
         'Mantém as plantas de ${crop.pick('pt').toLowerCase()} dentro de casa até passarem as últimas geadas.',
+  );
+
+  /// [insightLastFrostAhead] without the ice saints, for everyone outside
+  /// the Netherlands and Belgium.
+  static LocalizedText insightLastFrostAheadGeneric(
+    int days,
+    String lastFrost,
+    LocalizedText crop,
+  ) => LocalizedText(
+    nl:
+        'De laatste vorst is nog ~$days dagen weg ($lastFrost). '
+        'Houd ${crop.nl.toLowerCase()} binnen tot na je laatste vorst.',
+    en:
+        'Last frost is still ~$days days away ($lastFrost). '
+        'Keep ${crop.pick('en').toLowerCase()} inside until after your last frost.',
+    de:
+        'Der letzte Frost ist noch ~$days Tage entfernt ($lastFrost). '
+        'Lass ${crop.pick('de')} drinnen, bis dein letzter Frost vorbei ist.',
+    fr:
+        'Les dernières gelées sont encore à ~$days ${days <= 1 ? 'jour' : 'jours'} ($lastFrost). '
+        '${crop.pick('fr')} : à garder à l\'intérieur jusqu\'après ta dernière gelée.',
+    sv:
+        'Sista frosten är fortfarande ~$days ${days == 1 ? 'dag' : 'dagar'} bort '
+        '($lastFrost). Håll ${crop.pick('sv').toLowerCase()} inne tills sista frosten är över.',
+    pt:
+        '${days == 1 ? 'Ainda falta ~1 dia' : 'Ainda faltam ~$days dias'} para a última geada ($lastFrost). '
+        'Mantém as plantas de ${crop.pick('pt').toLowerCase()} dentro de casa até passar a última geada.',
   );
 
   static LocalizedText insightColdNight(

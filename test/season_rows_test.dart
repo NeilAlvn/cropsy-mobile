@@ -94,4 +94,16 @@ void main() {
       [9, 10, 12],
     );
   });
+
+  test('southern rows run Jul to Jun, so January follows December', () {
+    final rows = seasonRows(
+      nodes: [_node('2026-12-10', '2026-12-20', 'a'), _node('2027-01-10', '2027-01-20', 'b')],
+      today: today,
+      optionsFor: (_) => 0,
+      south: true,
+    );
+    final months = rows.where((r) => r.kind == SeasonRowKind.month).map((r) => r.month).toList();
+    expect(months, [9, 12, 1]);
+    expect(rows.indexWhere((r) => r.kind == SeasonRowKind.today), lessThan(rows.indexWhere((r) => r.month == 12)));
+  });
 }

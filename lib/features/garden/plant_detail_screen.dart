@@ -6,6 +6,7 @@ library;
 import 'dart:io';
 import '../../timing/types.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/date_fmt.dart';
 import '../../l10n/region.dart';
 import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
@@ -13,7 +14,6 @@ import '../../design/motion.dart';
 
 import 'package:flutter/material.dart';
 import '../../design/icons.dart';
-import 'package:intl/intl.dart';
 
 import '../../db/database.dart';
 import '../../design/colors.dart';
@@ -111,7 +111,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                         if (plant.plantedOn != null) ...[
                           const SizedBox(width: 8),
                           Text(
-                            '· ${Str.plantedOn(DateFormat('d MMM').format(parseIso(plant.plantedOn!))).of(context)}',
+                            '· ${Str.plantedOn(dayMonth(parseIso(plant.plantedOn!))).of(context)}',
                             style: AppText.bodyMuted(context),
                           ),
                         ],
@@ -339,7 +339,7 @@ class _Journal extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              DateFormat('EEEE d MMM').format(parseIso(e.entryOn)),
+                              weekdayDayMonth(parseIso(e.entryOn)),
                               style: AppText.label(context, color: AppColors.sprout),
                             ),
                             const SizedBox(height: 2),
@@ -411,17 +411,19 @@ class _HarvestSheetState extends State<_HarvestSheet> {
               onSelectionChanged: (v) => setState(() => _unit = v.first),
             ),
           ]),
-          const SizedBox(height: 8),
-          Text(
-            switch (widget.pricedUnit) {
-              null => Str.noShopPrice.of(context),
-              final priced when priced == _unit =>
-                Str.countsTowardsTally.of(context),
-              final priced => Str.pricedPerUnit(
-                  priced == 'kg' ? Str.unitMass : Str.pieces).of(context),
-            },
-            style: AppText.caption(context),
-          ),
+          if (AppRegion.euro) ...[
+            const SizedBox(height: 8),
+            Text(
+              switch (widget.pricedUnit) {
+                null => Str.noShopPrice.of(context),
+                final priced when priced == _unit =>
+                  Str.countsTowardsTally.of(context),
+                final priced => Str.pricedPerUnit(
+                    priced == 'kg' ? Str.unitMass : Str.pieces).of(context),
+              },
+              style: AppText.caption(context),
+            ),
+          ],
           const SizedBox(height: 20),
           PrimaryButton(
             label: Str.saveHarvest.of(context),
@@ -510,7 +512,7 @@ class _EditPlantSheetState extends State<_EditPlantSheet> {
                     const SizedBox(width: 12),
                     Text(Str.planted.of(context), style: AppText.bodyMuted(context)),
                     const Spacer(),
-                    Text(DateFormat('d MMM yyyy').format(parseIso(_plantedOn!)),
+                    Text(dayMonthYear(parseIso(_plantedOn!)),
                         style: AppText.label(context)),
                     const SizedBox(width: 6),
                     Icon(PhosphorIcons.caretRight, color: AppColors.muted),

@@ -23,10 +23,11 @@ MarkerFacts _facts({
   List<({int days, String on})> streaks = const [],
   List<({String plantId, String firstOn, String lastOn})> photos = const [],
   String? country,
+  bool south = false,
 }) =>
     MarkerFacts(
       today: DateTime.utc(2026, 9, 16),
-      frost: const FrostProfile(lastFrost: '2026-05-13', firstFrost: '2026-10-15'),
+      frost: FrostProfile(lastFrost: '2026-05-13', firstFrost: '2026-10-15', south: south),
       plantCount: plants,
       photoThisMonth: photo,
       euros: euros,
@@ -382,5 +383,14 @@ void main() {
         .map((r) => r.marker!.kind)
         .toList();
     expect(may, [SeasonMarkerKind.ijsheiligen, SeasonMarkerKind.lastFrost]);
+  });
+
+  test('southern hemisphere: recap 20 Jun, order seeds 10 Jul', () {
+    final out = seasonMarkers(_facts(country: 'AU', south: true));
+    String on(SeasonMarkerKind k) => out.firstWhere((m) => m.kind == k).on;
+    expect(on(SeasonMarkerKind.recap).substring(5), '06-20');
+    expect(on(SeasonMarkerKind.orderSeeds).substring(5), '07-10');
+    final north = seasonMarkers(_facts());
+    expect(north.firstWhere((m) => m.kind == SeasonMarkerKind.recap).on.substring(5), '12-20');
   });
 }
