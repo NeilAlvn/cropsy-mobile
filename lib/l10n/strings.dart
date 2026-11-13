@@ -4361,14 +4361,6 @@ abstract final class Str {
     sv: 'Hämtar frostdatumen för den rutan.',
     pt: 'Procura as datas de geada dessa zona.',
   );
-  static const snapToRegion = LocalizedText(
-    nl: 'Kies de dichtstbijzijnde teeltregio',
-    en: 'Snap to the nearest growing region',
-    de: 'Auf die nächste Anbauregion setzen',
-    fr: 'Prendre la région de culture la plus proche',
-    sv: 'Välj närmaste odlingsregion',
-    pt: 'Ajustar à região de cultivo mais próxima',
-  );
   static const noLocation = LocalizedText(
     nl: 'Geen locatie gevonden. Kies een regio of vul een postcode in.',
     en: 'Could not get a location. Pick a region or enter a postcode.',

@@ -79,4 +79,37 @@ void main() {
     expect(repo.regionName, 'Melbourne, Victoria');
     expect(repo.frost.south, isTrue);
   });
+
+  const lookup = FrostLookup(
+    profile: FrostProfile(lastFrost: '2026-04-15', firstFrost: '2026-11-01'),
+    lat: 53.2,
+    lon: 6.5,
+    source: 'open-meteo',
+  );
+
+  test('1.0.1 upgrade: a garden at a preset coordinate recovers that preset', () async {
+    final db = AppDatabase.memory();
+    addTearDown(db.close);
+    final groningen = frostRegions.firstWhere((r) => r.name.contains('Groningen'));
+    final first = await GardenRepository.create(db: db, today: demoToday, observations: (_, _) async => null);
+    await first.createGarden(region: groningen, kind: GardenKind.garden);
+    // 1.0.1 never wrote location.v1.
+    await (db.delete(db.appMeta)..where((t) => t.key.equals(SavedLocation.metaKey))).go();
+
+    final second = await GardenRepository.create(db: db, today: demoToday, observations: (_, _) async => null);
+    await pumpEventQueue();
+    expect(second.regionName, groningen.name);
+    expect(second.country, 'NL');
+    expect(SavedLocation.decode(await second.meta(SavedLocation.metaKey)), isNotNull);
+  });
+
+  test('a postcode lookup stores NL', () async {
+    final db = AppDatabase.memory();
+    addTearDown(db.close);
+    final repo = await GardenRepository.create(db: db, today: demoToday, observations: (_, _) async => null);
+    await repo.createGarden(region: defaultRegion, kind: GardenKind.garden, lookup: lookup, postcode: '9711AA');
+    expect(repo.country, 'NL');
+    await repo.setLocation(name: '9711AA', lookup: lookup, postcode: '9711AA');
+    expect(repo.country, 'NL');
+  });
 }

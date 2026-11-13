@@ -1,13 +1,12 @@
 /// Location picker — lets the grower set the place their whole schedule is
-/// computed from. Three ways in, matching how people actually think about it:
-///   • "Use my current location" — detect and snap to the nearest region.
-///   • Type a town — "Rotterdam", "Antwerp" — and match it to a region.
-///   • Pick a region from the list.
+/// computed from. Ways in:
+///   • "Use my current location" — GPS → frost API.
+///   • Search a town or postcode anywhere in the world → frost API.
+///   • In NL/BE only: pick one of the bundled regions from the list.
 ///
-/// Whatever they choose calls [GardenRepository.setRegion], which re-points the
-/// frost profile every planting date and reminder is derived from. In production
-/// the detected/typed coordinate would hit `GET /api/frost?lat=&lon=`; here it
-/// resolves offline against the bundled presets.
+/// Whatever they choose calls [GardenRepository.setLocation] / `setRegion`,
+/// which re-points the frost profile every planting date and reminder is
+/// derived from.
 library;
 
 import 'package:flutter/material.dart';
@@ -61,7 +60,7 @@ class _LocationSheetState extends State<_LocationSheet> {
     final repo = RepositoryScope.of(context);
     // Read before the await: the context is gone by the time this lands.
     final here = Str.yourLocation.of(context);
-    // GPS → GET /api/frost. Offline or denied: snap to the nearest preset.
+    // GPS → GET /api/frost. Offline or denied: tell the user, keep the saved place.
     final hit = await frostForDevice();
     if (!mounted) return;
     if (hit != null) {

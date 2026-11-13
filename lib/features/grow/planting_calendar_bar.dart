@@ -28,8 +28,12 @@ class _Band {
   final Color color;
 }
 
-double _frac(DateTime d, DateTime start) =>
-    (d.difference(start).inDays / 365).clamp(0.0, 1.0);
+/// Position on a cyclic 365-day axis, so a band that runs into the next
+/// season (garlic: planted Oct, harvested Jul) wraps instead of vanishing.
+@visibleForTesting
+double calendarFrac(DateTime d, DateTime start) => (d.difference(start).inDays % 365) / 365;
+
+double _frac(DateTime d, DateTime start) => calendarFrac(d, start);
 
 class PlantingCalendarBar extends StatelessWidget {
   const PlantingCalendarBar({
@@ -169,7 +173,8 @@ class _LaneRow extends StatelessWidget {
                     for (final b in bands)
                       Positioned(
                         left: b.start * w,
-                        width: ((b.end - b.start) * w).clamp(4.0, w),
+                        // A wrapped band (end < start) runs to the edge of the axis.
+                        width: (((b.end < b.start ? 1.0 : b.end) - b.start) * w).clamp(4.0, w),
                         top: 0,
                         bottom: 0,
                         child: Container(

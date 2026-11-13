@@ -558,7 +558,7 @@ class GardenRepository extends ChangeNotifier {
       name: name,
       profile: lookup.profile,
       source: lookup.source,
-      country: country ?? deviceCountry(),
+      country: country ?? (postcode != null ? 'NL' : deviceCountry()), // postcode lookup = PDOK, NL-only
       lat: lookup.lat,
       lon: lookup.lon,
       postcode: postcode,
@@ -600,22 +600,27 @@ class GardenRepository extends ChangeNotifier {
   /// 1.0.x stored only the garden's coordinate. Rebuild the saved location from
   /// it once, so an upgrade does not drop users back to Randstad.
   Future<void> _recoverLocation() async {
-    final g = await gardens();
-    // Onboarding or a test may have saved a place while we were reading.
-    if (g.isEmpty || await meta(SavedLocation.metaKey) != null) return;
-    final lat = g.first.lat;
-    final lon = g.first.lon;
-    if (lat == null || lon == null) return;
-    final preset = frostRegions.where((r) => r.lat == lat && r.lon == lon).firstOrNull;
-    if (preset != null) {
-      await setRegion(preset);
-      return;
+    try {
+      Future<bool> saved() async => SavedLocation.decode(await meta(SavedLocation.metaKey)) != null;
+      final g = await gardens();
+      // Onboarding or a test may have saved a place while we were reading.
+      if (g.isEmpty || await saved()) return;
+      final lat = g.first.lat;
+      final lon = g.first.lon;
+      if (lat == null || lon == null) return;
+      final preset = frostRegions.where((r) => r.lat == lat && r.lon == lon).firstOrNull;
+      if (preset != null) {
+        await setRegion(preset);
+        return;
+      }
+      final hit = await frostForCoordinate(lat, lon);
+      if (hit == null) return;
+      // Onboarding may have saved a place during the network wait.
+      if (await saved()) return;
+      await setLocation(name: g.first.postcode?.toUpperCase() ?? _yourLocation, lookup: hit, postcode: g.first.postcode);
+    } catch (_) {
+      // Runs unawaited from create(); a failed recovery must never surface.
     }
-    final hit = await frostForCoordinate(lat, lon);
-    if (hit == null) return;
-    // Onboarding may have saved a place during the network wait.
-    if (await meta(SavedLocation.metaKey) != null) return;
-    await setLocation(name: g.first.postcode?.toUpperCase() ?? _yourLocation, lookup: hit, postcode: g.first.postcode);
   }
 
   Future<String> createGarden({
@@ -643,7 +648,7 @@ class GardenRepository extends ChangeNotifier {
             name: placeName ?? postcode?.toUpperCase() ?? _yourLocation,
             profile: lookup.profile,
             source: lookup.source,
-            country: country ?? deviceCountry(),
+            country: country ?? (postcode != null ? 'NL' : deviceCountry()), // postcode lookup = PDOK, NL-only
             lat: lookup.lat,
             lon: lookup.lon,
             postcode: postcode,

@@ -49,9 +49,10 @@ Future<List<PlaceHit>> searchPlaces(String query, {String lang = 'en'}) async {
       'language': lang,
       'format': 'json',
     });
-    final res = await (await client.getUrl(uri)).close();
+    const limit = Duration(seconds: 15);
+    final res = await (await client.getUrl(uri)).close().timeout(limit);
     if (res.statusCode != 200) return const [];
-    return parsePlaces(await res.transform(utf8.decoder).join());
+    return parsePlaces(await res.transform(utf8.decoder).join().timeout(limit));
   } catch (_) {
     return const [];
   } finally {
