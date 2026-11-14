@@ -25,6 +25,13 @@ void main() {
     expect(inputFromKg(1), closeTo(2.20462, 1e-6));
   });
 
+  test('money uses the locale decimal separator', () {
+    AppRegion.apply(lang: 'nl', country: 'NL');
+    expect([money(5.37), money(12), massKg(1.5)], ['5,37', '12,00', '1,5 kg']);
+    AppRegion.apply(lang: 'en', country: 'NL');
+    expect(money(5.37), '5.37');
+  });
+
   test('metric litres keep one decimal', () {
     AppRegion.apply(lang: 'en', country: 'GB');
     expect([volumeL(1.5), volumeL(0.2), volumeL(10)], ['1.5 L', '0.2 L', '10 L']);

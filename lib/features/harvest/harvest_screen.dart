@@ -89,7 +89,7 @@ class _HeroCard extends StatelessWidget {
             !AppRegion.euro
                 ? Str.harvestsLogged(count).of(context)
                 : tally.euros > 0
-                ? '${Str.savedAtPrices(tally.euros.toStringAsFixed(2)).of(context)}'
+                ? '${Str.savedAtPrices(money(tally.euros)).of(context)}'
                     '${tally.unpriced > 0 ? ' · ${Str.unpricedCount(tally.unpriced).of(context)}' : ''}'
                 : '${Str.harvestsLogged(count).of(context)} · '
                     '${Str.noPriceForUnit.of(context)}',
@@ -117,13 +117,13 @@ class _HarvestTile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${repo.cropNames(row.cropSlug).of(context)} · ${row.unit == 'kg' && AppRegion.imperial ? massKg(row.quantity) : row.amount}',
+              Text('${repo.cropNames(row.cropSlug).of(context)} · ${row.unit == 'kg' ? massKg(row.quantity) : row.amount}',
                   style: AppText.label(context)),
               Text(weekdayDayMonth(parseIso(row.harvestedOn)), style: AppText.caption(context)),
             ],
           ),
         ),
-        if (AppRegion.euro && value != null) Text('€${value.toStringAsFixed(2)}', style: AppText.label(context, color: AppColors.clay)),
+        if (AppRegion.euro && value != null) Text('€${money(value)}', style: AppText.label(context, color: AppColors.clay)),
       ]),
     );
   }
