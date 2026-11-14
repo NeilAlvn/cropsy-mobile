@@ -22,12 +22,31 @@ in the app, retake the capture into `../shots/` with the same filename, rerun.
 
 ## Upload
 
-`upload/en-US/` and `upload/nl-NL/` hold the finals, named so that alphabetical
-order is the order they should appear in the store listing. Drag each folder
-into the matching localisation in App Store Connect → App Store → Screenshots
-(6.9" Display), and into Play Console → Store listing → Phone screenshots.
+`upload/<locale>/` holds the finals, `1.png` … `6.png` in listing order (the
+first three show in search results):
 
-Order is deliberate: the first three are what shows in search results.
+| Folder | App Store Connect locale | Play Console listing |
+|---|---|---|
+| `upload/en-US/` | English (U.S.) | en-US |
+| `upload/en-GB/` | English (U.K.) | en-GB |
+| `upload/en-AU/` | English (Australia) | en-AU |
+| `upload/nl-NL/` | Dutch | nl-NL |
+
+iOS: `python3 tool/store/asc_listing.py --shots en-US,en-GB,en-AU` (dry run;
+add `--apply`) replaces the 6.9" (APP_IPHONE_67) set per locale and uploads the
+files one at a time, so the order is the upload order. It also pushes title,
+subtitle, keywords, description and What's New from `metadata/*.md`, and creates
+a missing localisation (en-AU). By hand in Media Manager: also one file at a
+time — several files in one go land in completion order.
+
+## Captures (`../shots/`, gitignored)
+
+iPhone 17 Pro Max (1320×2868), app language English, five crops growing:
+`us-*` Chicago (en_US), `gb-*` Leeds (en_GB), `au-*` Melbourne (en_AU); screens
+`season`, `home`, `explore`, `garden`, `timeline` (lettuce detail). Shot 1 reuses
+`en-scan.png` for all three. For the capture build only, `premium` was forced
+true in `purchase_service.dart` (unblurred season path, no plant cap) and
+reverted afterwards.
 
 ## Recapture list
 

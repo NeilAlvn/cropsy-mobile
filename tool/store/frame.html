@@ -103,8 +103,8 @@
 // Each entry: one store screenshot. `y` scrolls the capture inside the device
 // window so the frame shows the part of the screen the headline is claiming.
 const SHOTS = [
-  // ---------- English ----------
-  { id: 'en-1-diagnose', img: '../shots/en-scan.png', brand: true,
+  // ---------- English (US) ----------
+  { id: 'en-us-1-diagnose', img: '../shots/en-scan.png', brand: true,
     h: 'Spot The Problem<br>From One Photo',
     y: -300,
     breakout: { src: 'art/leaf_cutout.png', top: 542, left: 250, w: 1180, rot: 0 },
@@ -113,32 +113,106 @@ const SHOTS = [
       { text: 'From your photo', top: 1770, left: 90, soft: true },
     ] },
 
-  { id: 'en-2-season', img: '../shots/en-season.png',
+  { id: 'en-us-2-season', img: '../shots/us-season.png',
     h: 'Your Whole Season,<br>One Path',
     y: -150,
     breakout: { src: 'art/mascot_seedling.png', top: 430, left: 720, w: 560, rot: 6 },
     callouts: [{ cls: 'pill dark no-tail', text: 'Sow · Plant out · Harvest', top: 2210, left: 150 }] },
 
-  { id: 'en-3-home', img: '../shots/en-home.png',
+  { id: 'en-us-3-home', img: '../shots/us-home.png',
+    h: 'Today’s Tasks,<br>Weather Included',
+    y: -110,
+    breakout: { src: 'art/cloud.png', top: 400, left: 60, w: 620, rot: -8 },
+    callouts: [{ cls: 'pill amber', text: '0.6 in rain — skip watering', top: 1352, left: 520 }] },
+
+  { id: 'en-us-4-explore', img: '../shots/us-explore.png',
+    h: 'Know What<br>To Grow Next', y: -180,
+    breakout: { src: 'art/radishes.png', top: 350, left: 700, w: 700, rot: 8 },
+    chips: [{ text: 'Picked for your balcony', top: 1520, left: 50, soft: true }] },
+
+  { id: 'en-us-5-garden', img: '../shots/us-garden.png',
+    h: 'Every Plant,<br>Every Pot, Tracked', small: true, y: -120,
+    breakout: { src: 'art/basket.png', top: 380, left: 560, w: 860, rot: -5 },
+    chips: [{ text: '5 crops <b>on track</b>', top: 1560, left: 40 }] },
+
+  { id: 'en-us-6-timeline', img: '../shots/us-timeline.png',
+    h: 'From Seed<br>To Harvest', y: -130,
+    breakout: { src: 'art/tomatoes.png', top: 420, left: 560, w: 780, rot: 6 },
+    chips: [{ text: 'Harvest in <b>45 days</b>', top: 2010, left: 40 }] },
+
+  // ---------- English (UK) ----------
+  { id: 'en-gb-1-diagnose', img: '../shots/en-scan.png', brand: true,
+    h: 'Spot The Problem<br>From One Photo',
+    y: -300,
+    breakout: { src: 'art/leaf_cutout.png', top: 542, left: 250, w: 1180, rot: 0 },
+    chips: [
+      { text: 'Late blight <b>87%</b>', top: 1600, left: 30 },
+      { text: 'From your photo', top: 1770, left: 90, soft: true },
+    ] },
+
+  { id: 'en-gb-2-season', img: '../shots/gb-season.png',
+    h: 'Your Whole Season,<br>One Path',
+    y: -150,
+    breakout: { src: 'art/mascot_seedling.png', top: 430, left: 720, w: 560, rot: 6 },
+    callouts: [{ cls: 'pill dark no-tail', text: 'Sow · Plant out · Harvest', top: 2210, left: 150 }] },
+
+  { id: 'en-gb-3-home', img: '../shots/gb-home.png',
     h: 'Today’s Tasks,<br>Weather Included',
     y: -110,
     breakout: { src: 'art/cloud.png', top: 400, left: 60, w: 620, rot: -8 },
     callouts: [{ cls: 'pill amber', text: '15 mm rain — skip watering', top: 1352, left: 520 }] },
 
-  { id: 'en-4-explore', img: '../shots/en-explore.png',
+  { id: 'en-gb-4-explore', img: '../shots/gb-explore.png',
     h: 'Know What<br>To Grow Next', y: -180,
     breakout: { src: 'art/radishes.png', top: 350, left: 700, w: 700, rot: 8 },
     chips: [{ text: 'Picked for your balcony', top: 1520, left: 50, soft: true }] },
 
-  { id: 'en-5-garden', img: '../shots/en-garden.png',
+  { id: 'en-gb-5-garden', img: '../shots/gb-garden.png',
     h: 'Every Plant,<br>Every Pot, Tracked', small: true, y: -120,
     breakout: { src: 'art/basket.png', top: 380, left: 560, w: 860, rot: -5 },
     chips: [{ text: '5 crops <b>on track</b>', top: 1560, left: 40 }] },
 
-  { id: 'en-6-timeline', img: '../shots/en-timeline.png',
+  { id: 'en-gb-6-timeline', img: '../shots/gb-timeline.png',
     h: 'From Seed<br>To Harvest', y: -130,
     breakout: { src: 'art/tomatoes.png', top: 420, left: 560, w: 780, rot: 6 },
-    chips: [{ text: 'Harvest in <b>57 days</b>', top: 1560, left: 40 }] },
+    chips: [{ text: 'Harvest in <b>45 days</b>', top: 2010, left: 40 }] },
+
+  // ---------- English (Australia) ----------
+  { id: 'en-au-1-diagnose', img: '../shots/en-scan.png', brand: true,
+    h: 'Spot The Problem<br>From One Photo',
+    y: -300,
+    breakout: { src: 'art/leaf_cutout.png', top: 542, left: 250, w: 1180, rot: 0 },
+    chips: [
+      { text: 'Late blight <b>87%</b>', top: 1600, left: 30 },
+      { text: 'From your photo', top: 1770, left: 90, soft: true },
+    ] },
+
+  { id: 'en-au-2-season', img: '../shots/au-season.png',
+    h: 'Your Whole Season,<br>One Path',
+    y: -150,
+    breakout: { src: 'art/mascot_seedling.png', top: 430, left: 720, w: 560, rot: 6 },
+    callouts: [{ cls: 'pill dark no-tail', text: 'Sow · Plant out · Harvest — Jul to Jun', top: 2210, left: 150 }] },
+
+  { id: 'en-au-3-home', img: '../shots/au-home.png',
+    h: 'Today’s Tasks,<br>Weather Included',
+    y: -110,
+    breakout: { src: 'art/cloud.png', top: 400, left: 60, w: 620, rot: -8 },
+    callouts: [{ cls: 'pill amber', text: '15 mm rain — skip watering', top: 1352, left: 520 }] },
+
+  { id: 'en-au-4-explore', img: '../shots/au-explore.png',
+    h: 'Know What<br>To Grow Next', y: -180,
+    breakout: { src: 'art/radishes.png', top: 350, left: 700, w: 700, rot: 8 },
+    chips: [{ text: 'Picked for your balcony', top: 1520, left: 50, soft: true }] },
+
+  { id: 'en-au-5-garden', img: '../shots/au-garden.png',
+    h: 'Every Plant,<br>Every Pot, Tracked', small: true, y: -120,
+    breakout: { src: 'art/basket.png', top: 380, left: 560, w: 860, rot: -5 },
+    chips: [{ text: '5 crops <b>on track</b>', top: 1560, left: 40 }] },
+
+  { id: 'en-au-6-timeline', img: '../shots/au-timeline.png',
+    h: 'From Seed<br>To Harvest', y: -130,
+    breakout: { src: 'art/tomatoes.png', top: 420, left: 560, w: 780, rot: 6 },
+    chips: [{ text: 'Harvest in <b>45 days</b>', top: 2010, left: 40 }] },
 
   // ---------- Nederlands ----------
   { id: 'nl-1-diagnose', img: '../shots/nl-scan.png', brand: true,

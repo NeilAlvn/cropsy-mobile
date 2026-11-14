@@ -41,21 +41,26 @@ def description(f):
     return re.search(r'^## description\n([\s\S]*?)(?=^## |\Z)', f.read_text(), re.M).group(1).strip()
 
 
-apply = '--apply' in sys.argv
-versions = call('GET', f'/v1/apps/{APP}/appStoreVersions?filter[platform]=IOS&limit=10')['data']
-version = next(v for v in versions if v['attributes']['appStoreState'] in EDITABLE)
-print(f"version {version['attributes']['versionString']} ({version['attributes']['appStoreState']})")
-locs = {l['attributes']['locale']: l for l in
-        call('GET', f"/v1/appStoreVersions/{version['id']}/appStoreVersionLocalizations?limit=50")['data']}
+def main():
+    apply = '--apply' in sys.argv
+    versions = call('GET', f'/v1/apps/{APP}/appStoreVersions?filter[platform]=IOS&limit=10')['data']
+    version = next(v for v in versions if v['attributes']['appStoreState'] in EDITABLE)
+    print(f"version {version['attributes']['versionString']} ({version['attributes']['appStoreState']})")
+    locs = {l['attributes']['locale']: l for l in
+            call('GET', f"/v1/appStoreVersions/{version['id']}/appStoreVersionLocalizations?limit=50")['data']}
 
-for stem, locale in LOCALES.items():
-    want = description(Path(f'tool/store/metadata/{stem}.md'))
-    loc = locs.get(locale)
-    if not loc: print(f'{locale}: missing on ASC'); continue
-    if (loc['attributes'].get('description') or '').strip() == want: print(f'{locale}: up to date'); continue
-    print(f'{locale}: differs, new tail: ...{want[-160:]!r}')
-    if apply:
-        call('PATCH', f"/v1/appStoreVersionLocalizations/{loc['id']}",
-             {'data': {'type': 'appStoreVersionLocalizations', 'id': loc['id'], 'attributes': {'description': want}}})
-        print(f'{locale}: updated')
-if not apply: print('dry run; rerun with --apply to write')
+    for stem, locale in LOCALES.items():
+        want = description(Path(f'tool/store/metadata/{stem}.md'))
+        loc = locs.get(locale)
+        if not loc: print(f'{locale}: missing on ASC'); continue
+        if (loc['attributes'].get('description') or '').strip() == want: print(f'{locale}: up to date'); continue
+        print(f'{locale}: differs, new tail: ...{want[-160:]!r}')
+        if apply:
+            call('PATCH', f"/v1/appStoreVersionLocalizations/{loc['id']}",
+                 {'data': {'type': 'appStoreVersionLocalizations', 'id': loc['id'], 'attributes': {'description': want}}})
+            print(f'{locale}: updated')
+    if not apply: print('dry run; rerun with --apply to write')
+
+
+if __name__ == '__main__':
+    main()
