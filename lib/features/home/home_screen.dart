@@ -7,6 +7,7 @@ library;
 import 'package:flutter/material.dart';
 import '../../l10n/mascot_lines.dart';
 import '../../l10n/strings.dart';
+import '../../l10n/region.dart';
 import '../../l10n/date_fmt.dart';
 import '../../l10n/units.dart';
 import '../../l10n/app_lang.dart';
@@ -867,7 +868,11 @@ class _MonthChecklist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
-    final items = repo.content.checklistFor(month);
+    // NL/BE keep the calendar months (written from Dutch sources); elsewhere
+    // the items follow the local frost dates, so the south and the US get the right season.
+    final items = AppRegion.nlBe
+        ? repo.content.checklistFor(month)
+        : repo.content.frostChecklistFor(repo.frost, repo.today);
     if (items.isEmpty) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 4),

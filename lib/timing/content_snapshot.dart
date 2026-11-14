@@ -4,6 +4,7 @@ library;
 
 import 'dart:convert';
 
+import 'dates.dart';
 import 'types.dart';
 
 class ContentCollection {
@@ -30,8 +31,18 @@ class ChecklistItem {
     required this.body,
     required this.link,
     this.draft = false,
+    this.anchor,
+    this.fromWeeks = 0,
+    this.toWeeks = 0,
   });
+  /// Calendar month (monthly checklist); 0 for frost-relative items.
   final int month;
+
+  /// Frost-relative items: `last_frost` | `first_frost`, and the window in
+  /// weeks around that date (inclusive).
+  final String? anchor;
+  final int fromWeeks;
+  final int toWeeks;
   final LocalizedText title;
   final LocalizedText body;
 
@@ -154,6 +165,7 @@ class ContentSnapshot {
     required this.version,
     required this.collections,
     required this.checklist,
+    this.frostChecklist = const [],
     required this.prices,
     this.varieties = const [],
     this.goodCompanions = const [],
@@ -164,6 +176,7 @@ class ContentSnapshot {
   final String version;
   final List<ContentCollection> collections;
   final List<ChecklistItem> checklist;
+  final List<ChecklistItem> frostChecklist;
   final Map<String, Price> prices;
   final List<Variety> varieties;
   final List<CompanionPair> goodCompanions;
@@ -190,6 +203,23 @@ class ContentSnapshot {
 
   List<ChecklistItem> checklistFor(int month) =>
       checklist.where((c) => c.month == month).toList();
+
+  /// Frost-relative checklist (outside NL/BE): items whose window around this
+  /// season's frost date, or the same date a year either side, contains [today].
+  /// Frost-free places get none: every item is about frost.
+  List<ChecklistItem> frostChecklistFor(FrostProfile frost, String today) {
+    if (frost.regime == 'frost_free') return const [];
+    final t = parseIso(today);
+    bool inWindow(ChecklistItem c) {
+      final base = parseIso(c.anchor == 'first_frost' ? frost.firstFrost : frost.lastFrost);
+      for (final y in const [-1, 0, 1]) {
+        final a = DateTime(base.year + y, base.month, base.day);
+        if (!t.isBefore(addWeeks(a, c.fromWeeks)) && !t.isAfter(addWeeks(a, c.toWeeks))) return true;
+      }
+      return false;
+    }
+    return frostChecklist.where(inWindow).toList();
+  }
 
   List<Variety> varietiesOf(String cropSlug) =>
       varieties.where((v) => v.cropSlug == cropSlug).toList();
@@ -223,6 +253,21 @@ class ContentSnapshot {
               .cast<Map<String, dynamic>>())
         ChecklistItem(
           month: (c['month'] as num).toInt(),
+          title: LocalizedText.fromJson(c['title'] as Map<String, dynamic>),
+          body: LocalizedText.fromJson(c['body'] as Map<String, dynamic>),
+          link: c['link'] as String?,
+          draft: c['draft'] as bool? ?? false,
+        ),
+    ],
+    frostChecklist: [
+      for (final c
+          in (j['frost_checklist'] as List? ?? const [])
+              .cast<Map<String, dynamic>>())
+        ChecklistItem(
+          month: 0,
+          anchor: c['anchor'] as String,
+          fromWeeks: (c['from_weeks'] as num).toInt(),
+          toWeeks: (c['to_weeks'] as num).toInt(),
           title: LocalizedText.fromJson(c['title'] as Map<String, dynamic>),
           body: LocalizedText.fromJson(c['body'] as Map<String, dynamic>),
           link: c['link'] as String?,

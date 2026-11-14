@@ -1,0 +1,59 @@
+import 'package:cropsy/l10n/date_fmt.dart';
+import 'package:cropsy/l10n/region.dart';
+import 'package:cropsy/timing/content_snapshot.dart';
+import 'package:cropsy/timing/types.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
+Map<String, dynamic> _item(String anchor, int from, int to, String en) => {
+      'anchor': anchor,
+      'from_weeks': from,
+      'to_weeks': to,
+      'title': {'nl': en, 'en': en},
+      'body': {'nl': en, 'en': en},
+      'link': null,
+    };
+
+void main() {
+  setUpAll(() => initializeDateFormatting());
+  tearDown(() => AppRegion.apply(lang: 'nl', country: 'NL'));
+
+  final snap = ContentSnapshot.fromJson({
+    'version': 't',
+    'frost_checklist': [
+      _item('last_frost', -12, -7, 'order seeds'),
+      _item('last_frost', -2, 0, 'harden off'),
+      _item('first_frost', -5, -1, 'bring pots in'),
+      _item('first_frost', 0, 8, 'plant garlic'),
+    ],
+  });
+  String titles(FrostProfile f, String today) =>
+      snap.frostChecklistFor(f, today).map((c) => c.title.en).join(',');
+
+  test('items follow the frost dates, not the calendar month', () {
+    const chicago = FrostProfile(lastFrost: '2026-04-22', firstFrost: '2026-11-08');
+    expect(titles(chicago, '2026-11-14'), 'plant garlic');
+    expect(titles(chicago, '2026-10-20'), 'bring pots in');
+    // Next spring's window, computed from this season's profile.
+    expect(titles(chicago, '2027-02-10'), 'order seeds');
+    expect(titles(chicago, '2026-04-15'), 'harden off');
+  });
+
+  test('southern hemisphere: November is spring', () {
+    const melbourne = FrostProfile(lastFrost: '2026-07-29', firstFrost: '2027-06-30', south: true);
+    expect(titles(melbourne, '2026-07-20'), contains('harden off'));
+    expect(titles(melbourne, '2026-11-14'), '');
+  });
+
+  test('frost-free places get no frost checklist', () {
+    const auckland = FrostProfile(lastFrost: '2026-09-04', firstFrost: '2027-06-30', south: true, regime: 'frost_free');
+    expect(titles(auckland, '2026-08-30'), '');
+  });
+
+  test('engine ISO dates are shown as day/month', () {
+    AppRegion.apply(lang: 'en', country: 'US');
+    expect(localDates('close to first frost (2026-11-08).'), 'close to first frost (Nov 8).');
+    AppRegion.apply(lang: 'en', country: 'GB');
+    expect(localDates('(2026-11-08)'), '(8 Nov)');
+  });
+}
