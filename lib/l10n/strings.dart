@@ -1480,7 +1480,8 @@ abstract final class Str {
     sv: 'Hittat. Här blir det i snitt ingen frost, så din plan följer de svalaste och varmaste veckorna.',
     pt: 'Encontrado. Aqui, em média, não há geada, por isso o teu plano segue as semanas mais frescas e mais quentes.',
   );
-  static LocalizedText planNoFrostLine(String region) => LocalizedText(
+  static LocalizedText planNoFrostLine(String place) => _planNoFrost(place.isEmpty ? place : '${place[0].toUpperCase()}${place.substring(1)}');
+  static LocalizedText _planNoFrost(String region) => LocalizedText(
     nl: '$region: gemiddeld vorstvrij',
     en: '$region: frost-free on average',
     de: '$region: im Schnitt frostfrei',
