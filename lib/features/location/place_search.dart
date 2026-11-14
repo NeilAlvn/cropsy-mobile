@@ -1,10 +1,11 @@
-/// Town / postcode search anywhere in the world: Open-Meteo Geocoding (free,
-/// no key; the device already calls Open-Meteo for the forecast). NL postcodes
-/// keep going through `frostForPostcode` (PDOK, exact centroid).
+/// Town search anywhere in the world through the phone's own geocoder
+/// (Apple / Google), so no server and no key. NL postcodes keep going
+/// through `frostForPostcode` (PDOK, exact centroid).
 library;
 
-import 'dart:convert';
-import 'dart:io';
+import 'package:flutter/foundation.dart' show visibleForTesting;
+import 'package:flutter/widgets.dart' show Locale;
+import 'package:geocoding/geocoding.dart';
 
 class PlaceHit {
   const PlaceHit({required this.name, required this.label, required this.countryCode, required this.lat, required this.lon});
@@ -19,43 +20,42 @@ class PlaceHit {
   final double lon;
 }
 
-List<PlaceHit> parsePlaces(String body) {
-  try {
-    final rows = (jsonDecode(body) as Map<String, dynamic>)['results'] as List? ?? const [];
-    return [
-      for (final r in rows.cast<Map<String, dynamic>>())
-        if (r['country_code'] is String)
-          PlaceHit(
-            name: r['name'] as String,
-            label: [r['name'], r['admin1'], r['country_code']].whereType<String>().join(', '),
-            countryCode: (r['country_code'] as String).toUpperCase(),
-            lat: (r['latitude'] as num).toDouble(),
-            lon: (r['longitude'] as num).toDouble(),
-          ),
-    ];
-  } catch (_) {
-    return const [];
-  }
+/// Null when the placemark has no name or country code (not a place to save).
+@visibleForTesting
+PlaceHit? placeHitFromPlacemark(Placemark p, double lat, double lon) {
+  final name = [p.locality, p.name].firstWhere((s) => s != null && s.isNotEmpty, orElse: () => null);
+  final cc = p.isoCountryCode;
+  if (name == null || cc == null || cc.isEmpty) return null;
+  return PlaceHit(
+    name: name,
+    label: [name, p.administrativeArea, cc.toUpperCase()].where((s) => s != null && s.isNotEmpty).join(', '),
+    countryCode: cc.toUpperCase(),
+    lat: lat,
+    lon: lon,
+  );
 }
 
-Future<List<PlaceHit>> searchPlaces(String query, {String lang = 'en'}) async {
+Future<List<PlaceHit>> _deviceGeocode(String q, String lang) async {
+  final g = Geocoding(locale: Locale(lang));
+  final hits = <PlaceHit>[];
+  for (final l in (await g.locationFromAddress(q)).take(6)) {
+    final marks = await g.placemarkFromCoordinates(l.latitude, l.longitude);
+    final hit = marks.isEmpty ? null : placeHitFromPlacemark(marks.first, l.latitude, l.longitude);
+    if (hit != null && !hits.any((h) => h.label == hit.label)) hits.add(hit);
+  }
+  return hits;
+}
+
+Future<List<PlaceHit>> searchPlaces(
+  String query, {
+  String lang = 'en',
+  Future<List<PlaceHit>> Function(String q, String lang) geocode = _deviceGeocode,
+}) async {
   final q = query.trim();
   if (q.length < 2) return const [];
-  final client = HttpClient()..connectionTimeout = const Duration(seconds: 8);
   try {
-    final uri = Uri.https('geocoding-api.open-meteo.com', '/v1/search', {
-      'name': q,
-      'count': '6',
-      'language': lang,
-      'format': 'json',
-    });
-    const limit = Duration(seconds: 15);
-    final res = await (await client.getUrl(uri)).close().timeout(limit);
-    if (res.statusCode != 200) return const [];
-    return parsePlaces(await res.transform(utf8.decoder).join().timeout(limit));
+    return await geocode(q, lang).timeout(const Duration(seconds: 15));
   } catch (_) {
     return const [];
-  } finally {
-    client.close();
   }
 }

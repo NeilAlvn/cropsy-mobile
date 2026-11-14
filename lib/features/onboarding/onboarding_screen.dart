@@ -677,7 +677,7 @@ class _LocationStepState extends State<_LocationStep> {
                 controller: _pc,
                 textCapitalization: TextCapitalization.words,
                 style: AppText.body(context),
-                decoration: InputDecoration(isDense: true, hintText: Str.townOrPostcode.of(context)),
+                decoration: InputDecoration(isDense: true, hintText: Str.placeSearchHint.of(context)),
                 onSubmitted: (_) => _search(),
               ),
             ),

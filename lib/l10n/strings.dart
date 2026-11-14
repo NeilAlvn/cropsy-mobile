@@ -9,6 +9,7 @@
 library;
 
 import '../timing/types.dart';
+import 'region.dart';
 
 abstract final class Str {
   // ── tabs, read by the screen reader (base 8.8) ────────────────────────────
@@ -509,12 +510,20 @@ abstract final class Str {
     pt: 'O que tornaria isto melhor?',
   );
   static const climateNormals = LocalizedText(
-    nl: 'Open-Meteo klimaatgegevens (10 jaar)',
-    en: 'Open-Meteo climate data (10 years)',
-    de: 'Open-Meteo-Klimadaten (10 Jahre)',
-    fr: 'Données climatiques Open-Meteo (10 ans)',
-    sv: 'Klimatdata från Open-Meteo (10 år)',
-    pt: 'Dados climáticos Open-Meteo (10 anos)',
+    nl: 'Klimaatgegevens: Copernicus ERA5-Land via Open-Meteo.com (CC BY 4.0)',
+    en: 'Climate data: Copernicus ERA5-Land via Open-Meteo.com (CC BY 4.0)',
+    de: 'Klimadaten: Copernicus ERA5-Land über Open-Meteo.com (CC BY 4.0)',
+    fr: 'Données climatiques : Copernicus ERA5-Land via Open-Meteo.com (CC BY 4.0)',
+    sv: 'Klimatdata: Copernicus ERA5-Land via Open-Meteo.com (CC BY 4.0)',
+    pt: 'Dados climáticos: Copernicus ERA5-Land via Open-Meteo.com (CC BY 4.0)',
+  );
+  static const forecastCredit = LocalizedText(
+    nl: 'Weersverwachting: MET Norway (CC BY 4.0)',
+    en: 'Forecast: MET Norway (CC BY 4.0)',
+    de: 'Vorhersage: MET Norway (CC BY 4.0)',
+    fr: 'Prévisions : MET Norway (CC BY 4.0)',
+    sv: 'Prognos: MET Norway (CC BY 4.0)',
+    pt: 'Previsão: MET Norway (CC BY 4.0)',
   );
   static const regionalPreset = LocalizedText(
     nl: 'NL regiovoorinstelling',
@@ -4408,6 +4417,28 @@ abstract final class Str {
     sv: 'Ort, region eller postnummer',
     pt: 'Cidade, região ou código postal',
   );
+  static const _townOrZip = LocalizedText(
+    nl: 'Plaats, regio of postcode',
+    en: 'Town or ZIP code',
+    de: 'Ort oder ZIP-Code',
+    fr: 'Ville ou ZIP code',
+    sv: 'Ort eller ZIP-kod',
+    pt: 'Cidade ou ZIP code',
+  );
+  static const _townOrRegion = LocalizedText(
+    nl: 'Plaats of regio',
+    en: 'Town or region',
+    de: 'Ort oder Region',
+    fr: 'Ville ou région',
+    sv: 'Ort eller region',
+    pt: 'Cidade ou região',
+  );
+
+  /// The place-search hint. Postcodes only work in NL/BE (PDOK) and as US ZIP
+  /// codes in the geocoder, so nowhere else promises them.
+  static LocalizedText get placeSearchHint =>
+      AppRegion.nlBe ? townOrPostcode : AppRegion.isUS ? _townOrZip : _townOrRegion;
+
   static LocalizedText usePostcode(String code) => LocalizedText(
     nl: 'Gebruik postcode $code',
     en: 'Use postcode $code',
@@ -5628,20 +5659,20 @@ abstract final class Str {
   );
   static LocalizedText faqDatesA(String distance) => LocalizedText(
     nl:
-        'Uit de vorstdatums voor jouw locatie (tien jaar Open-Meteo-weerdata, '
+        'Uit de vorstdatums voor jouw locatie (tien jaar Copernicus ERA5-Land-klimaatdata, '
         'afgerond op ~$distance), gecombineerd met teeltregels die tegen '
         'minstens twee gepubliceerde zaaikalenders zijn gelegd.',
     en:
-        'From the frost dates for your location (ten years of Open-Meteo '
-        'weather data, rounded to ~$distance), checked against at least two '
+        'From the frost dates for your location (ten years of Copernicus ERA5-Land '
+        'climate data, rounded to ~$distance), checked against at least two '
         'published seed calendars.',
     de:
-        'Aus den Frostdaten für deinen Standort (zehn Jahre Open-Meteo-Wetterdaten, '
+        'Aus den Frostdaten für deinen Standort (zehn Jahre Copernicus-ERA5-Land-Klimadaten, '
         'auf ~$distance gerundet), abgeglichen mit mindestens zwei '
         'veröffentlichten Aussaatkalendern.',
-    fr: 'Des dates de gel de ta position (dix ans de données météo Open-Meteo, arrondies à ~$distance), vérifiées dans au moins deux calendriers de semis publiés.',
-    sv: 'Från frostdatumen för din plats (tio års väderdata från Open-Meteo, avrundade till ~$distance), kontrollerade mot minst två publicerade såkalendrar.',
-    pt: 'Das datas de geada da tua localização (dez anos de dados meteorológicos Open-Meteo, arredondados a ~$distance), verificadas em pelo menos dois calendários de sementeira publicados.',
+    fr: 'Des dates de gel de ta position (dix ans de données climatiques Copernicus ERA5-Land, arrondies à ~$distance), vérifiées dans au moins deux calendriers de semis publiés.',
+    sv: 'Från frostdatumen för din plats (tio års klimatdata från Copernicus ERA5-Land, avrundade till ~$distance), kontrollerade mot minst två publicerade såkalendrar.',
+    pt: 'Das datas de geada da tua localização (dez anos de dados climáticos Copernicus ERA5-Land, arredondados a ~$distance), verificadas em pelo menos dois calendários de sementeira publicados.',
   );
   static const faqBehindQ = LocalizedText(
     nl: 'Ik loop achter. Is mijn plan verpest?',

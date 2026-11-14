@@ -1,6 +1,6 @@
 {
-  "version": "6510a50c43e7e1a1",
-  "generated_at": "2026-11-13T15:44:49.965Z",
+  "version": "2b41bcebf729e9e3",
+  "generated_at": "2026-11-13T18:11:01.516Z",
   "crops": [
     {
       "slug": "asparagus",
@@ -1492,6 +1492,103 @@
       "sources": [
         "Florum kruiden-zaaikalender",
         "Allezadenkopen zaaikalender"
+      ],
+      "verified": true
+    },
+    {
+      "slug": "collard-greens",
+      "names": {
+        "nl": "Bladkool (collards)",
+        "en": "Collard greens",
+        "de": "Blattkohl",
+        "fr": "Chou cavalier",
+        "sv": "Bladkål",
+        "pt": "Couve-galega"
+      },
+      "category": "brassica",
+      "frost_tender": false,
+      "container_ok": true,
+      "min_pot_litres": 19,
+      "spacing_cm": 35,
+      "vak_per_m2": 1,
+      "sun": "shade-tolerant",
+      "max_c": 30,
+      "methods": [
+        {
+          "type": "sow_indoor",
+          "anchor": "last_frost",
+          "start_weeks": -8,
+          "end_weeks": -6,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Zaai binnen voor in het vroege voorjaar voor sterke zaailingen.",
+            "en": "Sow indoors in early spring for sturdy seedlings ready to plant out early.",
+            "de": "Im zeitigen Frühjahr drinnen vorziehen für kräftige Setzlinge.",
+            "fr": "Semez au chaud en début de printemps pour obtenir des plants robustes.",
+            "sv": "Förodla inomhus tidigt på våren för kraftiga plantor.",
+            "pt": "Semear em interior no início da primavera para obter mudas fortes."
+          }
+        },
+        {
+          "type": "transplant",
+          "anchor": "last_frost",
+          "start_weeks": -6,
+          "end_weeks": -4,
+          "min_soil_c": 5,
+          "note": {
+            "nl": "Plant koudebestendige zaailingen buiten uit zodra de grond bewerkt kan worden.",
+            "en": "Transplant cold-hardy seedlings outdoors as soon as the ground can be worked.",
+            "de": "Winterharte Setzlinge ins Freiland pflanzen, sobald der Boden bearbeitet werden kann.",
+            "fr": "Repiquez les plants rustiques en extérieur dès que la terre peut être travaillée.",
+            "sv": "Plantera ut köldtåliga plantor så snart jorden går att bruka.",
+            "pt": "Transplante as mudas resistentes para o exterior assim que o solo puder ser trabalhado."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "last_frost",
+          "start_weeks": -6,
+          "end_weeks": -4,
+          "min_soil_c": 5,
+          "note": {
+            "nl": "Zaai direct buiten zodra de grond in het vroege voorjaar bewerkbaar is.",
+            "en": "Direct sow outdoors in early spring as soon as the soil is workable.",
+            "de": "Direkt ins Freiland säen, sobald der Boden im zeitigen Frühjahr aufgetaut ist.",
+            "fr": "Semez directement en extérieur dès que le sol peut être travaillé au printemps.",
+            "sv": "Direktså utomhus tidigt på våren så snart marken reder sig.",
+            "pt": "Semear diretamente no exterior no início da primavera assim que o solo permitir."
+          }
+        }
+      ],
+      "harvest": {
+        "days_min": 40,
+        "days_max": 65
+      },
+      "difficulty": 1,
+      "feed_cadence_days": 28,
+      "depth_mm": 10,
+      "germination_days": 9,
+      "days_to_transplant": 35,
+      "perennial": false,
+      "water_cadence_days": null,
+      "image": null,
+      "sources": [
+        "https://extension.psu.edu/season-extenders-and-growing-fall-vegetables",
+        "https://extension.illinois.edu/gardening/collard",
+        "https://hgic.clemson.edu/factsheet/collards/",
+        "https://extension.illinois.edu/news-releases/time-right-plant-cool-season-vegetables",
+        "https://aggie-horticulture.tamu.edu/wp-content/uploads/sites/10/2013/09/EHT-051.pdf",
+        "https://www.wetcc.edu/wp-content/uploads/2026/06/Vegetable-seed-germination-temperatures.pdf",
+        "https://publications.mgcafe.uky.edu/files/4bc07pa.pdf",
+        "https://extension.colostate.edu/resource/vegetable-gardening-in-containers/",
+        "https://extension.illinois.edu/container-gardens/growing-vegetables-containers",
+        "https://agrilifeextension.tamu.edu/wp-content/uploads/2024/05/how-to-grow-collard-greens.pdf",
+        "https://fieldreport.caes.uga.edu/publications/B577/home-gardening/",
+        "https://www.rhs.org.uk/plants/536988/brassica-oleracea-acephala-group-purple-tree/details",
+        "https://agrilifeextension.tamu.edu/wp-content/uploads/2026/03/Recommended-Vegetable-Varieties-for-Sutton-County-1.pdf",
+        "https://extension.missouri.edu/publications/g6570",
+        "https://bexar-tx.tamu.edu/homehort/archives-of-weekly-articles-davids-plant-of-the-week/vates-collards/",
+        "https://www.rhs.org.uk/plants/332125/brassica-oleracea-acephala-group-ewiger-kohl/details"
       ],
       "verified": true
     },
@@ -3986,6 +4083,101 @@
       "verified": true
     },
     {
+      "slug": "okra",
+      "names": {
+        "nl": "Okra",
+        "en": "Okra",
+        "de": "Okra",
+        "fr": "Gombo",
+        "sv": "Okra",
+        "pt": "Quiabo"
+      },
+      "category": "fruit-veg",
+      "frost_tender": true,
+      "container_ok": true,
+      "min_pot_litres": 15,
+      "spacing_cm": 30,
+      "vak_per_m2": 1,
+      "sun": "full",
+      "max_c": 38,
+      "methods": [
+        {
+          "type": "sow_indoor",
+          "anchor": "last_frost",
+          "start_weeks": -6,
+          "end_weeks": -4,
+          "min_soil_c": 16,
+          "note": {
+            "nl": "Zaai 4 tot 6 weken voor de laatste vorst binnen bij warme temperaturen.",
+            "en": "Sow indoors in warm conditions 4 to 6 weeks before the last frost.",
+            "de": "4 bis 6 Wochen vor dem letzten Frost im warmen Innenbereich aussäen.",
+            "fr": "Semez au chaud en intérieur 4 à 6 semaines avant les dernières gelées.",
+            "sv": "Så inomhus på en varm plats 4 till 6 veckor före sista frosten.",
+            "pt": "Semear em local abrigado e quente 4 a 6 semanas antes da última geada."
+          }
+        },
+        {
+          "type": "transplant",
+          "anchor": "last_frost",
+          "start_weeks": 1,
+          "end_weeks": 3,
+          "min_soil_c": 18,
+          "note": {
+            "nl": "Plant buiten uit zodra de grond goed opgewarmd is en vorstgevaar geweken is.",
+            "en": "Plant out once the soil has thoroughly warmed and all frost danger has passed.",
+            "de": "Auspflanzen, sobald der Boden gut aufgewärmt und die Frostgefahr vorüber ist.",
+            "fr": "Plantez à l'extérieur quand le sol est bien réchauffé et tout risque de gel écarté.",
+            "sv": "Plantera ut när jorden är ordentligt uppvärmd och frostrisken är över.",
+            "pt": "Plantar no exterior quando o solo estiver bem aquecido e sem risco de geada."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "last_frost",
+          "start_weeks": 1,
+          "end_weeks": 3,
+          "min_soil_c": 18,
+          "note": {
+            "nl": "Zaai direct ter plaatse 1 tot 3 weken na de laatste vorst in warme grond.",
+            "en": "Sow directly outdoors 1 to 3 weeks after the last frost once soil is warm.",
+            "de": "1 bis 3 Wochen nach dem letzten Frost direkt in den aufgewärmten Boden säen.",
+            "fr": "Semez directement en place 1 à 3 semaines après les gelées dans un sol chaud.",
+            "sv": "Direktså på friland 1 till 3 veckor efter sista frosten när jorden blivit varm.",
+            "pt": "Semear diretamente 1 a 3 semanas após a última geada em solo aquecido."
+          }
+        }
+      ],
+      "harvest": {
+        "days_min": 35,
+        "days_max": 65
+      },
+      "difficulty": 2,
+      "feed_cadence_days": 14,
+      "depth_mm": 20,
+      "germination_days": 10,
+      "days_to_transplant": 35,
+      "perennial": false,
+      "water_cadence_days": null,
+      "image": null,
+      "sources": [
+        "https://www.rhs.org.uk/advice/grow-your-own/allotments/liz-mooney/reflections-on-a-summer-of-heatwaves",
+        "https://www.rhs.org.uk/vegetables/okra/grow-your-own",
+        "https://site.extension.uga.edu/colquitthomeowners/2025/09/vegetable-garden-calendar-2/",
+        "https://agrilifeextension.tamu.edu/browse/featured-solutions/gardening-landscaping/fall-vegetable-gardening-guide-for-texas/",
+        "https://agrilifeextension.tamu.edu/library/gardening/okra/",
+        "https://extension.illinois.edu/gardening/okra",
+        "https://site.extension.uga.edu/colquittag/files/2023/10/Vegetable-Garden-Calendar.pdf",
+        "https://site.extension.uga.edu/colquittag/files/2023/10/Okra.pdf",
+        "https://www.gardeningaustraliamag.com.au/plants/okra/",
+        "https://www.lsuagcenter.com/profiles/jydarraga/articles/page1685114770052",
+        "https://www.wheretoplant.co/plants/okra",
+        "https://www.rhs.org.uk/plants/71839/abelmoschus-esculentus/details",
+        "https://agrilifeextension.tamu.edu/library/gardening/texas-home-vegetable-gardening-guide/",
+        "https://site.extension.uga.edu/newtonextanr/2021/02/grow-your-own-vegetable-transplants/"
+      ],
+      "verified": true
+    },
+    {
       "slug": "onion",
       "names": {
         "nl": "Ui",
@@ -6108,6 +6300,104 @@
       "verified": true
     },
     {
+      "slug": "sweet-potato",
+      "names": {
+        "nl": "Zoete aardappel",
+        "en": "Sweet potato",
+        "de": "Süßkartoffel",
+        "fr": "Patate douce",
+        "sv": "Sötpotatis",
+        "pt": "Batata-doce"
+      },
+      "category": "potato",
+      "frost_tender": true,
+      "container_ok": true,
+      "min_pot_litres": 30,
+      "spacing_cm": 30,
+      "vak_per_m2": 1,
+      "sun": "full",
+      "max_c": 38,
+      "methods": [
+        {
+          "type": "sow_indoor",
+          "anchor": "last_frost",
+          "start_weeks": -4,
+          "end_weeks": -2,
+          "min_soil_c": null,
+          "note": {
+            "nl": "Start knollen binnen op een warme plek om scheuten (slips) te produceren.",
+            "en": "Start tubers indoors in a warm spot to produce slips.",
+            "de": "Knollen drinnen an einem warmen Ort vortreiben, um Stecklinge zu ziehen.",
+            "fr": "Faites germer les tubercules à l'intérieur au chaud pour produire des boutures.",
+            "sv": "Förkultivera knölar inomhus på en varm plats för att driva upp sticklingar.",
+            "pt": "Inicie os tubérculos no interior num local quente para produzir rebentos."
+          }
+        },
+        {
+          "type": "transplant",
+          "anchor": "last_frost",
+          "start_weeks": 2,
+          "end_weeks": 4,
+          "min_soil_c": 18,
+          "note": {
+            "nl": "Plant bewortelde stekken buiten uit zodra de bodem goed is opgewarmd.",
+            "en": "Transplant rooted slips outdoors once the soil has thoroughly warmed.",
+            "de": "Bewurzelte Stecklinge ins Freiland setzen, sobald der Boden gut aufgewärmt ist.",
+            "fr": "Plantez les boutures racinées en extérieur une fois le sol bien réchauffé.",
+            "sv": "Plantera ut rotade sticklingar när jorden har blivit ordentligt uppvärmd.",
+            "pt": "Transplante os rebentos enraizados no exterior quando o solo estiver bem aquecido."
+          }
+        }
+      ],
+      "harvest": {
+        "days_min": 90,
+        "days_max": 150
+      },
+      "difficulty": 2,
+      "feed_cadence_days": 14,
+      "depth_mm": 75,
+      "germination_days": 14,
+      "days_to_transplant": 42,
+      "perennial": true,
+      "water_cadence_days": null,
+      "image": null,
+      "sources": [
+        "https://extension.illinois.edu/gardening/sweet-potato",
+        "https://agriculture.institute/production-tech-vegetables-crops/climate-requirements-growing-sweet-potato-colocasia/",
+        "https://site.extension.uga.edu/colquittag/files/2023/10/sweet-potatoes.pdf",
+        "https://www.rhs.org.uk/plants/9185/ipomoea-batatas/details",
+        "https://horticulture.co.uk/blogs/growing/sweet-potatoes",
+        "https://library.dpird.wa.gov.au/bs_wra/43/",
+        "https://urbanharvestlab.com/blog/urban-gardening/sweet-potatoes-in-containers/",
+        "https://www.warrenswcd.com/conservation-connection/growing-sweet-potatoes",
+        "https://ag.purdue.edu/department/hla/extension/extension-publications-library/ext-pubs/ho-136-w.html",
+        "https://trowelful.com/blog/when-to-harvest-sweet-potatoes",
+        "https://mytexas.ag.tamu.edu/publications/sweet-potatoes-path-to-the-plate/",
+        "https://www.almanac.com/plant/sweet-potatoes",
+        "https://aggie-horticulture.tamu.edu/vegetable/wp-content/uploads/sites/10/2010/10/EHT-026-Easy-Gardening-Sweet-Potatoes.pdf",
+        "https://www.usesow.com/learn/guides/when-to-plant-sweet-potatoes",
+        "https://plotmygarden.com/plants/sweet-potato",
+        "https://fieldreport.caes.uga.edu/publications/C1014/home-garden-sweet-potatoes/",
+        "https://tazart.app/blog/how-far-apart-to-plant-sweet-potatoes/",
+        "http://www.bundaberggold.com.au/about/what-is-a-sweet-potato/",
+        "https://www.bloomcabin.com/us/blog/how-to-grow-sweet-potatoes-in-a-greenhouse.html",
+        "https://www.rhs.org.uk/vegetables/sweet-potatoes/grow-your-own",
+        "https://www.gardeningaustraliamag.com.au/plants/sweet-potato/",
+        "https://franklin.ces.ncsu.edu/news/sweetpotatoes-in-the-home-garden/",
+        "https://www.rootsplants.co.uk/products/sweet-potato-erato-white",
+        "https://www.greenhousestores.co.uk/blog/growing-sweet-potatoes-uk-slips-to-harvest",
+        "https://hub.suttons.co.uk/potatoes/how-to-grow-sweet-potatoes",
+        "https://www.gardeningaustraliamag.com.au/grow-sweet-potato/",
+        "https://www.youtube.com/watch?v=jrjWVsV1boc",
+        "https://www.youtube.com/watch?v=ZS-AC7FgttE",
+        "https://www.organicgardener.com.au/grow-sweet-potato/",
+        "https://extension.msstate.edu/publications/growing-sweet-potatoes-home",
+        "https://www.pelhamgardens.co.uk/grow-guide/sweet-potato",
+        "https://extension.msstate.edu/publications/sweetpotato-storage-root-initiation"
+      ],
+      "verified": true
+    },
+    {
       "slug": "sweetcorn",
       "names": {
         "nl": "Maïs",
@@ -6547,6 +6837,83 @@
       "verified": true
     },
     {
+      "slug": "tomatillo",
+      "names": {
+        "nl": "Tomatillo",
+        "en": "Tomatillo",
+        "de": "Tomatillo",
+        "fr": "Tomatillo",
+        "sv": "Tomatillo",
+        "pt": "Tomatillo"
+      },
+      "category": "fruit-veg",
+      "frost_tender": true,
+      "container_ok": true,
+      "min_pot_litres": 19,
+      "spacing_cm": 60,
+      "vak_per_m2": null,
+      "sun": "full",
+      "max_c": 35,
+      "methods": [
+        {
+          "type": "sow_indoor",
+          "anchor": "last_frost",
+          "start_weeks": -8,
+          "end_weeks": -4,
+          "min_soil_c": 21,
+          "note": {
+            "nl": "Binnen voorzaaien 4 tot 8 weken voor de laatste lentevorst.",
+            "en": "Sow indoors 4 to 8 weeks before the average last spring frost.",
+            "de": "4 bis 8 Wochen vor dem letzten Frühjahrsfrost drinnen vorziehen.",
+            "fr": "Semer à l'intérieur 4 à 8 semaines avant la dernière gelée printanière.",
+            "sv": "Förså inomhus 4 till 8 veckor före sista vårfrosten.",
+            "pt": "Semear em interior 4 a 8 semanas antes da última geada da primavera."
+          }
+        },
+        {
+          "type": "transplant",
+          "anchor": "last_frost",
+          "start_weeks": 1,
+          "end_weeks": 2,
+          "min_soil_c": 15.5,
+          "note": {
+            "nl": "1 tot 2 weken na de laatste vorst uitplanten als de grond minimaal 15,5°C is.",
+            "en": "Transplant outdoors 1 to 2 weeks after the last frost once the soil reaches 15.5°C.",
+            "de": "1 bis 2 Wochen nach dem letzten Frost auspflanzen, sobald die Bodentemperatur 15,5 °C erreicht.",
+            "fr": "Repiquer en extérieur 1 à 2 semaines après la dernière gelée lorsque le sol atteint 15,5 °C.",
+            "sv": "Plantera ut 1 till 2 veckor efter sista frosten när jorden når minst 15,5 °C.",
+            "pt": "Transplantar para o exterior 1 a 2 semanas após a última geada com o solo a pelo menos 15,5 °C."
+          }
+        }
+      ],
+      "harvest": {
+        "days_min": 60,
+        "days_max": 85
+      },
+      "difficulty": 2,
+      "feed_cadence_days": 14,
+      "depth_mm": 6,
+      "germination_days": 10,
+      "days_to_transplant": 42,
+      "perennial": false,
+      "water_cadence_days": null,
+      "image": null,
+      "sources": [
+        "https://www.rhs.org.uk/plants/134151/physalis-ixocarpa/details",
+        "https://extension.usu.edu/yardandgarden/research/tomatillos-in-the-garden",
+        "https://mytexas.ag.tamu.edu/publications/tomatillos-path-to-the-plate/",
+        "https://bookstore.ksre.ksu.edu/pubs/kansas-garden-guide_S51.pdf",
+        "https://mytexas.ag.tamu.edu/wp-content/uploads/2026/05/path-to-the-plate-tomatillos.pdf",
+        "https://extension.illinois.edu/sites/default/files/salsa_garden.pdf",
+        "https://extension.sdstate.edu/tomatillos-harvest-and-storage",
+        "https://plantnet.rbgsyd.nsw.gov.au/cgi-bin/NSWfl.pl?page=nswfl&lvl=sp&name=Physalis~philadelphica",
+        "https://keybase.rbg.vic.gov.au/keys/5275",
+        "https://weeds.dpi.nsw.gov.au/Weed/Perennialgroundcherry",
+        "https://florabase.dbca.wa.gov.au/browse/profile/6984"
+      ],
+      "verified": true
+    },
+    {
       "slug": "tomato",
       "names": {
         "nl": "Tomaat",
@@ -6689,6 +7056,107 @@
         "directplant moestuinkalender",
         "Autumn timing: Gardener's Path, when to plant crops in fall (https://gardenerspath.com/plants/vegetables/plant-crops-fall/)",
         "Autumn timing: Tenth Acre Farm, guide to fall planting (https://tenthacrefarm.com/guide-to-fall-planting)"
+      ],
+      "verified": true
+    },
+    {
+      "slug": "watermelon",
+      "names": {
+        "nl": "Watermeloen",
+        "en": "Watermelon",
+        "de": "Wassermelone",
+        "fr": "Pastèque",
+        "sv": "Vattenmelon",
+        "pt": "Melancia"
+      },
+      "category": "fruit-veg",
+      "frost_tender": true,
+      "container_ok": true,
+      "min_pot_litres": 19,
+      "spacing_cm": 90,
+      "vak_per_m2": null,
+      "sun": "full",
+      "max_c": 38,
+      "methods": [
+        {
+          "type": "sow_indoor",
+          "anchor": "last_frost",
+          "start_weeks": -5,
+          "end_weeks": -3,
+          "min_soil_c": 21,
+          "note": {
+            "nl": "Binnenshuis zaaien in aparte potjes om wortelverstoring te voorkomen.",
+            "en": "Sow indoors in individual pots to avoid root disturbance.",
+            "de": "Drinnen in Einzeltöpfen säen, um Wurzelstörungen zu vermeiden.",
+            "fr": "Semer à l'intérieur en godets individuels pour éviter de perturber les racines.",
+            "sv": "Så inomhus i separata krukor för att undvika rotstörningar.",
+            "pt": "Semear no interior em vasos individuais para evitar perturbar as raízes."
+          }
+        },
+        {
+          "type": "transplant",
+          "anchor": "last_frost",
+          "start_weeks": 2,
+          "end_weeks": 3,
+          "min_soil_c": 16,
+          "note": {
+            "nl": "Uitplanten zodra de bodem en nachten betrouwbaar warm zijn.",
+            "en": "Plant out once both the soil and nights are reliably warm.",
+            "de": "Auspflanzen, sobald Boden und Nächte zuverlässig warm sind.",
+            "fr": "Planter en pleine terre lorsque le sol et les nuits sont bien réchauffés.",
+            "sv": "Plantera ut när både jorden och nätterna är pålitligt varma.",
+            "pt": "Plantar no exterior quando o solo e as noites estiverem bem quentes."
+          }
+        },
+        {
+          "type": "sow_direct",
+          "anchor": "last_frost",
+          "start_weeks": 1,
+          "end_weeks": 3,
+          "min_soil_c": 18,
+          "note": {
+            "nl": "Alleen direct zaaien in goed opgewarmde grond om zaadrot te voorkomen.",
+            "en": "Direct sow only in warm soil to prevent seeds from rotting.",
+            "de": "Nur in gut erwärmten Boden säen, um Saatgutfäule zu verhindern.",
+            "fr": "Semer directement uniquement en sol réchauffé pour éviter le pourrissement des graines.",
+            "sv": "Direktså endast i uppvärmd jord för att förhindra att fröna ruttnar.",
+            "pt": "Semear diretamente apenas em solo aquecido para evitar o apodrecimento das sementes."
+          }
+        }
+      ],
+      "harvest": {
+        "days_min": 60,
+        "days_max": 85
+      },
+      "difficulty": 2,
+      "feed_cadence_days": 14,
+      "depth_mm": 15,
+      "germination_days": 7,
+      "days_to_transplant": 25,
+      "perennial": false,
+      "water_cadence_days": null,
+      "image": null,
+      "sources": [
+        "https://site.extension.uga.edu/colquittag/files/2023/10/watermelon.pdf",
+        "https://extension.unh.edu/resource/how-grow-moon-and-stars-watermelon-citrullus-lanatus",
+        "https://extension.psu.edu/watermelon-production",
+        "https://shopifarm.com/blog/best-time-to-grow-watermelon/",
+        "https://site.extension.uga.edu/lincoln/watermelon-a-sweet-summer-treat/",
+        "https://publications.mgcafe.uky.edu/sites/publications.ca.uky.edu/files/HO127-Community-Supported-Agriculture-CSA-Production-Manual-of-the-Organic-Farming-Unit-at-the-University-of-Kentucky-Remediated.pdf",
+        "https://eos.com/blog/how-to-grow-watermelon/",
+        "https://www.rhs.org.uk/fruit/melons/grow-your-own",
+        "https://es.dayuseeds.com/resources/watermelon-seed-starting-tips.html",
+        "https://hgic.clemson.edu/factsheet/watermelons/",
+        "https://www.holmesseed.com/growers-guidebook/growing-guides/seeded-watermelon-growing-guide/",
+        "https://foodsystems.extension.wisc.edu/files/2023/05/schoolnutr-7-educate-students.pdf",
+        "https://extension.illinois.edu/news-releases/small-space-containers-big-new-gardeners",
+        "https://ask.extension.org/kb/faq.php?id=908857",
+        "https://agrilifeextension.tamu.edu/wp-content/uploads/2025/06/Vegetable-Varieties-2-1.pdf",
+        "https://agrilifeextension.tamu.edu/wp-content/uploads/2026/03/Recommended-Vegetable-Varieties-for-Sutton-County-1.pdf",
+        "https://plotmygarden.com/plants/sugar-baby-watermelon",
+        "https://www.rhs.org.uk/get-involved/your-space-your-story/growing-watermelons-in-lancashire",
+        "https://agrilifeextension.tamu.edu/browse/featured-solutions/gardening-landscaping/fall-vegetable-gardening-guide-for-texas/",
+        "https://www.rhs.org.uk/plants/105565/cucumis-melo/details"
       ],
       "verified": true
     },
