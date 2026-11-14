@@ -34,7 +34,8 @@ def call(method, path, data=None):
                                  data=json.dumps(data).encode() if data else None,
                                  headers={'Authorization': f'Bearer {token()}', 'Content-Type': 'application/json'})
     with urllib.request.urlopen(req) as res:
-        return json.load(res)
+        body = res.read()
+        return json.loads(body) if body else None  # 204 on DELETE / attach
 
 
 def description(f):
