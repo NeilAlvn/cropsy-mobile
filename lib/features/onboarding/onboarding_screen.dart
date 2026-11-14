@@ -731,10 +731,12 @@ class _LocationStepState extends State<_LocationStep> {
           const SizedBox(height: 12),
           MascotNote(
             pose: MascotPose.celebrating,
-            text: Str.foundFrostDates(
-              dayMonthIso(l.profile.lastFrost),
-              dayMonthIso(l.profile.firstFrost),
-            ),
+            text: l.profile.regime == 'frost_free'
+                ? Str.foundNoFrost
+                : Str.foundFrostDates(
+                    dayMonthIso(l.profile.lastFrost),
+                    dayMonthIso(l.profile.firstFrost),
+                  ),
           ),
         ],
         if (usesNlBePresets(RepositoryScope.of(context).effectiveCountry)) ...[
@@ -850,11 +852,14 @@ class _PlanStep extends StatelessWidget {
                   _Line(
                     done: true,
                     label: Text(
-                      Str.planFrostLine(
-                        region,
-                        dayMonthIso(frost.lastFrost),
-                        dayMonthIso(frost.firstFrost),
-                      ).of(context),
+                      (frost.regime == 'frost_free'
+                              ? Str.planNoFrostLine(region)
+                              : Str.planFrostLine(
+                                  region,
+                                  dayMonthIso(frost.lastFrost),
+                                  dayMonthIso(frost.firstFrost),
+                                ))
+                          .of(context),
                       style: AppText.body(context),
                     ),
                   ),

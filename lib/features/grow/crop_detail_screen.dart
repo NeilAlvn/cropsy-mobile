@@ -266,7 +266,11 @@ class _Calendar extends StatelessWidget {
           ),
         PlantingCalendarBar(crop: crop, frost: repo.frost, today: repo.today),
         const SizedBox(height: 12),
-        Text(Str.frostRelative(anchor, repo.regionName).of(context),
+        Text(
+            (repo.frost.regime == 'frost_free'
+                    ? Str.frostFreeRelative(repo.regionName)
+                    : Str.frostRelative(anchor, repo.regionName))
+                .of(context),
             style: AppText.bodyMuted(context)),
         const SizedBox(height: 8),
         // 3.3 "Calendar based on" row: frost cell + where the dates came from.
@@ -358,10 +362,14 @@ class _Location extends StatelessWidget {
         );
     return Column(children: [
       row(PhosphorIcons.mapPin, Str.region.of(context), repo.regionName),
-      row(PhosphorIcons.snowflake, Str.lastFrostRow.of(context),
-          dayMonth(parseIso(repo.frost.lastFrost))),
-      row(PhosphorIcons.fire, Str.firstFrostRow.of(context),
-          dayMonth(parseIso(repo.frost.firstFrost))),
+      if (repo.frost.regime == 'frost_free')
+        row(PhosphorIcons.sun, Str.frostFreeRow.of(context), '✓')
+      else ...[
+        row(PhosphorIcons.snowflake, Str.lastFrostRow.of(context),
+            dayMonth(parseIso(repo.frost.lastFrost))),
+        row(PhosphorIcons.fire, Str.firstFrostRow.of(context),
+            dayMonth(parseIso(repo.frost.firstFrost))),
+      ],
       row(PhosphorIcons.sun, Str.preferredSun.of(context),
           Str.sunNeed(crop.sun).of(context)),
       row(

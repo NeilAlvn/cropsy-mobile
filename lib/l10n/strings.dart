@@ -1471,6 +1471,39 @@ abstract final class Str {
     sv: 'Postnumret hittades inte (1234AB), eller så är du offline. Välj en region nedan.',
     pt: 'Código postal não encontrado (1234AB), ou estás sem ligação. Escolhe uma região abaixo.',
   );
+  /// Frost-free places (regime `frost_free`): no frost dates to promise.
+  static const foundNoFrost = LocalizedText(
+    nl: 'Gevonden. Hier vriest het gemiddeld niet, dus je plan volgt de koelste en warmste weken.',
+    en: 'Found it. No frost here on average, so your plan follows the coolest and warmest weeks.',
+    de: 'Gefunden. Hier gibt es im Schnitt keinen Frost, dein Plan folgt also den kühlsten und wärmsten Wochen.',
+    fr: 'Trouvé. Pas de gel ici en moyenne : ton plan suit les semaines les plus fraîches et les plus chaudes.',
+    sv: 'Hittat. Här blir det i snitt ingen frost, så din plan följer de svalaste och varmaste veckorna.',
+    pt: 'Encontrado. Aqui, em média, não há geada, por isso o teu plano segue as semanas mais frescas e mais quentes.',
+  );
+  static LocalizedText planNoFrostLine(String region) => LocalizedText(
+    nl: '$region: gemiddeld vorstvrij',
+    en: '$region: frost-free on average',
+    de: '$region: im Schnitt frostfrei',
+    fr: '$region : sans gel en moyenne',
+    sv: '$region: frostfritt i snitt',
+    pt: '$region: sem geada em média',
+  );
+  static const frostFreeRow = LocalizedText(
+    nl: 'Vorstvrij',
+    en: 'Frost-free',
+    de: 'Frostfrei',
+    fr: 'Sans gel',
+    sv: 'Frostfritt',
+    pt: 'Sem geada',
+  );
+  static LocalizedText frostFreeRelative(String region) => LocalizedText(
+    nl: 'In $region vriest het gemiddeld niet. Deze data volgen de koelste en warmste weken daar, niet een vaste kalender.',
+    en: 'There is no frost in $region on average. These dates follow its coolest and warmest weeks, not a fixed calendar.',
+    de: 'In $region gibt es im Schnitt keinen Frost. Diese Daten folgen den kühlsten und wärmsten Wochen dort, nicht einem festen Kalender.',
+    fr: 'À $region, il ne gèle pas en moyenne. Ces dates suivent les semaines les plus fraîches et les plus chaudes, pas un calendrier fixe.',
+    sv: 'I $region blir det i snitt ingen frost. Datumen följer de svalaste och varmaste veckorna där, inte en fast kalender.',
+    pt: 'Em $region, em média, não há geada. Estas datas seguem as semanas mais frescas e mais quentes, não um calendário fixo.',
+  );
   static LocalizedText foundFrostDates(
     String last,
     String first,

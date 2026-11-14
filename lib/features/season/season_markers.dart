@@ -229,6 +229,8 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
         title: Str.ijsheiligen,
         caption: Str.ijsheiligenSub,
       ),
+    // Frost-free: the two dates are cool/warm anchors, not frosts — no frost stops.
+    if (facts.frost.regime != 'frost_free') ...[
     SeasonMarker(
       kind: SeasonMarkerKind.lastFrost,
       on: facts.frost.lastFrost,
@@ -241,6 +243,7 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
       title: Str.firstFrost,
       caption: Str.firstFrostSub,
     ),
+    ],
     SeasonMarker(
       kind: SeasonMarkerKind.recap,
       on: south ? _iso(recapYear, 6, 20) : _iso(year, 12, 20),
