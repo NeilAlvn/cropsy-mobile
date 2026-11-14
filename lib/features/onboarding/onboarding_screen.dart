@@ -604,6 +604,10 @@ class _LocationStepState extends State<_LocationStep> {
   bool _busy = false;
   String? _error;
   List<PlaceHit> _places = const [];
+
+  /// Bumped by every lookup; an answer that arrives after a newer lookup
+  /// started is dropped, so a slow earlier search can never overwrite the pick.
+  int _gen = 0;
   static final _pcPattern = RegExp(r'^[1-9]\d{3}\s?[A-Za-z]{2}$');
   final _pc = TextEditingController();
 
@@ -618,8 +622,9 @@ class _LocationStepState extends State<_LocationStep> {
       _busy = true;
       _error = null;
     });
+    final gen = ++_gen;
     final hit = await frostForDevice();
-    if (!mounted) return;
+    if (!mounted || gen != _gen) return;
     setState(() {
       _busy = false;
       if (hit == null) _error = (AppRegion.nlBe ? Str.noLocationPickRegion : Str.placeNotFound).of(context);
@@ -635,8 +640,9 @@ class _LocationStepState extends State<_LocationStep> {
         _error = null;
         _places = const [];
       });
+      final gen = ++_gen;
       final hits = await searchPlaces(pc, lang: AppLangScope.of(context).code);
-      if (!mounted) return;
+      if (!mounted || gen != _gen) return;
       setState(() {
         _busy = false;
         _places = hits;
@@ -648,8 +654,9 @@ class _LocationStepState extends State<_LocationStep> {
       _busy = true;
       _error = null;
     });
+    final gen = ++_gen;
     final hit = await frostForPostcode(pc);
-    if (!mounted) return;
+    if (!mounted || gen != _gen) return;
     setState(() {
       _busy = false;
       if (hit == null) _error = (AppRegion.nlBe ? Str.postcodeNotFoundPickRegion : Str.placeNotFound).of(context);
@@ -706,9 +713,11 @@ class _LocationStepState extends State<_LocationStep> {
               label: p.label,
               selected: false,
               onTap: () async {
+                if (_busy) return;
                 setState(() => _busy = true);
+                final gen = ++_gen;
                 final hit = await frostForCoordinate(p.lat, p.lon);
-                if (!mounted) return;
+                if (!mounted || gen != _gen) return;
                 setState(() {
                   _busy = false;
                   if (hit == null) _error = Str.frostLookupFailed.of(context);
