@@ -37,6 +37,9 @@ void main() {
     // Next spring's window, computed from this season's profile.
     expect(titles(chicago, '2027-02-10'), 'order seeds');
     expect(titles(chicago, '2026-04-15'), 'harden off');
+    // No gap between "week -1" and "week 0": Leeds, 3 days before first frost.
+    const leeds = FrostProfile(lastFrost: '2026-04-27', firstFrost: '2026-11-17');
+    expect(titles(leeds, '2026-11-14'), 'bring pots in');
   });
 
   test('southern hemisphere: November is spring', () {

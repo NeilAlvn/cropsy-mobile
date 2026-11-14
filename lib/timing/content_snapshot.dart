@@ -39,7 +39,7 @@ class ChecklistItem {
   final int month;
 
   /// Frost-relative items: `last_frost` | `first_frost`, and the window in
-  /// weeks around that date (inclusive).
+  /// whole weeks around that date (both weeks included).
   final String? anchor;
   final int fromWeeks;
   final int toWeeks;
@@ -214,7 +214,8 @@ class ContentSnapshot {
       final base = parseIso(c.anchor == 'first_frost' ? frost.firstFrost : frost.lastFrost);
       for (final y in const [-1, 0, 1]) {
         final a = DateTime(base.year + y, base.month, base.day);
-        if (!t.isBefore(addWeeks(a, c.fromWeeks)) && !t.isAfter(addWeeks(a, c.toWeeks))) return true;
+        // Week numbers are whole weeks: "to -1" runs up to the day before the anchor.
+        if (!t.isBefore(addWeeks(a, c.fromWeeks)) && t.isBefore(addWeeks(a, c.toWeeks + 1))) return true;
       }
       return false;
     }
