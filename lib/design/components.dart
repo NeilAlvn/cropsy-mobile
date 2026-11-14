@@ -221,9 +221,10 @@ class Pill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fg = color ?? AppColors.ink;
+    // Long labels (data credits) wrap instead of overflowing the row.
     return Container(
-      height: 32,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      constraints: const BoxConstraints(minHeight: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: bg ?? AppColors.tile,
         borderRadius: BorderRadius.circular(Neo.radiusPill),
@@ -232,7 +233,7 @@ class Pill extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[Icon(icon, size: 14, color: fg), const SizedBox(width: 6)],
-          Text(label, style: AppText.caption(context, color: fg)),
+          Flexible(child: Text(label, style: AppText.caption(context, color: fg))),
         ],
       ),
     );

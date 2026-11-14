@@ -229,6 +229,8 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
         title: Str.ijsheiligen,
         caption: Str.ijsheiligenSub,
       ),
+    // Frost-free: the two dates are cool/warm anchors, not frosts — no frost stops.
+    if (facts.frost.regime != 'frost_free') ...[
     SeasonMarker(
       kind: SeasonMarkerKind.lastFrost,
       on: facts.frost.lastFrost,
@@ -241,6 +243,7 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
       title: Str.firstFrost,
       caption: Str.firstFrostSub,
     ),
+    ],
     SeasonMarker(
       kind: SeasonMarkerKind.recap,
       on: south ? _iso(recapYear, 6, 20) : _iso(year, 12, 20),
@@ -300,7 +303,7 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
       kind: SeasonMarkerKind.checklist,
       // The first days of the month: a job belongs at the head of its section,
       // and the running count keeps the snapshot's own order through the sort.
-      on: _iso(year, item.month, taken + 1),
+      on: item.on ?? _iso(year, item.month, taken + 1),
       title: item.title,
       caption: Str.pathChecklistCaption,
       slug: item.link,

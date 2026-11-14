@@ -3,7 +3,7 @@ Cropsy : Planificateur potager
 ## subtitle
 Semis, récolte, légumes
 ## keywords
-plantation,permaculture,compost,jardinage,serre,calendrier,arrosage,rappel,maladies,plantes
+jardin,plantation,jardinage,arrosage,plantes,calendrier,herbes,serre,permaculture,graines
 ## short
 Planifie, sème et récolte tes légumes. Des rappels qui suivent la météo.
 ## description

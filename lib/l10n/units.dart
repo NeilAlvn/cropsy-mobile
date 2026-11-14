@@ -31,6 +31,8 @@ String lengthCm(num cm) => _imp ? '${_n(cm / 2.54)} in' : '${_n(cm)} cm';
 String depthMm(num mm) => _imp ? '${_n(mm / 25.4, decimals: 1)} in' : '${_n(mm)} mm';
 String volumeL(num l) => _imp ? '${_n(l / 3.785, decimals: 1)} gal' : '${_n(l, upToOne: true)} L';
 String massKg(num kg) => _imp ? '${_n(kg * 2.20462, decimals: 1)} lb' : '${_n(kg, decimals: 1)} kg';
+/// Money amount, two decimals, locale separator, no grouping (the € sign is placed by the caller).
+String money(num v) => NumberFormat('0.00', Intl.defaultLocale).format(v);
 String areaM2(num m2) => _imp ? '${_n(m2 * 10.7639)} sq ft' : '${_n(m2)} m²';
 String distanceKm(num km) => _imp ? '${_n(km * 0.621371, decimals: 1)} mi' : '${_n(km)} km';
 

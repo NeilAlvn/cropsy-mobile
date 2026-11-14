@@ -15,6 +15,10 @@ String? get _nameLocale => _en ? 'en' : null;
 
 String dayMonth(DateTime d) => (_us ? DateFormat.MMMd() : DateFormat('d MMM', _nameLocale)).format(d);
 String dayMonthIso(String iso) => dayMonth(parseIso(iso));
+
+/// Engine text (replan warnings) carries ISO dates so it stays identical to the
+/// backend; show them as the user's day/month.
+String localDates(String s) => s.replaceAllMapped(RegExp(r'\b\d{4}-\d{2}-\d{2}\b'), (m) => dayMonthIso(m[0]!));
 String weekdayDayMonth(DateTime d) =>
     (_us ? DateFormat('EEEE').add_MMMd() : DateFormat('EEEE d MMM', _nameLocale)).format(d);
 String dayMonthYear(DateTime d) =>

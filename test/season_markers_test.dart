@@ -24,10 +24,11 @@ MarkerFacts _facts({
   List<({String plantId, String firstOn, String lastOn})> photos = const [],
   String? country,
   bool south = false,
+  String regime = 'frost',
 }) =>
     MarkerFacts(
       today: DateTime.utc(2026, 9, 16),
-      frost: FrostProfile(lastFrost: '2026-05-13', firstFrost: '2026-10-15', south: south),
+      frost: FrostProfile(lastFrost: '2026-05-13', firstFrost: '2026-10-15', south: south, regime: regime),
       plantCount: plants,
       photoThisMonth: photo,
       euros: euros,
@@ -96,6 +97,13 @@ void main() {
     expect(_kinds(marks), isNot(contains(SeasonMarkerKind.orderSeeds)));
     expect(_kinds(marks), isNot(contains(SeasonMarkerKind.photo)));
     expect(_kinds(marks), isNot(contains(SeasonMarkerKind.payoff)));
+  });
+
+  test('a frost-free place gets no frost stops', () {
+    final marks = seasonMarkers(_facts(plants: 0, regime: 'frost_free', country: 'NZ', south: true));
+    expect(_kinds(marks), isNot(contains(SeasonMarkerKind.lastFrost)));
+    expect(_kinds(marks), isNot(contains(SeasonMarkerKind.firstFrost)));
+    expect(_kinds(marks), contains(SeasonMarkerKind.recap));
   });
 
   test('a garden with plants gets the seed order, the photo and the payoff', () {

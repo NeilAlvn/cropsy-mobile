@@ -1,13 +1,13 @@
 ## title
-Cropsy: Garden Planner
+Cropsy: Veggie Garden Planner
 ## subtitle
-Veggie patch planner & journal
+Homegrown harvest tracker
 ## keywords
-herbs,seedling,frost,season,organic,backyard,balcony,pots,compost,greenhouse,homegrown,tomato
+patch,journal,watering,reminder,seed,vegetable,plant,herbs,planting,calendar,pests,grow,diagnosis
 ## short
 Veggie patch planner: when to sow, water and harvest, set by your own seasons.
 ## description
-Cropsy is a garden planner for growing your own vegetables and herbs, anywhere: a windowsill, a balcony, a raised bed or a backyard veggie patch. It is your sowing calendar, garden journal and watering reminder in one, and it tells you which crops fit your space and exactly when to sow, plant out, water and harvest them.
+Cropsy is a veggie garden planner for growing your own vegetables and herbs, anywhere: a windowsill, a balcony, a raised bed or a backyard veggie patch. It is your sowing calendar, garden journal, harvest tracker and watering reminder in one, and it tells you which crops fit your space and exactly when to sow, plant out, water and harvest them.
 
 YOUR SEASON, LAID OUT
 Pick a crop and press Start. Cropsy builds a season path from the frost dates and climate of your own place, from Hobart to Brisbane, and from Invercargill to Auckland: sow indoors, plant out, first harvest, last harvest. When the weather shifts, the plan moves with it. You are never behind.

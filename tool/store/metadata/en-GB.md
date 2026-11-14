@@ -1,13 +1,13 @@
 ## title
-Cropsy: Garden Planner
+Cropsy: Veg Garden Planner
 ## subtitle
-Allotment & veg garden tracker
+Allotment & watering reminder
 ## keywords
-vegetable,journal,harvest,seed,sowing,calendar,watering,reminder,plant,raised,bed,crop,grow,pests
+harvest,tracker,journal,seed,vegetable,grow,plant,pests,herbs,sowing,calendar,diagnosis,homegrown
 ## short
 Allotment and veg garden planner: when to sow, water and harvest, weather-aware.
 ## description
-Cropsy is a garden planner for growing your own vegetables and herbs, anywhere: a windowsill, a balcony, a raised bed or an allotment. It is your sowing calendar, garden journal and watering reminder in one, and it tells you which crops fit your space and exactly when to sow, plant out, water and harvest them.
+Cropsy is a veg garden planner for growing your own vegetables and herbs, anywhere: a windowsill, a balcony, a raised bed or an allotment. It is your sowing calendar, garden journal, harvest tracker and watering reminder in one, and it tells you which crops fit your space and exactly when to sow, plant out, water and harvest them.
 
 YOUR SEASON, LAID OUT
 Pick a crop and press Start. Cropsy builds a season path from the frost dates and climate of your own place, from Cornwall to the Highlands: sow indoors, plant out, first harvest, last harvest. When the weather shifts, the plan moves with it. You are never behind.

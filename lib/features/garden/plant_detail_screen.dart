@@ -101,21 +101,20 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                       children: [
                         CategoryDot(repo.cropCategory(plant.cropSlug), size: 14),
                         const SizedBox(width: 8),
-                        Text(
-                          (plant.potLitres != null
-                                  ? Str.potLitres(volumeL(plant.potLitres!))
-                                  : Str.placeGround)
-                              .of(context),
-                          style: AppText.bodyMuted(context),
-                        ),
-                        if (plant.plantedOn != null) ...[
-                          const SizedBox(width: 8),
-                          Text(
-                            '· ${Str.plantedOn(dayMonth(parseIso(plant.plantedOn!))).of(context)}',
+                        // One flexible line, so a long pot/date label (gal, en-US) never overflows the guide button.
+                        Expanded(
+                          child: Text(
+                            [
+                              (plant.potLitres != null
+                                      ? Str.potLitres(volumeL(plant.potLitres!))
+                                      : Str.placeGround)
+                                  .of(context),
+                              if (plant.plantedOn != null)
+                                '· ${Str.plantedOn(dayMonth(parseIso(plant.plantedOn!))).of(context)}',
+                            ].join('  '),
                             style: AppText.bodyMuted(context),
                           ),
-                        ],
-                        const Spacer(),
+                        ),
                         // GrowIt 5.4: the crop's guide (calendar, how-tos, FAQ) one tap away.
                         if (repo.cropBySlug(plant.cropSlug) case final crop?)
                           TextButton(

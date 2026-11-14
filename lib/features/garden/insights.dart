@@ -45,12 +45,12 @@ List<Insight> insightsFor({
   if (crop.frostTender && harvestEnd != null && harvestEnd.compareTo(frost.firstFrost) > 0) {
     out.add(Insight(
         MascotPose.shrug,
-        MascotLines.insightHarvestPastFrost(frost.firstFrost)));
+        MascotLines.insightHarvestPastFrost(dayMonthIso(frost.firstFrost))));
   }
   if (crop.frostTender && toFirst >= 0 && toFirst <= 21) {
     out.add(Insight(
         MascotPose.frost,
-        MascotLines.insightFirstFrostSoon(toFirst, frost.firstFrost, crop.names)));
+        MascotLines.insightFirstFrostSoon(toFirst, dayMonthIso(frost.firstFrost), crop.names)));
   }
   if (crop.frostTender && toLast > 0 && toLast <= 21) {
     out.add(Insight(

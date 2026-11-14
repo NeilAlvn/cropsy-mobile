@@ -3,7 +3,7 @@ Cropsy: Planeador de Horta
 ## subtitle
 Sementeira, colheita e ervas
 ## keywords
-sementes,jardim,tomates,horta urbana,cuidado de plantas,hortaliças,calendário sementeira,varanda
+sementes,garden,planner,cultivar,jardim,plantas,pragas,tomates,rega,hortícolas
 ## short
 Planeia, semeia e colhe os teus legumes. Lembretes que seguem o tempo.
 ## description

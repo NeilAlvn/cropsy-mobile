@@ -49,4 +49,18 @@ void main() {
     expect(Neo.border.top.color, isNot(lightBorder));
     expect(Neo.float.single.color.a, greaterThan(lightShadow.a));
   });
+
+  testWidgets('a long pill label wraps instead of overflowing', (tester) async {
+    await tester.pumpWidget(const MaterialApp(
+      home: Scaffold(
+        body: SizedBox(
+          width: 300,
+          child: Wrap(children: [
+            Pill(label: 'Climate data: Copernicus ERA5-Land via Open-Meteo.com (CC BY 4.0)', icon: Icons.thermostat),
+          ]),
+        ),
+      ),
+    ));
+    expect(tester.takeException(), isNull);
+  });
 }
