@@ -300,7 +300,7 @@ List<SeasonMarker> seasonMarkers(MarkerFacts facts) {
       kind: SeasonMarkerKind.checklist,
       // The first days of the month: a job belongs at the head of its section,
       // and the running count keeps the snapshot's own order through the sort.
-      on: _iso(year, item.month, taken + 1),
+      on: item.on ?? _iso(year, item.month, taken + 1),
       title: item.title,
       caption: Str.pathChecklistCaption,
       slug: item.link,

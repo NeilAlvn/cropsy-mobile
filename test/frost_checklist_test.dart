@@ -48,6 +48,16 @@ void main() {
     expect(titles(melbourne, '2026-11-14'), '');
   });
 
+  test('season path: items placed at their window start in this season', () {
+    const melbourne = FrostProfile(lastFrost: '2026-07-29', firstFrost: '2027-06-30', south: true);
+    final placed = {for (final c in snap.frostChecklistDated(melbourne)) c.title.en: c.on};
+    expect(placed['order seeds'], '2027-05-06'); // before the Jul start: next spring's prep
+    expect(placed['harden off'], '2026-07-15');
+    expect(placed['plant garlic'], '2027-06-30');
+    const auckland = FrostProfile(lastFrost: '2026-09-04', firstFrost: '2027-06-30', south: true, regime: 'frost_free');
+    expect(snap.frostChecklistDated(auckland), isEmpty);
+  });
+
   test('frost-free places get no frost checklist', () {
     const auckland = FrostProfile(lastFrost: '2026-09-04', firstFrost: '2027-06-30', south: true, regime: 'frost_free');
     expect(titles(auckland, '2026-08-30'), '');

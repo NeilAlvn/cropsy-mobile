@@ -250,7 +250,8 @@ class _SeasonScreenState extends State<SeasonScreen> {
         kilos: tally.kg,
         weatherTitle: weatherTitle,
         weatherCaption: weatherCaption,
-        checklist: repo.content.checklist,
+        // NL/BE: calendar months from Dutch sources; elsewhere frost-relative, on this season's dates.
+        checklist: AppRegion.nlBe ? repo.content.checklist : repo.content.frostChecklistDated(repo.frost),
         grown: [for (final e in grown.entries) (slug: e.key, on: e.value)],
         collections: collections,
         busyMonths: {

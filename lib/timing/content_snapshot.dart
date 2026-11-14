@@ -34,7 +34,11 @@ class ChecklistItem {
     this.anchor,
     this.fromWeeks = 0,
     this.toWeeks = 0,
+    this.on,
   });
+
+  /// Placed date (ISO) for a frost-relative item on the season path.
+  final String? on;
   /// Calendar month (monthly checklist); 0 for frost-relative items.
   final int month;
 
@@ -220,6 +224,35 @@ class ContentSnapshot {
       return false;
     }
     return frostChecklist.where(inWindow).toList();
+  }
+
+  /// The frost checklist placed on this season's dates (window start), for the
+  /// season path. Frost-free places get none.
+  /// A date that falls before the season starts (1 Jan, or 1 Jul in the south)
+  /// is next spring's preparation, so it moves a year on.
+  List<ChecklistItem> frostChecklistDated(FrostProfile frost) {
+    final lf = parseIso(frost.lastFrost);
+    final start = frost.south ? DateTime(lf.year, 7, 1) : DateTime(lf.year, 1, 1);
+    DateTime place(ChecklistItem c) {
+      final d = addWeeks(parseIso(c.anchor == 'first_frost' ? frost.firstFrost : frost.lastFrost), c.fromWeeks);
+      return d.isBefore(start) ? DateTime(d.year + 1, d.month, d.day) : d;
+    }
+    return [
+        if (frost.regime != 'frost_free')
+          for (final c in frostChecklist)
+            if (place(c) case final d)
+              ChecklistItem(
+                month: d.month,
+                on: toIso(d),
+                title: c.title,
+                body: c.body,
+                link: c.link,
+                draft: c.draft,
+                anchor: c.anchor,
+                fromWeeks: c.fromWeeks,
+                toWeeks: c.toWeeks,
+              ),
+      ];
   }
 
   List<Variety> varietiesOf(String cropSlug) =>
