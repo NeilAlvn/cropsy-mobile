@@ -3,7 +3,7 @@ Cropsy: Moestuin Planner
 ## subtitle
 Groente, kruiden & oogst
 ## keywords
-garden,herinnering,plantenverzorging,zaaikalender,tomaten,balkon,potten,moestuinbak,herbs,watering
+garden,tuinplanner,plantenziekte,plantenverzorging,zaaikalender,watering,reminder,balkon,zaden,tuin
 ## short
 Plan, zaai en oogst je eigen groente. Herinneringen die met het weer meebewegen.
 ## description

@@ -3,7 +3,7 @@ Cropsy: Odlingsplanerare
 ## subtitle
 Köksträdgård, sådd & skörd
 ## keywords
-odla,trädgård,växtvård,grönsaker,odlingskalender,örter,tomater,balkongodling,fröer,skadedjur
+odla,odling,garden,planner,trädgård,växtvård,grönsaker,odlingskalender,växter,örter
 ## short
 Planera, så och skörda dina grönsaker. Påminnelser som följer vädret.
 ## description

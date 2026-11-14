@@ -1,9 +1,9 @@
 ## title
 Cropsy: Gartenplaner
 ## subtitle
-Gemüsegarten, Kräuter & Ernte
+Gemüse, Kräuter & Ernte
 ## keywords
-saatgut,tomaten,aussaatkalender,hochbeet,homegrown,pflanzenpflege,schädlinge,gartentagebuch
+gemüsegarten,beetplaner,aussaatkalender,aussaat,hochbeet,saatgut,tomaten,schädlinge,garden,planner
 ## short
 Plane, säe und ernte dein Gemüse. Erinnerungen, die mit dem Wetter mitgehen.
 ## description

@@ -74,6 +74,9 @@ for stem, locale in LOCALES.items():
         write('PATCH', f"/v1/appInfoLocalizations/{il['id']}",
               {'data': {'type': 'appInfoLocalizations', 'id': il['id'], 'attributes': i_attrs}})
 
+    if locale not in vlocs and apply:  # adding the app info localisation also creates this one
+        vlocs = {l['attributes']['locale']: l for l in
+                 call('GET', f"/v1/appStoreVersions/{version['id']}/appStoreVersionLocalizations?limit=50")['data']}
     vl = vlocs.get(locale)
     if not vl:
         print(f'{locale}: create version localisation')
