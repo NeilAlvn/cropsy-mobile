@@ -9,6 +9,7 @@ Files that already exist are skipped, so a re-run only fills gaps.
 | Spec | Out dir | What it does |
 |---|---|---|
 | `mascot.json` | `tool/out/mascot` | Upscales the 12 poses to 1024 px. `_ref_each` points each entry at its own existing `assets/mascot/<pose>.png`, so every pose is redrawn against itself — an upscale, not a reinvention. |
+| `mascot-fix*.json` | `tool/out/mascot-fix` | 2026-11-15 redraws of `sleeping`, `sun`, `rain`, `frost` (pass 1), then `wave` and `thinking` (passes 2 and 3). Each draws against `idle` as the model sheet (`_ref_file`), so every pose comes back at idle's scale and ground line. Pass 1 also sent the old pose (`_ref_each`), which pulled `rain` back to its old, smaller scale; passes 2 and 3 send idle alone. |
 | `hero.json` | `tool/out/hero` | The three onboarding photographs at 4k. |
 
 Masters land in `tool/out/` (gitignored) and are downscaled into `assets/` by
