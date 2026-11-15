@@ -64,6 +64,11 @@ class Reminders {
     for (final p in await _plugin.pendingNotificationRequests()) {
       if (isCareId(p.id)) await _plugin.cancel(id: p.id);
     }
+    // iOS refuses to store a notification the person has not allowed
+    // (UNErrorDomain 2003) and throws; this runs on every data change, so ask
+    // first. Android stores it either way and simply does not show it.
+    final ios = _plugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>();
+    if (ios != null && (await ios.checkPermissions())?.isEnabled != true) return;
     final byDay = <String, List<ThisWeekItem>>{};
     for (final i in items) {
       if (i.completed || i.due.compareTo(today) < 0) continue;

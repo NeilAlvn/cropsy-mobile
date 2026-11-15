@@ -66,4 +66,18 @@ void main() {
     await tester.pump();
     expect(find.byType(Image), findsOneWidget, reason: 'no cross-fade, so never two poses at once');
   });
+
+  testWidgets('switching from a swaying pose to a static one mid-sway does not throw', (tester) async {
+    // Sentry CROPSY-IOS-P: the outgoing pose's sway builder ran after the
+    // switch had disposed and nulled the controller.
+    await tester.pumpWidget(_app(reduced: false, child: const Mascot(MascotPose.idle, size: 96)));
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pumpWidget(
+      _app(reduced: false, child: const Mascot(MascotPose.celebrating, size: 96)),
+    );
+    for (var i = 0; i < 20; i++) {
+      await tester.pump(const Duration(milliseconds: 16));
+    }
+    expect(tester.takeException(), isNull);
+  });
 }

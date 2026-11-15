@@ -190,7 +190,11 @@ class _MascotState extends State<Mascot> with TickerProviderStateMixin {
 
     // The art is a cut-out, so it stands free on whatever it is put on rather
     // than inside a tile of its own.
-    final Widget image = !_alive || motion.reduced
+    // Captured, not read through the field: AnimatedSwitcher keeps the outgoing
+    // pose alive while it fades, and its builder can still run after a switch
+    // to a static pose has disposed and nulled [_sway].
+    final sway = _sway;
+    final Widget image = !_alive || motion.reduced || sway == null
         ? KeyedSubtree(key: ValueKey(widget.pose), child: art(name!))
         : KeyedSubtree(
             key: ValueKey(widget.pose),
@@ -200,10 +204,10 @@ class _MascotState extends State<Mascot> with TickerProviderStateMixin {
                 // Behind the pot, so the cut where the stem leaves the soil is
                 // never on screen.
                 AnimatedBuilder(
-                  animation: _sway!,
+                  animation: sway,
                   builder: (context, child) => Transform.rotate(
                     // ±0.16 rad is a plant in a draught, not a metronome.
-                    angle: 0.16 * (Curves.easeInOut.transform(_sway!.value) - 0.5),
+                    angle: 0.16 * (Curves.easeInOut.transform(sway.value) - 0.5),
                     alignment: _stemPivot,
                     child: child,
                   ),

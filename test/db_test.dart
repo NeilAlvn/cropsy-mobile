@@ -2,6 +2,8 @@
 // hold on-device: soft-delete (no hard delete), the wire-exact kind converter,
 // FK cascade, and the local-only dirty/cursor bookkeeping. Uses an in-memory DB.
 
+import 'dart:convert';
+
 import 'package:cropsy/db/database.dart';
 import 'package:cropsy/timing/weather_adjust.dart' show TaskKind;
 import 'package:drift/drift.dart' show Value;
@@ -114,6 +116,17 @@ void main() {
     final c = await db.select(db.syncCursors).getSingle();
     expect(c.entity, 'gardens');
     expect(c.cursor, '2026-07-28T00:00:00.000Z');
+  });
+
+  test('garden and task rows encode to JSON for the data export', () async {
+    // Sentry CROPSY-IOS-Y: "Converting object to an encodable object failed:
+    // Instance of 'GardenKind'" from Settings > export.
+    await insertGarden('g1');
+    await insertPlant('p1', 'g1');
+    await db.into(db.tasks).insert(_taskInsert(TaskKind.potOn, 'p1'));
+    final garden = (await db.select(db.gardens).getSingle()).toJson();
+    final task = (await db.select(db.tasks).getSingle()).toJson();
+    expect(jsonEncode([garden, task]), allOf(contains('"balcony"'), contains('"pot_on"')));
   });
 }
 

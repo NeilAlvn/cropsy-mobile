@@ -43,7 +43,8 @@ GardenKind _gardenKindFromWire(String s) => switch (s) {
 
 /// Stores [GardenKind] as its wire string so the local value is byte-identical
 /// to what Supabase's CHECK constraint expects.
-class GardenKindConverter extends TypeConverter<GardenKind, String> {
+class GardenKindConverter extends TypeConverter<GardenKind, String>
+    with JsonTypeConverter<GardenKind, String> {
   const GardenKindConverter();
   @override
   GardenKind fromSql(String fromDb) => _gardenKindFromWire(fromDb);
@@ -53,7 +54,8 @@ class GardenKindConverter extends TypeConverter<GardenKind, String> {
 
 /// Stores [TaskKind] as its snake_case wire string (`pot_on`, not `potOn`), so
 /// it matches the server's frozen `tasks.kind` CHECK exactly.
-class TaskKindConverter extends TypeConverter<TaskKind, String> {
+class TaskKindConverter extends TypeConverter<TaskKind, String>
+    with JsonTypeConverter<TaskKind, String> {
   const TaskKindConverter();
   @override
   TaskKind fromSql(String fromDb) => taskKindFromWire(fromDb);

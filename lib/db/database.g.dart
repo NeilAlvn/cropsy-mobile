@@ -1013,7 +1013,7 @@ class $GardensTable extends Gardens with TableInfo<$GardensTable, GardenRow> {
     return $GardensTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<GardenKind, String> $converterkind =
+  static JsonTypeConverter2<GardenKind, String, String> $converterkind =
       const GardenKindConverter();
 }
 
@@ -1133,7 +1133,9 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       dirty: serializer.fromJson<bool>(json['dirty']),
       name: serializer.fromJson<String>(json['name']),
-      kind: serializer.fromJson<GardenKind>(json['kind']),
+      kind: $GardensTable.$converterkind.fromJson(
+        serializer.fromJson<String>(json['kind']),
+      ),
       sunHours: serializer.fromJson<int?>(json['sunHours']),
       lat: serializer.fromJson<double?>(json['lat']),
       lon: serializer.fromJson<double?>(json['lon']),
@@ -1153,7 +1155,9 @@ class GardenRow extends DataClass implements Insertable<GardenRow> {
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'dirty': serializer.toJson<bool>(dirty),
       'name': serializer.toJson<String>(name),
-      'kind': serializer.toJson<GardenKind>(kind),
+      'kind': serializer.toJson<String>(
+        $GardensTable.$converterkind.toJson(kind),
+      ),
       'sunHours': serializer.toJson<int?>(sunHours),
       'lat': serializer.toJson<double?>(lat),
       'lon': serializer.toJson<double?>(lon),
@@ -2719,7 +2723,7 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, TaskRow> {
     return $TasksTable(attachedDatabase, alias);
   }
 
-  static TypeConverter<TaskKind, String> $converterkind =
+  static JsonTypeConverter2<TaskKind, String, String> $converterkind =
       const TaskKindConverter();
 }
 
@@ -2847,7 +2851,9 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       dirty: serializer.fromJson<bool>(json['dirty']),
       gardenPlantId: serializer.fromJson<String?>(json['gardenPlantId']),
-      kind: serializer.fromJson<TaskKind>(json['kind']),
+      kind: $TasksTable.$converterkind.fromJson(
+        serializer.fromJson<String>(json['kind']),
+      ),
       due: serializer.fromJson<String>(json['due']),
       completedAt: serializer.fromJson<DateTime?>(json['completedAt']),
       nodeKind: serializer.fromJson<String?>(json['nodeKind']),
@@ -2867,7 +2873,9 @@ class TaskRow extends DataClass implements Insertable<TaskRow> {
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'dirty': serializer.toJson<bool>(dirty),
       'gardenPlantId': serializer.toJson<String?>(gardenPlantId),
-      'kind': serializer.toJson<TaskKind>(kind),
+      'kind': serializer.toJson<String>(
+        $TasksTable.$converterkind.toJson(kind),
+      ),
       'due': serializer.toJson<String>(due),
       'completedAt': serializer.toJson<DateTime?>(completedAt),
       'nodeKind': serializer.toJson<String?>(nodeKind),
