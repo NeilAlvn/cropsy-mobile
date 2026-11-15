@@ -22,6 +22,20 @@ void main() {
     }
   });
 
+  test('a button with no trial names what it does, the lifetime price included', () {
+    for (final lang in ['nl', 'en', 'de', 'fr', 'sv', 'pt']) {
+      for (final plan in ['monthly', 'yearly', 'lifetime']) {
+        expect(Str.pwCtaPlan(plan, '€99.99').pick(lang), isNot(Str.continueLabel.pick(lang)), reason: '$lang $plan');
+      }
+      expect(Str.pwCtaPlan('lifetime', '€99.99').pick(lang), contains('€99.99'), reason: lang);
+    }
+  });
+
+  test('the trial line beside the button stays short', () {
+    final words = Str.pwTermsTrial(7, '€39.99', 'App Store').pick('en').split(' ').length;
+    expect(words, lessThanOrEqualTo(20));
+  });
+
   test('store periods become trial days', () {
     expect(periodDays(PeriodUnit.week, 1), 7);
     expect(periodDays(PeriodUnit.day, 3), 3);
