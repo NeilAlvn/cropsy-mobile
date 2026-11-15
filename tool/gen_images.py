@@ -155,7 +155,9 @@ def run(names, spec, out_dir, aspect, refs, resolution, ext, urls, cut=False,
             continue
         # Each entry against its own existing art, when the run is an upscale.
         own = ref_each and ref_each.format(name=name)
-        use = [data_uri(own)] if own and os.path.exists(own) else refs
+        # With _ref_file as well, the shared reference goes first: it is the
+        # model sheet, and the entry's own file is the pose to redraw.
+        use = (refs or []) + [data_uri(own)] if own and os.path.exists(own) else refs
         pending[name] = (generate(spec[name], aspect, use, resolution), path)
         print(f"queued {name}")
         time.sleep(1)
