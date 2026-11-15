@@ -12,7 +12,6 @@
 /// shown only when notifications are allowed to deliver it.
 library;
 
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -53,9 +52,7 @@ class PaywallScreen extends StatefulWidget {
 class _PaywallScreenState extends State<PaywallScreen> {
   Plan? _plan; // null until the first build picks the leading offer
   bool _busy = false;
-  bool _closeVisible = false;
   bool _canRemind = false; // notifications allowed, so the trial reminder will arrive
-  Timer? _closeTimer;
 
   // What the person already has, for the benefit list.
   int _crops = 0;
@@ -65,21 +62,10 @@ class _PaywallScreenState extends State<PaywallScreen> {
   void initState() {
     super.initState();
     Analytics.capture('paywall_shown', properties: {'trigger': widget.trigger.name});
-    // The X is there from the start in the tree, just faded in after a beat
-    // so the offer gets read first. Normal contrast once it shows.
-    _closeTimer = Timer(const Duration(seconds: 2), () {
-      if (mounted) setState(() => _closeVisible = true);
-    });
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadGarden());
     Lifecycle.permitted().then((ok) {
       if (mounted && ok) setState(() => _canRemind = true);
     });
-  }
-
-  @override
-  void dispose() {
-    _closeTimer?.cancel();
-    super.dispose();
   }
 
   Future<void> _loadGarden() async {
@@ -115,7 +101,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
       };
 
   /// The table: what free already does, then what premium adds — their crops,
-  /// their season, and the feature they reached for ahead of the rest.
+  /// their season, and the feature they reached for.
   /// `true` means free has it too.
   List<(LocalizedText, bool)> _rows(String region) {
     final features = [Str.pwPlanner, Str.pwDiagnose, Str.pwUnlimited];
@@ -129,8 +115,8 @@ class _PaywallScreenState extends State<PaywallScreen> {
       // Free grows three, so "all 3 you picked" would not be a premium promise.
       (_crops > 3 ? Str.pwCrops(_crops) : Str.pwUnlimitedPlants, false),
       (_firstSeason ? Str.pwFirstSeason : Str.pwSeasonFor(region), false),
+      // One feature row: the paywall's word budget has no room for a second.
       (features[lead], false),
-      (features.firstWhere((f) => f != features[lead]), false),
     ];
   }
 
@@ -151,12 +137,13 @@ class _PaywallScreenState extends State<PaywallScreen> {
     await repo.setMeta('exit_offer_shown', '1');
     Analytics.capture('exit_offer_shown');
     if (!mounted) return false;
-    final take = await showModalBottomSheet<bool>(
+    final choice = await showModalBottomSheet<_ExitChoice>(
       context: context,
       backgroundColor: AppColors.surface,
-      builder: (context) => _ExitOfferSheet(offer: offer, lang: _lang),
+      builder: (context) => _ExitOfferSheet(offer: offer, lang: _lang, onRestore: _restoreFromSheet),
     );
-    if (take != true || !mounted) return false;
+    if (choice == _ExitChoice.restored) return true;
+    if (choice != _ExitChoice.take || !mounted) return false;
     Analytics.capture('exit_offer_accepted');
     return _purchase(offer.package, plan: Plan.yearly, trial: false);
   }
@@ -186,6 +173,19 @@ class _PaywallScreenState extends State<PaywallScreen> {
     } else if (purchases.lastError != null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(purchases.lastError!)));
     }
+    return ok;
+  }
+
+  /// Restore from the exit sheet: true when something came back, so the
+  /// sheet closes and the paywall closes as bought.
+  Future<bool> _restoreFromSheet() async {
+    final purchases = _purchases;
+    if (purchases == null || !purchases.configured) return false;
+    final ok = await purchases.restore();
+    if (!mounted) return ok;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(ok ? Str.purchasesRestored.of(context) : purchases.lastError ?? Str.nothingToRestore.of(context)),
+    ));
     return ok;
   }
 
@@ -267,17 +267,12 @@ class _PaywallScreenState extends State<PaywallScreen> {
                             Positioned(
                               top: -8,
                               right: -14,
-                              child: IgnorePointer(
-                                ignoring: !_closeVisible,
-                                child: AnimatedOpacity(
-                                  opacity: _closeVisible ? 1 : 0,
-                                  duration: const Duration(milliseconds: 400),
-                                  child: IconButton(
-                                    tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
-                                    icon: Icon(PhosphorIcons.x, color: AppColors.ink),
-                                    onPressed: _dismiss,
-                                  ),
-                                ),
+                              // Visible from the first frame: a close that
+                              // fades in later reads as a trap, and review flags it.
+                              child: IconButton(
+                                tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+                                icon: Icon(PhosphorIcons.x, color: AppColors.ink),
+                                onPressed: _dismiss,
                               ),
                             ),
                         ],
@@ -357,7 +352,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         child: PrimaryButton(
                           label: _busy
                               ? Str.oneMoment.of(context)
-                              : (trial > 0 ? Str.pwCtaTrial(trial) : Str.continueLabel).of(context),
+                              : (trial > 0 ? Str.pwCtaTrial(trial) : Str.pwCtaPlan(selected.plan.name, price)).of(context),
                           // Fallback prices are not buyable outside the eurozone.
                           onPressed: _busy || (selected.isFallback && !AppRegion.euro) ? null : () => _buy(selected),
                         ),
@@ -403,7 +398,7 @@ String get _storeName => Platform.isIOS ? 'App Store' : 'Google Play';
 
 Widget _link(BuildContext context, String label, VoidCallback? onTap) => TextButton(
       onPressed: onTap,
-      style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8), minimumSize: const Size(0, 34)),
+      style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8), minimumSize: const Size(0, 44)),
       child: Text(label, style: AppText.caption(context)),
     );
 
@@ -667,11 +662,14 @@ class _PulseState extends State<_Pulse> with SingleTickerProviderStateMixin {
   }
 }
 
+enum _ExitChoice { take, restored }
+
 class _ExitOfferSheet extends StatelessWidget {
-  const _ExitOfferSheet({required this.offer, required this.lang});
+  const _ExitOfferSheet({required this.offer, required this.lang, required this.onRestore});
 
   final ExitOffer offer;
   final String lang;
+  final Future<bool> Function() onRestore;
 
   @override
   Widget build(BuildContext context) {
@@ -688,7 +686,7 @@ class _ExitOfferSheet extends StatelessWidget {
           const SizedBox(height: 4),
           Text(Str.pwExitBody(offer.regular).of(context), style: AppText.bodyMuted(context)),
           const SizedBox(height: 20),
-          PrimaryButton(label: Str.pwExitCta.of(context), onPressed: () => Navigator.of(context).pop(true)),
+          PrimaryButton(label: Str.pwExitCta.of(context), onPressed: () => Navigator.of(context).pop(_ExitChoice.take)),
           const SizedBox(height: 8),
           // Its own purchase screen, so the same App Review 3.1.2 disclosure
           // as the paywall: what renews, at what price, how to cancel.
@@ -704,7 +702,12 @@ class _ExitOfferSheet extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Row(mainAxisSize: MainAxisSize.min, children: [
-                _link(context, Str.pwExitNo.of(context), () => Navigator.of(context).pop(false)),
+                _link(context, Str.pwExitNo.of(context), () => Navigator.of(context).pop()),
+                // App Review wants a restore on every screen that sells.
+                _link(context, Str.restorePurchases.of(context), () async {
+                  final navigator = Navigator.of(context);
+                  if (await onRestore()) navigator.pop(_ExitChoice.restored);
+                }),
                 ..._legalLinks(context, lang),
               ]),
             ),

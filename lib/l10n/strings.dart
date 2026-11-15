@@ -2876,6 +2876,33 @@ abstract final class Str {
           sv: 'Starta $days dagar gratis',
           pt: 'Começar $days dias grátis',
         );
+  /// The button when no trial applies: it names what pressing it does.
+  static LocalizedText pwCtaPlan(String plan, String p) => switch (plan) {
+        'monthly' => const LocalizedText(
+            nl: 'Maandelijks abonneren',
+            en: 'Subscribe monthly',
+            de: 'Monatlich abonnieren',
+            fr: 'S\'abonner au mois',
+            sv: 'Prenumerera månadsvis',
+            pt: 'Subscrever mensalmente',
+          ),
+        'lifetime' => LocalizedText(
+            nl: 'Koop voor $p',
+            en: 'Buy for $p',
+            de: 'Für $p kaufen',
+            fr: 'Acheter pour $p',
+            sv: 'Köp för $p',
+            pt: 'Comprar por $p',
+          ),
+        _ => const LocalizedText(
+            nl: 'Jaarlijks abonneren',
+            en: 'Subscribe yearly',
+            de: 'Jährlich abonnieren',
+            fr: 'S\'abonner à l\'année',
+            sv: 'Prenumerera årsvis',
+            pt: 'Subscrever anualmente',
+          ),
+      };
   static LocalizedText pwHeadCrops(int n) => LocalizedText(
     nl: 'Je $n gewassen,\nhet hele seizoen.',
     en: 'Your $n crops,\nyour whole season.',
@@ -2959,12 +2986,12 @@ abstract final class Str {
     pt: 'Continuar grátis',
   );
   static LocalizedText pwTermsTrial(int days, String p, String store) => LocalizedText(
-    nl: '$days dagen gratis, daarna $p per jaar. Verlengt automatisch, tenzij je minstens 24 uur voor het einde van de proefperiode opzegt in je $store-instellingen.',
-    en: '$days days free, then $p per year. Renews automatically unless you cancel at least 24 hours before the trial ends, in your $store settings.',
-    de: '$days Tage gratis, dann $p pro Jahr. Verlängert sich automatisch, wenn du nicht mindestens 24 Stunden vor Testende in deinen $store-Einstellungen kündigst.',
-    fr: '$days jours offerts, puis $p par an. Renouvellement automatique sauf résiliation au moins 24 h avant la fin de l\'essai, dans les réglages $store.',
-    sv: '$days dagar gratis, sedan $p per år. Förnyas automatiskt om du inte säger upp minst 24 timmar innan perioden slutar, i inställningarna för $store.',
-    pt: '$days dias grátis, depois $p por ano. Renova automaticamente, a menos que canceles pelo menos 24 horas antes do fim do período grátis, nas definições da $store.',
+    nl: '$days dagen gratis, daarna $p per jaar, verlengt automatisch. Zeg op wanneer je wilt in je $store-instellingen.',
+    en: '$days days free, then $p per year, renews automatically. Cancel anytime in your $store settings.',
+    de: '$days Tage gratis, dann $p pro Jahr, verlängert sich automatisch. Jederzeit in deinen $store-Einstellungen kündbar.',
+    fr: '$days jours offerts, puis $p par an, renouvellement automatique. Résiliable à tout moment dans les réglages $store.',
+    sv: '$days dagar gratis, sedan $p per år, förnyas automatiskt. Säg upp när du vill i inställningarna för $store.',
+    pt: '$days dias grátis, depois $p por ano, renova automaticamente. Cancela quando quiseres nas definições da $store.',
   );
   static LocalizedText pwTermsYearly(String p, String store) => LocalizedText(
     nl: '$p per jaar, verlengt automatisch. Zeg op wanneer je wilt in je $store-instellingen.',
@@ -2991,12 +3018,12 @@ abstract final class Str {
     pt: '$p uma vez. Sem subscrição, nada para cancelar.',
   );
   static LocalizedText pwTermsExit(String intro, String regular, String store) => LocalizedText(
-    nl: '$intro voor het eerste jaar, daarna $regular per jaar. Verlengt automatisch, tenzij je minstens 24 uur voor het einde van de periode opzegt in je $store-instellingen.',
-    en: '$intro for the first year, then $regular per year. Renews automatically unless you cancel at least 24 hours before the period ends, in your $store settings.',
-    de: '$intro im ersten Jahr, danach $regular pro Jahr. Verlängert sich automatisch, wenn du nicht mindestens 24 Stunden vor Ende des Zeitraums in deinen $store-Einstellungen kündigst.',
-    fr: '$intro la première année, puis $regular par an. Renouvellement automatique sauf résiliation au moins 24 h avant la fin de la période, dans les réglages $store.',
-    sv: '$intro första året, sedan $regular per år. Förnyas automatiskt om du inte säger upp minst 24 timmar innan perioden slutar, i inställningarna för $store.',
-    pt: '$intro no primeiro ano, depois $regular por ano. Renova automaticamente, a menos que canceles pelo menos 24 horas antes do fim do período, nas definições da $store.',
+    nl: '$intro voor het eerste jaar, daarna $regular per jaar, verlengt automatisch. Zeg op wanneer je wilt in je $store-instellingen.',
+    en: '$intro for the first year, then $regular per year, renews automatically. Cancel anytime in your $store settings.',
+    de: '$intro im ersten Jahr, danach $regular pro Jahr, verlängert sich automatisch. Jederzeit in deinen $store-Einstellungen kündbar.',
+    fr: '$intro la première année, puis $regular par an, renouvellement automatique. Résiliable à tout moment dans les réglages $store.',
+    sv: '$intro första året, sedan $regular per år, förnyas automatiskt. Säg upp när du vill i inställningarna för $store.',
+    pt: '$intro no primeiro ano, depois $regular por ano, renova automaticamente. Cancela quando quiseres nas definições da $store.',
   );
   static LocalizedText pwExitTitle(String p) => LocalizedText(
     nl: 'Wacht — je eerste jaar voor $p',
