@@ -1,4 +1,5 @@
-/// Lifecycle notifications: trial reminders and seasonal offers.
+/// Lifecycle notifications: trial reminders, seasonal offers and the
+/// free-user safety nets (second-chance nudge, app-open paywall).
 ///
 /// Separate from [Reminders] (daily care), which cancels and re-schedules its
 /// own ids on every repository change. Lifecycle ids live in their own range
@@ -11,6 +12,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import '../l10n/strings.dart';
+import '../timing/dates.dart';
+import '../timing/replan.dart';
 import '../timing/types.dart';
 
 class Lifecycle {
@@ -25,9 +28,49 @@ class Lifecycle {
   static const _trialEnds = 1001;
   static const _autumn = 1010;
   static const _spring = 1011;
+  static const _secondChance = 1020;
 
   /// Tapping a seasonal nudge opens the paywall from the home card's door.
   static const paywallPayload = 'paywall:homeCard';
+
+  /// Tapping the second-chance nudge opens the paywall too, but is counted
+  /// apart so we can see whether it earns its place.
+  static const secondChancePayload = 'paywall:secondChance';
+
+  /// Meta flag: the second chance is offered once per install, whatever
+  /// happens to the notification after that.
+  static const secondChanceKey = 'second_chance_scheduled';
+
+  /// Meta counter of cold starts, for [appOpenPaywall].
+  static const appOpensKey = 'app_opens';
+
+  /// Two days after onboarding finished at [onboardedAt], 10:00 local.
+  static DateTime secondChanceTime(DateTime onboardedAt) =>
+      DateTime(onboardedAt.year, onboardedAt.month, onboardedAt.day + 2, 10);
+
+  /// The first of [tasks] (sorted by due, as `seasonTasks()` returns them)
+  /// due after the day of [fire], with how many days after it. A step that
+  /// is already past when the nudge lands would read as a scolding.
+  static ({String cropSlug, NodeKind kind, int days})? stepAfter(
+      List<({String plantId, String cropSlug, PathNode node})> tasks, DateTime fire) {
+    final day = toIso(fire);
+    for (final t in tasks) {
+      if (t.node.due.compareTo(day) <= 0) continue;
+      return (cropSlug: t.cropSlug, kind: t.node.kind, days: parseIso(t.node.due).difference(parseIso(day)).inDays);
+    }
+    return null;
+  }
+
+  /// Free gardeners see the paywall on their 2nd and 4th cold start: late
+  /// enough that the app has shown what it does, rare enough not to nag.
+  /// Never on top of onboarding or a paywall this start already opened.
+  static bool appOpenPaywall({
+    required int coldStart,
+    required bool premium,
+    required bool onboarding,
+    required bool paywallOpened,
+  }) =>
+      (coldStart == 2 || coldStart == 4) && !premium && !onboarding && !paywallOpened;
 
   /// Day 3 and day 5 of a trial that started on [startedOn], at 09:00 local.
   static ({DateTime nudge, DateTime ends}) trialTimes(DateTime startedOn) => (
@@ -60,10 +103,17 @@ class Lifecycle {
     await _plugin.cancel(id: _trialEnds);
   }
 
+  /// A free gardener finished onboarding at [onboardedAt] and walked past the
+  /// paywall: one reminder two days later, naming a real step when [body] has one.
+  static Future<void> scheduleSecondChance(DateTime onboardedAt, LocalizedText body, {String lang = 'en'}) =>
+      _at(_secondChance, secondChanceTime(onboardedAt), Str.secondChanceTitle, body, lang,
+          payload: secondChancePayload);
+
   /// Seasonal nudges for free gardeners: "plan next season" on 1 October and
   /// "season starts" on 15 February, 10:00. Safe to call on every launch and
   /// resume; premium or no permission clears them.
   static Future<void> syncSeasonal({required bool premium, String lang = 'en'}) async {
+    if (premium) await _plugin.cancel(id: _secondChance);
     if (premium || !await permitted()) {
       await _plugin.cancel(id: _autumn);
       await _plugin.cancel(id: _spring);

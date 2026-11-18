@@ -5376,6 +5376,34 @@ abstract final class Str {
     sv: 'Avsluta när du vill under Google Play → Prenumerationer.',
     pt: 'Cancela quando quiseres em Google Play → Subscrições.',
   );
+  static const secondChanceTitle = LocalizedText(
+    nl: 'Je seizoensplan wacht op je',
+    en: 'Your season plan is waiting',
+    de: 'Dein Saisonplan wartet auf dich',
+    fr: 'Ton plan de saison t\'attend',
+    sv: 'Din säsongsplan väntar',
+    pt: 'O teu plano da estação está à tua espera',
+  );
+  /// [step] is the next real step [days] after the nudge lands, or null for
+  /// the generic line. [trial]: the free week is only promised when the store
+  /// still offers it.
+  static LocalizedText secondChanceBody(LocalizedText? step, int days, {required bool trial}) {
+    String lead(String lang, String Function(String step) line) => step == null ? '' : '${line(step.pick(lang))} ';
+    return LocalizedText(
+      nl: lead('nl', (s) => '$s over $days ${days == 1 ? 'dag' : 'dagen'}.') +
+          (trial ? 'Start je gratis week en zie elke stap van je seizoen.' : 'Ontgrendel het hele seizoen en zie elke stap.'),
+      en: lead('en', (s) => '$s in $days ${days == 1 ? 'day' : 'days'}.') +
+          (trial ? 'Start your free week to see every step of your season.' : 'Unlock the full season to see every step.'),
+      de: lead('de', (s) => '$s in $days ${days == 1 ? 'Tag' : 'Tagen'}.') +
+          (trial ? 'Starte deine Gratiswoche und sieh jeden Schritt deiner Saison.' : 'Schalte die ganze Saison frei und sieh jeden Schritt.'),
+      fr: lead('fr', (s) => '$s dans $days ${days == 1 ? 'jour' : 'jours'}.') +
+          (trial ? 'Commence ta semaine gratuite pour voir chaque étape de ta saison.' : 'Débloque toute la saison pour voir chaque étape.'),
+      sv: lead('sv', (s) => '$s om $days ${days == 1 ? 'dag' : 'dagar'}.') +
+          (trial ? 'Starta din gratisvecka och se varje steg i din säsong.' : 'Lås upp hela säsongen och se varje steg.'),
+      pt: lead('pt', (s) => '$s daqui a $days ${days == 1 ? 'dia' : 'dias'}.') +
+          (trial ? 'Começa a tua semana grátis e vê cada passo da tua estação.' : 'Desbloqueia a estação inteira e vê cada passo.'),
+    );
+  }
   static const nudgeAutumnTitle = LocalizedText(
     nl: 'Plan volgend seizoen',
     en: 'Plan next season',

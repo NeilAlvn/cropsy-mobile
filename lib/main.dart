@@ -23,8 +23,10 @@ import 'design/motion.dart';
 import 'design/theme_mode.dart';
 import 'l10n/app_lang.dart';
 import 'l10n/region.dart';
+import 'l10n/strings.dart';
 import 'features/app_shell.dart';
 import 'features/garden/garden_repository.dart';
+import 'features/garden/log_node_flow.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'features/paywall/paywall_screen.dart';
 import 'features/repository_scope.dart';
@@ -92,11 +94,15 @@ Future<void> _boot() async {
       await Reminders.schedule(await repo.thisWeek(), today: repo.today, lang: lang.code);
     });
   });
+  _coldStart = (int.tryParse(await repo.meta(Lifecycle.appOpensKey) ?? '') ?? 0) + 1;
+  await repo.setMeta(Lifecycle.appOpensKey, '$_coldStart');
+  // Read before runApp so its paywall is pushed before the app shell's first
+  // frame, where the app-open paywall checks whether one already opened.
+  final launched = await Reminders.launchPayload();
   runApp(CropsyApp(repository: repo, auth: auth, purchases: purchases, theme: theme, lang: lang));
 
   // A notification that cold-started the app is answered once there is a
   // navigator to answer it with.
-  final launched = await Reminders.launchPayload();
   WidgetsBinding.instance.addPostFrameCallback((_) => _openFromNotification(launched));
 
   // Seasonal nudges for free gardeners, re-aimed on launch, on resume and
@@ -107,12 +113,42 @@ Future<void> _boot() async {
   AppLifecycleListener(onResume: nudges);
 }
 
+/// This cold start's number, counted in meta; see [Lifecycle.appOpenPaywall].
+int _coldStart = 0;
+
+/// A paywall already opened this start, so the app-open one stays away.
+bool _paywallOpened = false;
+
 void _openFromNotification(String? payload) {
-  if (payload != Lifecycle.paywallPayload) return;
+  final trigger = switch (payload) {
+    Lifecycle.paywallPayload => PaywallTrigger.homeCard,
+    Lifecycle.secondChancePayload => PaywallTrigger.homeCard, // secondChance trigger lands with the paywall branch
+    _ => null,
+  };
+  if (trigger == null) return;
+  _pushPaywall(trigger);
+}
+
+void _pushPaywall(PaywallTrigger trigger) {
+  _paywallOpened = true;
   CropsyApp.navigator.currentState?.push(MaterialPageRoute(
-    builder: (_) => const PaywallScreen(trigger: PaywallTrigger.homeCard),
+    builder: (_) => PaywallScreen(trigger: trigger),
     fullscreenDialog: true,
   ));
+}
+
+/// Onboarding just ended. Remembers when, and gives a free gardener who
+/// walked past the paywall one reminder two days later. Once per install: a
+/// reinstall or a second onboarding (sign-out) does not earn another.
+Future<void> _afterOnboarding(GardenRepository repo, PurchaseService? purchases, String lang) async {
+  final now = DateTime.now();
+  await repo.setMeta('onboarded_at', now.toIso8601String());
+  if ((purchases?.premium ?? false) || await repo.meta(Lifecycle.secondChanceKey) != null) return;
+  await repo.setMeta(Lifecycle.secondChanceKey, now.toIso8601String());
+  final next = Lifecycle.stepAfter(await repo.seasonTasks(), Lifecycle.secondChanceTime(now));
+  final step = next == null ? null : Str.stepOnCrop(nodeKindLine(next.kind), repo.cropNames(next.cropSlug));
+  final body = Str.secondChanceBody(step, next?.days ?? 0, trial: (purchases?.trialDaysOffered ?? 0) > 0);
+  await Lifecycle.scheduleSecondChance(now, body, lang: lang);
 }
 
 class CropsyApp extends StatelessWidget {
@@ -243,10 +279,25 @@ class _RootState extends State<_Root> {
     if (_hasGarden != true && !_onboardingFinishing) {
       RepositoryScope.of(context).hasGarden().then((v) {
         if (mounted && v != _hasGarden && !_onboardingFinishing) {
+          final onboarding = _hasGarden == false;
           setState(() => _hasGarden = v);
+          if (v) WidgetsBinding.instance.addPostFrameCallback((_) => _appOpenPaywall(onboarding));
         }
       });
     }
+  }
+
+  /// [onboarding]: it was on screen this start, and a garden synced in under
+  /// it; that start has had its paywall.
+  void _appOpenPaywall(bool onboarding) {
+    if (!mounted) return;
+    final show = Lifecycle.appOpenPaywall(
+      coldStart: _coldStart,
+      premium: PurchaseScope.maybeOf(context)?.premium ?? false,
+      onboarding: onboarding,
+      paywallOpened: _paywallOpened,
+    );
+    if (show) _pushPaywall(PaywallTrigger.homeCard); // appOpen trigger lands with the paywall branch
   }
 
   @override
@@ -256,10 +307,14 @@ class _RootState extends State<_Root> {
       true => AppShell(),
       false => OnboardingScreen(
         onBuildingPlan: () => _onboardingFinishing = true,
-        onDone: () => setState(() {
-          _onboardingFinishing = false;
-          _hasGarden = true;
-        }),
+        onDone: () {
+          unawaited(_afterOnboarding(RepositoryScope.of(context), PurchaseScope.maybeOf(context),
+              AppLangScope.of(context).code));
+          setState(() {
+            _onboardingFinishing = false;
+            _hasGarden = true;
+          });
+        },
       ),
     };
   }

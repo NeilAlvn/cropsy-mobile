@@ -5,6 +5,10 @@
 /// only the OS sheet (no "do you like us?" gate in front of it), only after a
 /// win, and rarely. Apple and Google apply their own quotas on top, and either
 /// may silently show nothing.
+///
+/// 2026-11-18: Luuk asked for the prompt after the first win (the first logged
+/// step) instead of the third over three days. The 120 days between asks
+/// still keeps it rare.
 library;
 
 import 'package:in_app_review/in_app_review.dart';
@@ -21,8 +25,8 @@ class ReviewPrompt {
   static const stepWin = 1;
   static const harvestWin = 3;
 
-  static const _winsNeeded = 3;
-  static const _minDaysUsed = 3;
+  static const _winsNeeded = 1;
+  static const _minDaysUsed = 0;
   static const _daysBetweenAsks = 120;
 
   static bool shouldAsk({
