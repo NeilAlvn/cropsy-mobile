@@ -395,9 +395,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final repo = RepositoryScope.of(context);
     final premium = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
-        builder: (_) => PaywallScreen(
-          trigger: _planningIds.isEmpty ? PaywallTrigger.onboarding : PaywallTrigger.plantLimit,
-        ),
+        // Always the onboarding trigger, also when picks wait over the free
+        // limit: it carries the trial layout and the exit offer; the crop
+        // benefit line already names what is waiting.
+        builder: (_) => const PaywallScreen(trigger: PaywallTrigger.onboarding),
         fullscreenDialog: true,
       ),
     );
