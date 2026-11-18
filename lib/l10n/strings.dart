@@ -3057,6 +3057,92 @@ abstract final class Str {
     sv: 'Nej tack',
     pt: 'Não, obrigado',
   );
+  /// From the reminder two days after onboarding. Neutral about the price:
+  /// the lead card may be the trial or the discounted first year.
+  static const pwHeadSecondChance = LocalizedText(
+    nl: 'Nog aan het twijfelen?\nJe seizoen staat klaar.',
+    en: 'Still thinking it over?\nYour season is ready.',
+    de: 'Noch unsicher?\nDeine Saison steht bereit.',
+    fr: 'Tu hésites encore ?\nTa saison est prête.',
+    sv: 'Fortfarande osäker?\nDin säsong är redo.',
+    pt: 'Ainda a pensar?\nA tua estação está pronta.',
+  );
+  static const pwHeadAppOpen = LocalizedText(
+    nl: 'Ontgrendel je hele seizoen.',
+    en: 'Unlock your whole season.',
+    de: 'Schalte deine ganze Saison frei.',
+    fr: 'Débloque toute ta saison.',
+    sv: 'Lås upp hela din säsong.',
+    pt: 'Desbloqueia a tua estação inteira.',
+  );
+  /// The exit offer's card title on the reminder paywall.
+  static const pwFirstYear = LocalizedText(
+    nl: 'Eerste jaar',
+    en: 'First year',
+    de: 'Erstes Jahr',
+    fr: 'Première année',
+    sv: 'Första året',
+    pt: 'Primeiro ano',
+  );
+  /// The one price line under the two cards. The billed amount comes first
+  /// and the per-month figure sits in brackets (App Review 3.1.2).
+  static LocalizedText pwPriceTrial(int days, String billed, String perMonth) => LocalizedText(
+    nl: '$days dagen gratis, daarna $billed/jaar ($perMonth/maand)',
+    en: '$days days free, then $billed/year ($perMonth/month)',
+    de: '$days Tage gratis, dann $billed/Jahr ($perMonth/Monat)',
+    fr: '$days jours offerts, puis $billed/an ($perMonth/mois)',
+    sv: '$days dagar gratis, sedan $billed/år ($perMonth/mån)',
+    pt: '$days dias grátis, depois $billed/ano ($perMonth/mês)',
+  );
+  static LocalizedText pwPriceYearly(String billed, String perMonth) => LocalizedText(
+    nl: '$billed/jaar ($perMonth/maand)',
+    en: '$billed/year ($perMonth/month)',
+    de: '$billed/Jahr ($perMonth/Monat)',
+    fr: '$billed/an ($perMonth/mois)',
+    sv: '$billed/år ($perMonth/mån)',
+    pt: '$billed/ano ($perMonth/mês)',
+  );
+  static LocalizedText pwPriceMonthly(String billed) => LocalizedText(
+    nl: '$billed/maand',
+    en: '$billed/month',
+    de: '$billed/Monat',
+    fr: '$billed/mois',
+    sv: '$billed/mån',
+    pt: '$billed/mês',
+  );
+  static LocalizedText pwPriceExit(String intro, String regular) => LocalizedText(
+    nl: 'Eerste jaar $intro, daarna $regular/jaar',
+    en: 'First year $intro, then $regular/year',
+    de: 'Erstes Jahr $intro, dann $regular/Jahr',
+    fr: 'Première année $intro, puis $regular/an',
+    sv: 'Första året $intro, sedan $regular/år',
+    pt: 'Primeiro ano $intro, depois $regular/ano',
+  );
+  /// "tomato, pepper and basil": the person's own crops, lowercased mid-
+  /// sentence except in German, where nouns keep their capital.
+  static LocalizedText pwBenefitCrops(List<LocalizedText> crops) {
+    String list(String lang, String and) {
+      final names = [for (final c in crops) lang == 'de' ? c.pick(lang) : c.pick(lang).toLowerCase()];
+      return names.length < 2 ? names.join() : '${names.sublist(0, names.length - 1).join(', ')} $and ${names.last}';
+    }
+
+    return LocalizedText(
+      nl: 'Elke zaai- en plantstap voor ${list('nl', 'en')}.',
+      en: 'Every sowing and planting step for ${list('en', 'and')}.',
+      de: 'Jeder Schritt beim Säen und Pflanzen für ${list('de', 'und')}.',
+      fr: 'Chaque étape de semis et de plantation pour ${list('fr', 'et')}.',
+      sv: 'Varje steg i sådd och plantering för ${list('sv', 'och')}.',
+      pt: 'Cada passo da sementeira e plantação para ${list('pt', 'e')}.',
+    );
+  }
+  static LocalizedText pwBenefitCancel({required bool ios}) => LocalizedText(
+    nl: ios ? 'Altijd opzegbaar in de App Store.' : 'Altijd opzegbaar in Google Play.',
+    en: ios ? 'Cancel anytime in the App Store.' : 'Cancel anytime in Google Play.',
+    de: ios ? 'Jederzeit kündbar im App Store.' : 'Jederzeit kündbar bei Google Play.',
+    fr: ios ? 'Résiliable à tout moment dans l\'App Store.' : 'Résiliable à tout moment sur Google Play.',
+    sv: ios ? 'Säg upp när du vill i App Store.' : 'Säg upp när du vill i Google Play.',
+    pt: ios ? 'Cancela quando quiseres na App Store.' : 'Cancela quando quiseres no Google Play.',
+  );
 
   static const lifetimeNothingToCancel = LocalizedText(
     nl: 'Levenslang. Niets op te zeggen.',
