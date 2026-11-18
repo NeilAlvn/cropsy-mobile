@@ -1417,25 +1417,40 @@ abstract final class Str {
     sv: 'Frostdatum för $region: sista $last, första $first',
     pt: 'Datas de geada para $region: última $last, primeira $first',
   );
+  // Counts crops whose sowing or planting window is open this month where
+  // the garden is: what can start now, not what "fits" (space is not part
+  // of the count, so the line no longer claims it is).
   static LocalizedText planMatches(int n) => LocalizedText(
-    nl: n == 1
-        ? '1 gewas past deze maand in je ruimte'
-        : '$n gewassen passen deze maand in je ruimte',
-    en: n == 1
-        ? '1 crop fits your space this month'
-        : '$n crops fit your space this month',
-    de: n == 1
-        ? '1 Pflanze passt diesen Monat zu deinem Platz'
-        : '$n Pflanzen passen diesen Monat zu deinem Platz',
-    fr: n <= 1
-        ? '$n plante convient à ton espace ce mois-ci'
-        : '$n plantes conviennent à ton espace ce mois-ci',
-    sv: n == 1
-        ? '1 växt passar din plats den här månaden'
-        : '$n växter passar din plats den här månaden',
-    pt: n == 1
-        ? '1 planta é boa para o teu espaço este mês'
-        : '$n plantas são boas para o teu espaço este mês',
+    nl: n == 0
+        ? 'Deze maand valt er nog niets te zaaien'
+        : n == 1
+        ? '1 gewas kun je deze maand starten'
+        : '$n gewassen kun je deze maand starten',
+    en: n == 0
+        ? 'Nothing to sow this month yet'
+        : n == 1
+        ? '1 crop you can start this month'
+        : '$n crops you can start this month',
+    de: n == 0
+        ? 'Diesen Monat gibt es noch nichts zu säen'
+        : n == 1
+        ? '1 Pflanze kannst du diesen Monat starten'
+        : '$n Pflanzen kannst du diesen Monat starten',
+    fr: n == 0
+        ? 'Rien à semer ce mois-ci pour l\'instant'
+        : n == 1
+        ? '1 plante à démarrer ce mois-ci'
+        : '$n plantes à démarrer ce mois-ci',
+    sv: n == 0
+        ? 'Inget att så den här månaden än'
+        : n == 1
+        ? '1 växt kan du starta den här månaden'
+        : '$n växter kan du starta den här månaden',
+    pt: n == 0
+        ? 'Ainda não há nada para semear este mês'
+        : n == 1
+        ? '1 planta para começar este mês'
+        : '$n plantas para começar este mês',
   );
   // The plan loader's checklist, one line per answer it is built from.
   static LocalizedText loaderFrost(String place) => LocalizedText(
@@ -1485,6 +1500,16 @@ abstract final class Str {
     fr: 'La première tâche arrive dès qu\'une fenêtre s\'ouvre',
     sv: 'Första uppgiften kommer så fort det är dags',
     pt: 'A primeira tarefa chega assim que se abrir uma janela',
+  );
+  /// [line] followed by a date already in the reader's format.
+  static LocalizedText withDay(LocalizedText line, String day) => LocalizedText(
+    nl: '${line.nl}, $day',
+    en: '${line.en}, $day',
+    de: '${line.pick('de')}, $day',
+    fr: '${line.pick('fr')}, $day',
+    sv: '${line.pick('sv')}, $day',
+    pt: '${line.pick('pt')}, $day',
+    enUs: line.enUs == null ? null : '${line.enUs}, $day',
   );
   static LocalizedText planFirstTask(String task) => LocalizedText(
     nl: 'Eerste taak: $task',

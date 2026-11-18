@@ -386,7 +386,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       setState(() {
         _built = true;
         _matches = repo.whatToGrowIn(month).length;
-        _firstTask = firsts.firstOrNull?.line;
+        // A first step that is still weeks away says when, so a plan made in
+        // November reads as a plan and not as nothing to do.
+        _firstTask = switch (firsts.firstOrNull) {
+          null => null,
+          final f when f.due == repo.today => f.line,
+          final f => Str.withDay(f.line, formatDay(f.due)),
+        };
         _seasonClear = clear;
         _seasonLocked = locked;
       });
