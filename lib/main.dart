@@ -122,7 +122,7 @@ bool _paywallOpened = false;
 void _openFromNotification(String? payload) {
   final trigger = switch (payload) {
     Lifecycle.paywallPayload => PaywallTrigger.homeCard,
-    Lifecycle.secondChancePayload => PaywallTrigger.homeCard, // secondChance trigger lands with the paywall branch
+    Lifecycle.secondChancePayload => PaywallTrigger.secondChance,
     _ => null,
   };
   if (trigger == null) return;
@@ -297,7 +297,7 @@ class _RootState extends State<_Root> {
       onboarding: onboarding,
       paywallOpened: _paywallOpened,
     );
-    if (show) _pushPaywall(PaywallTrigger.homeCard); // appOpen trigger lands with the paywall branch
+    if (show) _pushPaywall(PaywallTrigger.appOpen);
   }
 
   @override
