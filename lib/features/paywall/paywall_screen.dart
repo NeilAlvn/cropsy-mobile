@@ -7,6 +7,10 @@
 /// way out of onboarding the exit offer may show once. Prices come from the
 /// store; without it the launch prices show and buying explains.
 ///
+/// Onboarding, the reminder and the app-open paywall use the trial layout
+/// instead ([trialLayout]): personal ticks, two cards with the free week
+/// preselected, one price line, and the X as the only way out.
+///
 /// No switches at all: App Review 3.1.2 rejects a "free trial" toggle, and a
 /// reminder toggle reads like one. The trial-end reminder is a plain line,
 /// shown only when notifications are allowed to deliver it.
@@ -34,11 +38,49 @@ import '../../l10n/strings.dart';
 import '../../notifications/lifecycle.dart';
 import '../../purchases/purchase_service.dart';
 import '../../timing/types.dart';
+import '../onboarding/onboarding_screen.dart' show painEchoes;
 import '../repository_scope.dart';
 
 /// Where the paywall was opened from. Drives the headline, the benefit order,
-/// analytics, and whether the exit offer may show (onboarding only).
-enum PaywallTrigger { onboarding, plantLimit, seasonView, planner, diagnose, gardenLimit, photoLimit, homeCard, settings }
+/// the layout, analytics, and whether the exit offer may show (onboarding
+/// only). [secondChance] comes from the reminder two days after onboarding,
+/// [appOpen] from a free person's 2nd and 4th app open.
+enum PaywallTrigger { onboarding, plantLimit, seasonView, planner, diagnose, gardenLimit, photoLimit, homeCard, settings, secondChance, appOpen }
+
+/// The trial layout: two cards, one price line, personal ticks, no table and
+/// no "continue with free". Where the person did not reach for a feature, a
+/// table of what free lacks only gives them a reason to stay free.
+bool trialLayout(PaywallTrigger t) =>
+    t == PaywallTrigger.onboarding || t == PaywallTrigger.secondChance || t == PaywallTrigger.appOpen;
+
+/// The cards a paywall shows and the one it opens on. The trial layout shows
+/// the lead (yearly, or on [PaywallTrigger.secondChance] the exit offer) and
+/// monthly; lifetime only on the others, which keep today's three.
+({List<PlanOffer> cards, PlanOffer lead}) paywallPlans(PaywallTrigger trigger, List<PlanOffer> offers, {PlanOffer? exit}) {
+  final yearly = offers.where((o) => o.plan == Plan.yearly).firstOrNull;
+  if (!trialLayout(trigger)) return (cards: cardOrder(offers), lead: yearly ?? offers.first);
+  final monthly = offers.where((o) => o.plan == Plan.monthly).firstOrNull;
+  final lead = (trigger == PaywallTrigger.secondChance ? exit : null) ?? yearly ?? monthly ?? offers.first;
+  return (cards: [lead, if (monthly != null && monthly != lead) monthly], lead: lead);
+}
+
+/// The ticks on the trial layout: their crops, the answer to each pain they
+/// said yes to, then the way out, at most four. Nothing personal falls back
+/// to [fallback], the generic list.
+List<LocalizedText> paywallBenefits({
+  required List<LocalizedText> crops,
+  required Iterable<String> pains,
+  required bool ios,
+  required List<LocalizedText> fallback,
+}) {
+  final personal = [
+    if (crops.isNotEmpty) Str.pwBenefitCrops(crops.take(3).toList()),
+    ...painEchoes(pains),
+  ];
+  if (personal.isEmpty) return fallback;
+  // The cancel line survives the cap: it answers the fear behind a trial.
+  return [...personal.take(3), Str.pwBenefitCancel(ios: ios)];
+}
 
 class PaywallScreen extends StatefulWidget {
   const PaywallScreen({super.key, this.trigger = PaywallTrigger.settings});
@@ -57,6 +99,8 @@ class _PaywallScreenState extends State<PaywallScreen> {
   // What the person already has, for the benefit list.
   int _crops = 0;
   bool _firstSeason = false;
+  List<LocalizedText> _cropNames = const [];
+  List<String> _pains = const [];
 
   @override
   void initState() {
@@ -72,11 +116,14 @@ class _PaywallScreenState extends State<PaywallScreen> {
     final repo = RepositoryScope.of(context);
     final plants = [...await repo.growingPlants(), ...await repo.planningPlants()];
     final prefs = (await repo.profile())?.preferences;
-    final experience = prefs == null ? null : (jsonDecode(prefs) as Map<String, dynamic>)['experience'];
+    final answers = prefs == null ? const <String, dynamic>{} : jsonDecode(prefs) as Map<String, dynamic>;
+    final slugs = {for (final p in plants) p.cropSlug};
     if (!mounted) return;
     setState(() {
-      _crops = {for (final p in plants) p.cropSlug}.length;
-      _firstSeason = experience == 'never';
+      _crops = slugs.length;
+      _firstSeason = answers['experience'] == 'never';
+      _cropNames = [for (final s in slugs.take(3)) repo.cropNames(s)];
+      _pains = [for (final p in answers['pains'] as List? ?? const []) '$p'];
     });
   }
 
@@ -96,6 +143,8 @@ class _PaywallScreenState extends State<PaywallScreen> {
         PaywallTrigger.diagnose => Str.pwHeadDiagnose,
         PaywallTrigger.gardenLimit => Str.pwHeadGardens,
         PaywallTrigger.photoLimit => Str.pwHeadPhotos,
+        PaywallTrigger.secondChance => Str.pwHeadSecondChance,
+        PaywallTrigger.appOpen => Str.pwHeadAppOpen,
         PaywallTrigger.onboarding || PaywallTrigger.homeCard || PaywallTrigger.settings =>
           _crops >= 2 ? Str.pwHeadCrops(_crops) : Str.pwHeadSeason,
       };
@@ -204,19 +253,34 @@ class _PaywallScreenState extends State<PaywallScreen> {
     final purchases = _purchases;
     final offers = purchases?.offers ?? fallbackOffers;
     final lang = _lang;
-    final selected = offers.firstWhere((o) => o.plan == _plan, orElse: () => offers.first);
+    final twoCards = trialLayout(widget.trigger);
+    // The reminder paywall leads with the discounted first year when it exists.
+    final exit = widget.trigger == PaywallTrigger.secondChance ? purchases?.exitOffer : null;
+    final exitCard = exit == null ? null : _exitCard(exit);
+    final (:cards, :lead) = paywallPlans(widget.trigger, offers, exit: exitCard);
+    final selected = cards.firstWhere((o) => o.plan == _plan, orElse: () => lead);
     final trial = _trialOf(selected);
     final yearly = offers.where((o) => o.plan == Plan.yearly).firstOrNull;
     final monthly = offers.where((o) => o.plan == Plan.monthly).firstOrNull;
     final save = yearly == null || monthly == null ? null : savingsPercent(yearly.price, monthly.price);
-    final banner = paywallBanner(trialDays: trial, savePercent: save);
+    // The trial layout says it in the price line and the ticks instead.
+    final banner = twoCards ? null : paywallBanner(trialDays: trial, savePercent: save);
     final store = _storeName;
     final price = selected.billed(lang);
     final disclosure = switch (selected.plan) {
+      _ when exit != null && selected == exitCard =>
+        exit.intro ? Str.pwTermsExit(exit.price, exit.regular, store) : Str.pwTermsYearly(exit.price, store),
       Plan.lifetime => Str.pwTermsLifetime(price),
       Plan.monthly => Str.pwTermsMonthly(price, store),
       _ when trial > 0 => Str.pwTermsTrial(trial, price, store),
       _ => Str.pwTermsYearly(price, store),
+    };
+    final priceLine = switch (selected.plan) {
+      _ when exit != null && selected == exitCard =>
+        exit.intro ? Str.pwPriceExit(exit.price, exit.regular) : Str.pwPriceYearly(price, selected.perMonth(lang)),
+      Plan.monthly => Str.pwPriceMonthly(price),
+      _ when trial > 0 => Str.pwPriceTrial(trial, price, selected.perMonth(lang)),
+      _ => Str.pwPriceYearly(price, selected.perMonth(lang)),
     };
     final motion = Motion.of(context);
     // An iPhone SE or a big text setting: tighter rows, a smaller mascot.
@@ -281,10 +345,27 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       // The slack on a tall phone goes a third above the
                       // table, two thirds between the table and the plans.
                       const Spacer(),
-                      _CompareTable(
-                        rows: [for (final (t, free) in _rows(RepositoryScope.of(context).regionName)) (t.of(context), free)],
-                        compact: compact,
-                      ),
+                      if (twoCards)
+                        _Benefits(
+                          lines: [
+                            for (final t in paywallBenefits(
+                              crops: _cropNames,
+                              pains: _pains,
+                              ios: Platform.isIOS,
+                              fallback: [
+                                for (final (t, free) in _rows(RepositoryScope.of(context).regionName))
+                                  if (!free) t,
+                              ],
+                            ))
+                              t.of(context),
+                          ],
+                          compact: compact,
+                        )
+                      else
+                        _CompareTable(
+                          rows: [for (final (t, free) in _rows(RepositoryScope.of(context).regionName)) (t.of(context), free)],
+                          compact: compact,
+                        ),
                       const Spacer(flex: 2),
                       SizedBox(height: gap),
                       AnimatedSwitcher(
@@ -300,7 +381,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            for (final o in cardOrder(offers))
+                            for (final o in cards)
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -308,12 +389,21 @@ class _PaywallScreenState extends State<PaywallScreen> {
                                     offer: o,
                                     selected: o == selected,
                                     // The plan the paywall leads with stands taller.
-                                    height: o.plan == Plan.yearly ? cardHeight + 12 : cardHeight,
+                                    height: o == lead ? cardHeight + 12 : cardHeight,
                                     compact: compact,
-                                    badge: o.plan != Plan.yearly
+                                    // On two cards the free week is the lead's
+                                    // title, so it needs no badge on top.
+                                    name: !twoCards || o != lead
+                                        ? null
+                                        : o == exitCard
+                                            ? Str.pwFirstYear
+                                            : _trialOf(o) > 0
+                                                ? Str.pwTrialBadge(_trialOf(o))
+                                                : null,
+                                    badge: o.plan != Plan.yearly || o == exitCard
                                         ? null
                                         : _trialOf(o) > 0
-                                            ? Str.pwTrialBadge(_trialOf(o))
+                                            ? (twoCards ? null : Str.pwTrialBadge(_trialOf(o)))
                                             : Str.pwBestValue,
                                     onTap: () {
                                       if (o.plan == selected.plan) return;
@@ -326,6 +416,13 @@ class _PaywallScreenState extends State<PaywallScreen> {
                           ],
                         ),
                       ),
+                      if (twoCards) ...[
+                        SizedBox(height: compact ? 6 : 10),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(priceLine.of(context), style: AppText.bodySm(context)),
+                        ),
+                      ],
                       SizedBox(height: compact ? 2 : 6),
                       // Kept in the layout when there is no trial, so picking
                       // monthly does not make the button jump. Hidden too when
@@ -352,7 +449,12 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         child: PrimaryButton(
                           label: _busy
                               ? Str.oneMoment.of(context)
-                              : (trial > 0 ? Str.pwCtaTrial(trial) : Str.pwCtaPlan(selected.plan.name, price)).of(context),
+                              : (selected == exitCard
+                                      ? Str.pwExitCta
+                                      : trial > 0
+                                          ? Str.pwCtaTrial(trial)
+                                          : Str.pwCtaPlan(selected.plan.name, price))
+                                  .of(context),
                           // Fallback prices are not buyable outside the eurozone.
                           onPressed: _busy || (selected.isFallback && !AppRegion.euro) ? null : () => _buy(selected),
                         ),
@@ -376,7 +478,8 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Row(mainAxisSize: MainAxisSize.min, children: [
-                          if (!_hard) _link(context, Str.pwContinueFree.of(context), _dismiss),
+                          // The trial layout's only way out is the X.
+                          if (!_hard && !twoCards) _link(context, Str.pwContinueFree.of(context), _dismiss),
                           _link(context, Str.restorePurchases.of(context), purchases?.configured == true ? _restore : null),
                           ..._legalLinks(context, lang),
                         ]),
@@ -395,6 +498,18 @@ class _PaywallScreenState extends State<PaywallScreen> {
 }
 
 String get _storeName => Platform.isIOS ? 'App Store' : 'Google Play';
+
+/// The exit offer as a card: its first-year price is what it charges now.
+PlanOffer _exitCard(ExitOffer exit) {
+  final s = exit.package.storeProduct;
+  return PlanOffer(
+    plan: Plan.yearly,
+    price: exit.intro ? s.introductoryPrice!.price : s.price,
+    currency: s.currencyCode,
+    priceString: exit.price,
+    package: exit.package,
+  );
+}
 
 Widget _link(BuildContext context, String label, VoidCallback? onTap) => TextButton(
       onPressed: onTap,
@@ -488,6 +603,33 @@ class _CompareTable extends StatelessWidget {
   }
 }
 
+/// The trial layout's ticks: one line each, arriving like the table's rows.
+class _Benefits extends StatelessWidget {
+  const _Benefits({required this.lines, required this.compact});
+
+  final List<String> lines;
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = AppText.body(context).copyWith(fontSize: compact ? 14 : 15, height: 1.3);
+    return Column(children: [
+      for (final (i, line) in lines.indexed)
+        ArriveIn(
+          index: i,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: compact ? 5 : 7),
+            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              _Pop(index: i, child: Icon(PhosphorFill.checkCircle, color: AppColors.accent, size: 22)),
+              const SizedBox(width: 10),
+              Expanded(child: Text(line, style: style)),
+            ]),
+          ),
+        ),
+    ]);
+  }
+}
+
 /// A tick that springs in after its row has arrived.
 class _Pop extends StatelessWidget {
   const _Pop({required this.index, required this.child});
@@ -545,6 +687,7 @@ class _PlanCard extends StatelessWidget {
     required this.compact,
     required this.onTap,
     this.badge,
+    this.name,
   });
 
   final PlanOffer offer;
@@ -553,6 +696,9 @@ class _PlanCard extends StatelessWidget {
   final bool compact;
   final LocalizedText? badge;
   final VoidCallback onTap;
+
+  /// Replaces the plan's own name, e.g. "7 days free" on the trial layout.
+  final LocalizedText? name;
 
   @override
   Widget build(BuildContext context) {
@@ -588,7 +734,7 @@ class _PlanCard extends StatelessWidget {
                 border: Border.all(color: selected ? AppColors.accent : AppColors.hairline, width: selected ? 2 : 1),
               ),
               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                fit(Text(name.of(context), style: AppText.label(context, color: selected ? AppColors.onAccentSoft : AppColors.ink))),
+                fit(Text((this.name ?? name).of(context), style: AppText.label(context, color: selected ? AppColors.onAccentSoft : AppColors.ink))),
                 const SizedBox(height: 4),
                 fit(Text(
                   offer.billed(lang),
