@@ -1,12 +1,14 @@
 /// Onboarding, PRD §5.1 (1.1–1.9), reworked trial-first.
 ///
-/// hero → mascot hello with the trust line → location (postcode fallback) →
-/// space → size and sun → experience → what you want to eat and why → "does
-/// this sound like you?" → crops → the plan built on screen, with the rest of
-/// the season shown locked → notifications, with the reason → the paywall.
+/// hero → two promises, each shown with a real piece of the app → mascot
+/// hello with the trust line → location (postcode fallback) → space → size and
+/// sun → experience → what you want to eat and why → three "does this sound
+/// like you?" cards → crops, ordered by those answers → the plan being built,
+/// line by line from the answers → the plan, with the rest of the season shown
+/// locked → notifications, with the reason → the paywall.
 ///
-/// GrowIt spends four screens on "do you relate?" statements; here they are
-/// three toggles on one screen, and each yes is answered on the plan. Still
+/// The statements are one card each, as GrowIt does them, because a yes/no
+/// tap is a smaller ask than reading a list; each yes is answered on the plan. Still
 /// left out: the Part 1 / Part 2 chapter cards, the growing-method question
 /// (asked per plant at add-plant, where the answer is actually true),
 /// companion planting (on by default, in Settings) and the season-path tour,
@@ -18,12 +20,15 @@
 /// paywall that follows promotes them to growing.
 library;
 
+import 'dart:async';
 import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
 
 import '../../analytics/analytics.dart';
+import '../../data/crop_derived.dart';
 import '../../data/frost_presets.dart';
+import '../../data/sample_week.dart';
 import '../../data/seed.dart';
 import '../../db/database.dart';
 import '../../design/colors.dart';
@@ -35,14 +40,16 @@ import '../../design/mascot.dart';
 import '../../design/motion.dart';
 import '../../design/typography.dart';
 import '../garden/log_node_flow.dart' show formatDay, nodeKindLine;
+import '../grow/planting_calendar_bar.dart';
 import '../../l10n/app_lang.dart';
 import '../../l10n/strings.dart';
 import '../../l10n/region.dart';
 import '../../l10n/date_fmt.dart';
 import '../../l10n/units.dart';
 import '../../notifications/reminders.dart';
+import '../../timing/dates.dart';
 import '../../timing/types.dart';
-import '../../timing/weather_adjust.dart' show TaskKind;
+import '../../timing/weather_adjust.dart' show Adjustment, AdjustAction, TaskKind;
 import '../location/frost_lookup.dart';
 import '../location/place_search.dart';
 import '../location/saved_location.dart';
@@ -64,14 +71,16 @@ GardenKind gardenKindFor({required Set<String> spaces, required int sizeBucket})
   return GardenKind.balcony;
 }
 
-/// How far through the questions a page is, for the bar. The hero, the hello,
-/// the payoff and the reminders ask are not questions and get no bar.
+/// How far through the questions a page is, for the bar. The hero, the
+/// promises, the hello, the loader, the payoff and the reminders ask are not
+/// questions and get no bar.
 double onboardingProgress(int page) => (page - _firstQuestion + 1) / _questionCount;
 
-/// Hero, hello, seven questions, the plan, the reminders ask.
-const int onboardingPageCount = 11;
-const int _questionCount = 7;
-const int _firstQuestion = 2;
+/// Hero, two promises, hello, nine questions (three of them the statement
+/// cards), the plan loader, the plan, the reminders ask.
+const int onboardingPageCount = 16;
+const int _questionCount = 9;
+const int _firstQuestion = 4;
 
 /// The crops step's grid, in the order it is shown. That order is also which
 /// picks grow first when there are more than the free garden takes.
@@ -84,6 +93,48 @@ List<String> get onboardingCropOptions => <String>{
   'beetroot',
 }.toList();
 
+/// Which crop categories each "what do you eat" answer covers. Tomatoes and
+/// courgettes count as fruit: that is what a person who ticks "fruit" in spring
+/// can actually pick this summer, and the grid has no berries.
+const _foodCategories = <String, Set<String>>{
+  'vegetables': {'fruit-veg', 'root', 'legume', 'brassica', 'allium', 'leafy', 'potato'},
+  'herbs': {'herb'},
+  'salad': {'leafy'},
+  'fruit': {'fruit', 'fruit-veg'},
+  'roots': {'root', 'potato'},
+};
+
+/// The crops grid in the order the answers ask for: what you eat first, then
+/// easiest first for 'easy' and quickest to harvest for 'fast'. 'yield',
+/// 'cost' and 'kids' have no crop data behind them yet, so they do not move
+/// anything rather than pretend to. Ties keep [options]' order, which is also
+/// what a crop the snapshot lacks falls back to.
+List<String> rankCropOptions(
+  List<String> options, {
+  required Set<String> foods,
+  required Set<String> interests,
+  required Crop? Function(String slug) crop,
+}) {
+  final wanted = {for (final f in foods) ...?_foodCategories[f]};
+  int compare(String a, String b) {
+    final ca = crop(a), cb = crop(b);
+    int miss(Crop? c) => c != null && wanted.contains(c.category) ? 0 : 1;
+    var d = miss(ca) - miss(cb);
+    if (d == 0 && interests.contains('easy')) {
+      int level(Crop? c) => c == null ? Difficulty.hard.index : difficultyOf(c).index;
+      d = level(ca) - level(cb);
+    }
+    if (d == 0 && interests.contains('fast')) {
+      num days(Crop? c) => c?.harvestDaysMin ?? 1 << 20;
+      d = days(ca).compareTo(days(cb));
+    }
+    // List.sort is not stable; the grid's own order is the last word.
+    return d != 0 ? d : options.indexOf(a) - options.indexOf(b);
+  }
+
+  return [...options]..sort(compare);
+}
+
 /// The first [limit] picks grow now; the rest wait as planning plants. Premium
 /// passes a limit nothing reaches, so it all grows.
 ({List<String> growing, List<String> planning}) splitPicks(Iterable<String> picks, int limit) {
@@ -92,16 +143,17 @@ List<String> get onboardingCropOptions => <String>{
 }
 
 /// The "does this sound like you?" statements: id, the statement, the plan's
-/// answer to it. The ids are what `preferences['pains']` stores.
-const List<(String, LocalizedText, LocalizedText, IconData)> onboardingPains = [
-  ('timing', Str.painTiming, Str.echoTiming, PhosphorIcons.calendarBlank),
-  ('midsummer', Str.painMidsummer, Str.echoMidsummer, PhosphorIcons.sun),
-  ('overload', Str.painOverload, Str.echoOverload, PhosphorIcons.magnifyingGlass),
+/// answer to it, its card's icon and the mascot's face for it. The ids are
+/// what `preferences['pains']` stores, and the paywall reads them.
+const List<(String, LocalizedText, LocalizedText, IconData, MascotPose)> onboardingPains = [
+  ('timing', Str.painTiming, Str.echoTiming, PhosphorIcons.calendarBlank, MascotPose.thinking),
+  ('midsummer', Str.painMidsummer, Str.echoMidsummer, PhosphorIcons.sun, MascotPose.sun),
+  ('overload', Str.painOverload, Str.echoOverload, PhosphorIcons.magnifyingGlass, MascotPose.shrug),
 ];
 
 /// The plan's answer to each yes, in the order the statements were asked.
 List<LocalizedText> painEchoes(Iterable<String> pains) => [
-  for (final (id, _, echo, _) in onboardingPains)
+  for (final (id, _, echo, _, _) in onboardingPains)
     if (pains.contains(id)) echo,
 ];
 
@@ -142,7 +194,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   // Crops
   // Three, not all five starters: the free garden grows three, and a
   // plant-limit paywall should follow a choice the person made, not ours.
-  late final Set<String> _picked = {...starterCrops.keys.take(3)};
+  // Replaced by the top three of the ranked grid once the food answers are in,
+  // unless the gardener has already changed the picks themselves.
+  final Set<String> _picked = {...starterCrops.keys.take(3)};
+  bool _picksTouched = false;
   // The payoff
   bool _built = false;
   LocalizedText? _firstTask;
@@ -162,7 +217,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Analytics.capture('onboarding_step_viewed', properties: {'step': 0});
   }
 
-  static const _locationPage = 2; // 0 hero, 1 get-to-know, 2 where-do-you-grow
+  static const _locationPage = _firstQuestion; // after the hero, promises and hello
+  static const _planPage = onboardingPageCount - 2;
   static const _pageDuration = Duration(milliseconds: 380);
   static const _pageCurve = Curves.easeInOutCubic;
 
@@ -181,6 +237,64 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   GardenKind get _kind => gardenKindFor(spaces: _spaces, sizeBucket: _sizeBucket);
+
+  /// The crops grid as the answers order it; also the order picks grow in.
+  List<String> get _cropOrder => rankCropOptions(
+    onboardingCropOptions,
+    foods: _foods,
+    interests: _interests,
+    crop: RepositoryScope.of(context).cropBySlug,
+  );
+
+  /// What the plan calls the place: the town picked, the postcode typed, or
+  /// the region preset.
+  String get _placeName => _lookup == null
+      ? _region.name
+      : (_place?.label ?? _postcode ?? Str.yourLocationWord.of(context));
+
+  /// The loader's lines, each one an answer given on the way here, so the wait
+  /// reads as the plan being made from them rather than as a spinner.
+  List<LocalizedText> get _loaderLines {
+    final repo = RepositoryScope.of(context);
+    final picks = _cropOrder.where(_picked.contains).toList();
+    final names = [for (final s in picks.take(3)) repo.cropNames(s).of(context)].join(', ');
+    return [
+      Str.loaderFrost(_placeName),
+      Str.loaderSowing(picks.length, picks.length > 3 ? '$names, …' : names),
+      Str.loaderFitted(
+        gardenKindLabel(_kind).of(context),
+        switch (_sun) {
+          'full' => Str.sunFull,
+          'partial' => Str.sunPartial,
+          _ => Str.sunShade,
+        }.of(context),
+      ),
+      if (_pains.isNotEmpty) Str.loaderPains(_pains.length),
+    ];
+  }
+
+  /// Answers one statement card. A no removes, so going back and changing an
+  /// answer is honest; the event fires after the last card, as it did after
+  /// the old single list.
+  void _answerPain(String id, bool yes) {
+    setState(() => yes ? _pains.add(id) : _pains.remove(id));
+    if (id == onboardingPains.last.$1) {
+      Analytics.capture('onboarding_pains', properties: {'count': _pains.length});
+    }
+    _next();
+  }
+
+  /// "Build my plan": on to the loader, and on from it only once both the
+  /// lines have ticked through and the garden really exists. Under reduced
+  /// motion the lines are all there at once, so only the build is waited for.
+  Future<void> _buildWithLoader() async {
+    _next();
+    final wait = Motion.of(context).reduced
+        ? Duration.zero
+        : _PlanLoader.tick * (_loaderLines.length + 1);
+    await Future.wait([_build(), Future<void>.delayed(wait)]);
+    if (mounted) _controller.animateToPage(_planPage, duration: _pageDuration, curve: _pageCurve);
+  }
 
   /// Creates the garden + plants, saves preferences, computes the plan beat.
   Future<void> _build() async {
@@ -217,7 +331,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
     // Over the free limit nothing is dropped: the rest go in as planning
     // plants (no plantedOn), in the order the grid showed them.
-    final split = splitPicks(onboardingCropOptions.where(_picked.contains), limit);
+    final split = splitPicks(_cropOrder.where(_picked.contains), limit);
     for (final slug in [...split.growing, ...split.planning]) {
       final crop = repo.cropBySlug(slug);
       final growing = split.growing.contains(slug);
@@ -318,6 +432,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
       ),
 
+      // ── what the app does, each shown with a real piece of it ───────────
+      StepFrame(
+        pose: MascotPose.rain,
+        title: Str.promiseWeatherTitle,
+        subtitle: Str.promiseWeatherBody,
+        onBack: _prev,
+        onNext: _next,
+        body: const _WeatherPromise(),
+      ),
+      StepFrame(
+        pose: MascotPose.holdingSeedling,
+        title: Str.promiseSeasonTitle,
+        subtitle: Str.promiseSeasonBody,
+        onBack: _prev,
+        onNext: _next,
+        body: const _SeasonPromise(),
+      ),
+
       // ── who is asking, and why the dates can be trusted ─────────────────
       StepFrame(
         pose: MascotPose.wave,
@@ -334,7 +466,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         pose: MascotPose.pointing,
         title: Str.whereDoYouGrow,
         subtitle: Str.frostBackbone(distanceKm(1)),
-        progress: onboardingProgress(2),
+        progress: onboardingProgress(4),
         onBack: _prev,
         onNext: () {
           if (_lookup == null && !usesNlBePresets(RepositoryScope.of(context).effectiveCountry)) {
@@ -363,7 +495,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         pose: MascotPose.thinking,
         title: Str.whatSpace,
         subtitle: Str.pickAllThatApply,
-        progress: onboardingProgress(3),
+        progress: onboardingProgress(5),
         enabled: _spaces.isNotEmpty,
         onBack: _prev,
         onNext: _next,
@@ -385,7 +517,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         pose: MascotPose.idle,
         title: Str.howMuchSpace,
         subtitle: Str.howMuchSpaceSub,
-        progress: onboardingProgress(4),
+        progress: onboardingProgress(6),
         onBack: _prev,
         onNext: _next,
         body: Column(
@@ -424,7 +556,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         pose: MascotPose.holdingSeedling,
         title: Str.grownBefore,
         subtitle: Str.grownBeforeSub,
-        progress: onboardingProgress(5),
+        progress: onboardingProgress(7),
         onBack: _prev,
         onNext: _next,
         body: Column(
@@ -455,10 +587,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         pose: MascotPose.thinking,
         title: Str.whatDoYouEat,
         subtitle: Str.pickAllThatApply,
-        progress: onboardingProgress(6),
+        progress: onboardingProgress(8),
         enabled: _foods.isNotEmpty,
         onBack: _prev,
-        onNext: _next,
+        onNext: () {
+          // The preselection follows the answers just given, until the
+          // gardener picks for themselves.
+          if (!_picksTouched) {
+            setState(() => _picked
+              ..clear()
+              ..addAll(_cropOrder.take(3)));
+          }
+          _next();
+        },
         body: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -493,44 +634,54 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
       ),
 
-      // Three statements, one screen. Each yes is answered on the plan.
-      StepFrame(
-        pose: MascotPose.shrug,
-        title: Str.painTitle,
-        subtitle: Str.painSub,
-        progress: onboardingProgress(7),
-        onBack: _prev,
-        onNext: () {
-          Analytics.capture('onboarding_pains', properties: {'count': _pains.length});
-          _next();
-        },
-        body: ChoiceList(
-          options: [for (final (id, statement, _, icon) in onboardingPains) (id, statement, icon)],
-          selected: _pains,
-          onToggle: (k) => setState(() => _pains.contains(k) ? _pains.remove(k) : _pains.add(k)),
+      // One statement a card, answered with a tap either way. Each yes is
+      // answered on the plan.
+      for (final (i, (id, statement, _, icon, pose)) in onboardingPains.indexed)
+        StepFrame(
+          pose: pose,
+          title: Str.painTitle,
+          progress: onboardingProgress(9 + i),
+          onBack: _prev,
+          body: _PainCard(statement: statement, icon: icon),
+          actions: Row(
+            children: [
+              Expanded(
+                child: SecondaryButton(
+                  label: Str.no.of(context),
+                  onPressed: () => _answerPain(id, false),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: PrimaryButton(
+                  label: Str.yes.of(context),
+                  onPressed: () => _answerPain(id, true),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
 
       StepFrame(
         pose: MascotPose.watering,
         title: Str.whatWillYouGrow,
         subtitle: Str.pickAFewToStart,
-        progress: onboardingProgress(8),
+        progress: onboardingProgress(12),
         buttonLabel: Str.buildMyPlan.of(context),
         enabled: _picked.isNotEmpty,
         onBack: _prev,
-        onNext: () async {
-          _next();
-          await _build();
-        },
+        onNext: _buildWithLoader,
         body: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _PlantsStep(
+              options: _cropOrder,
               picked: _picked,
-              onToggle: (slug) =>
-                  setState(() => _picked.contains(slug) ? _picked.remove(slug) : _picked.add(slug)),
+              onToggle: (slug) => setState(() {
+                _picksTouched = true;
+                _picked.contains(slug) ? _picked.remove(slug) : _picked.add(slug);
+              }),
             ),
             // Said before the plan is built, not after: what is over the
             // limit is kept, not lost, and the gardener should know which.
@@ -542,9 +693,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
       ),
 
+      _PlanLoader(run: _page >= _planPage - 1, lines: _loaderLines),
+
       _PlanStep(
         ready: _built,
-        region: _lookup == null ? _region.name : (_postcode ?? Str.yourLocationWord.of(context)),
+        region: _placeName,
         frost: _lookup?.profile ?? _region.profile,
         matches: _matches,
         firstTask: _firstTask,
@@ -759,14 +912,14 @@ class _LocationStepState extends State<_LocationStep> {
 }
 
 class _PlantsStep extends StatelessWidget {
-  const _PlantsStep({required this.picked, required this.onToggle});
+  const _PlantsStep({required this.options, required this.picked, required this.onToggle});
+  final List<String> options;
   final Set<String> picked;
   final ValueChanged<String> onToggle;
 
   @override
   Widget build(BuildContext context) {
     final repo = RepositoryScope.of(context);
-    final options = onboardingCropOptions;
     return GridView.count(
       crossAxisCount: 2,
       shrinkWrap: true,
@@ -795,6 +948,192 @@ class _PlantsStep extends StatelessWidget {
       ],
     );
   }
+}
+
+/// One "does this sound like you?" statement, big enough to be the screen.
+class _PainCard extends StatelessWidget {
+  const _PainCard({required this.statement, required this.icon});
+  final LocalizedText statement;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) => ArriveIn(
+    index: 0,
+    child: Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.tile,
+        borderRadius: BorderRadius.circular(Neo.radius),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 32, color: AppColors.accent),
+          const SizedBox(height: 14),
+          Text(statement.of(context), style: AppText.display(context).copyWith(fontSize: 26)),
+        ],
+      ),
+    ),
+  );
+}
+
+/// The first promise's proof: the week ahead as the app draws it, and the two
+/// things the weather does to a watering. The days come from the sample
+/// forecast and carry no temperatures, because those would be numbers about a
+/// week that is not the reader's.
+class _WeatherPromise extends StatelessWidget {
+  const _WeatherPromise();
+
+  @override
+  Widget build(BuildContext context) {
+    final today = RepositoryScope.of(context).today;
+    // The sample starts three days back; the strip starts today.
+    final days = sampleObservations(today).skip(3).take(7);
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.tile,
+        borderRadius: BorderRadius.circular(Neo.radius),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              for (final d in days)
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text(
+                        weekdayShort(parseIso(d.date)),
+                        style: AppText.caption(context, color: AppColors.inkMuted),
+                        maxLines: 1,
+                      ),
+                      const SizedBox(height: 6),
+                      d.precipMm >= 5
+                          ? Icon(PhosphorIcons.cloudRain, size: 20, color: AppColors.rain)
+                          : d.tempMaxC >= 28
+                          ? Icon(PhosphorIcons.sun, size: 20, color: AppColors.heat)
+                          : Icon(PhosphorIcons.cloudSun, size: 20, color: AppColors.inkMuted),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final a in [AdjustAction.skip, AdjustAction.bringForward])
+                WeatherHintBadge(Adjustment(taskId: '', action: a, reason: Str.empty)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The second promise's proof: the crop page's own calendar bar for a tomato,
+/// from the engine, so it is the real thing rather than a picture of it.
+class _SeasonPromise extends StatelessWidget {
+  const _SeasonPromise();
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = RepositoryScope.of(context);
+    final crop = repo.cropBySlug('tomato');
+    if (crop == null) return MascotNote(text: Str.promiseSeasonBody);
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.tile,
+        borderRadius: BorderRadius.circular(Neo.radius),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(crop.names.of(context), style: AppText.label(context)),
+          const SizedBox(height: 10),
+          PlantingCalendarBar(crop: crop, frost: repo.frost, today: repo.today),
+        ],
+      ),
+    );
+  }
+}
+
+/// "Creating your growing plan": the answers come back as a checklist that
+/// ticks through while the garden is really being made. No bar and no button;
+/// the screen moves on by itself.
+class _PlanLoader extends StatefulWidget {
+  const _PlanLoader({required this.run, required this.lines});
+
+  /// Time between ticks. The screen waits for one tick per line, plus one.
+  static const tick = Duration(milliseconds: 800);
+
+  /// False until the page is on screen, so the ticks are not spent unseen.
+  final bool run;
+  final List<LocalizedText> lines;
+
+  @override
+  State<_PlanLoader> createState() => _PlanLoaderState();
+}
+
+class _PlanLoaderState extends State<_PlanLoader> {
+  Timer? _timer;
+  int _done = 0;
+
+  @override
+  void didUpdateWidget(_PlanLoader old) {
+    super.didUpdateWidget(old);
+    if (widget.run && !old.run) _start();
+  }
+
+  void _start() {
+    if (Motion.of(context).reduced) {
+      setState(() => _done = widget.lines.length);
+      return;
+    }
+    _timer = Timer.periodic(_PlanLoader.tick, (t) {
+      if (_done >= widget.lines.length) {
+        t.cancel();
+        return;
+      }
+      setState(() => _done++);
+      Haptics.selection();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    backgroundColor: AppColors.canvas,
+    body: SafeArea(
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(24, 32, 24, 8),
+        children: [
+          Align(alignment: Alignment.centerLeft, child: Mascot(MascotPose.thinking, size: 104)),
+          const SizedBox(height: 22),
+          Text(Str.planBuilding.of(context), style: AppText.display(context)),
+          const SizedBox(height: 16),
+          for (var i = 0; i < widget.lines.length; i++)
+            ArriveIn(
+              index: i,
+              child: _Line(
+                done: i < _done,
+                label: Text(widget.lines[i].of(context), style: AppText.body(context)),
+              ),
+            ),
+        ],
+      ),
+    ),
+  );
 }
 
 /// 1.7: the mascot builds the plan on screen, answers each "sounds like me",
