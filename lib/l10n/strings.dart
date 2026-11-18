@@ -983,13 +983,37 @@ abstract final class Str {
     sv: 'Känner du igen dig?',
     pt: 'Isto soa-te familiar?',
   );
-  static const painSub = LocalizedText(
-    nl: 'Tik aan wat klopt. Daar bouwen we je plan omheen.',
-    en: "Tap the ones that are true. We'll plan around them.",
-    de: 'Tipp an, was stimmt. Darauf bauen wir deinen Plan.',
-    fr: 'Touche ce qui est vrai. On construit ton plan autour.',
-    sv: 'Tryck på det som stämmer. Vi bygger planen runt det.',
-    pt: 'Toca no que for verdade. Fazemos o plano à volta disso.',
+  static const promiseWeatherTitle = LocalizedText(
+    nl: 'Het weer zit al in je plan',
+    en: 'Your weather, already in the plan',
+    de: 'Das Wetter ist schon eingeplant',
+    fr: 'La météo, déjà dans ton plan',
+    sv: 'Vädret finns redan med i planen',
+    pt: 'O tempo já está no teu plano',
+  );
+  static const promiseWeatherBody = LocalizedText(
+    nl: 'Regen op komst? Dan hoef je geen water te geven. Wordt het heet? Dan geef je eerder water.',
+    en: 'Rain on the way? Skip the watering. Heat coming? Water earlier.',
+    de: 'Regen im Anmarsch? Dann fällt das Gießen aus. Wird es heiß? Dann gießt du früher.',
+    fr: 'De la pluie en vue ? Pas besoin d\'arroser. De la chaleur ? Tu arroses plus tôt.',
+    sv: 'Regn på väg? Då hoppar du över vattningen. Värme på väg? Då vattnar du tidigare.',
+    pt: 'Vem aí chuva? Não precisas de regar. Vem aí calor? Regas mais cedo.',
+  );
+  static const promiseSeasonTitle = LocalizedText(
+    nl: 'Elk gewas een eigen kalender',
+    en: 'Every crop on its own calendar',
+    de: 'Jede Pflanze mit eigenem Kalender',
+    fr: 'Chaque plante a son calendrier',
+    sv: 'Varje gröda får sin egen kalender',
+    pt: 'Cada planta com o seu calendário',
+  );
+  static const promiseSeasonBody = LocalizedText(
+    nl: 'Zaaien, uitplanten en oogsten, berekend op de vorstdata bij jou in de buurt.',
+    en: 'Sowing, planting out and harvest, worked out from the frost dates where you live.',
+    de: 'Aussaat, Auspflanzen und Ernte, berechnet nach den Frostterminen bei dir vor Ort.',
+    fr: 'Semis, repiquage et récolte, calculés selon les dates de gel de chez toi.',
+    sv: 'Sådd, utplantering och skörd, uträknat från frostdatumen där du bor.',
+    pt: 'Sementeira, transplante e colheita, calculados a partir das datas de geada da tua zona.',
   );
   static const painTiming = LocalizedText(
     nl: 'Ik weet nooit wanneer ik moet zaaien of uitplanten',
@@ -1412,6 +1436,39 @@ abstract final class Str {
     pt: n == 1
         ? '1 planta é boa para o teu espaço este mês'
         : '$n plantas são boas para o teu espaço este mês',
+  );
+  // The plan loader's checklist, one line per answer it is built from.
+  static LocalizedText loaderFrost(String place) => LocalizedText(
+    nl: 'Vorstdata voor $place',
+    en: 'Frost dates for $place',
+    de: 'Frosttermine für $place',
+    fr: 'Dates de gel pour $place',
+    sv: 'Frostdatum för $place',
+    pt: 'Datas de geada para $place',
+  );
+  static LocalizedText loaderSowing(int n, String names) => LocalizedText(
+    nl: n == 1 ? 'Zaaiperiode voor $names' : 'Zaaiperiodes voor $n gewassen: $names',
+    en: n == 1 ? 'Sowing window for $names' : 'Sowing windows for $n crops: $names',
+    de: n == 1 ? 'Aussaatzeit für $names' : 'Aussaatzeiten für $n Pflanzen: $names',
+    fr: n <= 1 ? 'Période de semis pour $names' : 'Périodes de semis pour $n plantes : $names',
+    sv: n == 1 ? 'Såtid för $names' : 'Såtider för $n grödor: $names',
+    pt: n == 1 ? 'Época de sementeira para $names' : 'Épocas de sementeira para $n plantas: $names',
+  );
+  static LocalizedText loaderFitted(String space, String sun) => LocalizedText(
+    nl: 'Afgestemd op je ruimte: $space · $sun',
+    en: 'Fitted to your space: $space · $sun',
+    de: 'Abgestimmt auf deinen Platz: $space · $sun',
+    fr: 'Adapté à ton espace : $space · $sun',
+    sv: 'Anpassat efter din plats: $space · $sun',
+    pt: 'Ajustado ao teu espaço: $space · $sun',
+  );
+  static LocalizedText loaderPains(int n) => LocalizedText(
+    nl: n == 1 ? 'Een antwoord op waar je tegenaan loopt' : 'Antwoorden op de $n dingen waar je tegenaan loopt',
+    en: n == 1 ? 'An answer to what holds you back' : 'Answers to the $n things that hold you back',
+    de: n == 1 ? 'Eine Antwort auf das, was dich bremst' : 'Antworten auf die $n Dinge, die dich bremsen',
+    fr: n <= 1 ? 'Une réponse à ce qui te freine' : 'Des réponses aux $n choses qui te freinent',
+    sv: n == 1 ? 'Ett svar på det som håller dig tillbaka' : 'Svar på de $n saker som håller dig tillbaka',
+    pt: n == 1 ? 'Uma resposta ao que te trava' : 'Respostas às $n coisas que te travam',
   );
   static const planMatching = LocalizedText(
     nl: 'Gewassen zoeken die in je ruimte passen…',

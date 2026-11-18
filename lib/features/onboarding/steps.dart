@@ -29,7 +29,7 @@ class StepFrame extends StatelessWidget {
     super.key,
     required this.pose,
     required this.title,
-    required this.onNext,
+    this.onNext,
     this.subtitle,
     this.body,
     this.buttonLabel,
@@ -39,6 +39,7 @@ class StepFrame extends StatelessWidget {
     this.progress,
     this.secondaryLabel,
     this.onSecondary,
+    this.actions,
   });
 
   final MascotPose pose;
@@ -48,7 +49,8 @@ class StepFrame extends StatelessWidget {
   /// Whatever the step asks with. Scrolls; the frame does not.
   final Widget? body;
 
-  final VoidCallback onNext;
+  /// Null with [actions], where the answer itself is the way on.
+  final VoidCallback? onNext;
   final String? buttonLabel;
   final bool enabled;
 
@@ -64,6 +66,10 @@ class StepFrame extends StatelessWidget {
   /// something the gardener may say no to.
   final LocalizedText? secondaryLabel;
   final VoidCallback? onSecondary;
+
+  /// In place of the one button, for a step answered by the tap that moves
+  /// it on (the yes/no statement cards).
+  final Widget? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +99,13 @@ class StepFrame extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
-              child: PrimaryButton(
-                label: buttonLabel ?? Str.continueLabel.of(context),
-                icon: PhosphorIcons.arrowRight,
-                onPressed: enabled ? onNext : null,
-              ),
+              child:
+                  actions ??
+                  PrimaryButton(
+                    label: buttonLabel ?? Str.continueLabel.of(context),
+                    icon: PhosphorIcons.arrowRight,
+                    onPressed: enabled ? onNext : null,
+                  ),
             ),
             if (secondaryLabel != null)
               // Quiet on purpose: an ink pill here outweighed the green "yes".
