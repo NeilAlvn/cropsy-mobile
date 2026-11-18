@@ -983,13 +983,37 @@ abstract final class Str {
     sv: 'Känner du igen dig?',
     pt: 'Isto soa-te familiar?',
   );
-  static const painSub = LocalizedText(
-    nl: 'Tik aan wat klopt. Daar bouwen we je plan omheen.',
-    en: "Tap the ones that are true. We'll plan around them.",
-    de: 'Tipp an, was stimmt. Darauf bauen wir deinen Plan.',
-    fr: 'Touche ce qui est vrai. On construit ton plan autour.',
-    sv: 'Tryck på det som stämmer. Vi bygger planen runt det.',
-    pt: 'Toca no que for verdade. Fazemos o plano à volta disso.',
+  static const promiseWeatherTitle = LocalizedText(
+    nl: 'Het weer zit al in je plan',
+    en: 'Your weather, already in the plan',
+    de: 'Das Wetter ist schon eingeplant',
+    fr: 'La météo, déjà dans ton plan',
+    sv: 'Vädret finns redan med i planen',
+    pt: 'O tempo já está no teu plano',
+  );
+  static const promiseWeatherBody = LocalizedText(
+    nl: 'Regen op komst? Dan hoef je geen water te geven. Wordt het heet? Dan geef je eerder water.',
+    en: 'Rain on the way? Skip the watering. Heat coming? Water earlier.',
+    de: 'Regen im Anmarsch? Dann fällt das Gießen aus. Wird es heiß? Dann gießt du früher.',
+    fr: 'De la pluie en vue ? Pas besoin d\'arroser. De la chaleur ? Tu arroses plus tôt.',
+    sv: 'Regn på väg? Då hoppar du över vattningen. Värme på väg? Då vattnar du tidigare.',
+    pt: 'Vem aí chuva? Não precisas de regar. Vem aí calor? Regas mais cedo.',
+  );
+  static const promiseSeasonTitle = LocalizedText(
+    nl: 'Elk gewas een eigen kalender',
+    en: 'Every crop on its own calendar',
+    de: 'Jede Pflanze mit eigenem Kalender',
+    fr: 'Chaque plante a son calendrier',
+    sv: 'Varje gröda får sin egen kalender',
+    pt: 'Cada planta com o seu calendário',
+  );
+  static const promiseSeasonBody = LocalizedText(
+    nl: 'Zaaien, uitplanten en oogsten, berekend op de vorstdata bij jou in de buurt.',
+    en: 'Sowing, planting out and harvest, worked out from the frost dates where you live.',
+    de: 'Aussaat, Auspflanzen und Ernte, berechnet nach den Frostterminen bei dir vor Ort.',
+    fr: 'Semis, repiquage et récolte, calculés selon les dates de gel de chez toi.',
+    sv: 'Sådd, utplantering och skörd, uträknat från frostdatumen där du bor.',
+    pt: 'Sementeira, transplante e colheita, calculados a partir das datas de geada da tua zona.',
   );
   static const painTiming = LocalizedText(
     nl: 'Ik weet nooit wanneer ik moet zaaien of uitplanten',
@@ -1393,25 +1417,73 @@ abstract final class Str {
     sv: 'Frostdatum för $region: sista $last, första $first',
     pt: 'Datas de geada para $region: última $last, primeira $first',
   );
+  // Counts crops whose sowing or planting window is open this month where
+  // the garden is: what can start now, not what "fits" (space is not part
+  // of the count, so the line no longer claims it is).
   static LocalizedText planMatches(int n) => LocalizedText(
-    nl: n == 1
-        ? '1 gewas past deze maand in je ruimte'
-        : '$n gewassen passen deze maand in je ruimte',
-    en: n == 1
-        ? '1 crop fits your space this month'
-        : '$n crops fit your space this month',
-    de: n == 1
-        ? '1 Pflanze passt diesen Monat zu deinem Platz'
-        : '$n Pflanzen passen diesen Monat zu deinem Platz',
-    fr: n <= 1
-        ? '$n plante convient à ton espace ce mois-ci'
-        : '$n plantes conviennent à ton espace ce mois-ci',
-    sv: n == 1
-        ? '1 växt passar din plats den här månaden'
-        : '$n växter passar din plats den här månaden',
-    pt: n == 1
-        ? '1 planta é boa para o teu espaço este mês'
-        : '$n plantas são boas para o teu espaço este mês',
+    nl: n == 0
+        ? 'Deze maand valt er nog niets te zaaien'
+        : n == 1
+        ? '1 gewas kun je deze maand starten'
+        : '$n gewassen kun je deze maand starten',
+    en: n == 0
+        ? 'Nothing to sow this month yet'
+        : n == 1
+        ? '1 crop you can start this month'
+        : '$n crops you can start this month',
+    de: n == 0
+        ? 'Diesen Monat gibt es noch nichts zu säen'
+        : n == 1
+        ? '1 Pflanze kannst du diesen Monat starten'
+        : '$n Pflanzen kannst du diesen Monat starten',
+    fr: n == 0
+        ? 'Rien à semer ce mois-ci pour l\'instant'
+        : n == 1
+        ? '1 plante à démarrer ce mois-ci'
+        : '$n plantes à démarrer ce mois-ci',
+    sv: n == 0
+        ? 'Inget att så den här månaden än'
+        : n == 1
+        ? '1 växt kan du starta den här månaden'
+        : '$n växter kan du starta den här månaden',
+    pt: n == 0
+        ? 'Ainda não há nada para semear este mês'
+        : n == 1
+        ? '1 planta para começar este mês'
+        : '$n plantas para começar este mês',
+  );
+  // The plan loader's checklist, one line per answer it is built from.
+  static LocalizedText loaderFrost(String place) => LocalizedText(
+    nl: 'Vorstdata voor $place',
+    en: 'Frost dates for $place',
+    de: 'Frosttermine für $place',
+    fr: 'Dates de gel pour $place',
+    sv: 'Frostdatum för $place',
+    pt: 'Datas de geada para $place',
+  );
+  static LocalizedText loaderSowing(int n, String names) => LocalizedText(
+    nl: n == 1 ? 'Zaaiperiode voor $names' : 'Zaaiperiodes voor $n gewassen: $names',
+    en: n == 1 ? 'Sowing window for $names' : 'Sowing windows for $n crops: $names',
+    de: n == 1 ? 'Aussaatzeit für $names' : 'Aussaatzeiten für $n Pflanzen: $names',
+    fr: n <= 1 ? 'Période de semis pour $names' : 'Périodes de semis pour $n plantes : $names',
+    sv: n == 1 ? 'Såtid för $names' : 'Såtider för $n grödor: $names',
+    pt: n == 1 ? 'Época de sementeira para $names' : 'Épocas de sementeira para $n plantas: $names',
+  );
+  static LocalizedText loaderFitted(String space, String sun) => LocalizedText(
+    nl: 'Afgestemd op je ruimte: $space · $sun',
+    en: 'Fitted to your space: $space · $sun',
+    de: 'Abgestimmt auf deinen Platz: $space · $sun',
+    fr: 'Adapté à ton espace : $space · $sun',
+    sv: 'Anpassat efter din plats: $space · $sun',
+    pt: 'Ajustado ao teu espaço: $space · $sun',
+  );
+  static LocalizedText loaderPains(int n) => LocalizedText(
+    nl: n == 1 ? 'Een antwoord op waar je tegenaan loopt' : 'Antwoorden op de $n dingen waar je tegenaan loopt',
+    en: n == 1 ? 'An answer to what holds you back' : 'Answers to the $n things that hold you back',
+    de: n == 1 ? 'Eine Antwort auf das, was dich bremst' : 'Antworten auf die $n Dinge, die dich bremsen',
+    fr: n <= 1 ? 'Une réponse à ce qui te freine' : 'Des réponses aux $n choses qui te freinent',
+    sv: n == 1 ? 'Ett svar på det som håller dig tillbaka' : 'Svar på de $n saker som håller dig tillbaka',
+    pt: n == 1 ? 'Uma resposta ao que te trava' : 'Respostas às $n coisas que te travam',
   );
   static const planMatching = LocalizedText(
     nl: 'Gewassen zoeken die in je ruimte passen…',
@@ -1428,6 +1500,16 @@ abstract final class Str {
     fr: 'La première tâche arrive dès qu\'une fenêtre s\'ouvre',
     sv: 'Första uppgiften kommer så fort det är dags',
     pt: 'A primeira tarefa chega assim que se abrir uma janela',
+  );
+  /// [line] followed by a date already in the reader's format.
+  static LocalizedText withDay(LocalizedText line, String day) => LocalizedText(
+    nl: '${line.nl}, $day',
+    en: '${line.en}, $day',
+    de: '${line.pick('de')}, $day',
+    fr: '${line.pick('fr')}, $day',
+    sv: '${line.pick('sv')}, $day',
+    pt: '${line.pick('pt')}, $day',
+    enUs: line.enUs == null ? null : '${line.enUs}, $day',
   );
   static LocalizedText planFirstTask(String task) => LocalizedText(
     nl: 'Eerste taak: $task',
@@ -3056,6 +3138,92 @@ abstract final class Str {
     fr: 'Non merci',
     sv: 'Nej tack',
     pt: 'Não, obrigado',
+  );
+  /// From the reminder two days after onboarding. Neutral about the price:
+  /// the lead card may be the trial or the discounted first year.
+  static const pwHeadSecondChance = LocalizedText(
+    nl: 'Nog aan het twijfelen?\nJe seizoen staat klaar.',
+    en: 'Still thinking it over?\nYour season is ready.',
+    de: 'Noch unsicher?\nDeine Saison steht bereit.',
+    fr: 'Tu hésites encore ?\nTa saison est prête.',
+    sv: 'Fortfarande osäker?\nDin säsong är redo.',
+    pt: 'Ainda a pensar?\nA tua estação está pronta.',
+  );
+  static const pwHeadAppOpen = LocalizedText(
+    nl: 'Ontgrendel je hele seizoen.',
+    en: 'Unlock your whole season.',
+    de: 'Schalte deine ganze Saison frei.',
+    fr: 'Débloque toute ta saison.',
+    sv: 'Lås upp hela din säsong.',
+    pt: 'Desbloqueia a tua estação inteira.',
+  );
+  /// The exit offer's card title on the reminder paywall.
+  static const pwFirstYear = LocalizedText(
+    nl: 'Eerste jaar',
+    en: 'First year',
+    de: 'Erstes Jahr',
+    fr: 'Première année',
+    sv: 'Första året',
+    pt: 'Primeiro ano',
+  );
+  /// The one price line under the two cards. The billed amount comes first
+  /// and the per-month figure sits in brackets (App Review 3.1.2).
+  static LocalizedText pwPriceTrial(int days, String billed, String perMonth) => LocalizedText(
+    nl: '$days dagen gratis, daarna $billed/jaar ($perMonth/maand)',
+    en: '$days days free, then $billed/year ($perMonth/month)',
+    de: '$days Tage gratis, dann $billed/Jahr ($perMonth/Monat)',
+    fr: '$days jours offerts, puis $billed/an ($perMonth/mois)',
+    sv: '$days dagar gratis, sedan $billed/år ($perMonth/mån)',
+    pt: '$days dias grátis, depois $billed/ano ($perMonth/mês)',
+  );
+  static LocalizedText pwPriceYearly(String billed, String perMonth) => LocalizedText(
+    nl: '$billed/jaar ($perMonth/maand)',
+    en: '$billed/year ($perMonth/month)',
+    de: '$billed/Jahr ($perMonth/Monat)',
+    fr: '$billed/an ($perMonth/mois)',
+    sv: '$billed/år ($perMonth/mån)',
+    pt: '$billed/ano ($perMonth/mês)',
+  );
+  static LocalizedText pwPriceMonthly(String billed) => LocalizedText(
+    nl: '$billed/maand',
+    en: '$billed/month',
+    de: '$billed/Monat',
+    fr: '$billed/mois',
+    sv: '$billed/mån',
+    pt: '$billed/mês',
+  );
+  static LocalizedText pwPriceExit(String intro, String regular) => LocalizedText(
+    nl: 'Eerste jaar $intro, daarna $regular/jaar',
+    en: 'First year $intro, then $regular/year',
+    de: 'Erstes Jahr $intro, dann $regular/Jahr',
+    fr: 'Première année $intro, puis $regular/an',
+    sv: 'Första året $intro, sedan $regular/år',
+    pt: 'Primeiro ano $intro, depois $regular/ano',
+  );
+  /// "tomato, pepper and basil": the person's own crops, lowercased mid-
+  /// sentence except in German, where nouns keep their capital.
+  static LocalizedText pwBenefitCrops(List<LocalizedText> crops) {
+    String list(String lang, String and) {
+      final names = [for (final c in crops) lang == 'de' ? c.pick(lang) : c.pick(lang).toLowerCase()];
+      return names.length < 2 ? names.join() : '${names.sublist(0, names.length - 1).join(', ')} $and ${names.last}';
+    }
+
+    return LocalizedText(
+      nl: 'Elke zaai- en plantstap voor ${list('nl', 'en')}.',
+      en: 'Every sowing and planting step for ${list('en', 'and')}.',
+      de: 'Jeder Schritt beim Säen und Pflanzen für ${list('de', 'und')}.',
+      fr: 'Chaque étape de semis et de plantation pour ${list('fr', 'et')}.',
+      sv: 'Varje steg i sådd och plantering för ${list('sv', 'och')}.',
+      pt: 'Cada passo da sementeira e plantação para ${list('pt', 'e')}.',
+    );
+  }
+  static LocalizedText pwBenefitCancel({required bool ios}) => LocalizedText(
+    nl: ios ? 'Altijd opzegbaar in de App Store.' : 'Altijd opzegbaar in Google Play.',
+    en: ios ? 'Cancel anytime in the App Store.' : 'Cancel anytime in Google Play.',
+    de: ios ? 'Jederzeit kündbar im App Store.' : 'Jederzeit kündbar bei Google Play.',
+    fr: ios ? 'Résiliable à tout moment dans l\'App Store.' : 'Résiliable à tout moment sur Google Play.',
+    sv: ios ? 'Säg upp när du vill i App Store.' : 'Säg upp när du vill i Google Play.',
+    pt: ios ? 'Cancela quando quiseres na App Store.' : 'Cancela quando quiseres no Google Play.',
   );
 
   static const lifetimeNothingToCancel = LocalizedText(
@@ -5376,6 +5544,34 @@ abstract final class Str {
     sv: 'Avsluta när du vill under Google Play → Prenumerationer.',
     pt: 'Cancela quando quiseres em Google Play → Subscrições.',
   );
+  static const secondChanceTitle = LocalizedText(
+    nl: 'Je seizoensplan wacht op je',
+    en: 'Your season plan is waiting',
+    de: 'Dein Saisonplan wartet auf dich',
+    fr: 'Ton plan de saison t\'attend',
+    sv: 'Din säsongsplan väntar',
+    pt: 'O teu plano da estação está à tua espera',
+  );
+  /// [step] is the next real step [days] after the nudge lands, or null for
+  /// the generic line. [trial]: the free week is only promised when the store
+  /// still offers it.
+  static LocalizedText secondChanceBody(LocalizedText? step, int days, {required bool trial}) {
+    String lead(String lang, String Function(String step) line) => step == null ? '' : '${line(step.pick(lang))} ';
+    return LocalizedText(
+      nl: lead('nl', (s) => '$s over $days ${days == 1 ? 'dag' : 'dagen'}.') +
+          (trial ? 'Start je gratis week en zie elke stap van je seizoen.' : 'Ontgrendel het hele seizoen en zie elke stap.'),
+      en: lead('en', (s) => '$s in $days ${days == 1 ? 'day' : 'days'}.') +
+          (trial ? 'Start your free week to see every step of your season.' : 'Unlock the full season to see every step.'),
+      de: lead('de', (s) => '$s in $days ${days == 1 ? 'Tag' : 'Tagen'}.') +
+          (trial ? 'Starte deine Gratiswoche und sieh jeden Schritt deiner Saison.' : 'Schalte die ganze Saison frei und sieh jeden Schritt.'),
+      fr: lead('fr', (s) => '$s dans $days ${days == 1 ? 'jour' : 'jours'}.') +
+          (trial ? 'Commence ta semaine gratuite pour voir chaque étape de ta saison.' : 'Débloque toute la saison pour voir chaque étape.'),
+      sv: lead('sv', (s) => '$s om $days ${days == 1 ? 'dag' : 'dagar'}.') +
+          (trial ? 'Starta din gratisvecka och se varje steg i din säsong.' : 'Lås upp hela säsongen och se varje steg.'),
+      pt: lead('pt', (s) => '$s daqui a $days ${days == 1 ? 'dia' : 'dias'}.') +
+          (trial ? 'Começa a tua semana grátis e vê cada passo da tua estação.' : 'Desbloqueia a estação inteira e vê cada passo.'),
+    );
+  }
   static const nudgeAutumnTitle = LocalizedText(
     nl: 'Plan volgend seizoen',
     en: 'Plan next season',
