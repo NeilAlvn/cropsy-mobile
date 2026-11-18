@@ -48,8 +48,9 @@ import '../../l10n/date_fmt.dart';
 import '../../l10n/units.dart';
 import '../../notifications/reminders.dart';
 import '../../timing/dates.dart';
+import '../../timing/engine.dart' show nextStart;
 import '../../timing/types.dart';
-import '../../timing/weather_adjust.dart' show Adjustment, AdjustAction, TaskKind;
+import '../../timing/weather_adjust.dart' show Adjustment, AdjustAction;
 import '../location/frost_lookup.dart';
 import '../location/place_search.dart';
 import '../location/saved_location.dart';
@@ -137,6 +138,14 @@ List<String> rankCropOptions(
 
 /// The first [limit] picks grow now; the rest wait as planning plants. Premium
 /// passes a limit nothing reaches, so it all grows.
+/// The first step of starting a crop by [m], as a task line.
+LocalizedText startLine(MethodType m) => switch (m) {
+  MethodType.sowIndoor => Str.sowIndoors,
+  MethodType.sowDirect => Str.sowOutdoors,
+  MethodType.plant => Str.plantOutside,
+  MethodType.transplant => Str.plantOut,
+};
+
 ({List<String> growing, List<String> planning}) splitPicks(Iterable<String> picks, int limit) {
   final all = picks.toList();
   return (growing: all.take(limit).toList(), planning: all.skip(limit).toList());
@@ -205,8 +214,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   List<SeasonRow> _seasonClear = const [];
   List<SeasonRow> _seasonLocked = const [];
 
-  /// Plants over the free limit, waiting in planning until a purchase.
-  final _planningIds = <String>[];
+  /// In-season plants over the free limit, waiting in planning until a
+  /// purchase, with the method they start by.
+  final _waiting = <String, MethodType>{};
 
   /// The reminders ask, by index, for its own analytics event.
   static const _primingPage = onboardingPageCount - 1;
@@ -329,41 +339,54 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         'pains': _pains.toList(),
       },
     );
-    // Over the free limit nothing is dropped: the rest go in as planning
-    // plants (no plantedOn), in the order the grid showed them.
-    final split = splitPicks(_cropOrder.where(_picked.contains), limit);
-    for (final slug in [...split.growing, ...split.planning]) {
-      final crop = repo.cropBySlug(slug);
+    // Each pick starts the way it can from today. In season it grows now, by
+    // the method whose window is open; out of season it waits as a planning
+    // plant until that window opens, so the plan never asks for a tomato
+    // planted out in November. Over the free limit, in-season picks wait too,
+    // and only those start on a purchase.
+    final starts = <String, ({MethodType method, String start, String end, bool open})?>{
+      for (final slug in _cropOrder.where(_picked.contains))
+        slug: switch (repo.cropBySlug(slug)) {
+          final c? => nextStart(c, repo.frost, repo.today),
+          null => null,
+        },
+    };
+    final split = splitPicks([for (final e in starts.entries) if (e.value?.open ?? false) e.key], limit);
+    for (final slug in starts.keys) {
       final growing = split.growing.contains(slug);
       final id = await repo.addPlant(
         gardenId: gardenId,
         cropSlug: slug,
-        potLitres: crop?.minPotLitres?.toInt(),
+        potLitres: repo.cropBySlug(slug)?.minPotLitres?.toInt(),
         plantedOn: growing ? repo.today : null,
+        method: growing ? starts[slug]!.method : null,
       );
-      if (!growing) _planningIds.add(id);
+      if (split.planning.contains(slug)) _waiting[id] = starts[slug]!.method;
     }
     final month = DateTime.now().month;
-    final week = await repo.thisWeek();
-    // The season preview: the next couple of real steps in the clear, then
-    // what comes after them, blurred. Watering is left out of the clear rows;
-    // "water the basil" is not what makes a season.
-    final clear = [
-      for (final t in week.where((t) => t.kind != TaskKind.water).take(2))
-        (Str.stepOnCrop(kindLine(t.kind), t.cropNames), formatDay(t.due)),
-    ];
-    final after = week.where((t) => t.kind != TaskKind.water).take(2).lastOrNull?.due ?? '';
-    final locked = [
-      for (final t in (await repo.seasonTasks()).where((t) => t.node.due.compareTo(after) > 0).take(4))
-        (Str.stepOnCrop(nodeKindLine(t.node.kind), repo.cropNames(t.cropSlug)), formatDay(t.node.due)),
-    ];
+    // The season preview: how each pick gets started, soonest first, then
+    // what the growing plants do after that, blurred.
+    final firsts = [
+      for (final e in starts.entries)
+        if (e.value case final s?)
+          (
+            line: Str.stepOnCrop(startLine(s.method), repo.cropNames(e.key)),
+            due: s.open ? repo.today : s.start,
+          ),
+    ]..sort((a, b) => a.due.compareTo(b.due));
+    final clear = [for (final f in firsts.take(2)) (f.line, formatDay(f.due))];
+    final after = firsts.take(2).lastOrNull?.due ?? '';
+    final later = [
+      for (final f in firsts.skip(2)) (line: f.line, due: f.due),
+      for (final t in (await repo.seasonTasks()).where((t) => t.node.due.compareTo(after) > 0))
+        (line: Str.stepOnCrop(nodeKindLine(t.node.kind), repo.cropNames(t.cropSlug)), due: t.node.due),
+    ]..sort((a, b) => a.due.compareTo(b.due));
+    final locked = [for (final f in later.take(4)) (f.line, formatDay(f.due))];
     if (mounted) {
       setState(() {
         _built = true;
         _matches = repo.whatToGrowIn(month).length;
-        _firstTask = week.isEmpty
-            ? null
-            : Str.stepOnCrop(kindLine(week.first.kind), week.first.cropNames);
+        _firstTask = firsts.firstOrNull?.line;
         _seasonClear = clear;
         _seasonLocked = locked;
       });
@@ -403,8 +426,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
     if (premium == true) {
-      for (final id in _planningIds) {
-        await repo.startGrowing(id);
+      for (final MapEntry(key: id, value: method) in _waiting.entries) {
+        await repo.startGrowing(id, method: method);
       }
     }
     widget.onDone();

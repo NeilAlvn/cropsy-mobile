@@ -28,6 +28,8 @@ import 'features/app_shell.dart';
 import 'features/garden/garden_repository.dart';
 import 'features/garden/log_node_flow.dart';
 import 'features/onboarding/onboarding_screen.dart';
+import 'timing/dates.dart' show parseIso, toIso;
+import 'timing/engine.dart' show nextStart;
 import 'features/paywall/paywall_screen.dart';
 import 'features/repository_scope.dart';
 import 'notifications/lifecycle.dart';
@@ -145,9 +147,27 @@ Future<void> _afterOnboarding(GardenRepository repo, PurchaseService? purchases,
   await repo.setMeta('onboarded_at', now.toIso8601String());
   if ((purchases?.premium ?? false) || await repo.meta(Lifecycle.secondChanceKey) != null) return;
   await repo.setMeta(Lifecycle.secondChanceKey, now.toIso8601String());
-  final next = Lifecycle.stepAfter(await repo.seasonTasks(), Lifecycle.secondChanceTime(now));
-  final step = next == null ? null : Str.stepOnCrop(nodeKindLine(next.kind), repo.cropNames(next.cropSlug));
-  final body = Str.secondChanceBody(step, next?.days ?? 0, trial: (purchases?.trialDaysOffered ?? 0) > 0);
+  final fire = Lifecycle.secondChanceTime(now);
+  final next = Lifecycle.stepAfter(await repo.seasonTasks(), fire);
+  var step = next == null ? null : Str.stepOnCrop(nodeKindLine(next.kind), repo.cropNames(next.cropSlug));
+  var days = next?.days ?? 0;
+  if (next == null) {
+    // Out of season nothing grows yet: name the first start to come, when it
+    // is close enough to act on. Further off, the generic line says it better.
+    final day = toIso(fire);
+    final soon = [
+      for (final p in await repo.planningPlants())
+        if (repo.cropBySlug(p.cropSlug) case final c?)
+          if (nextStart(c, repo.frost, day) case final s? when !s.open)
+            (slug: p.cropSlug, s: s, days: parseIso(s.start).difference(parseIso(day)).inDays),
+    ].where((x) => x.days <= 30).toList()
+      ..sort((a, b) => a.days.compareTo(b.days));
+    if (soon.isNotEmpty) {
+      step = Str.stepOnCrop(startLine(soon.first.s.method), repo.cropNames(soon.first.slug));
+      days = soon.first.days;
+    }
+  }
+  final body = Str.secondChanceBody(step, days, trial: (purchases?.trialDaysOffered ?? 0) > 0);
   await Lifecycle.scheduleSecondChance(now, body, lang: lang);
 }
 

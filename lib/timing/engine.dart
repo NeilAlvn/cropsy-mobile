@@ -67,6 +67,37 @@ List<ScheduledWindow> scheduleCrop(Crop crop, FrostProfile frost) {
   ];
 }
 
+/// How [crop] gets started from scratch, as seen on [today]: the window open
+/// right now, else the next one to open. A window already past this season
+/// comes round again a year later. Planting out is left out when the crop can
+/// be sown or set, because someone starting from nothing sows first.
+/// [open] is true when [today] falls inside the window.
+({MethodType method, String start, String end, bool open})? nextStart(
+  Crop crop,
+  FrostProfile frost,
+  String today,
+) {
+  final all = scheduleCrop(crop, frost);
+  final starts = all.where((w) => w.method != MethodType.transplant).toList();
+  ({MethodType method, String start, String end, bool open})? best;
+  for (final w in starts.isEmpty ? all : starts) {
+    var s = parseIso(w.start);
+    var e = parseIso(w.end);
+    while (toIso(e).compareTo(today) < 0) {
+      s = DateTime.utc(s.year + 1, s.month, s.day);
+      e = DateTime.utc(e.year + 1, e.month, e.day);
+    }
+    final open = toIso(s).compareTo(today) <= 0;
+    // An open window sorts as today, so it always beats one still to come.
+    final key = open ? today : toIso(s);
+    final bestKey = best == null ? null : (best.open ? today : best.start);
+    if (bestKey == null || key.compareTo(bestKey) < 0) {
+      best = (method: w.method, start: toIso(s), end: toIso(e), open: open);
+    }
+  }
+  return best;
+}
+
 /// Schedule many crops at once (e.g. everything in a user's garden), sorted by
 /// start date (lexicographic on ISO strings, matching the TS engine).
 List<ScheduledWindow> scheduleGarden(List<Crop> crops, FrostProfile frost) {
